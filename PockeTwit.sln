@@ -19,6 +19,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PockeTwitTodayPlugin", "Poc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QuickPost", "QuickPost\QuickPost.vcproj", "{BD1F2B9C-577C-4925-ABA6-3D0F438D0B4F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomInstallLib", "CustomInstallLib\CustomInstallLib.csproj", "{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PocketTwitDesktopInstall", "PocketTwitDesktopInstall\PocketTwitDesktopInstall.vdproj", "{21151F6D-C7AE-477F-8DAD-6E6EA7060899}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -273,6 +277,54 @@ Global
 		{BD1F2B9C-577C-4925-ABA6-3D0F438D0B4F}.Release|Windows Mobile 6 Professional SDK (ARMV4I).Build.0 = Release|Windows Mobile 6 Professional SDK (ARMV4I)
 		{BD1F2B9C-577C-4925-ABA6-3D0F438D0B4F}.Release|Windows Mobile 6 Professional SDK (ARMV4I).Deploy.0 = Release|Windows Mobile 6 Professional SDK (ARMV4I)
 		{BD1F2B9C-577C-4925-ABA6-3D0F438D0B4F}.Release|Windows Mobile 6 Standard SDK (ARMV4I).ActiveCfg = Release|Windows Mobile 6 Professional SDK (ARMV4I)
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Debug|Pocket PC 2003 (ARMV4).ActiveCfg = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Debug|Windows Mobile 5.0 Smartphone SDK (ARMV4I).ActiveCfg = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Debug|Windows Mobile 6 Standard SDK (ARMV4I).ActiveCfg = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.DevBuild|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.DevBuild|Any CPU.Build.0 = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.DevBuild|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.DevBuild|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.DevBuild|Pocket PC 2003 (ARMV4).ActiveCfg = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.DevBuild|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.DevBuild|Windows Mobile 5.0 Smartphone SDK (ARMV4I).ActiveCfg = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.DevBuild|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.DevBuild|Windows Mobile 6 Standard SDK (ARMV4I).ActiveCfg = Debug|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Release|Pocket PC 2003 (ARMV4).ActiveCfg = Release|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Release|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Release|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Release|Windows Mobile 5.0 Smartphone SDK (ARMV4I).ActiveCfg = Release|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Release|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Release|Any CPU
+		{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}.Release|Windows Mobile 6 Standard SDK (ARMV4I).ActiveCfg = Release|Any CPU
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.Debug|Any CPU.ActiveCfg = Debug
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.Debug|Pocket PC 2003 (ARMV4).ActiveCfg = Debug
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.Debug|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Debug
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.Debug|Windows Mobile 5.0 Smartphone SDK (ARMV4I).ActiveCfg = Debug
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.Debug|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Debug
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.Debug|Windows Mobile 6 Standard SDK (ARMV4I).ActiveCfg = Debug
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.DevBuild|Any CPU.ActiveCfg = Debug
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.DevBuild|Mixed Platforms.ActiveCfg = Debug
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.DevBuild|Pocket PC 2003 (ARMV4).ActiveCfg = Debug
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.DevBuild|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Debug
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.DevBuild|Windows Mobile 5.0 Smartphone SDK (ARMV4I).ActiveCfg = Debug
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.DevBuild|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Debug
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.DevBuild|Windows Mobile 6 Standard SDK (ARMV4I).ActiveCfg = Debug
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.Release|Any CPU.ActiveCfg = Release
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.Release|Mixed Platforms.ActiveCfg = Release
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.Release|Pocket PC 2003 (ARMV4).ActiveCfg = Release
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.Release|Windows Mobile 5.0 Pocket PC SDK (ARMV4I).ActiveCfg = Release
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.Release|Windows Mobile 5.0 Smartphone SDK (ARMV4I).ActiveCfg = Release
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.Release|Windows Mobile 6 Professional SDK (ARMV4I).ActiveCfg = Release
+		{21151F6D-C7AE-477F-8DAD-6E6EA7060899}.Release|Windows Mobile 6 Standard SDK (ARMV4I).ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
