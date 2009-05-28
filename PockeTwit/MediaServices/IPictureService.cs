@@ -190,7 +190,7 @@ namespace PockeTwit.MediaServices
 
 
         string FileFilter { get; }
-        List<string> FileTypes { get;  }
+        List<MediaType> FileTypes { get;  }
 
     }
 
@@ -209,4 +209,54 @@ namespace PockeTwit.MediaServices
         internal WebResponse response;
     }
 
+    public class MediaType
+    {
+        private string _extension = string.Empty;
+        private string _contentType = string.Empty;
+
+        public MediaType(string extension, string contentType)
+        {
+            _extension = extension;
+            _contentType = contentType;
+        }
+
+
+        public string Extension
+        {
+            get
+            {
+                return _extension;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _extension = value;
+                }
+                else
+                {
+                    _extension = string.Empty;
+                }
+            }
+        }
+
+        public string ContentType
+        {
+            get
+            {
+                return _contentType;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _contentType = value;
+                }
+                else
+                {
+                    _contentType = string.Empty;
+                }
+            }
+        }
+    }
 }

@@ -28,10 +28,9 @@ namespace PockeTwit.MediaServices
         protected bool API_CAN_UPLOAD_GPS = false;
         protected int API_URLLENGTH = 0;
 
-        protected List<string> API_FILETYPES = new List<string>();
+        protected List<MediaType> API_FILETYPES = new List<MediaType>();
 
         #endregion
-
 
         #region IPictureService Members
 
@@ -191,7 +190,7 @@ namespace PockeTwit.MediaServices
                 bool first = true;
                 string filterFormat = "{0} files (*.{0})|*.{0}";
                 StringBuilder sb = new StringBuilder();
-                foreach (string type in API_FILETYPES)
+                foreach (MediaType type in API_FILETYPES)
                 {
                     if (first)
                     {
@@ -202,14 +201,14 @@ namespace PockeTwit.MediaServices
                     {
                         sb.Append("|");
                     }
-                    sb.Append(string.Format(filterFormat, type));
+                    sb.Append(string.Format(filterFormat, type.Extension));
 
                 }
                 return sb.ToString();
             }
         }
 
-        public List<string> FileTypes 
+        public List<MediaType> FileTypes 
         {
             get
             {
@@ -460,9 +459,9 @@ namespace PockeTwit.MediaServices
             int extensionStartIndex = filename.LastIndexOf('.') + 1;
             string fileExtension = filename.Substring(extensionStartIndex, filename.Length - extensionStartIndex);
 
-            foreach (string extension in API_FILETYPES)
+            foreach (MediaType mediatype in API_FILETYPES)
             {
-                if (fileExtension.ToUpper().CompareTo(extension.ToUpper()) == 0)
+                if (fileExtension.ToUpper().CompareTo(mediatype.Extension.ToUpper()) == 0)
                 {
                     return true;
                 }

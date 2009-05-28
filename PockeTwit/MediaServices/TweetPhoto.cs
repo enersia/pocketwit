@@ -22,6 +22,8 @@ namespace PockeTwit.MediaServices
         private const string API_ERROR_UPLOAD = "Unable to upload to TweetPhoto";
         private const string API_ERROR_DOWNLOAD = "Unable to download from TweetPhoto";
 
+        private const string API_KEY = "cd6fa2df805addb613d06a91f24bdf01";
+
         private string requestedUrl = string.Empty;
         private bool redirectedUrlIsPictureUrl = false;
 
@@ -42,15 +44,17 @@ namespace PockeTwit.MediaServices
         {
             API_SAVE_TO_PATH = "\\ArtCache\\www.tweetphoto.com\\";
             API_SERVICE_NAME = "TweetPhoto";
-            API_CAN_UPLOAD_GPS = false;
+            API_CAN_UPLOAD_GPS = true;
             API_CAN_UPLOAD_MESSAGE = true;
             API_CAN_UPLOAD = true;
 
             API_URLLENGTH = 28;
 
-            API_FILETYPES.Add("jpg");
-            API_FILETYPES.Add("gif");
-            API_FILETYPES.Add("png");
+            API_FILETYPES.Add(new MediaType("jpg", "image/jpeg"));
+            API_FILETYPES.Add(new MediaType("jpeg", "image/jpeg"));
+            API_FILETYPES.Add(new MediaType("gif", "image/gif"));
+            API_FILETYPES.Add(new MediaType("png", "image/png"));
+
         }
 
         /// <summary>
@@ -468,6 +472,7 @@ namespace PockeTwit.MediaServices
 
                 contents.Append(CreateContentPartString(header, "username", ppo.Username));
                 contents.Append(CreateContentPartString(header, "password", ppo.Password));
+                contents.Append(CreateContentPartString(header, "api_key", API_KEY));
 
                 int imageIdStartIndex = ppo.Filename.LastIndexOf('\\') + 1;
                 string filename = ppo.Filename.Substring(imageIdStartIndex, ppo.Filename.Length - imageIdStartIndex);
@@ -526,7 +531,6 @@ namespace PockeTwit.MediaServices
                 request.PreAuthenticate = true;
                 request.ContentType = string.Format("multipart/form-data;boundary={0}", boundary);
 
-                //request.ContentType = "application/x-www-form-urlencoded";
                 request.Method = "POST";
                 request.Timeout = 20000;
                 string header = string.Format("--{0}", boundary);
@@ -537,6 +541,13 @@ namespace PockeTwit.MediaServices
                 contents.Append(CreateContentPartString(header, "username", ppo.Username));
                 contents.Append(CreateContentPartString(header, "password", ppo.Password));
                 contents.Append(CreateContentPartString(header, "message", ppo.Message));
+                contents.Append(CreateContentPartString(header, "api_key", API_KEY));
+
+                if (!string.IsNullOrEmpty(ppo.Lat) && !string.IsNullOrEmpty(ppo.Lon))
+                {
+                    contents.Append(CreateContentPartString(header, "longitude", ppo.Lon));
+                    contents.Append(CreateContentPartString(header, "latitude", ppo.Lat));
+                }
 
                 int imageIdStartIndex = ppo.Filename.LastIndexOf('\\') + 1;
                 string filename = ppo.Filename.Substring(imageIdStartIndex, ppo.Filename.Length - imageIdStartIndex);

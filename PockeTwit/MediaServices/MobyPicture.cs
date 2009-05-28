@@ -51,29 +51,31 @@ namespace PockeTwit.MediaServices
             API_CAN_UPLOAD_MESSAGE = true;
             API_URLLENGTH = 31;
 
-            API_FILETYPES.Add("jpg");
-            API_FILETYPES.Add("jpeg");
-            API_FILETYPES.Add("png");
-            API_FILETYPES.Add("bmp");
-            API_FILETYPES.Add("gif");
-            API_FILETYPES.Add("flv");
-            API_FILETYPES.Add("mpeg");
-            API_FILETYPES.Add("mkv");
-            API_FILETYPES.Add("wmv");
-            API_FILETYPES.Add("mov");
-            API_FILETYPES.Add("3gp");
-            API_FILETYPES.Add("mp4");
-            API_FILETYPES.Add("avi");
-            API_FILETYPES.Add("mp3");
-            API_FILETYPES.Add("wma");
-            API_FILETYPES.Add("aac");
-            API_FILETYPES.Add("aif");
-            API_FILETYPES.Add("au");
-            API_FILETYPES.Add("flac");
-            API_FILETYPES.Add("ra");
-            API_FILETYPES.Add("wav");
-            API_FILETYPES.Add("ogg");
-            API_FILETYPES.Add("3gp");
+            API_FILETYPES.Add(new MediaType("jpg", "image/jpeg"));
+            API_FILETYPES.Add(new MediaType("jpeg", "image/jpeg"));
+            API_FILETYPES.Add(new MediaType("gif", "image/gif"));
+            API_FILETYPES.Add(new MediaType("png", "image/png"));
+
+            API_FILETYPES.Add(new MediaType("bmp", "image/bmp"));
+            API_FILETYPES.Add(new MediaType("flv", "video/x-flv"));
+
+
+            API_FILETYPES.Add(new MediaType("mpeg", ""));
+            API_FILETYPES.Add(new MediaType("mkv", ""));
+            API_FILETYPES.Add(new MediaType("wmv", ""));
+            API_FILETYPES.Add(new MediaType("mov", ""));
+            API_FILETYPES.Add(new MediaType("3gp", ""));
+            API_FILETYPES.Add(new MediaType("mp4", ""));
+            API_FILETYPES.Add(new MediaType("avi", ""));
+            API_FILETYPES.Add(new MediaType("mp3", ""));
+            API_FILETYPES.Add(new MediaType("wma", ""));
+            API_FILETYPES.Add(new MediaType("aac", ""));
+            API_FILETYPES.Add(new MediaType("aif", ""));
+            API_FILETYPES.Add(new MediaType("au", ""));
+            API_FILETYPES.Add(new MediaType("flac", ""));
+            API_FILETYPES.Add(new MediaType("ra", ""));
+            API_FILETYPES.Add(new MediaType("wav", ""));
+            API_FILETYPES.Add(new MediaType("ogg", ""));
 
 
         }
@@ -453,6 +455,13 @@ namespace PockeTwit.MediaServices
                     contents.Append(CreateContentPartString(header, "latlong", string.Format("{0},{1}",ppo.Lat,ppo.Lon) ));
                 }
 
+                string hashTags = FindHashTags(ppo.Message, ",", 32);
+                if (!string.IsNullOrEmpty(hashTags))
+                {
+                    contents.Append(CreateContentPartString(header, "ht", hashTags));
+                }
+
+
                 int imageIdStartIndex = ppo.Filename.LastIndexOf('\\') + 1;
                 string filename = ppo.Filename.Substring(imageIdStartIndex, ppo.Filename.Length - imageIdStartIndex);
                 contents.Append(CreateContentPartMedia(header, filename));
@@ -490,7 +499,6 @@ namespace PockeTwit.MediaServices
                 return string.Empty;
             }
         }
-
 
         /// <summary>
         /// Use a imageId to retrieve and save a thumbnail to the device.

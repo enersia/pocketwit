@@ -47,10 +47,10 @@ namespace PockeTwit.MediaServices
             API_CAN_UPLOAD = true;
             API_URLLENGTH = 20;
 
-            API_FILETYPES.Add("jpg");
-            API_FILETYPES.Add("jpeg");
-            API_FILETYPES.Add("gif");
-            API_FILETYPES.Add("png");
+            API_FILETYPES.Add(new MediaType("jpg","image/jpeg"));
+            API_FILETYPES.Add(new MediaType("jpeg","image/jpeg"));
+            API_FILETYPES.Add(new MediaType("gif","image/gif"));
+            API_FILETYPES.Add(new MediaType("png","image/png"));
             
         }
 

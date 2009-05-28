@@ -47,10 +47,10 @@ namespace PockeTwit.MediaServices
             API_CAN_UPLOAD_MESSAGE = true;
             API_URLLENGTH = 30;
 
-            API_FILETYPES.Add("jpg");
-            API_FILETYPES.Add("jpeg");
-            API_FILETYPES.Add("gif");
-            API_FILETYPES.Add("png");
+            API_FILETYPES.Add(new MediaType("jpg", "image/jpg"));
+            API_FILETYPES.Add(new MediaType("jpeg", "image/jpg"));
+            API_FILETYPES.Add(new MediaType("gif", "image/gif"));
+            API_FILETYPES.Add(new MediaType("png", "image/png"));
         }
 
         /// <summary>
@@ -441,7 +441,10 @@ namespace PockeTwit.MediaServices
                 contents.Append(CreateContentPartString(header, "username", ppo.Username));
                 contents.Append(CreateContentPartString(header, "password", ppo.Password));
 
-                contents.Append(CreateContentPartPicture(header));
+                //image
+                int imageIdStartIndex = ppo.Filename.LastIndexOf('\\') + 1;
+                string filename = ppo.Filename.Substring(imageIdStartIndex, ppo.Filename.Length - imageIdStartIndex);
+                contents.Append(CreateContentPartPicture(header, filename));
 
                 //Create the form message to send in bytes
                 byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
@@ -506,7 +509,9 @@ namespace PockeTwit.MediaServices
                 contents.Append(CreateContentPartString(header, "password", ppo.Password));
                 contents.Append(CreateContentPartString(header, "message", ppo.Message));
 
-                contents.Append(CreateContentPartPicture(header));
+                int imageIdStartIndex = ppo.Filename.LastIndexOf('\\') + 1;
+                string filename = ppo.Filename.Substring(imageIdStartIndex, ppo.Filename.Length - imageIdStartIndex);
+                contents.Append(CreateContentPartPicture(header, filename));
 
                 //Create the form message to send in bytes
                 byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
@@ -556,11 +561,6 @@ namespace PockeTwit.MediaServices
             contents.Append("\r\n");
 
             return contents.ToString();
-        }
-
-        protected string CreateContentPartPicture(string header)
-        {
-            return CreateContentPartPicture(header, "image.jpg");
         }
 
         protected string CreateContentPartPicture(string header, string filename)

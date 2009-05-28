@@ -50,10 +50,10 @@ namespace PockeTwit.MediaServices
             API_CAN_UPLOAD_GPS = true;
             API_URLLENGTH = 23;
 
-            API_FILETYPES.Add("jpg");
-            API_FILETYPES.Add("jpeg");
-            API_FILETYPES.Add("gif");
-            API_FILETYPES.Add("png");
+            API_FILETYPES.Add(new MediaType("jpg", "image/jpeg"));
+            API_FILETYPES.Add(new MediaType("jpeg", "image/jpeg"));
+            API_FILETYPES.Add(new MediaType("gif", "image/gif"));
+            API_FILETYPES.Add(new MediaType("png", "image/png"));
         }
 
         /// <summary>
@@ -490,7 +490,9 @@ namespace PockeTwit.MediaServices
                 contents.Append(CreateContentPartStringForm(header, "data[api][origin]", API_ORIGIN_ID, "application/octet-stream"));
 
                 //image
-                contents.Append(CreateContentPartPicture(header,"dataAPIimage", "image.jpg"));
+                int imageIdStartIndex = ppo.Filename.LastIndexOf('\\') + 1;
+                string filename = ppo.Filename.Substring(imageIdStartIndex, ppo.Filename.Length - imageIdStartIndex);
+                contents.Append(CreateContentPartPicture(header, "dataAPIimage", filename));
 
                 //Create the form message to send in bytes
                 byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
@@ -571,7 +573,9 @@ namespace PockeTwit.MediaServices
                     contents.Append(CreateContentPartStringForm(header, "data[api][geo][lon]", ppo.Lon, "application/octet-stream"));
                 }
                 //image
-                contents.Append(CreateContentPartPicture(header, "dataAPIimage", "image.jpg"));
+                int imageIdStartIndex = ppo.Filename.LastIndexOf('\\') + 1;
+                string filename = ppo.Filename.Substring(imageIdStartIndex, ppo.Filename.Length - imageIdStartIndex);
+                contents.Append(CreateContentPartPicture(header, "dataAPIimage", filename));
 
                 //Create the form message to send in bytes
                 byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
