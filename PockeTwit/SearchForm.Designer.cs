@@ -9,7 +9,6 @@ namespace PockeTwit
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-        private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.MainMenu mainMenu1;
         private System.Windows.Forms.MenuItem menuCancel;
         private System.Windows.Forms.MenuItem menuSearch;
@@ -49,6 +48,9 @@ namespace PockeTwit
             this.mainMenu1 = new System.Windows.Forms.MainMenu();
             this.menuSearch = new System.Windows.Forms.MenuItem();
             this.menuCancel = new System.Windows.Forms.MenuItem();
+            this.chkSaveSearch = new System.Windows.Forms.CheckBox();
+            this.txtGroupName = new System.Windows.Forms.TextBox();
+            this.chkAutoUpdate = new System.Windows.Forms.CheckBox();
             this.lblSearch = new System.Windows.Forms.Label();
             this.lblWithin = new System.Windows.Forms.Label();
             this.cmbDistance = new System.Windows.Forms.ComboBox();
@@ -56,9 +58,7 @@ namespace PockeTwit
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbLocation = new System.Windows.Forms.ComboBox();
-            this.chkSaveSearch = new System.Windows.Forms.CheckBox();
-            this.txtGroupName = new System.Windows.Forms.TextBox();
-            this.chkAutoUpdate = new System.Windows.Forms.CheckBox();
+            this.txtDummy = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -76,6 +76,39 @@ namespace PockeTwit
             this.menuCancel.Text = "Cancel";
             this.menuCancel.Click += new System.EventHandler(this.menuCancel_Click);
             // 
+            // chkSaveSearch
+            // 
+            this.chkSaveSearch.ForeColor = System.Drawing.SystemColors.Control;
+            this.chkSaveSearch.Location = new System.Drawing.Point(4, 131);
+            this.chkSaveSearch.Name = "chkSaveSearch";
+            this.chkSaveSearch.Size = new System.Drawing.Size(116, 26);
+            this.chkSaveSearch.TabIndex = 7;
+            this.chkSaveSearch.Text = "Save as Group";
+            this.chkSaveSearch.CheckStateChanged += new System.EventHandler(this.chkSaveSearch_CheckStateChanged);
+            this.chkSaveSearch.Click += new System.EventHandler(this.chkSaveSearch_Click);
+            // 
+            // txtGroupName
+            // 
+            this.txtGroupName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtGroupName.Enabled = false;
+            this.txtGroupName.Location = new System.Drawing.Point(117, 136);
+            this.txtGroupName.Name = "txtGroupName";
+            this.txtGroupName.Size = new System.Drawing.Size(120, 21);
+            this.txtGroupName.TabIndex = 8;
+            // 
+            // chkAutoUpdate
+            // 
+            this.chkAutoUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.chkAutoUpdate.Enabled = false;
+            this.chkAutoUpdate.ForeColor = System.Drawing.SystemColors.Control;
+            this.chkAutoUpdate.Location = new System.Drawing.Point(117, 163);
+            this.chkAutoUpdate.Name = "chkAutoUpdate";
+            this.chkAutoUpdate.Size = new System.Drawing.Size(95, 26);
+            this.chkAutoUpdate.TabIndex = 13;
+            this.chkAutoUpdate.Text = "AutoUpdate";
+            // 
             // lblSearch
             // 
             this.lblSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
@@ -84,7 +117,7 @@ namespace PockeTwit
             this.lblSearch.ForeColor = System.Drawing.Color.LightGray;
             this.lblSearch.Location = new System.Drawing.Point(3, 9);
             this.lblSearch.Name = "lblSearch";
-            this.lblSearch.Size = new System.Drawing.Size(234, 20);
+            this.lblSearch.Size = new System.Drawing.Size(260, 20);
             this.lblSearch.Text = "Search Twitter:";
             // 
             // lblWithin
@@ -149,38 +182,13 @@ namespace PockeTwit
             this.cmbLocation.Size = new System.Drawing.Size(180, 22);
             this.cmbLocation.TabIndex = 2;
             // 
-            // chkSaveSearch
+            // txtDummy
             // 
-            this.chkSaveSearch.ForeColor = System.Drawing.SystemColors.Control;
-            this.chkSaveSearch.Location = new System.Drawing.Point(4, 133);
-            this.chkSaveSearch.Name = "chkSaveSearch";
-            this.chkSaveSearch.Size = new System.Drawing.Size(116, 26);
-            this.chkSaveSearch.TabIndex = 7;
-            this.chkSaveSearch.Text = "Save as Group";
-            this.chkSaveSearch.CheckStateChanged += new System.EventHandler(this.chkSaveSearch_CheckStateChanged);
-            this.chkSaveSearch.Click += new System.EventHandler(this.chkSaveSearch_Click);
-            // 
-            // txtGroupName
-            // 
-            this.txtGroupName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtGroupName.Enabled = false;
-            this.txtGroupName.Location = new System.Drawing.Point(126, 138);
-            this.txtGroupName.Name = "txtGroupName";
-            this.txtGroupName.Size = new System.Drawing.Size(111, 21);
-            this.txtGroupName.TabIndex = 8;
-            // 
-            // chkAutoUpdate
-            // 
-            this.chkAutoUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.chkAutoUpdate.Enabled = false;
-            this.chkAutoUpdate.ForeColor = System.Drawing.SystemColors.Control;
-            this.chkAutoUpdate.Location = new System.Drawing.Point(126, 165);
-            this.chkAutoUpdate.Name = "chkAutoUpdate";
-            this.chkAutoUpdate.Size = new System.Drawing.Size(111, 26);
-            this.chkAutoUpdate.TabIndex = 13;
-            this.chkAutoUpdate.Text = "AutoUpdate";
+            this.txtDummy.Location = new System.Drawing.Point(57, 87);
+            this.txtDummy.Name = "txtDummy";
+            this.txtDummy.Size = new System.Drawing.Size(180, 21);
+            this.txtDummy.TabIndex = 28;
+            this.txtDummy.Visible = false;
             // 
             // SearchForm
             // 
@@ -189,6 +197,7 @@ namespace PockeTwit
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.txtDummy);
             this.Controls.Add(this.chkAutoUpdate);
             this.Controls.Add(this.txtGroupName);
             this.Controls.Add(this.chkSaveSearch);
@@ -209,15 +218,17 @@ namespace PockeTwit
 
         #endregion
 
+        private System.Windows.Forms.Control txtSearch;
+        private System.Windows.Forms.CheckBox chkSaveSearch;
+        private System.Windows.Forms.TextBox txtGroupName;
+        private System.Windows.Forms.CheckBox chkAutoUpdate;
+        private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.Label lblWithin;
         private System.Windows.Forms.ComboBox cmbDistance;
         private System.Windows.Forms.ComboBox cmbMeasurement;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Control txtSearch;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cmbLocation;
-        private System.Windows.Forms.CheckBox chkSaveSearch;
-        private System.Windows.Forms.TextBox txtGroupName;
-        private System.Windows.Forms.CheckBox chkAutoUpdate;
+        private System.Windows.Forms.TextBox txtDummy;
     }
 }
