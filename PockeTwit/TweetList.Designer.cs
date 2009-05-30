@@ -49,7 +49,7 @@ namespace PockeTwit
             this.globalMenu = new System.Windows.Forms.MenuItem();
             this.specificMenu = new System.Windows.Forms.MenuItem();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.statList = new FingerUI.KListControl();
+            this.statList = new PockeTwit.FingerUI.KListControl();
             this.lblProgress = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -101,6 +101,8 @@ namespace PockeTwit
             // 
             // lblProgress
             // 
+            this.lblProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lblProgress.Location = new System.Drawing.Point(4, 35);
             this.lblProgress.Name = "lblProgress";
             this.lblProgress.Size = new System.Drawing.Size(233, 20);

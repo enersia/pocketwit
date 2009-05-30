@@ -92,18 +92,16 @@ namespace PockeTwit
             this.txtGroupName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.txtGroupName.Enabled = false;
-            this.txtGroupName.Location = new System.Drawing.Point(117, 136);
+            this.txtGroupName.Location = new System.Drawing.Point(117, 131);
             this.txtGroupName.Name = "txtGroupName";
             this.txtGroupName.Size = new System.Drawing.Size(120, 21);
             this.txtGroupName.TabIndex = 8;
             // 
             // chkAutoUpdate
             // 
-            this.chkAutoUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
             this.chkAutoUpdate.Enabled = false;
             this.chkAutoUpdate.ForeColor = System.Drawing.SystemColors.Control;
-            this.chkAutoUpdate.Location = new System.Drawing.Point(117, 163);
+            this.chkAutoUpdate.Location = new System.Drawing.Point(25, 163);
             this.chkAutoUpdate.Name = "chkAutoUpdate";
             this.chkAutoUpdate.Size = new System.Drawing.Size(95, 26);
             this.chkAutoUpdate.TabIndex = 13;
