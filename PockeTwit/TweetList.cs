@@ -11,6 +11,7 @@ using PockeTwit.FingerUI;
 using PockeTwit.FingerUI.Menu;
 using PockeTwit.Library;
 using PockeTwit.NotificationsCode;
+using PockeTwit.OtherServices;
 using PockeTwit.SpecialTimelines;
 using PockeTwit.TimeLines;
 using Microsoft.WindowsCE.Forms;
@@ -1086,7 +1087,7 @@ namespace PockeTwit
 
                     SearchForm f = new SearchForm();
                     f.providedDistnce = m.Range.ToString();
-                    string secondLoc = Yedda.GoogleGeocoder.Geocode.GetAddress(m.CenterLocation.ToString());
+                    string secondLoc = Geocode.GetAddress(m.CenterLocation.ToString());
                     if (string.IsNullOrEmpty(secondLoc))
                     {
                         secondLoc = m.CenterLocation.ToString();
@@ -1540,7 +1541,7 @@ namespace PockeTwit
                 System.Diagnostics.ProcessStartInfo pi = new System.Diagnostics.ProcessStartInfo();
                 if (ClientSettings.UseSkweezer)
                 {
-                    pi.FileName = Yedda.Skweezer.GetSkweezerURL(TextClicked);
+                    pi.FileName = Skweezer.GetSkweezerURL(TextClicked);
                 }
                 else
                 {

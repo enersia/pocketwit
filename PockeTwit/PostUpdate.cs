@@ -3,7 +3,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-
+using PockeTwit.OtherServices.TextShrinkers;
 using PockeTwit.Themes;
 using Yedda;
 using PockeTwit.MediaServices;
@@ -681,27 +681,47 @@ namespace PockeTwit
 
         private string TrimTo140(string Original)
         {
-            if (Original.Length > 140)
+            try
             {
-                string URL = null;
-                //Truncate the text to the last available space, the add the URL.
-                try
+                if (Original.Length > 140)
                 {
-                    URL = Yedda.ShortText.shorten(Original);
+                    Original = TryToShrinkWith140It(Original);
+                    txtStatusUpdate.Text = Original;
                 }
-                catch
-                {
-                }
-                if (string.IsNullOrEmpty(URL))
-                {
-                    return null;
-                }
-                int trimLength = 5;
-                
-                string NewText = Original.Substring(0, Original.LastIndexOf(" ", 140 - (URL.Length + trimLength)));
-                return NewText + " ... " + URL;
             }
+            catch{}
+            try
+            {
+                if (Original.Length > 140)
+                {
+                    Original = TryToUseShortText(Original);
+                    txtStatusUpdate.Text = Original;
+                }
+            }
+            catch{}
             return Original;
+        }
+
+        private static string TryToShrinkWith140It(string original)
+        {
+            if(MessageBox.Show("The text is too long.  Would you like to use abbreviations to shorten it?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)== System.Windows.Forms.DialogResult.Yes)
+            {
+                var shrinker = new _140it();
+                return shrinker.GetShortenedText(original);
+            }
+            return original;
+        }
+
+        private string TryToUseShortText(string original)
+        {
+            if(MessageBox.Show("The text is too long.  Would you like to add a link to a site with the full text?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)== System.Windows.Forms.DialogResult.Yes)
+            {
+                var shrinker = new ShortText();
+
+                return shrinker.GetShortenedText(original);
+            }
+            return original;
+
         }
 
         private bool PostTheUpdate()

@@ -252,8 +252,8 @@
     </Compile>
     <Compile Include="Yedda\HtmlEntities.cs" />
     <Compile Include="Yedda\HttpUtility.cs" />
-    <Compile Include="Yedda\ShortText.cs" />
-    <Compile Include="Yedda\Skweezer.cs" />
+    <Compile Include="OtherServices\TextShrinkers\ShortText.cs" />
+    <Compile Include="OtherServices\Skweezer.cs" />
     <Compile Include="MediaServices\TwitPic.cs" />
     <Compile Include="Yedda\Twitter.cs" />
   </ItemGroup>
@@ -454,6 +454,8 @@
     <Compile Include="GraphicsLibs\DetermineColorDepth.cs" />
     <Compile Include="GraphicsLibs\DIB.cs" />
     <Compile Include="NotificationsCode\SoundProfileCheck.cs" />
+    <Compile Include="OtherServices\TextShrinkers\140it.cs" />
+    <Compile Include="OtherServices\TextShrinkers\ITextShrinker.cs" />
     <Compile Include="SpecialTimelines\SavedSearchTimeLine.cs" />
     <Compile Include="SpecialTimelines\ISpecialTimeLine.cs" />
     <Compile Include="SpecialTimelines\SpecialTimeLinesRepository.cs" />
@@ -555,8 +557,8 @@
     <Compile Include="MediaServices\TweetPhoto.cs" />
     <Compile Include="MediaServices\TwitGoo.cs" />
     <Compile Include="MediaServices\yFrog.cs" />
-    <Compile Include="Yedda\GoogleMaps.cs" />
-    <Compile Include="Yedda\GoogleTranslate.cs" />
+    <Compile Include="OtherServices\GoogleMaps.cs" />
+    <Compile Include="OtherServices\GoogleTranslate.cs" />
     <Compile Include="MediaServices\IPictureService.cs" />
     <Compile Include="MediaServices\MobyPicture.cs" />
     <Compile Include="MediaServices\PicturePostObject.cs" />

@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using FingerUI;
 using PockeTwit.FingerUI.Menu;
+using PockeTwit.OtherServices.TextShrinkers;
 using PockeTwit.TimeLines;
 
 namespace PockeTwit.FingerUI
@@ -1481,7 +1482,7 @@ namespace PockeTwit.FingerUI
 
         void ClickablesControl_WordClicked(string TextClicked)
         {
-            if (TextClicked == "Detailed View" | Yedda.ShortText.isShortTextURL(TextClicked))
+            if (TextClicked == "Detailed View" | ShortText.IsShortTextURL(TextClicked))
             {
                 //Show the full tweet somehow.
                 StatusItem s = (StatusItem)SelectedItem;
@@ -1493,10 +1494,10 @@ namespace PockeTwit.FingerUI
                 
                 /*
                 string fullText = null;
-                if (Yedda.ShortText.isShortTextURL(s.Tweet.text))
+                if (Yedda.ShortText.IsShortTextURL(s.Tweet.text))
                 {
                     string[] splitup = s.Tweet.text.Split(new char[] { ' ' });
-                    fullText = Yedda.ShortText.getFullText(splitup[splitup.Length - 1]);
+                    fullText = Yedda.ShortText.GetFullText(splitup[splitup.Length - 1]);
                 }
                 else
                 {

@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using PockeTwit.OtherServices;
 
 namespace PockeTwit
 {
@@ -42,10 +43,10 @@ namespace PockeTwit
             else
             {
                 _User.location = User.location.Replace("iPhone: ", "");
-                Yedda.GoogleGeocoder.Coordinate c = new Yedda.GoogleGeocoder.Coordinate();
-                if (Yedda.GoogleGeocoder.Coordinate.tryParse(_User.location, out c))
+                Coordinate c = new Coordinate();
+                if (Coordinate.tryParse(_User.location, out c))
                 {
-                    lblPosition.Text = Yedda.GoogleGeocoder.Geocode.GetAddress(_User.location);
+                    lblPosition.Text = Geocode.GetAddress(_User.location);
                 }
                 else
                 {

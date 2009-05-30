@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using PockeTwit.OtherServices;
 
 namespace PockeTwit
 {
@@ -190,7 +191,7 @@ namespace PockeTwit
             System.Diagnostics.ProcessStartInfo pi = new System.Diagnostics.ProcessStartInfo();
             if (ClientSettings.UseSkweezer)
             {
-                URL = Yedda.Skweezer.GetSkweezerURL(URL);
+                URL = Skweezer.GetSkweezerURL(URL);
             }
             pi.FileName = URL;
             pi.UseShellExecute = true;

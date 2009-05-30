@@ -6,9 +6,11 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using PockeTwit.OtherServices;
 using TiledMaps;
 using System.Reflection;
 using System.Collections;
+using Geocode=TiledMaps.Geocode;
 
 namespace PockeTwit
 {
@@ -87,10 +89,10 @@ namespace PockeTwit
                 if (!seenLocs.Contains(location))
                 {
                     seenLocs.Add(location);
-                    Yedda.GoogleGeocoder.Coordinate c;
-                    if (!Yedda.GoogleGeocoder.Coordinate.tryParse(location, out c))
+                    Coordinate c;
+                    if (!Coordinate.tryParse(location, out c))
                     {
-                        c = Yedda.GoogleGeocoder.Geocode.GetCoordinates(location);
+                        c = OtherServices.Geocode.GetCoordinates(location);
                     }
                     if (c.Latitude != 0 && c.Longitude != 0)
                     {
@@ -326,7 +328,7 @@ namespace PockeTwit
                 pictureBoxJump.Visible = false;
                 myPictureBox.Focus();
                 this.Focus();
-                Yedda.GoogleGeocoder.Coordinate c = Yedda.GoogleGeocoder.Geocode.GetCoordinates(txtJump.Text);
+                Coordinate c = OtherServices.Geocode.GetCoordinates(txtJump.Text);
                 mySession.FitPOIToDimensions(myPictureBox.Width, myPictureBox.Height, 12, new Geocode[] { new Geocode((double)c.Latitude, (double)c.Longitude) });
                 RefreshBitmap();
             }

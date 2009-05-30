@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using PockeTwit.OtherServices;
+using PockeTwit.OtherServices.TextShrinkers;
 
 namespace FingerUI
 {
@@ -112,10 +114,10 @@ namespace FingerUI
                     lblSource.Text = "from " + StripHTML(System.Web.HttpUtility.HtmlDecode(Status.source));
                 }
                 string fullText;
-                if (Yedda.ShortText.isShortTextURL(Status.text))
+                if (ShortText.IsShortTextURL(Status.text))
                 {
                     string[] splitup = Status.text.Split(new[] { ' ' });
-                    fullText = Yedda.ShortText.getFullText(splitup[splitup.Length - 1]);
+                    fullText = ShortText.GetFullText(splitup[splitup.Length - 1]);
                 }
                 else
                 {
@@ -123,7 +125,7 @@ namespace FingerUI
                 }
                 if (ClientSettings.AutoTranslate)
                 {
-                    fullText = Yedda.GoogleTranslate.GetTranslation(fullText);
+                    fullText = GoogleTranslate.GetTranslation(fullText);
                 }
                 lblText.Text = System.Web.HttpUtility.HtmlDecode(fullText).Replace("&", "&&");
                 Cursor.Current = Cursors.Default;

@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using PockeTwit.OtherServices;
 using PockeTwit.SpecialTimelines;
 
 namespace PockeTwit
@@ -107,7 +108,7 @@ namespace PockeTwit
                         cmbLocation.SelectedItem = _providedLocation;
                     }
                     cmbLocation.Items.Add("Current GPS Position");
-                    cmbLocation.Items.Add(Yedda.GoogleGeocoder.Geocode.GetAddress(this.GPSLocation).Replace("\r\n",""));
+                    cmbLocation.Items.Add(Geocode.GetAddress(this.GPSLocation).Replace("\r\n",""));
                     Locator.StopGPS();
                 }
             }
@@ -166,7 +167,7 @@ namespace PockeTwit
             {
                 if (!string.IsNullOrEmpty(cmbLocation.Text))
                 {
-                    Yedda.GoogleGeocoder.Coordinate c = Yedda.GoogleGeocoder.Geocode.GetCoordinates(cmbLocation.Text);
+                    Coordinate c = Geocode.GetCoordinates(cmbLocation.Text);
                     this.GPSLocation = System.Web.HttpUtility.UrlEncode(c.ToString());
                     if (!string.IsNullOrEmpty(cmbDistance.Text) && !string.IsNullOrEmpty(cmbMeasurement.Text))
                     {
