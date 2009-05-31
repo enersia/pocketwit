@@ -1143,13 +1143,13 @@ namespace PockeTwit
         {
             using (PostUpdate StatusForm = new PostUpdate(false))
             {
-                if (CurrentlySelectedAccount == null || string.IsNullOrEmpty(ToUser))
+                if (!string.IsNullOrEmpty(ToUser))
                 {
-                    StatusForm.AccountToSet = ClientSettings.DefaultAccount;
+                    StatusForm.AccountToSet = CurrentlySelectedAccount;
                 }
                 else
                 {
-                    StatusForm.AccountToSet = CurrentlySelectedAccount;
+                    StatusForm.AccountToSet = ClientSettings.DefaultAccount;
                 }
                 this.statList.Visible = false;
                 if (!string.IsNullOrEmpty(ToUser))
@@ -1164,7 +1164,7 @@ namespace PockeTwit
                     this.statList.Visible = true;
                     StatusForm.Hide();
                     IsLoaded = false;
-                    Manager.RefreshFriendsTimeLine();
+                    //Manager.RefreshFriendsTimeLine();
                 }
                 else
                 {

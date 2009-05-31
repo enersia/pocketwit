@@ -23,7 +23,7 @@ namespace PockeTwit.OtherServices.TextShrinkers
             string data = "shorttext=" + HttpUtility.UrlEncode(inputText);
             const int trimLength = 5;
             string shortenURL = ExecutePostCommand(API, data);
-            string newText = inputText.Substring(0, inputText.LastIndexOf(" ", 140 - (shortenURL.Length + trimLength)));
+            string newText = inputText.Substring(0, inputText.LastIndexOf(" ", 140 - (shortenURL.Length + trimLength))) + " " + shortenURL;
             return newText;
         }
 

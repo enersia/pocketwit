@@ -7,7 +7,7 @@ namespace PockeTwit.OtherServices.TextShrinkers
 {
     class _140it : ITextShrinker
     {
-        private const string API = "http://140it.com/api/shrink?text={0}";
+        private const string API = "http://140it.com/api/shrink?char_max=140&text={0}";
         public string GetShortenedText(string originalText)
         {
             if(originalText.Length<141)
