@@ -730,15 +730,16 @@ namespace PockeTwit
             if (!string.IsNullOrEmpty(StatusText))
             {
                 Cursor.Current = Cursors.WaitCursor;
-                string UpdateText = TrimTo140(StatusText);
+                var updateText = TrimTo140(StatusText);
 
-                if (string.IsNullOrEmpty(UpdateText))
+                if(updateText.Length>140)
                 {
-                    MessageBox.Show("There was an error shortening the text. Please shorten the message or try again later.");
-                    return false;
+                    if (MessageBox.Show("The text is still too long.  If you post it twitter will cut off the end.  Post anyway?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
+                    {
+                        return false;
+                    }
                 }
-
-
+                
                 if (!string.IsNullOrEmpty(picturePath) && pictureService.CanUploadMessage && ClientSettings.SendMessageToMediaService )
                 {
                     PicturePostObject ppo = new PicturePostObject();
@@ -776,7 +777,7 @@ namespace PockeTwit
                     catch { }
 
 
-                    string retValue = TwitterConn.Update(UpdateText, in_reply_to_status_id, Yedda.Twitter.OutputFormatType.XML);
+                    string retValue = TwitterConn.Update(updateText, in_reply_to_status_id, Yedda.Twitter.OutputFormatType.XML);
 
                     uploadedPictureURL = string.Empty;
                     uploadingPicture = false;
