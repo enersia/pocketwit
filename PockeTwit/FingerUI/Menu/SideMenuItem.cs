@@ -13,7 +13,7 @@ namespace PockeTwit.FingerUI.Menu
 
         #endregion
 
-        private delMenuClicked ClickedMethod;
+        public delMenuClicked ClickedMethod;
 
         private SideMenu ParentMenu;
         private string _TextTemplate;

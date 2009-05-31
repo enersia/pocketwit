@@ -15,6 +15,7 @@ using PockeTwit.OtherServices;
 using PockeTwit.SpecialTimelines;
 using PockeTwit.TimeLines;
 using Microsoft.WindowsCE.Forms;
+using Yedda;
 
 
 namespace PockeTwit
@@ -575,6 +576,49 @@ namespace PockeTwit
             }
             
         }
+        private delegate void delFollowUser(Yedda.Twitter.Account a);
+        
+        private void SetFollowMenu()
+        {
+            if(ClientSettings.AccountsList.Count==1)
+            {
+                return;
+            }
+            StatusItem selectedItem = (StatusItem)statList.SelectedItem;
+            if (selectedItem == null) { return; }
+            if (selectedItem.Tweet.user == null) { return; }
+            Yedda.Twitter Conn = GetMatchingConnection(selectedItem.Tweet.Account);
+            
+            FollowMenuItem.SubMenuItems.Clear();
+            List<Yedda.Twitter.Account> MatchingAccounts = new List<Twitter.Account>();
+
+            foreach (var account in ClientSettings.AccountsList)
+            {
+                if(account.Server==Conn.AccountInfo.Server)
+                {
+                    MatchingAccounts.Add(account);
+                }
+            }
+
+            if (MatchingAccounts.Count > 1)
+            {
+                FollowMenuItem.Text = "Follow...";
+                FollowMenuItem.ClickedMethod = null;
+                foreach (var account in MatchingAccounts)
+                {
+                    var account1 = account;
+                    delMenuClicked d = () => FollowUser(account1);
+                    var item = new SideMenuItem(d, account.ToString(), statList.RightMenu);
+                    FollowMenuItem.SubMenuItems.Add(item);
+                }
+                return;
+            }
+
+            delMenuClicked  followClicked = () => FollowUser(MatchingAccounts[0]);
+            FollowMenuItem.Text = "Follow";
+            FollowMenuItem.ClickedMethod = followClicked;
+
+        }
 
         private void ToggleFollow()
         {
@@ -594,6 +638,14 @@ namespace PockeTwit
             }
         }
         private void FollowUser()
+        {
+            StatusItem selectedItem = (StatusItem)statList.SelectedItem;
+            if (selectedItem == null) { return; }
+            if (selectedItem.Tweet.user == null) { return; }
+            Yedda.Twitter Conn = GetMatchingConnection(selectedItem.Tweet.Account);
+            FollowUser(Conn.AccountInfo);
+        }
+        private void FollowUser(Yedda.Twitter.Account account)
         {
             StatusItem selectedItem = (StatusItem)statList.SelectedItem;
             if (selectedItem == null) { return; }
@@ -846,7 +898,8 @@ namespace PockeTwit
                 else
                 {
                     FollowMenuItem.Text = "Follow";
-                    
+                    SetFollowMenu();
+
                     MoveToGroupMenuItem.Visible = false;
                     CopyToGroupMenuItem.Visible = false;
                 }
