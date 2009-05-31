@@ -54,9 +54,14 @@ namespace PockeTwit.FingerUI.Menu
                 if (value != _Visible)
                 {
                     _Visible = value;
+                    if(!value)
+                    {
+                        Expanded = false;
+                    }
                     ParentMenu.IsDirty = true;
                     ParentMenu.SetMenuHeight();
                 }
+                
             }
         }
 
@@ -103,6 +108,8 @@ namespace PockeTwit.FingerUI.Menu
             {
                 if (value != _TextTemplate)
                 {
+                    Expanded = false;
+                    MenuExpandedOrCollapsed(null, Expanded);
                     ParentMenu.IsDirty = true;
                     _TextTemplate = value;
 
