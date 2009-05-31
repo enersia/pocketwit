@@ -43,10 +43,10 @@ namespace PockeTwit.MediaServices
             API_CAN_UPLOAD_MESSAGE = true;
             API_URLLENGTH = 25;
 
-            API_FILETYPES.Add(new MediaType("jpg", "image/jpeg"));
-            API_FILETYPES.Add(new MediaType("jpeg", "image/jpeg"));
-            API_FILETYPES.Add(new MediaType("gif", "image/gif"));
-            API_FILETYPES.Add(new MediaType("png", "image/png"));
+            API_FILETYPES.Add(new MediaType("jpg", "image/jpeg", MediaTypeGroup.PICTURE));
+            API_FILETYPES.Add(new MediaType("jpeg", "image/jpeg", MediaTypeGroup.PICTURE));
+            API_FILETYPES.Add(new MediaType("gif", "image/gif", MediaTypeGroup.PICTURE));
+            API_FILETYPES.Add(new MediaType("png", "image/png", MediaTypeGroup.PICTURE));
         }
 
         /// <summary>

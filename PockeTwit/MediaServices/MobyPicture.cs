@@ -49,33 +49,34 @@ namespace PockeTwit.MediaServices
             API_SERVICE_NAME = "MobyPicture";
             API_CAN_UPLOAD_GPS = true;
             API_CAN_UPLOAD_MESSAGE = true;
+            API_CAN_UPLOAD_MOREMEDIA = true;
             API_URLLENGTH = 31;
 
-            API_FILETYPES.Add(new MediaType("jpg", "image/jpeg"));
-            API_FILETYPES.Add(new MediaType("jpeg", "image/jpeg"));
-            API_FILETYPES.Add(new MediaType("gif", "image/gif"));
-            API_FILETYPES.Add(new MediaType("png", "image/png"));
+            API_FILETYPES.Add(new MediaType("jpg", "image/jpeg", MediaTypeGroup.PICTURE));
+            API_FILETYPES.Add(new MediaType("jpeg", "image/jpeg", MediaTypeGroup.PICTURE));
+            API_FILETYPES.Add(new MediaType("gif", "image/gif", MediaTypeGroup.PICTURE));
+            API_FILETYPES.Add(new MediaType("png", "image/png", MediaTypeGroup.PICTURE));
 
-            API_FILETYPES.Add(new MediaType("bmp", "image/bmp"));
-            API_FILETYPES.Add(new MediaType("flv", "video/x-flv"));
+            API_FILETYPES.Add(new MediaType("bmp", "image/bmp", MediaTypeGroup.PICTURE));
+            API_FILETYPES.Add(new MediaType("flv", "video/x-flv", MediaTypeGroup.VIDEO));
 
 
-            API_FILETYPES.Add(new MediaType("mpeg", ""));
-            API_FILETYPES.Add(new MediaType("mkv", ""));
-            API_FILETYPES.Add(new MediaType("wmv", ""));
-            API_FILETYPES.Add(new MediaType("mov", ""));
-            API_FILETYPES.Add(new MediaType("3gp", ""));
-            API_FILETYPES.Add(new MediaType("mp4", ""));
-            API_FILETYPES.Add(new MediaType("avi", ""));
-            API_FILETYPES.Add(new MediaType("mp3", ""));
-            API_FILETYPES.Add(new MediaType("wma", ""));
-            API_FILETYPES.Add(new MediaType("aac", ""));
-            API_FILETYPES.Add(new MediaType("aif", ""));
-            API_FILETYPES.Add(new MediaType("au", ""));
-            API_FILETYPES.Add(new MediaType("flac", ""));
-            API_FILETYPES.Add(new MediaType("ra", ""));
-            API_FILETYPES.Add(new MediaType("wav", ""));
-            API_FILETYPES.Add(new MediaType("ogg", ""));
+            API_FILETYPES.Add(new MediaType("mpeg", "", MediaTypeGroup.VIDEO));
+            API_FILETYPES.Add(new MediaType("mkv", "", MediaTypeGroup.VIDEO));
+            API_FILETYPES.Add(new MediaType("wmv", "", MediaTypeGroup.VIDEO));
+            API_FILETYPES.Add(new MediaType("mov", "", MediaTypeGroup.VIDEO));
+            API_FILETYPES.Add(new MediaType("3gp", "", MediaTypeGroup.VIDEO));
+            API_FILETYPES.Add(new MediaType("mp4", "", MediaTypeGroup.VIDEO));
+            API_FILETYPES.Add(new MediaType("avi", "", MediaTypeGroup.VIDEO));
+            API_FILETYPES.Add(new MediaType("mp3", "", MediaTypeGroup.AUDIO));
+            API_FILETYPES.Add(new MediaType("wma", "", MediaTypeGroup.AUDIO));
+            API_FILETYPES.Add(new MediaType("aac", "", MediaTypeGroup.AUDIO));
+            API_FILETYPES.Add(new MediaType("aif", "", MediaTypeGroup.AUDIO));
+            API_FILETYPES.Add(new MediaType("au", "", MediaTypeGroup.AUDIO));
+            API_FILETYPES.Add(new MediaType("flac", "", MediaTypeGroup.AUDIO));
+            API_FILETYPES.Add(new MediaType("ra", "", MediaTypeGroup.AUDIO));
+            API_FILETYPES.Add(new MediaType("wav", "", MediaTypeGroup.AUDIO));
+            API_FILETYPES.Add(new MediaType("ogg", "", MediaTypeGroup.AUDIO));
 
 
         }

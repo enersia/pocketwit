@@ -186,12 +186,11 @@ namespace PockeTwit.MediaServices
         bool CanUpload { get; }
         bool CanUploadMessage { get; }
         bool CanUploadGPS { get; }
+        bool CanUploadOtherMedia { get; } 
         int UrlLength { get;  }
 
-
-        string FileFilter { get; }
-        List<MediaType> FileTypes { get;  }
-
+        string FileFilter(MediaTypeGroup mediaGroup);
+        List<MediaType> FileTypes { get; }
     }
 
     /// <summary>
@@ -206,18 +205,20 @@ namespace PockeTwit.MediaServices
         internal byte[] dataHolder;
         internal string fileName;
         internal Stream dataStream;
-        internal WebResponse response;
+        internal WebResponse response = null;
     }
 
     public class MediaType
     {
         private string _extension = string.Empty;
         private string _contentType = string.Empty;
+        private MediaTypeGroup _medieTypeClass = MediaTypeGroup.PICTURE;
 
-        public MediaType(string extension, string contentType)
+        public MediaType(string extension, string contentType, MediaTypeGroup mediaTypeGroup)
         {
             _extension = extension;
             _contentType = contentType;
+            _medieTypeClass = mediaTypeGroup;
         }
 
 
@@ -258,5 +259,35 @@ namespace PockeTwit.MediaServices
                 }
             }
         }
+
+        public MediaTypeGroup MediaGroup
+        {
+            get
+            {
+                return _medieTypeClass;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    _medieTypeClass = value;
+                }
+                else
+                {
+                    _medieTypeClass = MediaTypeGroup.PICTURE;
+                }
+            }
+        }
     }
+
+    public enum MediaTypeGroup
+    {
+        PICTURE = 0,
+        AUDIO = 1,
+        VIDEO = 2,
+        DOCUMENT = 3,
+        ALL = 99
+        
+    }
+
 }

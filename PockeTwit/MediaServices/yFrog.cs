@@ -42,21 +42,23 @@ namespace PockeTwit.MediaServices
             API_SERVICE_NAME = "yFrog";
             API_CAN_UPLOAD_GPS = true;
             API_CAN_UPLOAD_MESSAGE = true;
+            API_CAN_UPLOAD_MOREMEDIA = true;
             API_URLLENGTH = 29;
 
-            API_FILETYPES.Add(new MediaType("jpg", "image/jpeg"));
-            API_FILETYPES.Add(new MediaType("jpeg", "image/jpeg"));
-            API_FILETYPES.Add(new MediaType("gif", "image/gif"));
-            API_FILETYPES.Add(new MediaType("png", "image/png"));
+            API_FILETYPES.Add(new MediaType("jpg", "image/jpeg", MediaTypeGroup.PICTURE));
+            API_FILETYPES.Add(new MediaType("jpeg", "image/jpeg", MediaTypeGroup.PICTURE));
+            API_FILETYPES.Add(new MediaType("gif", "image/gif", MediaTypeGroup.PICTURE));
+            API_FILETYPES.Add(new MediaType("png", "image/png", MediaTypeGroup.PICTURE));
 
-            API_FILETYPES.Add(new MediaType("bmp", "image/bmp"));
-            API_FILETYPES.Add(new MediaType("tiff", "image/tiff"));
+            API_FILETYPES.Add(new MediaType("bmp", "image/bmp", MediaTypeGroup.PICTURE));
+            API_FILETYPES.Add(new MediaType("tiff", "image/tiff", MediaTypeGroup.PICTURE));
 
-            API_FILETYPES.Add(new MediaType("swf", "application/x-shockwave-flash"));
-            API_FILETYPES.Add(new MediaType("pdf", "text/pdf"));
-            API_FILETYPES.Add(new MediaType("flv", "video/x-flv"));
+            API_FILETYPES.Add(new MediaType("swf", "application/x-shockwave-flash", MediaTypeGroup.VIDEO));
+            API_FILETYPES.Add(new MediaType("pdf", "text/pdf", MediaTypeGroup.DOCUMENT));
+            API_FILETYPES.Add(new MediaType("flv", "video/x-flv", MediaTypeGroup.VIDEO));
 
-            API_FILETYPES.Add(new MediaType("avi", "video/avi"));
+            API_FILETYPES.Add(new MediaType("avi", "video/avi", MediaTypeGroup.VIDEO));
+            //API_FILETYPES.Add(new MediaType("3gp", "video/3gp", MediaTypeGroup.VIDEO));
 
         }
 
@@ -489,7 +491,7 @@ namespace PockeTwit.MediaServices
                 contents.Append(CreateContentPartString(header, "username", ppo.Username));
                 contents.Append(CreateContentPartString(header, "password", ppo.Password));
                 contents.Append(CreateContentPartString(header, "message", ppo.Message));
-                //contents.Append(CreateContentPartString(header, "source", "pocketwit"));
+                contents.Append(CreateContentPartString(header, "source", "PockeTwit"));
 
                 if (!string.IsNullOrEmpty(ppo.Lat) && !string.IsNullOrEmpty(ppo.Lon))
                 {
@@ -569,7 +571,7 @@ namespace PockeTwit.MediaServices
             contents.Append(header);
             contents.Append("\r\n");
             contents.Append(string.Format("Content-Disposition:form-data; name=\"media\";filename=\"{0}\"\r\n",filename));
-            contents.Append("Content-Type: image/jpeg\r\n");
+            //contents.Append("Content-Type: image/jpeg\r\n");
             contents.Append("\r\n");
 
             return contents.ToString();

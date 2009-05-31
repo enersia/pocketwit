@@ -26,6 +26,7 @@ namespace PockeTwit.MediaServices
         protected bool API_CAN_UPLOAD = true;
         protected bool API_CAN_UPLOAD_MESSAGE = false;
         protected bool API_CAN_UPLOAD_GPS = false;
+        protected bool API_CAN_UPLOAD_MOREMEDIA = false;
         protected int API_URLLENGTH = 0;
 
         protected List<MediaType> API_FILETYPES = new List<MediaType>();
@@ -175,6 +176,14 @@ namespace PockeTwit.MediaServices
             }
         }
 
+        public bool CanUploadOtherMedia
+        {
+            get
+            {
+                return API_CAN_UPLOAD_MOREMEDIA;
+            }
+        }
+
         public int UrlLength
         {
             get
@@ -183,29 +192,33 @@ namespace PockeTwit.MediaServices
             }
         }
 
-        public string FileFilter
+        public string FileFilter(MediaTypeGroup mediaGroup)
         {
-            get
-            {
-                bool first = true;
-                string filterFormat = "{0} files (*.{0})|*.{0}";
-                StringBuilder sb = new StringBuilder();
-                foreach (MediaType type in API_FILETYPES)
-                {
-                    if (first)
-                    {
-                       
-                        first = false;
-                    }
-                    else
-                    {
-                        sb.Append("|");
-                    }
-                    sb.Append(string.Format(filterFormat, type.Extension));
 
+            bool first = true;
+            string filterFormat = "{0} files (*.{0})|*.{0}";
+            StringBuilder sb = new StringBuilder();
+            foreach (MediaType type in API_FILETYPES)
+            {
+                if (type.MediaGroup != mediaGroup && mediaGroup != MediaTypeGroup.ALL)
+                {
+                    continue;
                 }
-                return sb.ToString();
+                
+                if (first)
+                {
+                   
+                    first = false;
+                }
+                else
+                {
+                    sb.Append("|");
+                }
+                sb.Append(string.Format(filterFormat, type.Extension));
+
             }
+            return sb.ToString();
+            
         }
 
         public List<MediaType> FileTypes 

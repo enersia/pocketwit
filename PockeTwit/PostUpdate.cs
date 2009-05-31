@@ -411,27 +411,7 @@ namespace PockeTwit
                 try
                 {
                     pictureService = GetMediaService();
-                    if (pictureService.CanUploadMessage && ClientSettings.SendMessageToMediaService)
-                    {
-                        AddPictureToForm(filename, pictureFromCamers);
-                        picturePath = filename;
-                        //Reduce length of message 140-pictureService.UrlLength
-                        pictureUsed = true;
-                    }
-                    else
-                    {
-                        AddPictureToForm(FormColors.GetThemeIconPath("wait.png"), pictureFromCamers);
-                        uploadingPicture = true;
-                        using (PicturePostObject ppo = new PicturePostObject())
-                        {
-                            ppo.Filename = filename;
-                            ppo.Username = AccountToSet.UserName;
-                            ppo.Password = AccountToSet.Password;
-                            ppo.UseAsync = false;
-                            Cursor.Current = Cursors.WaitCursor;
-                            pictureService.PostPicture(ppo);
-                        }
-                    }
+                    StartUpload(pictureService, filename);
                 }
                 catch
                 {
@@ -454,26 +434,28 @@ namespace PockeTwit
                 try
                 {
                     pictureService = GetMediaService();
-                    using (Microsoft.WindowsMobile.Forms.SelectPictureDialog s = new Microsoft.WindowsMobile.Forms.SelectPictureDialog())
+
+                    if (pictureService.CanUploadOtherMedia)
                     {
-                        //s.Filter = string.Empty; //all files //pictureService.FileFilter;
-                        s.Filter = pictureService.FileFilter;
-                        
-                        if (s.ShowDialog() == DialogResult.OK)
+                        if (MessageBox.Show("Upload a picture (yes) or a file (no)?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                         {
-                            filename = s.FileName;
-                            ComponentResourceManager resources = new ComponentResourceManager(typeof(PostUpdate));
-                            pictureFromCamers.Image = FormColors.GetThemeIcon("takepicture.png");
-                            if (DetectDevice.DeviceType == DeviceType.Standard)
-                            {
-                                pictureFromCamers.Visible = false;
-                            }
-                            uploadedPictureOrigin = "file";
+                            filename = SelectFileVisual(pictureService.FileFilter(MediaTypeGroup.PICTURE));
                         }
-                        else //cancelled
+                        else
                         {
-                            pictureUsed = true;
+                            filename = SelectFileNormal(pictureService.FileFilter(MediaTypeGroup.ALL));
                         }
+                    }
+                    else
+                    {
+                        filename = SelectFileVisual(pictureService.FileFilter(MediaTypeGroup.PICTURE));
+                    }
+
+                    ComponentResourceManager resources = new ComponentResourceManager(typeof(PostUpdate));
+                    pictureFromCamers.Image = FormColors.GetThemeIcon("takepicture.png");
+                    if (DetectDevice.DeviceType == DeviceType.Standard)
+                    {
+                        pictureFromCamers.Visible = false;
                     }
                 }
                 catch
@@ -482,31 +464,13 @@ namespace PockeTwit
                 }
                 if  (string.IsNullOrEmpty(filename))
                 {
+                    pictureUsed = true;
                     return;
                 }
                 try
                 {
-                    if (pictureService.CanUploadMessage && ClientSettings.SendMessageToMediaService)
-                    {
-                        AddPictureToForm(filename, pictureFromStorage);
-                        picturePath = filename;
-                        //Reduce length of message 140-pictureService.UrlLength
-                        pictureUsed = true;
-                    }
-                    else
-                    {
-                        uploadingPicture = true;
-                        AddPictureToForm(FormColors.GetThemeIconPath("wait.png"), pictureFromStorage);
-                        using (PicturePostObject ppo = new PicturePostObject())
-                        {
-                            ppo.Filename = filename;
-                            ppo.Username = AccountToSet.UserName;
-                            ppo.Password = AccountToSet.Password;
-                            ppo.UseAsync = false;
-                            Cursor.Current = Cursors.WaitCursor;
-                            pictureService.PostPicture(ppo);
-                        }
-                    }
+                    uploadedPictureOrigin = "file";
+                    StartUpload(pictureService, filename);
                 }
                 catch
                 {
@@ -516,6 +480,60 @@ namespace PockeTwit
             else
             {
                 MessageBox.Show("Uploading picture...");
+            }
+        }
+
+        private string SelectFileVisual(String fileFilter)
+        {
+            string filename = string.Empty;
+            using (Microsoft.WindowsMobile.Forms.SelectPictureDialog fileDialog = new Microsoft.WindowsMobile.Forms.SelectPictureDialog())
+            {
+                fileDialog.Filter = fileFilter;
+                if (fileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    filename = fileDialog.FileName;
+                }
+            }
+            return filename;
+        }
+
+        private string SelectFileNormal(String fileFilter)
+        {
+            string filename = string.Empty;
+            using (System.Windows.Forms.OpenFileDialog fileDialog = new OpenFileDialog())
+            {
+                fileDialog.Filter = fileFilter;
+
+                if (fileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    filename = fileDialog.FileName;
+                }
+            }
+            return filename;
+        }
+
+        private void StartUpload(IPictureService mediaService, String fileName)
+        {
+            if (mediaService.CanUploadMessage && ClientSettings.SendMessageToMediaService)
+            {
+                AddPictureToForm(fileName, pictureFromStorage);
+                picturePath = fileName;
+                //Reduce length of message 140-pictureService.UrlLength
+                pictureUsed = true;
+            }
+            else
+            {
+                uploadingPicture = true;
+                AddPictureToForm(FormColors.GetThemeIconPath("wait.png"), pictureFromStorage);
+                using (PicturePostObject ppo = new PicturePostObject())
+                {
+                    ppo.Filename = fileName;
+                    ppo.Username = AccountToSet.UserName;
+                    ppo.Password = AccountToSet.Password;
+                    ppo.UseAsync = false;
+                    Cursor.Current = Cursors.WaitCursor;
+                    mediaService.PostPicture(ppo);
+                }
             }
         }
 
