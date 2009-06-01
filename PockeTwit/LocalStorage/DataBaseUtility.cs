@@ -410,6 +410,19 @@ namespace LocalStorage
 
         public static void SaveItems(List<status> TempLine)
         {
+            //Ugly hack to try and handle waiting for SD card to wake up when sleeping
+            try
+            {
+                PersistToDB(TempLine);
+                return;
+            }
+            catch{}
+            //wait 2 seconds before trying one more time
+            System.Threading.Thread.Sleep(2000);
+            PersistToDB(TempLine);
+        }
+        private static void PersistToDB(List<status> TempLine)
+        {
             using (SQLiteConnection conn = GetConnection())
             {
                 conn.Open();
