@@ -434,22 +434,23 @@ namespace PockeTwit
                 try
                 {
                     pictureService = GetMediaService();
+                    filename = SelectFileVisual(pictureService.FileFilter(MediaTypeGroup.ALL));
 
-                    if (pictureService.CanUploadOtherMedia)
-                    {
-                        if (MessageBox.Show("Upload a picture (yes) or a file (no)?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
-                        {
-                            filename = SelectFileVisual(pictureService.FileFilter(MediaTypeGroup.PICTURE));
-                        }
-                        else
-                        {
-                            filename = SelectFileNormal(pictureService.FileFilter(MediaTypeGroup.ALL));
-                        }
-                    }
-                    else
-                    {
-                        filename = SelectFileVisual(pictureService.FileFilter(MediaTypeGroup.PICTURE));
-                    }
+                    //if (pictureService.CanUploadOtherMedia)
+                    //{
+                    //    if (MessageBox.Show("Upload a picture (yes) or a file (no)?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                    //    {
+                    //        filename = SelectFileVisual(pictureService.FileFilter(MediaTypeGroup.PICTURE));
+                    //    }
+                    //    else
+                    //    {
+                    //        filename = SelectFileNormal(pictureService.FileFilter(MediaTypeGroup.ALL));
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    filename = SelectFileVisual(pictureService.FileFilter(MediaTypeGroup.PICTURE));
+                    //}
 
                     ComponentResourceManager resources = new ComponentResourceManager(typeof(PostUpdate));
                     pictureFromCamers.Image = FormColors.GetThemeIcon("takepicture.png");
