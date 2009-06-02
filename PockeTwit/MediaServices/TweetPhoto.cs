@@ -271,20 +271,22 @@ namespace PockeTwit.MediaServices
             {
                 return true;
             }
-            if (IsRedirect(URL))
-            {
-                if (requestedUrl != URL)
-                {
-                    requestedUrl = URL;
-                    string redirectedUrl = GetRedirectUrl(URL);
-                    if (!string.IsNullOrEmpty(redirectedUrl))
-                    {
-                        //If string is not null, and imageId is found.
-                        redirectedUrlIsPictureUrl = true;
-                    }
-                }
-                return redirectedUrlIsPictureUrl;
-            }
+            //Makes an extra request for looking into every picture.
+            //Don't want that, it is a risk for other services.
+            //if (IsRedirect(URL))
+            //{
+            //    if (requestedUrl != URL)
+            //    {
+            //        requestedUrl = URL;
+            //        string redirectedUrl = GetRedirectUrl(URL);
+            //        if (!string.IsNullOrEmpty(redirectedUrl))
+            //        {
+            //            //If string is not null, and imageId is found.
+            //            redirectedUrlIsPictureUrl = true;
+            //        }
+            //    }
+            //    return redirectedUrlIsPictureUrl;
+            //}
             return false;
         }
 
