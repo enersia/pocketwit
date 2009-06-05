@@ -53,6 +53,7 @@ namespace PockeTwit
             }
             else
             {
+                panel1.SuspendLayout();
                 panel1.Controls.Remove(lblWait);
                 int topOfLabel = 0;
                 int labelWidth = panel1.Width / 2;
@@ -93,6 +94,7 @@ namespace PockeTwit
                 YouToo.Click += new EventHandler(YouToo_Click);
                 YouToo.Top = topOfLabel;
                 panel1.Controls.Add(YouToo);
+                panel1.ResumeLayout();
             }
         }
 
