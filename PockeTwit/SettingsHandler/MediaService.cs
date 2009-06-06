@@ -26,6 +26,10 @@ namespace PockeTwit
 
             setMediaService(ClientSettings.MediaService);
             cbPreUpload.Checked = !ClientSettings.SendMessageToMediaService;
+            if(!ClientSettings.DoNotNotifyDefaultMedia)
+            {
+                ShowSupportMessage();
+            }
         }
 
         private void menuAccept_Click(object sender, EventArgs e)
@@ -65,6 +69,16 @@ namespace PockeTwit
                     return;
                 }
             }
+        }
+
+        private void ShowSupportMessage()
+        {
+            const string message = "Please consider choosing TweetPhoto as your media host." + 
+                 "TweetPhoto has agreed to provide advertising revenue to PockeTwit "+
+                 "for the photos uploaded using this application.  This support will be greatly appreciated.";
+            MessageBox.Show(message, "Support PockeTwit", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1);
+            ClientSettings.DoNotNotifyDefaultMedia = true;
+            ClientSettings.SaveSettings();
         }
 
         private void cmbMediaService_SelectedValueChanged(object sender, EventArgs e)

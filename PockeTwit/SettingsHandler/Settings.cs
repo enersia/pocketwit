@@ -42,8 +42,8 @@ public static class ClientSettings
    
     public static string PingApi = "07fcca78e725fa4d3b27ea552ef06b3b";
 
-    
 
+    public static bool DoNotNotifyDefaultMedia;
     public static int Margin = 5;
     public static int MaxTweets = 50;
     public static Font MenuFont;
@@ -245,6 +245,14 @@ public static class ClientSettings
         Yedda.Twitter.Account LegacySettingsAccount = new Yedda.Twitter.Account();
         try
         {
+            if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["DoNotNotifyDefaultMedia"]))
+            {
+                DoNotNotifyDefaultMedia = Boolean.Parse(ConfigurationSettings.AppSettings["DoNotNotifyDefaultMedia"]);
+            }
+            else
+            {
+                DoNotNotifyDefaultMedia = false;
+            }
             if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["AutoCompleteAddressBook"]))
             {
                 AutoCompleteAddressBook = Boolean.Parse(ConfigurationSettings.AppSettings["AutoCompleteAddressBook"]);
@@ -292,7 +300,7 @@ public static class ClientSettings
             }
             else
             {
-                MediaService = "TwitPic";
+                MediaService = "TweetPhoto";
             }
 
             if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["SendMessageToMediaService"]))
@@ -480,6 +488,7 @@ public static class ClientSettings
     }
     public static void SaveSettings()
     {
+        ConfigurationSettings.AppSettings["DoNotNotifyDefaultMedia"] = DoNotNotifyDefaultMedia.ToString();
         ConfigurationSettings.AppSettings["AutoCompleteAddressBook"] = AutoCompleteAddressBook.ToString();
         ConfigurationSettings.AppSettings["UseDIB"] = UseDIB.ToString();
         ConfigurationSettings.AppSettings["ZoomPreview"] = ZoomPreview.ToString();

@@ -100,9 +100,11 @@
             // 
             // lblMediaLabel
             // 
+            this.lblMediaLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lblMediaLabel.Location = new System.Drawing.Point(4, 4);
             this.lblMediaLabel.Name = "lblMediaLabel";
-            this.lblMediaLabel.Size = new System.Drawing.Size(226, 20);
+            this.lblMediaLabel.Size = new System.Drawing.Size(195, 20);
             this.lblMediaLabel.Text = "This Media service can:";
             // 
             // chkGPS

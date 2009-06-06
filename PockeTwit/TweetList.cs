@@ -892,6 +892,10 @@ namespace PockeTwit
                 if (FollowingDictionary[conn].IsFollowing(selectedItem.Tweet.user))
                 {
                     FollowMenuItem.Text = "Stop Following";
+                    delMenuClicked followClicked = StopFollowingUser;
+                    
+                    FollowMenuItem.ClickedMethod = followClicked;
+
                     MoveToGroupMenuItem.Visible = true;
                     CopyToGroupMenuItem.Visible = true;
                 }
