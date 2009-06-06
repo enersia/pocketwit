@@ -267,7 +267,7 @@ public static class ClientSettings
             }
             else
             {
-                UseDIB = false;
+                UseDIB = true;
             }
             if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["ZoomPreview"]))
             {

@@ -89,58 +89,61 @@ namespace FingerUI
 
         private void SetBufferSize()
         {
+            
             Rectangle Screen = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
-            if (Screen.Width > Screen.Height) { maxWidth = Screen.Width; } else { maxWidth = Screen.Height; }
-
-            //Try to create temporary bitmaps for everything we'll need so we can try it out.
-            Bitmap TestMap = null;
-            
-            Bitmap ScreenMap = new Bitmap(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width, System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height);
-            Bitmap AvatarMap = new Bitmap(ClientSettings.SmallArtSize, ClientSettings.SmallArtSize);
-            try
+            if (Screen.Width > Screen.Height)
             {
-                TestMap = new Bitmap(maxWidth, MaxItems * ClientSettings.ItemHeight);
-            }
-            catch (OutOfMemoryException ex)
-            {
-                ClientSettings.UseDIB = true;
-                ClientSettings.SaveSettings();
-                if (TestMap != null)
-                {
-                    TestMap.Dispose();
-                }
-                useDDB = false;
-                try
-                {
-                    TestMap = GraphicsLibs.DIB.CreateDIB(maxWidth, MaxItems * ClientSettings.ItemHeight);
-                }
-                catch(OutOfMemoryException)
-                {
-                    throw;                     
-                }
-            }
-            finally
-            {
-                if (TestMap != null)
-                {
-                    TestMap.Dispose();
-                }
-            }
-            ScreenMap.Dispose();
-            AvatarMap.Dispose();
-            System.Diagnostics.Debug.WriteLine("Portal size:" + MaxItems);
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            
-            _BitmapHeight = MaxItems * ClientSettings.ItemHeight;
-            if (useDDB)
-            {
-                _Rendered = new Bitmap(maxWidth, _BitmapHeight);
+                maxWidth = Screen.Width;
             }
             else
             {
-                _Rendered = GraphicsLibs.DIB.CreateDIB(maxWidth, _BitmapHeight);
+                maxWidth = Screen.Height;
             }
+            if (useDDB)
+            {
+                //Try to create temporary bitmaps for everything we'll need so we can try it out.
+                Bitmap TestMap = null;
+
+                Bitmap ScreenMap = new Bitmap(System.Windows.Forms.Screen.PrimaryScreen.Bounds.Width,
+                                              System.Windows.Forms.Screen.PrimaryScreen.Bounds.Height);
+                Bitmap AvatarMap = new Bitmap(ClientSettings.SmallArtSize, ClientSettings.SmallArtSize);
+                try
+                {
+                    TestMap = new Bitmap(maxWidth, MaxItems*ClientSettings.ItemHeight);
+                }
+                catch (OutOfMemoryException ex)
+                {
+                    ClientSettings.UseDIB = true;
+                    ClientSettings.SaveSettings();
+                    if (TestMap != null)
+                    {
+                        TestMap.Dispose();
+                    }
+                    useDDB = false;
+                    try
+                    {
+                        TestMap = GraphicsLibs.DIB.CreateDIB(maxWidth, MaxItems*ClientSettings.ItemHeight);
+                    }
+                    catch (OutOfMemoryException)
+                    {
+                        throw;
+                    }
+                }
+                finally
+                {
+                    if (TestMap != null)
+                    {
+                        TestMap.Dispose();
+                    }
+                }
+                ScreenMap.Dispose();
+                AvatarMap.Dispose();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+            
+            _BitmapHeight = MaxItems * ClientSettings.ItemHeight;
+            _Rendered = useDDB ? new Bitmap(maxWidth, _BitmapHeight) : GraphicsLibs.DIB.CreateDIB(maxWidth, _BitmapHeight);
             _RenderedGraphics = Graphics.FromImage(_Rendered);
             
         }
