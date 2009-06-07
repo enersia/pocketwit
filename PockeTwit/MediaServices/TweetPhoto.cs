@@ -15,8 +15,9 @@ namespace PockeTwit.MediaServices
         private static volatile TweetPhoto _instance;
         private static object syncRoot = new Object();
 
-        private const string API_UPLOAD = "http://www.tweetphoto.com/uploadapi.php";
-        private const string API_UPLOAD_POST = "http://www.tweetphoto.com/uploadandpostapi.php";
+        private const string API_UPLOAD = "http://www.tweetphoto.com/uploadapiwithkey.php";
+        private const string API_UPLOAD_POST = "http://www.tweetphoto.com/uploadandpostapiwithkey.php";
+        
         private const string API_SHOW_FORMAT = "http://www.tweetphoto.com/show/medium/{0}";  //The extra / for directly sticking the image-id on.
 
         private const string API_ERROR_UPLOAD = "Unable to upload to TweetPhoto";
