@@ -624,7 +624,7 @@ namespace PockeTwit
         {
             IPictureService service;
             
-            service = PictureServiceFactory.Instance.GetServiceByName(ClientSettings.MediaService);
+            service = PictureServiceFactory.Instance.GetServiceByName(ClientSettings.SelectedMediaService);
 
             SetPictureEventHandlers(service, true);
 

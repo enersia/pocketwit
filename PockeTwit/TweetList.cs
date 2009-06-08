@@ -10,6 +10,7 @@ using System.Xml.Serialization;
 using PockeTwit.FingerUI;
 using PockeTwit.FingerUI.Menu;
 using PockeTwit.Library;
+using PockeTwit.MediaServices;
 using PockeTwit.NotificationsCode;
 using PockeTwit.OtherServices;
 using PockeTwit.SpecialTimelines;
@@ -186,6 +187,12 @@ namespace PockeTwit
             SwitchToDone();
 
             ProcessArgs(args);
+
+            if(!string.IsNullOrEmpty(ClientSettings.PreviousMediaService))
+            {
+                var switcher = new SwitchToTweetPhoto();
+                switcher.ShowDialog();
+            }
         }
 
         void statList_Progress(int itemnumber, int totalnumber)

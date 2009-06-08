@@ -43,7 +43,6 @@ public static class ClientSettings
     public static string PingApi = "07fcca78e725fa4d3b27ea552ef06b3b";
 
 
-    public static bool DoNotNotifyDefaultMedia;
     public static int Margin = 5;
     public static int MaxTweets = 50;
     public static Font MenuFont;
@@ -188,7 +187,8 @@ public static class ClientSettings
             _CacheDir = value;
         }
     }
-    public static string MediaService { get; set; }
+    public static string SelectedMediaService { get; set; }
+    public static string PreviousMediaService { get; set; }
     public static bool SendMessageToMediaService { get; set; }
     public static Queue<string> SearchItems { get; set; }
     public static bool AutoTranslate { get; set; }
@@ -245,14 +245,6 @@ public static class ClientSettings
         Yedda.Twitter.Account LegacySettingsAccount = new Yedda.Twitter.Account();
         try
         {
-            if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["DoNotNotifyDefaultMedia"]))
-            {
-                DoNotNotifyDefaultMedia = Boolean.Parse(ConfigurationSettings.AppSettings["DoNotNotifyDefaultMedia"]);
-            }
-            else
-            {
-                DoNotNotifyDefaultMedia = false;
-            }
             if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["AutoCompleteAddressBook"]))
             {
                 AutoCompleteAddressBook = Boolean.Parse(ConfigurationSettings.AppSettings["AutoCompleteAddressBook"]);
@@ -296,12 +288,17 @@ public static class ClientSettings
 
             if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["MediaService"]))
             {
-                MediaService = ConfigurationSettings.AppSettings["MediaService"];
+                PreviousMediaService = ConfigurationSettings.AppSettings["MediaService"];
+            }
+            if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["SelectedMediaService"]))
+            {
+                SelectedMediaService = ConfigurationSettings.AppSettings["SelectedMediaService"];
             }
             else
             {
-                MediaService = "TweetPhoto";
+                SelectedMediaService = "TweetPhoto";
             }
+
 
             if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["SendMessageToMediaService"]))
             {
@@ -488,12 +485,12 @@ public static class ClientSettings
     }
     public static void SaveSettings()
     {
-        ConfigurationSettings.AppSettings["DoNotNotifyDefaultMedia"] = DoNotNotifyDefaultMedia.ToString();
+        ConfigurationSettings.AppSettings.Clear();
         ConfigurationSettings.AppSettings["AutoCompleteAddressBook"] = AutoCompleteAddressBook.ToString();
         ConfigurationSettings.AppSettings["UseDIB"] = UseDIB.ToString();
         ConfigurationSettings.AppSettings["ZoomPreview"] = ZoomPreview.ToString();
         ConfigurationSettings.AppSettings["CacheDir"] = CacheDir;
-        ConfigurationSettings.AppSettings["MediaService"] = MediaService;
+        ConfigurationSettings.AppSettings["SelectedMediaService"] = SelectedMediaService;
         ConfigurationSettings.AppSettings["SendMessageToMediaService"] = SendMessageToMediaService.ToString();
         ConfigurationSettings.AppSettings["FontSize"] = FontSize.ToString();
         ConfigurationSettings.AppSettings["SearchItems"] = string.Join("|", SearchItems.ToArray());

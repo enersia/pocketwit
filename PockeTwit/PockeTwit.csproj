@@ -346,6 +346,9 @@
       <DependentUpon>FullScreenTweet.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="MediaServices\SwitchToTweetPhoto.resx">
+      <DependentUpon>SwitchToTweetPhoto.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PostUpdate.resx">
       <DependentUpon>PostUpdate.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -453,6 +456,12 @@
     </Compile>
     <Compile Include="GraphicsLibs\DetermineColorDepth.cs" />
     <Compile Include="GraphicsLibs\DIB.cs" />
+    <Compile Include="MediaServices\SwitchToTweetPhoto.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MediaServices\SwitchToTweetPhoto.Designer.cs">
+      <DependentUpon>SwitchToTweetPhoto.cs</DependentUpon>
+    </Compile>
     <Compile Include="NotificationsCode\SoundProfileCheck.cs" />
     <Compile Include="OtherServices\TextShrinkers\140it.cs" />
     <Compile Include="OtherServices\TextShrinkers\ITextShrinker.cs" />

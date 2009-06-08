@@ -24,23 +24,19 @@ namespace PockeTwit
                 this.WindowState = FormWindowState.Maximized;
             }
 
-            setMediaService(ClientSettings.MediaService);
+            setMediaService(ClientSettings.SelectedMediaService);
             cbPreUpload.Checked = !ClientSettings.SendMessageToMediaService;
-            if(!ClientSettings.DoNotNotifyDefaultMedia)
-            {
-                ShowSupportMessage();
-            }
         }
 
         private void menuAccept_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(cmbMediaService.Items[cmbMediaService.SelectedIndex].ToString()))
             {
-                ClientSettings.MediaService = "TwitPic";
+                ClientSettings.SelectedMediaService = "TweetPhoto";
             }
             else
             {
-                ClientSettings.MediaService = cmbMediaService.Items[cmbMediaService.SelectedIndex].ToString();
+                ClientSettings.SelectedMediaService = cmbMediaService.Items[cmbMediaService.SelectedIndex].ToString();
             }
             ClientSettings.SendMessageToMediaService = !cbPreUpload.Checked;
 
@@ -71,15 +67,6 @@ namespace PockeTwit
             }
         }
 
-        private void ShowSupportMessage()
-        {
-            const string message = "Please consider choosing TweetPhoto as your media host." + 
-                 "TweetPhoto has agreed to provide advertising revenue to PockeTwit "+
-                 "for the photos uploaded using this application.  This support will be greatly appreciated.";
-            MessageBox.Show(message, "Support PockeTwit", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1);
-            ClientSettings.DoNotNotifyDefaultMedia = true;
-            ClientSettings.SaveSettings();
-        }
 
         private void cmbMediaService_SelectedValueChanged(object sender, EventArgs e)
         {
