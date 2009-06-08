@@ -53,7 +53,7 @@ namespace LocalStorage
 
         #endregion
 
-        private const string DBVersion = "0015";
+        private const string DBVersion = "0016";
         private static string DBPath = ClientSettings.CacheDir + "\\LocalCache.db";
 
         public static void CheckDBSchema()

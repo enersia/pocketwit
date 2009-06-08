@@ -162,7 +162,7 @@ namespace PockeTwit.SpecialTimelines
                             var thisLine = new UserGroupTimeLine();
                             if (Items.ContainsKey(groupName))
                             {
-                                thisLine = (UserGroupTimeLine)Items[groupName];
+                                thisLine = (UserGroupTimeLine) Items[groupName];
                             }
                             else
                             {
@@ -173,20 +173,33 @@ namespace PockeTwit.SpecialTimelines
                         }
                     }
 
+
                     comm.CommandText =
                         "SELECT searchName, searchTerm, autoUpdate from savedSearches;";
-                    using(var r = comm.ExecuteReader())
-                    {
-                        while(r.Read())
-                        {
-                            var searchName = r.GetString(0);
-                            var searchTerm = r.GetString(1);
-                            var autoUpdate = r.GetBoolean(2);
 
-                            var savedLine = new SavedSearchTimeLine {name = searchName, SearchPhrase = searchTerm, autoUpdate = autoUpdate};
-                            Add(savedLine);
+                    try
+                    {
+
+                        using (var r = comm.ExecuteReader())
+                        {
+                            while (r.Read())
+                            {
+                                var searchName = r.GetString(0);
+                                var searchTerm = r.GetString(1);
+                                var autoUpdate = r.GetBoolean(2);
+
+                                var savedLine = new SavedSearchTimeLine
+                                                    {
+                                                        name = searchName,
+                                                        SearchPhrase = searchTerm,
+                                                        autoUpdate = autoUpdate
+                                                    };
+                                Add(savedLine);
+                            }
                         }
                     }
+                    //Ignore it when we have a mismatched save search table.
+                    catch{}
                 }
             }
         }

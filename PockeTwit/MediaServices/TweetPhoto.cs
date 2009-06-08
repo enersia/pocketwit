@@ -144,7 +144,7 @@ namespace PockeTwit.MediaServices
                             return;
                         }
 
-                        if (uploadResult.SelectSingleNode("rsp").Attributes["stat"].Value == "fail")
+                        if (uploadResult.SelectSingleNode("rsp").Attributes["status"].Value == "fail")
                         {
                             string ErrorText = uploadResult.SelectSingleNode("//err").Attributes["msg"].Value;
                             OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, ErrorText));
@@ -331,7 +331,7 @@ namespace PockeTwit.MediaServices
             {
                 XmlDocument uploadResult = UploadPicture(API_UPLOAD, workerPPO);
 
-                if (uploadResult.SelectSingleNode("rsp").Attributes["stat"].Value == "fail")
+                if (uploadResult.SelectSingleNode("rsp").Attributes["status"].Value == "fail")
                 {
                     string ErrorText = uploadResult.SelectSingleNode("//err").Attributes["msg"].Value;
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, ErrorText));
