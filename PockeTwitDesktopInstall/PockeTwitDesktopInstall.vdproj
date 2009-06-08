@@ -33,6 +33,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_8D28ED0425B945E09E13D22741CC8E31"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_CE91971B00A546DAA0DAD94EA7B2B1F9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -273,6 +279,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8D28ED0425B945E09E13D22741CC8E31"
+            {
+            "SourcePath" = "8:..\\PockeTwit\\PockeTwit.ico"
+            "TargetName" = "8:PockeTwit.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_D85934DE10EA41E281B915F7BA34629B"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E1A84ACB5F6934A6015D0E8C6ADA442A"
             {
             "AssemblyRegister" = "3:1"
@@ -361,7 +387,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PockeTwit"
         "ProductCode" = "8:{CB01B50D-0CA1-4412-9718-E7DBCF625E17}"
-        "PackageCode" = "8:{5FBBE109-40AD-4636-B075-6FFDDD6833ED}"
+        "PackageCode" = "8:{79B5374C-AD8E-48C1-B563-102F4C79233D}"
         "UpgradeCode" = "8:{3ECA32B1-C3B5-4D2B-B6E1-2742BA007F6B}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
@@ -377,7 +403,7 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:PockeTwit: A twitter client for Windows Mobile"
         "ARPURLINFOABOUT" = "8:http://code.google.com/p/pocketwit"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_8D28ED0425B945E09E13D22741CC8E31"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
