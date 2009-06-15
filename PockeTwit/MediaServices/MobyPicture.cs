@@ -270,8 +270,10 @@ namespace PockeTwit.MediaServices
         public override bool CanFetchUrl(string URL)
         {
             const string siteMarker = "mobypicture";
+            const string notAllowedInUrl = "user";
+
             string url = URL.ToLower();
-            return (url.IndexOf(siteMarker) >= 0);
+            return (url.IndexOf(siteMarker) >= 0 && url.IndexOf(notAllowedInUrl) < 0);
         }
 
         #endregion
