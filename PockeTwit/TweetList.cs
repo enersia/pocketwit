@@ -135,14 +135,14 @@ namespace PockeTwit
 
             progressBar1.Visible = false;
             lblProgress.Visible = true;
-            lblProgress.Text = "Initializing";
+            lblProgress.Text = "初始化";
             if (DetectDevice.DeviceType == DeviceType.Professional)
             {
                 inputPanel1 = new Microsoft.WindowsCE.Forms.InputPanel();
             }
             if (UpgradeChecker.devBuild)
             {
-                this.lblTitle.Text = "Launching PockeTwit Dev";
+                this.lblTitle.Text = "正在启动PockeTwit";
             }
             
             SizeF currentScreen = this.CurrentAutoScaleDimensions;
@@ -410,7 +410,7 @@ namespace PockeTwit
             }
             if(f.NeedsReset)
             {
-                MessageBox.Show("Your settings changes require that you restart the application.");
+                MessageBox.Show("您需要重新启动PockeTwit以便您的设置可以生效。");
                 ExitApplication();
             }
             this.statList.Visible = true;
@@ -426,12 +426,12 @@ namespace PockeTwit
             if (selectedItem.isFavorite)
             {
                 DestroyFavorite();
-                ToggleFavoriteMenuItem.Text = "Make Favorite";
+                ToggleFavoriteMenuItem.Text = "加入收藏";
             }
             else
             {
                 CreateFavoriteAsync();
-                ToggleFavoriteMenuItem.Text = "Remove Favorite";
+                ToggleFavoriteMenuItem.Text = "从收藏中移除";
             }
         }
 
@@ -609,7 +609,7 @@ namespace PockeTwit
 
             if (MatchingAccounts.Count > 1)
             {
-                FollowMenuItem.Text = "Follow...";
+                FollowMenuItem.Text = "关注...";
                 FollowMenuItem.ClickedMethod = null;
                 foreach (var account in MatchingAccounts)
                 {
@@ -622,7 +622,7 @@ namespace PockeTwit
             }
 
             delMenuClicked  followClicked = () => FollowUser(MatchingAccounts[0]);
-            FollowMenuItem.Text = "Follow";
+            FollowMenuItem.Text = "关注";
             FollowMenuItem.ClickedMethod = followClicked;
 
         }
@@ -636,12 +636,12 @@ namespace PockeTwit
             if (FollowingDictionary[Conn].IsFollowing(selectedItem.Tweet.user))
             {
                 StopFollowingUser();
-                FollowMenuItem.Text = "Follow";
+                FollowMenuItem.Text = "关注";
             }
             else
             {
                 FollowUser();
-                FollowMenuItem.Text = "Stop Following";
+                FollowMenuItem.Text = "取消关注";
             }
         }
         private void FollowUser()
@@ -707,28 +707,28 @@ namespace PockeTwit
 
         private void CreateLeftMenu()
         {
-            BackMenuItem = new FingerUI.Menu.SideMenuItem(this.GoBackInHistory, "Back", statList.LeftMenu);
+            BackMenuItem = new FingerUI.Menu.SideMenuItem(this.GoBackInHistory, "后退", statList.LeftMenu);
             BackMenuItem.CanHide = true;
 
-            FriendsTimeLineMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFriendsTimeLine, "Friends Timeline", statList.LeftMenu, "Friends_TimeLine");
-            RefreshFriendsTimeLineMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshFriendsTimeLine, "Refresh Friends", statList.LeftMenu, "Friends_TimeLine");
-            MessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowMessagesTimeLine, "Messages", statList.LeftMenu, "Messages_TimeLine");
-            RefreshMessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshMessagesTimeLine, "Refresh Messages", statList.LeftMenu, "Messages_TimeLine");
-            PublicMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowPublicTimeLine, "Public Timeline", statList.LeftMenu);
-            SearchMenuItem = new FingerUI.Menu.SideMenuItem(this.TwitterSearch, "Search/Local", statList.LeftMenu);
-            ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "View Favorites", statList.LeftMenu);
+            FriendsTimeLineMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFriendsTimeLine, "好友消息", statList.LeftMenu, "Friends_TimeLine");
+            RefreshFriendsTimeLineMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshFriendsTimeLine, "刷新好友", statList.LeftMenu, "Friends_TimeLine");
+            MessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowMessagesTimeLine, "消息", statList.LeftMenu, "Messages_TimeLine");
+            RefreshMessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshMessagesTimeLine, "刷新消息", statList.LeftMenu, "Messages_TimeLine");
+            PublicMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowPublicTimeLine, "随便看看", statList.LeftMenu);
+            SearchMenuItem = new FingerUI.Menu.SideMenuItem(this.TwitterSearch, "搜索/同城", statList.LeftMenu);
+            ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "查看收藏", statList.LeftMenu);
 
-            TimeLinesMenuItem = new FingerUI.Menu.SideMenuItem(null, "Other TimeLines ...", statList.LeftMenu);
+            TimeLinesMenuItem = new FingerUI.Menu.SideMenuItem(null, "其它消息 ...", statList.LeftMenu);
             TimeLinesMenuItem.SubMenuItems.Add(SearchMenuItem);
             TimeLinesMenuItem.SubMenuItems.Add(PublicMenuItem);
             TimeLinesMenuItem.SubMenuItems.Add(ViewFavoritesMenuItem);
-            GroupsMenuItem = new FingerUI.Menu.SideMenuItem(null, "Groups ...", statList.LeftMenu);
+            GroupsMenuItem = new FingerUI.Menu.SideMenuItem(null, "组 ...", statList.LeftMenu);
             GroupsMenuItem.Visible = false;
             //TimeLinesMenuItem.SubMenuItems.Add(GroupsMenuItem);
             
             
             
-            PostUpdateMenuItem = new FingerUI.Menu.SideMenuItem(this.SetStatus, "Post Update", statList.LeftMenu);
+            PostUpdateMenuItem = new FingerUI.Menu.SideMenuItem(this.SetStatus, "发布更新", statList.LeftMenu);
             
             //MapMenuItem = new FingerUI.Menu.SideMenuItem(this.MapList, "Map These", statList.LeftMenu);
 
@@ -742,15 +742,15 @@ namespace PockeTwit
             delMenuClicked showMediaServiceSettings = () => this.ChangeSettings(new MediaService());
 
             //SettingsMenuItem = new FingerUI.Menu.SideMenuItem(this.ChangeSettings, "Settings", statList.LeftMenu);
-            SettingsMenuItem = new FingerUI.Menu.SideMenuItem(null, "Settings...", statList.LeftMenu);
-            AccountsSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showAccounts, "Accounts", statList.LeftMenu);
-            AdvancedSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showAdvanced, "Advanced", statList.LeftMenu);
+            SettingsMenuItem = new FingerUI.Menu.SideMenuItem(null, "设置...", statList.LeftMenu);
+            AccountsSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showAccounts, "帐号", statList.LeftMenu);
+            AdvancedSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showAdvanced, "高级", statList.LeftMenu);
             AvatarSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showAvatar, "Avatar", statList.LeftMenu);
-            GroupSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showGroupSettings, "Manage Groups", statList.LeftMenu);
-            MediaServiceSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showMediaServiceSettings, "Media Service", statList.LeftMenu);
-            NotificationSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showNotification, "Notifications", statList.LeftMenu);
-            OtherSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showOther, "Other", statList.LeftMenu);
-            UISettingsMenuItem = new FingerUI.Menu.SideMenuItem(showUISettings, "UI", statList.LeftMenu);
+            GroupSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showGroupSettings, "管理组", statList.LeftMenu);
+            MediaServiceSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showMediaServiceSettings, "媒体服务", statList.LeftMenu);
+            NotificationSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showNotification, "提醒", statList.LeftMenu);
+            OtherSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showOther, "其它", statList.LeftMenu);
+            UISettingsMenuItem = new FingerUI.Menu.SideMenuItem(showUISettings, "界面", statList.LeftMenu);
             SettingsMenuItem.SubMenuItems.Add(AccountsSettingsMenuItem);
             SettingsMenuItem.SubMenuItems.Add(AvatarSettingsMenuItem);
             SettingsMenuItem.SubMenuItems.Add(GroupSettingsMenuItem);
@@ -760,14 +760,14 @@ namespace PockeTwit
             SettingsMenuItem.SubMenuItems.Add(OtherSettingsMenuItem);
             SettingsMenuItem.SubMenuItems.Add(AdvancedSettingsMenuItem);
 
-            AboutMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowAbout, "About/Feedback", statList.LeftMenu);
+            AboutMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowAbout, "关于/反聩", statList.LeftMenu);
 
 
-            WindowMenuItem = new FingerUI.Menu.SideMenuItem(null, "Window ...", statList.LeftMenu);
+            WindowMenuItem = new FingerUI.Menu.SideMenuItem(null, "窗口...", statList.LeftMenu);
 
-            FullScreenMenuItem = new FingerUI.Menu.SideMenuItem(ToggleFullScreen, "Toggle FullScreen", statList.LeftMenu);
-            MinimizeMenuItem = new FingerUI.Menu.SideMenuItem(this.Minimize, "Minimize", statList.LeftMenu);
-            ExitMenuItem = new FingerUI.Menu.SideMenuItem(this.ExitApplication, "Exit", statList.LeftMenu);
+            FullScreenMenuItem = new FingerUI.Menu.SideMenuItem(ToggleFullScreen, "切换全屏", statList.LeftMenu);
+            MinimizeMenuItem = new FingerUI.Menu.SideMenuItem(this.Minimize, "最小化", statList.LeftMenu);
+            ExitMenuItem = new FingerUI.Menu.SideMenuItem(this.ExitApplication, "退出", statList.LeftMenu);
 
             WindowMenuItem.SubMenuItems.Add(FullScreenMenuItem);
             WindowMenuItem.SubMenuItems.Add(MinimizeMenuItem);
@@ -802,33 +802,33 @@ namespace PockeTwit
             // "Minimize" 
 
 
-            ConversationMenuItem = new FingerUI.Menu.SideMenuItem(GetConversation, "Show Conversation", statList.RightMenu);
+            ConversationMenuItem = new FingerUI.Menu.SideMenuItem(GetConversation, "显示对话", statList.RightMenu);
             ConversationMenuItem.CanHide = true;
 
-            ReponsesMenuItem = new FingerUI.Menu.SideMenuItem(null, "Respond to @User...", statList.RightMenu);
+            ReponsesMenuItem = new FingerUI.Menu.SideMenuItem(null, "回复到 @User...", statList.RightMenu);
 
-            ReplyMenuItem = new FingerUI.Menu.SideMenuItem(SendReply, "Reply @User", statList.RightMenu);
-            DirectMenuItem = new FingerUI.Menu.SideMenuItem(SendDirectMessage, "Direct @User", statList.RightMenu);
+            ReplyMenuItem = new FingerUI.Menu.SideMenuItem(SendReply, "回复 @User", statList.RightMenu);
+            DirectMenuItem = new FingerUI.Menu.SideMenuItem(SendDirectMessage, "直接 @User", statList.RightMenu);
 
             ReponsesMenuItem.SubMenuItems.Add(ReplyMenuItem);
             ReponsesMenuItem.SubMenuItems.Add(DirectMenuItem);
 
-            EmailMenuItem = new FingerUI.Menu.SideMenuItem(EmailThisItem, "Email Status", statList.RightMenu);
-            QuoteMenuItem = new FingerUI.Menu.SideMenuItem(this.Quote, "Quote", statList.RightMenu);
-            ToggleFavoriteMenuItem = new FingerUI.Menu.SideMenuItem(ToggleFavorite, "Make Favorite", statList.RightMenu);
-            UserTimelineMenuItem = new FingerUI.Menu.SideMenuItem(ShowUserTimeLine, "@User Timeline", statList.RightMenu);
-            ProfilePageMenuItem = new FingerUI.Menu.SideMenuItem(ShowProfile, "@User Profile", statList.RightMenu);
-            FollowMenuItem = new FingerUI.Menu.SideMenuItem(ToggleFollow, "Follow @User", statList.RightMenu);
+            EmailMenuItem = new FingerUI.Menu.SideMenuItem(EmailThisItem, "用电子邮件发送状态", statList.RightMenu);
+            QuoteMenuItem = new FingerUI.Menu.SideMenuItem(this.Quote, "引用", statList.RightMenu);
+            ToggleFavoriteMenuItem = new FingerUI.Menu.SideMenuItem(ToggleFavorite, "加入收藏", statList.RightMenu);
+            UserTimelineMenuItem = new FingerUI.Menu.SideMenuItem(ShowUserTimeLine, "@User 消息", statList.RightMenu);
+            ProfilePageMenuItem = new FingerUI.Menu.SideMenuItem(ShowProfile, "@User 资料", statList.RightMenu);
+            FollowMenuItem = new FingerUI.Menu.SideMenuItem(ToggleFollow, "关注 @User", statList.RightMenu);
 
-            MoveToGroupMenuItem = new FingerUI.Menu.SideMenuItem(null, "Move to Group...", statList.RightMenu);
-            CopyToGroupMenuItem = new FingerUI.Menu.SideMenuItem(null, "Copy to Group...", statList.RightMenu);
+            MoveToGroupMenuItem = new FingerUI.Menu.SideMenuItem(null, "移动到组...", statList.RightMenu);
+            CopyToGroupMenuItem = new FingerUI.Menu.SideMenuItem(null, "复制到组...", statList.RightMenu);
 
             delMenuClicked copyItemClicked = () => CreateNewGroup(false);
 
             delMenuClicked moveItemClicked = () => CreateNewGroup(true);
 
-            CopyNewGroupMenuItem = new FingerUI.Menu.SideMenuItem(copyItemClicked, "New Group", statList.RightMenu);
-            MoveNewGroupMenuItem = new FingerUI.Menu.SideMenuItem(moveItemClicked, "New Group", statList.RightMenu);
+            CopyNewGroupMenuItem = new FingerUI.Menu.SideMenuItem(copyItemClicked, "新建组", statList.RightMenu);
+            MoveNewGroupMenuItem = new FingerUI.Menu.SideMenuItem(moveItemClicked, "新建组", statList.RightMenu);
             MoveToGroupMenuItem.SubMenuItems.Add(MoveNewGroupMenuItem);
             CopyToGroupMenuItem.SubMenuItems.Add(CopyNewGroupMenuItem);
             foreach (UserGroupTimeLine t in SpecialTimeLinesRepository.GetList(SpecialTimeLinesRepository.TimeLineType.UserGroup))
@@ -884,11 +884,11 @@ namespace PockeTwit
                 {
                     if (selectedItem.isFavorite)
                     {
-                        ToggleFavoriteMenuItem.Text = "Remove Favorite";
+                        ToggleFavoriteMenuItem.Text = "移除收藏";
                     }
                     else
                     {
-                        ToggleFavoriteMenuItem.Text = "Make Favorite";
+                        ToggleFavoriteMenuItem.Text = "加入收藏";
                     }
                 }
 
@@ -898,7 +898,7 @@ namespace PockeTwit
                 FollowMenuItem.Visible = true;
                 if (FollowingDictionary[conn].IsFollowing(selectedItem.Tweet.user))
                 {
-                    FollowMenuItem.Text = "Stop Following";
+                    FollowMenuItem.Text = "取消关注";
                     delMenuClicked followClicked = StopFollowingUser;
                     FollowMenuItem.SubMenuItems.Clear();
                     
@@ -907,7 +907,7 @@ namespace PockeTwit
                 }
                 else
                 {
-                    FollowMenuItem.Text = "Follow";
+                    FollowMenuItem.Text = "关注";
                     SetFollowMenu();
 
                     MoveToGroupMenuItem.Visible = false;

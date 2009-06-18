@@ -126,10 +126,10 @@ namespace PockeTwit
             copyPasteMenu = new System.Windows.Forms.ContextMenu();
 
             PasteItem = new System.Windows.Forms.MenuItem();
-            PasteItem.Text = "Paste";
+            PasteItem.Text = "粘贴";
 
             CopyItem = new MenuItem();
-            CopyItem.Text = "Copy";
+            CopyItem.Text = "复制";
 
             copyPasteMenu.MenuItems.Add(CopyItem);
             copyPasteMenu.MenuItems.Add(PasteItem);
@@ -187,7 +187,7 @@ namespace PockeTwit
                     {
                         LocationFinder.StopGPS();
                         GPSLocation = Location;
-                        lblGPS.Text = "Location Found";
+                        lblGPS.Text = "找到位置";
                         if (DetectDevice.DeviceType == DeviceType.Standard)
                         {
                             // just enable the menuItem
@@ -201,7 +201,7 @@ namespace PockeTwit
                             // hide the label, add a new button
                             lblGPS.Visible = false;
                             LinkLabel llGPS = new LinkLabel();
-                            llGPS.Text = "Ins. GPS Link";
+                            llGPS.Text = "插入GPS链接";
                             llGPS.ForeColor = Color.White;
                             llGPS.Left = lblGPS.Left;
                             llGPS.Top = lblGPS.Top;
@@ -249,37 +249,37 @@ namespace PockeTwit
             pictureURL.Visible = false;
             picAddressBook.Visible = false;
             menuExist = new MenuItem();
-            menuExist.Text = "Existing Picture";
+            menuExist.Text = "现存图片";
             menuExist.Click += new EventHandler(menuExist_Click);
 
             menuCamera = new MenuItem();
-            menuCamera.Text = "Take Picture";
+            menuCamera.Text = "拍摄图片";
             menuCamera.Click += new EventHandler(menuCamera_Click);
             
             menuURL = new MenuItem();
-            menuURL.Text = "URL...";
+            menuURL.Text = "链接...";
             menuURL.Click += new EventHandler(menuURL_Click);
 
             menuGPS = new MenuItem();
-            menuGPS.Text = "Update Location";
+            menuGPS.Text = "更新位置";
             menuGPS.Click += new EventHandler(menuGPS_Click);
 
             menuGPSInsert = new MenuItem();
-            menuGPSInsert.Text = "Insert GPS Location";
+            menuGPSInsert.Text = "插入GPS位置";
             menuGPSInsert.Click += new EventHandler(menuGPSInsert_Click);
             menuGPSInsert.Enabled = false;
 
             menuAddressBook = new MenuItem();
-            menuAddressBook.Text = "Address Book";
+            menuAddressBook.Text = "地址薄";
             menuAddressBook.Click += new EventHandler(menuAddressBook_Click);
             menuAddressBook.Enabled = true;
 
             PasteItem = new MenuItem();
-            PasteItem.Text = "Paste";
+            PasteItem.Text = "粘贴";
             PasteItem.Click += new EventHandler(PasteItem_Click);
 
             menuItem1 = new System.Windows.Forms.MenuItem();
-            menuItem1.Text = "Action";
+            menuItem1.Text = "动作";
 
             menuItem1.MenuItems.Add(menuSubmit);
             menuItem1.MenuItems.Add(menuAddressBook);
@@ -314,7 +314,7 @@ namespace PockeTwit
             if (string.IsNullOrEmpty(gpsUrl))
             {
                 Cursor.Current = Cursors.Default;
-                MessageBox.Show("A communication error occured shortening the URL. Please try again later.");
+                MessageBox.Show("试图缩短URL时遇到连接故障。请稍后再试。");
                 return;
             }
             txtStatusUpdate.Text = txtStatusUpdate.Text + " " + gpsUrl;
@@ -415,12 +415,12 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("Unable to upload picture.", "PockeTwit");
+                    MessageBox.Show("无法上传图片。", "PockeTwit");
                 }
             }
             else
             {
-                MessageBox.Show("Uploading picture...");
+                MessageBox.Show("正在上传图片...");
             }
         }
 
@@ -461,7 +461,7 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("Unable to select picture.", "PockeTwit");
+                    MessageBox.Show("无法选择图片。", "PockeTwit");
                 }
                 if  (string.IsNullOrEmpty(filename))
                 {
@@ -475,12 +475,12 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("Unable to upload picture.", "PockeTwit");
+                    MessageBox.Show("无法上传图片。", "PockeTwit");
                 } 
             }
             else
             {
-                MessageBox.Show("Uploading picture...");
+                MessageBox.Show("正在上传图片...");
             }
         }
 
@@ -837,7 +837,7 @@ namespace PockeTwit
         {
             if (!string.IsNullOrEmpty(txtStatusUpdate.Text))
             {
-                if (MessageBox.Show("Are you sure you want to cancel the update?", "Cancel", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
+                if (MessageBox.Show("确认要放弃更新吗？", "取消", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
                 {
                     return;
                 }
