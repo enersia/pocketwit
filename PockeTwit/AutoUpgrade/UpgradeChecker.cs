@@ -12,7 +12,7 @@ namespace PockeTwit
     public class UpgradeChecker
     {
 
-		#region Fields (4) 
+		#region Fields (4) 
 
         public static double currentVersion = .75;
         public static bool devBuild = true;
@@ -21,9 +21,9 @@ namespace PockeTwit
         private UpgradeInfo WebVersion;
         private string XMLResponse;
 
-		#endregion Fields 
+		#endregion Fields 
 
-		#region Constructors (2) 
+		#region Constructors (2) 
 
         public UpgradeChecker(bool Auto)
         {
@@ -41,29 +41,29 @@ namespace PockeTwit
             }
         }
 
-		#endregion Constructors 
+		#endregion Constructors 
 
-		#region Delegates and Events (3) 
+		#region Delegates and Events (3) 
 
 
-		// Delegates (1) 
+		// Delegates (1) 
 
         public delegate void delUpgradeFound(UpgradeInfo Info);
 
 
-		// Events (2) 
+		// Events (2) 
 
         public event delUpgradeFound CurrentVersion;
 
         public event delUpgradeFound UpgradeFound;
 
 
-		#endregion Delegates and Events 
+		#endregion Delegates and Events 
 
-		#region Methods (2) 
+		#region Methods (2) 
 
 
-		// Public Methods (1) 
+		// Public Methods (1) 
 
         public void CheckForUpgrade()
         {
@@ -75,7 +75,7 @@ namespace PockeTwit
 
 
 
-		// Private Methods (1) 
+		// Private Methods (1) 
 
         private void GetWebResponse(object o)
         {
@@ -125,7 +125,7 @@ namespace PockeTwit
         }
 
 
-		#endregion Methods 
+		#endregion Methods 
         public struct UpgradeInfo
         {
             public double webVersion;

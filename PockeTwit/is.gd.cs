@@ -9,10 +9,10 @@ namespace PockeTwit
     class isgd
     {
 
-		#region Methods (1) 
+		#region Methods (1) 
 
 
-		// Public Methods (1) 
+		// Public Methods (1) 
 
         public static string ShortenURL(string URL)
         {
@@ -35,7 +35,7 @@ namespace PockeTwit
         }
 
 
-		#endregion Methods 
+		#endregion Methods 
 
     }
 }

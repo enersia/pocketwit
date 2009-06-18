@@ -3,7 +3,7 @@ namespace PockeTwit
     partial class AboutForm
     {
 
-		#region Fields (9) 
+		#region Fields (9) 
 
         /// <summary>
         /// Required designer variable.
@@ -16,12 +16,12 @@ namespace PockeTwit
         private System.Windows.Forms.MenuItem menuClose;
         private System.Windows.Forms.MenuItem menuUpdate;
 
-		#endregion Fields 
+		#endregion Fields 
 
-		#region Methods (1) 
+		#region Methods (1) 
 
 
-		// Protected Methods (1) 
+		// Protected Methods (1) 
 
         /// <summary>
         /// Clean up any resources being used.
@@ -37,7 +37,7 @@ namespace PockeTwit
         }
 
 
-		#endregion Methods 
+		#endregion Methods 
 
 
         #region Windows Form Designer generated code

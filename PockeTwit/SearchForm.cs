@@ -46,7 +46,7 @@ namespace PockeTwit
             }
         }
 
-		#region Constructors (1) 
+		#region Constructors (1) 
 
         public SearchForm()
         {
@@ -114,18 +114,18 @@ namespace PockeTwit
             }
         }
         
-		#endregion Constructors 
+		#endregion Constructors 
 
-		#region Properties (1) 
+		#region Properties (1) 
 
         public string SearchText{get;set;}
 
-		#endregion Properties 
+		#endregion Properties 
 
-		#region Methods (2) 
+		#region Methods (2) 
 
 
-		// Private Methods (2) 
+		// Private Methods (2) 
 
         private void menuCancel_Click(object sender, EventArgs e)
         {
@@ -226,7 +226,7 @@ namespace PockeTwit
         }
 
 
-		#endregion Methods 
+		#endregion Methods 
 
         private void cmbMeasurement_SelectedValueChanged(object sender, EventArgs e)
         {

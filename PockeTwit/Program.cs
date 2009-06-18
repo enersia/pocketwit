@@ -12,9 +12,9 @@ namespace PockeTwit
     {
         public static bool IgnoreDisposed = false;
 
-		#region Methods (2) 
+		#region Methods (2) 
 
-		// Private Methods (2) 
+		// Private Methods (2) 
        
         [MTAThread]
         static void Main(string[] Args)
@@ -98,7 +98,7 @@ namespace PockeTwit
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-		#endregion Methods 
+		#endregion Methods 
 
         }
 }

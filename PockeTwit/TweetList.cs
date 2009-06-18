@@ -34,7 +34,7 @@ namespace PockeTwit
 
         private Stack<HistoryItem> History = new Stack<HistoryItem>();
 
-        #region�Fields�(12)�
+        #region Fields (12) 
         private MsgWindow MsgWin;
 
         private UpgradeChecker Checker;
@@ -105,9 +105,9 @@ namespace PockeTwit
         #endregion
         #endregion MenuItems
 
-        #endregion�Fields�
+        #endregion Fields 
 
-        #region�Constructors�(1)�
+        #region Constructors (1) 
         public TweetList(bool InBackGround, string[] args)
         {
             //throw new Exception("Bam!");
@@ -229,12 +229,12 @@ namespace PockeTwit
             //MessageBox.Show("The device is running low on memory. You may want to close PockeTwit or other applications.");
         }
 
-        #endregion�Constructors�
+        #endregion Constructors 
 
-        #region�Delegates�and�Events�(2)�
+        #region Delegates and Events (2) 
 
 
-        //�Delegates�(2)�
+        // Delegates (2) 
         private delegate void delSetWindowState(FormWindowState state);
         private delegate void delAddStatuses(Library.status[] arrayOfStats, bool KeepPosition);
         private delegate void delChangeCursor(Cursor CursorToset);
@@ -242,12 +242,12 @@ namespace PockeTwit
         private delegate bool delBool();
         private delegate void delNone();
 
-        #endregion�Delegates�and�Events�
+        #endregion Delegates and Events 
 
-        #region�Methods�(38)�
+        #region Methods (38) 
 
 
-        //�Private�Methods�(38)�
+        // Private Methods (38) 
 
 
         public bool IsFocused()
@@ -1903,7 +1903,7 @@ namespace PockeTwit
             base.OnClosed(e);
         }
 
-        #endregion�Methods�
+        #endregion Methods 
 
         private void TweetList_LostFocus(object sender, EventArgs e)
         {

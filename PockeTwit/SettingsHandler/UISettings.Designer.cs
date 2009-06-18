@@ -3,7 +3,7 @@ namespace PockeTwit
     partial class UISettings
     {
 
-		#region Fields (17) 
+		#region Fields (17) 
 
         /// <summary>
         /// Required designer variable.
@@ -16,12 +16,12 @@ namespace PockeTwit
         private System.Windows.Forms.MenuItem menuCancel;
         private System.Windows.Forms.TextBox txtMaxTweets;
 
-		#endregion Fields 
+		#endregion Fields 
 
-		#region Methods (1) 
+		#region Methods (1) 
 
 
-		// Protected Methods (1) 
+		// Protected Methods (1) 
 
         /// <summary>
         /// Clean up any resources being used.
@@ -37,7 +37,7 @@ namespace PockeTwit
         }
 
 
-		#endregion Methods 
+		#endregion Methods 
 
 
         #region Windows Form Designer generated code

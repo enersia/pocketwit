@@ -30,7 +30,7 @@ namespace PockeTwit.Library
 
         public StatusTypes TypeofMessage = StatusTypes.Normal;
 
-        #region Properties (7) 
+        #region Properties (7) 
 
         [XmlIgnore] public bool Clipped = false;
 
@@ -192,11 +192,11 @@ namespace PockeTwit.Library
             set { _Account = value; }
         }
 
-        #endregion Properties 
+        #endregion Properties 
 
-        #region Methods (3) 
+        #region Methods (3) 
 
-        // Public Methods (3) 
+        // Public Methods (3) 
 
         public static status[] Deserialize(string response)
         {
@@ -433,7 +433,7 @@ namespace PockeTwit.Library
             return sb.ToString();
         }
 
-        #endregion Methods 
+        #endregion Methods 
 
         private const string SQLSave =
             @"INSERT INTO statuses (id, fulltext, userid, timestamp, in_reply_to_id, favorited, clientSource, accountSummary, statustypes, SearchTerm)
@@ -514,7 +514,7 @@ namespace PockeTwit.Library
     [Serializable]
     public class User
     {
-        #region Properties
+        #region Properties
 
         public bool needsFetching { get; set; }
 
@@ -551,9 +551,9 @@ namespace PockeTwit.Library
 
         public string followers_count { get; set; }
 
-        #endregion Properties 
+        #endregion Properties 
 
-        #region Methods (1) 
+        #region Methods (1) 
 
         private const string SQLSave =
             @"INSERT INTO users (screenname, fullname, description, avatarURL, id)
@@ -616,6 +616,6 @@ namespace PockeTwit.Library
             }
         }
 
-        #endregion Methods 
+        #endregion Methods 
     }
 }

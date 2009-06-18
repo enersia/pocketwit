@@ -17,7 +17,7 @@ namespace PockeTwit.FingerUI
             new System.Text.RegularExpressions.Regex(@"(http://([a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?)|(@\w+)|(#\w+)(http://([a-zA-Z0-9\~\!\@\#\$\%\^\&amp;\*\(\)_\-\=\+\\\/\?\.\:\;\'\,]*)?)|(@\w+)|(#\w+)", 
                                                      System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
 
-        #region�Fields�(15)�
+        #region Fields (15) 
 
         private Graphics _ParentGraphics;
         private PockeTwit.Library.status _Tweet;
@@ -31,9 +31,9 @@ namespace PockeTwit.FingerUI
         private object m_value;
         private int m_x = -1;
         private int m_y = -1;
-        #endregion�Fields�
+        #endregion Fields 
 
-        #region�Constructors�(2)�
+        #region Constructors (2) 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="KListItem"/> class.
@@ -52,9 +52,9 @@ namespace PockeTwit.FingerUI
         {
         }
 
-        #endregion�Constructors�
+        #endregion Constructors 
 
-        #region�Properties�(12)�
+        #region Properties (12) 
 
         /// <summary>
         /// The unscrolled bounds for this item.
@@ -192,21 +192,21 @@ namespace PockeTwit.FingerUI
         public int XIndex { get { return m_x; } set { m_x = value; } }
 
         
-        #endregion�Properties�
+        #endregion Properties 
 
-        #region�Delegates�and�Events�(1)�
+        #region Delegates and Events (1) 
 
 
-        //�Delegates�(1)�
+        // Delegates (1) 
 
         public delegate void ClickedWordDelegate(string TextClicked);
 
-        #endregion�Delegates�and�Events�
+        #endregion Delegates and Events 
 
-        #region�Methods�(4)�
+        #region Methods (4) 
 
 
-        //�Public�Methods�(2)�
+        // Public Methods (2) 
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -420,7 +420,7 @@ namespace PockeTwit.FingerUI
             return this.Tweet.text;
         }
 
-        //�Private�Methods�(2)�
+        // Private Methods (2) 
 
         //texbounds is the area we're allowed to draw within
         //lineOffset is how many lines we've already drawn in these bounds
@@ -447,26 +447,26 @@ namespace PockeTwit.FingerUI
         }
 
 
-        #endregion�Methods�
+        #endregion Methods 
 
-        #region�Nested�Classes�(1)�
+        #region Nested Classes (1) 
 
 
         [Serializable]
         public class Clickable
         {
 
-            #region�Fields�(2)�
+            #region Fields (2) 
 
             public RectangleF Location;
             public string Text;
 
-            #endregion�Fields�
+            #endregion Fields 
 
-            #region�Methods�(2)�
+            #region Methods (2) 
 
 
-            //�Public�Methods�(2)�
+            // Public Methods (2) 
 
             public override bool Equals(object obj)
             {
@@ -485,10 +485,10 @@ namespace PockeTwit.FingerUI
             }
 
 
-            #endregion�Methods�
+            #endregion Methods 
 
         }
-        #endregion�Nested�Classes�
+        #endregion Nested Classes 
 
 
         #region Parsing Routines

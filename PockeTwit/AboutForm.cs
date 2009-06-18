@@ -13,14 +13,14 @@ namespace PockeTwit
     public partial class AboutForm : Form
     {
         delegate void delNothing();
-		#region Fields (1) 
+		#region Fields (1) 
 
         private UpgradeChecker Checker = new UpgradeChecker(false);
         private Contributors ContributorChecker;
         public string AskedToSeeUser = null;
-		#endregion Fields 
+		#endregion Fields 
 
-		#region Constructors (1) 
+		#region Constructors (1) 
 
         public AboutForm()
         {
@@ -113,12 +113,12 @@ namespace PockeTwit
             }
         }
 
-		#endregion Constructors 
+		#endregion Constructors 
 
-		#region Methods (5) 
+		#region Methods (5) 
 
 
-		// Private Methods (5) 
+		// Private Methods (5) 
 
         void Checker_CurrentVersion(UpgradeChecker.UpgradeInfo Info)
         {
@@ -176,7 +176,7 @@ namespace PockeTwit
         }
 
 
-		#endregion Methods 
+		#endregion Methods 
 
         private void lnkContributors_Click(object sender, EventArgs e)
         {
