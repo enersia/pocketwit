@@ -50,6 +50,11 @@ namespace Yedda
                 ServerList.Add(bServer.Name, bServer);
                 */
 
+                Twitter.ServerURL fServer = new Twitter.ServerURL();
+                fServer.Name = "Fanfou";
+                fServer.URL = "http://api.fanfou.com/";
+                ServerList.Add(fServer.Name, fServer);
+
                 while (!r.EndOfStream)
                 {
                     string URL = r.ReadLine();
@@ -113,6 +118,13 @@ namespace Yedda
                         _ServerURL.URL = "http://twitter.com/";
                         _ServerURL.Name = "twitter";
                     }
+                    else if (value == TwitterServer.fanfou)
+                    {
+                        _ServerURL = new ServerURL();
+                        _ServerURL.URL = "http://api.fanfou.com/";
+                        _ServerURL.Name = "fanfou";
+
+                    }
                     else
                     {
                         _ServerURL = new ServerURL();
@@ -137,6 +149,12 @@ namespace Yedda
                             _ServerURL = new ServerURL();
                             _ServerURL.URL = "http://twitter.com/";
                             _ServerURL.Name = "twitter";
+                        }
+                        else if (this.Server == TwitterServer.fanfou)
+                        {
+                            _ServerURL = new ServerURL();
+                            _ServerURL.URL = "http://api.fanfou.com/";
+                            _ServerURL.Name = "fanfou";
                         }
                         else
                         {
@@ -215,6 +233,10 @@ namespace Yedda
                     {
                         return TwitterServer.pingfm;
                     }
+                    else if (URL == "http://api.fanfou.com/")
+                    {
+                        return TwitterServer.fanfou;
+                    }
                     return TwitterServer.identica;
                 }
             }
@@ -230,6 +252,7 @@ namespace Yedda
             brightkite,
             pingfm,
             twitter,
+            fanfou,
             identica
         }
 
@@ -1311,7 +1334,7 @@ namespace Yedda
 
         public string GetFriendsIDs()
         {
-            string url = "http://twitter.com/friends/ids.xml";
+            string url = string.Format(TwitterBaseUrlFormat, "friends", "ids", GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
             return ExecuteGetCommand(url);
         }
     }
