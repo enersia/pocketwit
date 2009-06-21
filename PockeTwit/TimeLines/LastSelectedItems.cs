@@ -214,14 +214,24 @@ namespace PockeTwit.TimeLines
             }
             if (NewestSavedItemsRoot != null)
             {
-                string[] StoredItems = NewestSavedItemsRoot.GetValueNames();
-                foreach (string StoredItem in StoredItems)
+                string[] storedItems = NewestSavedItemsRoot.GetValueNames();
+                foreach (string storedItem in storedItems)
                 {
-                    string serializedItem = (string)NewestSavedItemsRoot.GetValue(StoredItem);
-                    string[] splitItem = serializedItem.Split('|');
-                    var newItem = new NewestSelectedInformation
-                        {CreatedAtTicks = long.Parse(splitItem[1]), id = splitItem[1]};
-                    NewestSelectedItemsDictionary.Add(StoredItem, newItem);
+                    var serializedItem = (string)NewestSavedItemsRoot.GetValue(storedItem);
+                    NewestSelectedInformation newItem;
+                    try
+                    {
+                        var splitItem = serializedItem.Split('|');
+                        newItem = new NewestSelectedInformation
+                                          {CreatedAtTicks = long.Parse(splitItem[1]), id = splitItem[1]};
+                    }
+                    catch
+                    {
+                        var deserializedStatus = status.DeserializeSingle(serializedItem, null);
+                        newItem = new NewestSelectedInformation
+                                      {CreatedAtTicks = deserializedStatus.createdAt.Ticks, id = deserializedStatus.id};
+                    }
+                    NewestSelectedItemsDictionary.Add(storedItem, newItem);
                 }
             }
             UpdateUnreadCounts();
