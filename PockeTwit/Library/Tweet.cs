@@ -40,20 +40,6 @@ namespace PockeTwit.Library
         [XmlIgnore]
         public List<StatusItem.Clickable> Clickables { get; set; }
 
-        [XmlIgnore]
-        public string Serialized
-        {
-            get
-            {
-                var sb = new StringBuilder();
-                using (var w = new StringWriter(sb))
-                {
-                    statusSerializer.Serialize(w, this);
-                }
-                return sb.ToString();
-            }
-        }
-
         public StatusTypes type { get; set; }
 
         public string in_reply_to_status_id { get; set; }
