@@ -46,59 +46,56 @@ namespace PockeTwit
         /// </summary>
         private void InitializeComponent()
         {
-            this.mainMenu1 = new System.Windows.Forms.MainMenu();
-            this.mnuCancel = new System.Windows.Forms.MenuItem();
-            this.mnuAction = new System.Windows.Forms.MenuItem();
-            this.txtURL = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.SuspendLayout();
-            // 
-            // mainMenu1
-            // 
-           
-            // 
-            // mnuCancel
-            // 
-           
-            // 
-            // mnuOK
-            // 
-            // 
-            // txtURL
-            // 
-            this.txtURL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtURL.BackColor = System.Drawing.Color.White;
-            this.txtURL.ForeColor = System.Drawing.Color.Black;
-            this.txtURL.Location = new System.Drawing.Point(0, 29);
-            this.txtURL.Multiline = true;
-            this.txtURL.Name = "txtURL";
-            this.txtURL.Size = new System.Drawing.Size(240, 91);
-            this.txtURL.TabIndex = 0;
-            // 
-            // label1
-            // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.ForeColor = System.Drawing.Color.LightGray;
-            this.label1.Location = new System.Drawing.Point(4, 4);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(233, 20);
-            this.label1.Text = "Enter the URL:";
-            // 
-            // URLForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.AutoScroll = true;
-            this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(240, 268);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtURL);
-            this.Menu = this.mainMenu1;
-            this.Name = "URLForm";
-            this.Text = "Enter a URL";
-            this.ResumeLayout(false);
+			this.mainMenu1 = new System.Windows.Forms.MainMenu();
+			this.mnuCancel = new System.Windows.Forms.MenuItem();
+			this.mnuAction = new System.Windows.Forms.MenuItem();
+			this.txtURL = new System.Windows.Forms.TextBox();
+			this.label1 = new System.Windows.Forms.Label();
+			this.SuspendLayout();
+			// 
+			// mnuCancel
+			// 
+			this.mnuCancel.Text = "";
+			// 
+			// mnuAction
+			// 
+			this.mnuAction.Text = "";
+			// 
+			// txtURL
+			// 
+			this.txtURL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.txtURL.BackColor = System.Drawing.Color.White;
+			this.txtURL.ForeColor = System.Drawing.Color.Black;
+			this.txtURL.Location = new System.Drawing.Point(0, 29);
+			this.txtURL.Multiline = true;
+			this.txtURL.Name = "txtURL";
+			this.txtURL.Size = new System.Drawing.Size(240, 91);
+			this.txtURL.TabIndex = 0;
+			// 
+			// label1
+			// 
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+						| System.Windows.Forms.AnchorStyles.Right)));
+			this.label1.ForeColor = System.Drawing.Color.LightGray;
+			this.label1.Location = new System.Drawing.Point(4, 4);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(233, 20);
+			this.label1.Text = " ‰»ÎÕ¯÷∑£∫";
+			// 
+			// URLForm
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+			this.AutoScroll = true;
+			this.BackColor = System.Drawing.Color.Black;
+			this.ClientSize = new System.Drawing.Size(240, 268);
+			this.Controls.Add(this.label1);
+			this.Controls.Add(this.txtURL);
+			this.Menu = this.mainMenu1;
+			this.Name = "URLForm";
+			this.Text = "Enter a URL";
+			this.ResumeLayout(false);
 
         }
 

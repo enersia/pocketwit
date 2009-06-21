@@ -73,17 +73,17 @@ namespace PockeTwit
 
         private static void ClearCache()
         {
-            if (MessageBox.Show("This may take several minutes.  Proceed?", "Clear Cache", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
+            if (MessageBox.Show("清除头像缓存可能需要几分钟时间，确认继续吗？", "清除缓存", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
             {
                 Cursor.Current = Cursors.WaitCursor;
                 try
                 {
                     ThrottledArtGrabber.ClearAvatars();
-                    MessageBox.Show("The avatar cache was cleared.", "PockeTwit");
+                    MessageBox.Show("头像缓存已经清除完毕！", "PockeTwit");
                 }
                 catch
                 {
-                    MessageBox.Show("There was an error when clearing the cache. You may want to try again.",
+					MessageBox.Show("清除头像缓存时发生了错误，请稍候重试。",
                                     "PockeTwit");
                 }
                 finally
