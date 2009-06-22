@@ -50,12 +50,12 @@
             // 
             // menuItem2
             // 
-            this.menuItem2.Text = "Accept";
+            this.menuItem2.Text = "确认";
             this.menuItem2.Click += new System.EventHandler(this.menuItem2_Click);
             // 
             // menuItem1
             // 
-            this.menuItem1.Text = "Cancel";
+            this.menuItem1.Text = "取消";
             this.menuItem1.Click += new System.EventHandler(this.menuItem1_Click);
             // 
             // cmbServers
@@ -77,7 +77,7 @@
             this.lblServer.Location = new System.Drawing.Point(5, 5);
             this.lblServer.Name = "lblServer";
             this.lblServer.Size = new System.Drawing.Size(71, 20);
-            this.lblServer.Text = "Server:";
+            this.lblServer.Text = "服务:";
             // 
             // txtPassword
             // 
@@ -98,7 +98,7 @@
             this.lblPassword.Location = new System.Drawing.Point(5, 103);
             this.lblPassword.Name = "lblPassword";
             this.lblPassword.Size = new System.Drawing.Size(71, 20);
-            this.lblPassword.Text = "Password:";
+            this.lblPassword.Text = "密码:";
             // 
             // txtUserName
             // 
@@ -118,7 +118,7 @@
             this.lblUser.Location = new System.Drawing.Point(5, 56);
             this.lblUser.Name = "lblUser";
             this.lblUser.Size = new System.Drawing.Size(72, 20);
-            this.lblUser.Text = "User:";
+            this.lblUser.Text = "帐户:";
             // 
             // lblError
             // 
@@ -126,10 +126,10 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblError.BackColor = System.Drawing.Color.Black;
             this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(83, 154);
+            this.lblError.Location = new System.Drawing.Point(5, 177);
             this.lblError.Name = "lblError";
-            this.lblError.Size = new System.Drawing.Size(152, 20);
-            this.lblError.Text = "Unable to verify username and password";
+            this.lblError.Size = new System.Drawing.Size(232, 20);
+            this.lblError.Text = "无法验证登录帐户与密码。";
             this.lblError.Visible = false;
             // 
             // chkDefault
@@ -137,9 +137,9 @@
             this.chkDefault.ForeColor = System.Drawing.Color.White;
             this.chkDefault.Location = new System.Drawing.Point(5, 154);
             this.chkDefault.Name = "chkDefault";
-            this.chkDefault.Size = new System.Drawing.Size(100, 20);
+            this.chkDefault.Size = new System.Drawing.Size(232, 20);
             this.chkDefault.TabIndex = 4;
-            this.chkDefault.Text = "Default";
+            this.chkDefault.Text = "设为默认帐号";
             this.chkDefault.CheckStateChanged += new System.EventHandler(this.chkDefault_CheckStateChanged);
             // 
             // linkLabel1

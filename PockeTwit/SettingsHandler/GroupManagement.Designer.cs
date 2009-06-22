@@ -47,23 +47,23 @@
             // 
             // menuDone
             // 
-            this.menuDone.Text = "Done";
+            this.menuDone.Text = "确认";
             this.menuDone.Click += new System.EventHandler(this.menuItem1_Click);
             // 
             // menuImportExport
             // 
             this.menuImportExport.MenuItems.Add(this.menuExport);
             this.menuImportExport.MenuItems.Add(this.menuImport);
-            this.menuImportExport.Text = "Backup";
+            this.menuImportExport.Text = "备份";
             // 
             // menuExport
             // 
-            this.menuExport.Text = "Export...";
+            this.menuExport.Text = "导出...";
             this.menuExport.Click += new System.EventHandler(this.menuExport_Click);
             // 
             // menuImport
             // 
-            this.menuImport.Text = "Import...";
+            this.menuImport.Text = "导入...";
             this.menuImport.Click += new System.EventHandler(this.menuImport_Click);
             // 
             // cmbChooseGroup
@@ -83,7 +83,7 @@
             this.lnkDeleteGroup.Name = "lnkDeleteGroup";
             this.lnkDeleteGroup.Size = new System.Drawing.Size(45, 20);
             this.lnkDeleteGroup.TabIndex = 2;
-            this.lnkDeleteGroup.Text = "Delete";
+            this.lnkDeleteGroup.Text = "删除";
             this.lnkDeleteGroup.Click += new System.EventHandler(this.lnkDeleteGroup_Click);
             // 
             // pnlUsers

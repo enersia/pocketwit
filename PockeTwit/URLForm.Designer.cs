@@ -1,4 +1,4 @@
-namespace PockeTwit
+﻿namespace PockeTwit
 {
     partial class URLForm
     {
@@ -84,7 +84,7 @@ namespace PockeTwit
             this.label1.Location = new System.Drawing.Point(4, 4);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(233, 20);
-            this.label1.Text = "Enter the URL:";
+            this.label1.Text = "输入网址:";
             // 
             // URLForm
             // 
@@ -97,7 +97,7 @@ namespace PockeTwit
             this.Controls.Add(this.txtURL);
             this.Menu = this.mainMenu1;
             this.Name = "URLForm";
-            this.Text = "Enter a URL";
+            this.Text = "输入网址";
             this.ResumeLayout(false);
 
         }

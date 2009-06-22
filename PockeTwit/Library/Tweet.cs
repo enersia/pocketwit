@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Diagnostics;
@@ -76,11 +76,11 @@ namespace PockeTwit.Library
                     Diff = Math.Round(Difference.TotalDays);
                     if (Diff > 1)
                     {
-                        Span = "days";
+                        Span = "天";
                     }
                     else
                     {
-                        Span = "day";
+                        Span = "天";
                     }
                 }
                 else if (Difference.TotalHours > 1)
@@ -88,19 +88,19 @@ namespace PockeTwit.Library
                     Diff = Math.Round(Difference.TotalHours);
                     if (Diff > 1)
                     {
-                        Span = "hours";
+                        Span = "小时";
                     }
                     else
                     {
-                        Span = "hour";
+                        Span = "小时";
                     }
                 }
                 else
                 {
                     Diff = Math.Round(Difference.TotalMinutes);
-                    Span = "min";
+                    Span = "分钟";
                 }
-                return "about " + Diff.ToString() + " " + Span + " ago.";
+                return "约" + Diff.ToString() + " " + Span + "前";
             }
         }
 

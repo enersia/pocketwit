@@ -71,7 +71,7 @@ namespace PockeTwit
             this.lblFromAccount.Location = new System.Drawing.Point(4, 4);
             this.lblFromAccount.Name = "lblFromAccount";
             this.lblFromAccount.Size = new System.Drawing.Size(94, 20);
-            this.lblFromAccount.Text = "From Account:";
+            this.lblFromAccount.Text = "使用帐号:";
             // 
             // pictureURL
             // 
@@ -166,7 +166,7 @@ namespace PockeTwit
             this.Controls.Add(this.cmbAccount);
             this.Menu = this.mainMenu1;
             this.Name = "PostUpdate";
-            this.Text = "Post Update";
+            this.Text = "发布";
             this.ResumeLayout(false);
 
         }

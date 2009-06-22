@@ -98,9 +98,9 @@ namespace PockeTwit
             }
             else
             {
-                Progress(0, "The first run takes a while.");
+                Progress(0, "首次运行需要一些时间，请稍候...");
                 GetFriendsTimeLine();
-                Progress(0, "Just a bit longer.");
+                Progress(0, "还需要您的一点点耐心...");
                 GetMessagesTimeLine();
                 GetSavedSearches();
                 CompleteLoaded();
@@ -199,7 +199,7 @@ namespace PockeTwit
             if (string.IsNullOrEmpty(response))
             {
                 NoData(t.AccountInfo, Yedda.Twitter.ActionType.Search);
-                GlobalEventHandler.CallShowErrorMessage("Communications Error");
+                GlobalEventHandler.CallShowErrorMessage("通信错误");
                 return null;
             }
             else
@@ -234,7 +234,7 @@ namespace PockeTwit
                     catch
                     {
                         NoData(t.AccountInfo, Yedda.Twitter.ActionType.Favorites);
-                        GlobalEventHandler.CallShowErrorMessage("Communications Error");
+                        GlobalEventHandler.CallShowErrorMessage("通信错误");
                     }
                 }
             }
@@ -279,7 +279,7 @@ namespace PockeTwit
             if (string.IsNullOrEmpty(response))
             {
                 NoData(t.AccountInfo, Yedda.Twitter.ActionType.Show);
-                GlobalEventHandler.CallShowErrorMessage("Communications Error");
+                GlobalEventHandler.CallShowErrorMessage("通信错误");
                 return null;
             }
             else
@@ -398,13 +398,13 @@ namespace PockeTwit
                             catch
                             {
                                 NoData(t.AccountInfo, Yedda.Twitter.ActionType.Replies);
-                                GlobalEventHandler.CallShowErrorMessage("Communications Error");
+                                GlobalEventHandler.CallShowErrorMessage("通信错误");
                             }
                         }
                         else
                         {
                             NoData(t.AccountInfo, Yedda.Twitter.ActionType.Replies);
-                            GlobalEventHandler.CallShowErrorMessage("Communications Error");
+                            GlobalEventHandler.CallShowErrorMessage("通信错误");
                         }
                         ////I HATE DIRECT MESSAGES
 
@@ -430,13 +430,13 @@ namespace PockeTwit
                                 catch
                                 {
                                     NoData(t.AccountInfo, Yedda.Twitter.ActionType.Direct_Messages);
-                                    GlobalEventHandler.CallShowErrorMessage("Communications Error");
+                                    GlobalEventHandler.CallShowErrorMessage("通信错误");
                                 }
                             }
                             else
                             {
                                 NoData(t.AccountInfo, Yedda.Twitter.ActionType.Direct_Messages);
-                                GlobalEventHandler.CallShowErrorMessage("Communications Error");
+                                GlobalEventHandler.CallShowErrorMessage("通信错误");
                             }
                         }
                     }
@@ -480,13 +480,13 @@ namespace PockeTwit
                                 catch
                                 {
                                     NoData(t.AccountInfo, Yedda.Twitter.ActionType.Friends_Timeline);
-                                    GlobalEventHandler.CallShowErrorMessage("Communications Error");
+                                    GlobalEventHandler.CallShowErrorMessage("通信错误");
                                 }
                             }
                             else
                             {
                                 NoData(t.AccountInfo, Yedda.Twitter.ActionType.Friends_Timeline);
-                                GlobalEventHandler.CallShowErrorMessage("Communications Error");
+                                GlobalEventHandler.CallShowErrorMessage("通信错误");
                             }
                         }
                     }

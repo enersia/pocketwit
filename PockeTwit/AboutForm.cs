@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -203,7 +203,7 @@ namespace PockeTwit
             }
             catch
             {
-                MessageBox.Show("There is no default web browser defined for the OS.");
+                MessageBox.Show("操作系统中未设置默认的浏览器。");
             }
         }
 

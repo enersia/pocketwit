@@ -119,7 +119,7 @@
             this.lblJump.Location = new System.Drawing.Point(30, 87);
             this.lblJump.Name = "lblJump";
             this.lblJump.Size = new System.Drawing.Size(100, 20);
-            this.lblJump.Text = "Jump To:";
+            this.lblJump.Text = "跳转到:";
             this.lblJump.Visible = false;
             // 
             // ProfileMap

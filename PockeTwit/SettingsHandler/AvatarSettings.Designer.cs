@@ -1,4 +1,4 @@
-namespace PockeTwit
+﻿namespace PockeTwit
 {
     partial class AvatarSettings
     {
@@ -60,12 +60,12 @@ namespace PockeTwit
             // 
             // menuAccept
             // 
-            this.menuAccept.Text = "Accept";
+            this.menuAccept.Text = "确认";
             this.menuAccept.Click += new System.EventHandler(this.menuAccept_Click);
             // 
             // menuCancel
             // 
-            this.menuCancel.Text = "Cancel";
+            this.menuCancel.Text = "取消";
             this.menuCancel.Click += new System.EventHandler(this.menuCancel_Click);
             // 
             // lnkClearAvatars
@@ -76,7 +76,7 @@ namespace PockeTwit
             this.lnkClearAvatars.Name = "lnkClearAvatars";
             this.lnkClearAvatars.Size = new System.Drawing.Size(109, 20);
             this.lnkClearAvatars.TabIndex = 3;
-            this.lnkClearAvatars.Text = "Clear Avatar Cache";
+            this.lnkClearAvatars.Text = "清除头像缓存";
             this.lnkClearAvatars.Click += new System.EventHandler(this.lnkClearAvatars_Click);
             // 
             // chkAvatar
@@ -86,7 +86,7 @@ namespace PockeTwit
             this.chkAvatar.Name = "chkAvatar";
             this.chkAvatar.Size = new System.Drawing.Size(235, 20);
             this.chkAvatar.TabIndex = 0;
-            this.chkAvatar.Text = "Show Avatars";
+            this.chkAvatar.Text = "显示头像";
             // 
             // chkHighQuality
             // 
@@ -95,7 +95,7 @@ namespace PockeTwit
             this.chkHighQuality.Name = "chkHighQuality";
             this.chkHighQuality.Size = new System.Drawing.Size(235, 20);
             this.chkHighQuality.TabIndex = 1;
-            this.chkHighQuality.Text = "High-Quality Avatars";
+            this.chkHighQuality.Text = "显示高画质头像";
             // 
             // AvatarSettings
             // 

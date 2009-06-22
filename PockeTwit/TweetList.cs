@@ -707,13 +707,13 @@ namespace PockeTwit
 
         private void CreateLeftMenu()
         {
-            BackMenuItem = new FingerUI.Menu.SideMenuItem(this.GoBackInHistory, "后退", statList.LeftMenu);
+            BackMenuItem = new FingerUI.Menu.SideMenuItem(this.GoBackInHistory, "返回", statList.LeftMenu);
             BackMenuItem.CanHide = true;
 
             FriendsTimeLineMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFriendsTimeLine, "好友消息", statList.LeftMenu, "Friends_TimeLine");
-            RefreshFriendsTimeLineMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshFriendsTimeLine, "刷新好友", statList.LeftMenu, "Friends_TimeLine");
-            MessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowMessagesTimeLine, "消息", statList.LeftMenu, "Messages_TimeLine");
-            RefreshMessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshMessagesTimeLine, "刷新消息", statList.LeftMenu, "Messages_TimeLine");
+            RefreshFriendsTimeLineMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshFriendsTimeLine, "刷新好友消息", statList.LeftMenu, "Friends_TimeLine");
+            MessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowMessagesTimeLine, "@回复我的消息", statList.LeftMenu, "Messages_TimeLine");
+            RefreshMessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshMessagesTimeLine, "刷新@回复我的消息", statList.LeftMenu, "Messages_TimeLine");
             PublicMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowPublicTimeLine, "随便看看", statList.LeftMenu);
             SearchMenuItem = new FingerUI.Menu.SideMenuItem(this.TwitterSearch, "搜索/同城", statList.LeftMenu);
             ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "查看收藏", statList.LeftMenu);
@@ -728,7 +728,7 @@ namespace PockeTwit
             
             
             
-            PostUpdateMenuItem = new FingerUI.Menu.SideMenuItem(this.SetStatus, "发布更新", statList.LeftMenu);
+            PostUpdateMenuItem = new FingerUI.Menu.SideMenuItem(this.SetStatus, "发布状态更新", statList.LeftMenu);
             
             //MapMenuItem = new FingerUI.Menu.SideMenuItem(this.MapList, "Map These", statList.LeftMenu);
 
@@ -745,7 +745,7 @@ namespace PockeTwit
             SettingsMenuItem = new FingerUI.Menu.SideMenuItem(null, "设置...", statList.LeftMenu);
             AccountsSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showAccounts, "帐号", statList.LeftMenu);
             AdvancedSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showAdvanced, "高级", statList.LeftMenu);
-            AvatarSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showAvatar, "Avatar", statList.LeftMenu);
+            AvatarSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showAvatar, "头像", statList.LeftMenu);
             GroupSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showGroupSettings, "管理组", statList.LeftMenu);
             MediaServiceSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showMediaServiceSettings, "媒体服务", statList.LeftMenu);
             NotificationSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showNotification, "提醒", statList.LeftMenu);
@@ -805,10 +805,10 @@ namespace PockeTwit
             ConversationMenuItem = new FingerUI.Menu.SideMenuItem(GetConversation, "显示对话", statList.RightMenu);
             ConversationMenuItem.CanHide = true;
 
-            ReponsesMenuItem = new FingerUI.Menu.SideMenuItem(null, "回复到 @User...", statList.RightMenu);
+            ReponsesMenuItem = new FingerUI.Menu.SideMenuItem(null, "回复 @User...", statList.RightMenu);
 
             ReplyMenuItem = new FingerUI.Menu.SideMenuItem(SendReply, "回复 @User", statList.RightMenu);
-            DirectMenuItem = new FingerUI.Menu.SideMenuItem(SendDirectMessage, "直接 @User", statList.RightMenu);
+            DirectMenuItem = new FingerUI.Menu.SideMenuItem(SendDirectMessage, "给 @User 发私信", statList.RightMenu);
 
             ReponsesMenuItem.SubMenuItems.Add(ReplyMenuItem);
             ReponsesMenuItem.SubMenuItems.Add(DirectMenuItem);
@@ -1617,7 +1617,7 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("There is no default web browser defined for the OS.");
+					MessageBox.Show("操作系统中未设置默认的浏览器。");
                 }
             }
             else if (TextClicked.StartsWith("#"))

@@ -47,7 +47,7 @@
             // 
             // mnuDone
             // 
-            this.mnuDone.Text = "Done";
+            this.mnuDone.Text = "确定";
             this.mnuDone.Click += new System.EventHandler(this.mnuDone_Click);
             // 
             // label1
@@ -57,7 +57,7 @@
             this.label1.Location = new System.Drawing.Point(4, 4);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(233, 20);
-            this.label1.Text = "Notification Type:";
+            this.label1.Text = "提醒类型:";
             // 
             // cmbNotificationType
             // 
@@ -77,7 +77,7 @@
             this.chkPlaySound.Name = "chkPlaySound";
             this.chkPlaySound.Size = new System.Drawing.Size(100, 20);
             this.chkPlaySound.TabIndex = 2;
-            this.chkPlaySound.Text = "Play Sound";
+            this.chkPlaySound.Text = "播放声音";
             this.chkPlaySound.CheckStateChanged += new System.EventHandler(this.chkPlaySound_CheckStateChanged);
             this.chkPlaySound.Click += new System.EventHandler(this.chkPlaySound_Click);
             // 
@@ -98,7 +98,7 @@
             this.lblSound.Location = new System.Drawing.Point(3, 103);
             this.lblSound.Name = "lblSound";
             this.lblSound.Size = new System.Drawing.Size(233, 20);
-            this.lblSound.Text = "Sound";
+            this.lblSound.Text = "声音";
             // 
             // chkVibrate
             // 
@@ -108,7 +108,7 @@
             this.chkVibrate.Name = "chkVibrate";
             this.chkVibrate.Size = new System.Drawing.Size(236, 20);
             this.chkVibrate.TabIndex = 5;
-            this.chkVibrate.Text = "Vibrate";
+            this.chkVibrate.Text = "振动";
             this.chkVibrate.Click += new System.EventHandler(this.chkVibrate_Click);
             // 
             // chkNotification
@@ -119,7 +119,7 @@
             this.chkNotification.Name = "chkNotification";
             this.chkNotification.Size = new System.Drawing.Size(236, 20);
             this.chkNotification.TabIndex = 8;
-            this.chkNotification.Text = "Show Notification";
+            this.chkNotification.Text = "显示提醒";
             this.chkNotification.Visible = false;
             this.chkNotification.Click += new System.EventHandler(this.chkNotification_Click);
             // 
@@ -130,7 +130,7 @@
             this.lnkPlay.Name = "lnkPlay";
             this.lnkPlay.Size = new System.Drawing.Size(29, 20);
             this.lnkPlay.TabIndex = 11;
-            this.lnkPlay.Text = "Play";
+            this.lnkPlay.Text = "播放";
             this.lnkPlay.Click += new System.EventHandler(this.lnkPlay_Click);
             // 
             // NotificationSettings

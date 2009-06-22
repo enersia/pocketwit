@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -38,7 +38,7 @@ namespace FingerUI
             set
             {
                 TextItems = new List<string>();
-                TextItems.Add("Detailed View");
+                TextItems.Add("详细信息");
                 foreach (StatusItem.Clickable c in value)
                 {
                     if (!TextItems.Contains(c.Text))
@@ -46,7 +46,7 @@ namespace FingerUI
                         TextItems.Add(c.Text);
                     }
                 }
-                TextItems.Add("Close Menu");
+                TextItems.Add("关闭菜单");
             }
         }
 
@@ -107,7 +107,7 @@ namespace FingerUI
                     Rectangle r = new Rectangle(this.Left, TopOfItem, this.Width, ItemHeight);
                     if (r.Contains(p))
                     {
-                        if (TextItems[_CurrentlyFocused] != "Close Menu")
+                        if (TextItems[_CurrentlyFocused] != "关闭菜单")
                         {
                             WordClicked(Item);
                         }
@@ -152,7 +152,7 @@ namespace FingerUI
                 }
                 if (e.KeyCode == Keys.Enter)
                 {
-                    if (TextItems[_CurrentlyFocused] != "Close Menu")
+                    if (TextItems[_CurrentlyFocused] != "关闭菜单")
                     {
                         if (WordClicked != null)
                         {
