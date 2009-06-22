@@ -346,7 +346,9 @@ namespace Yedda
         {
             get
             {
-                return AccountInfo.ServerURL.ServerType == Yedda.Twitter.TwitterServer.twitter || AccountInfo.ServerURL.ServerType == Yedda.Twitter.TwitterServer.identica;
+                return AccountInfo.ServerURL.ServerType == Yedda.Twitter.TwitterServer.twitter ||
+                       AccountInfo.ServerURL.ServerType == Yedda.Twitter.TwitterServer.identica ||
+                       AccountInfo.ServerURL.ServerType == Yedda.Twitter.TwitterServer.fanfou;
             }
 
         }
@@ -862,6 +864,23 @@ namespace Yedda
         {
             string url = string.Format(TwitterSimpleURLFormat, GetActionTypeString(ActionType.Direct_Messages),  AccountInfo.ServerURL.URL) + "?since_id=" + SinceID;
             return ExecuteGetCommand(url);
+        }
+
+        public string SendDirectMessage(string userID, string message, OutputFormatType format)
+        {
+            return SendDirectMessage(userID, null, message, format);
+        }
+
+        public string SendDirectMessage(string userID, string message, string in_reply_to_id, OutputFormatType format)
+        {
+            string url = string.Format(TwitterBaseUrlFormat, 
+                GetActionTypeString(ActionType.Direct_Messages), GetActionTypeString(ActionType.New), 
+                GetFormatTypeString(format), AccountInfo.ServerURL.URL);
+            string data = string.Format("user={0}&text={1}", 
+                HttpUtility.UrlEncode(userID), HttpUtility.UrlEncode(message));
+            if (!string.IsNullOrEmpty(in_reply_to_id))
+                data = data + "&in_reply_to_id=" + in_reply_to_id;
+            return ExecutePostCommand(url, data);
         }
         #endregion
         #region Friends_Timeline

@@ -691,7 +691,8 @@ namespace PockeTwit
         {
             if (statList.SelectedItem == null) { return; }
             StatusItem selectedItem = (StatusItem)statList.SelectedItem;
-            string User = selectedItem.Tweet.user.screen_name;
+            string User = (selectedItem.Tweet.Account.ServerURL.ServerType == Twitter.TwitterServer.fanfou)?
+                           selectedItem.Tweet.user.id:selectedItem.Tweet.user.screen_name;
             SetStatus("d " + User, selectedItem.Tweet.id);
         }
 
@@ -700,7 +701,7 @@ namespace PockeTwit
             if (statList.SelectedItem == null) { return; }
             StatusItem selectedItem = (StatusItem)statList.SelectedItem;
             string User = selectedItem.Tweet.user.screen_name;
-            if (selectedItem.Tweet.isDirect)
+            if (selectedItem.Tweet.TypeofMessage == StatusTypes.Direct)
             {
                 if (MessageBox.Show("Are you sure you want to reply to a Direct Message?", "Reply to DM?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.No)
                 {
