@@ -67,12 +67,12 @@
             // 
             // menuAccept
             // 
-            this.menuAccept.Text = "Accept";
+            this.menuAccept.Text = "确定";
             this.menuAccept.Click += new System.EventHandler(this.menuAccept_Click);
             // 
             // menuCancel
             // 
-            this.menuCancel.Text = "Cancel";
+            this.menuCancel.Text = "取消";
             this.menuCancel.Click += new System.EventHandler(this.menuCancel_Click);
             // 
             // chkGPS
@@ -136,7 +136,7 @@
             this.chkSkweezer.Name = "chkSkweezer";
             this.chkSkweezer.Size = new System.Drawing.Size(216, 20);
             this.chkSkweezer.TabIndex = 4;
-            this.chkSkweezer.Text = "Load URLs in Skweezer";
+            this.chkSkweezer.Text = "通过Skweezer打开网页";
             // 
             // label2
             // 
@@ -146,7 +146,7 @@
             this.label2.Location = new System.Drawing.Point(4, 171);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(233, 20);
-            this.label2.Text = "Cache Directory:";
+            this.label2.Text = "数据缓存目录:";
             // 
             // txtCaheDir
             // 
@@ -164,7 +164,7 @@
             this.chkAutoComplete.Name = "chkAutoComplete";
             this.chkAutoComplete.Size = new System.Drawing.Size(235, 20);
             this.chkAutoComplete.TabIndex = 5;
-            this.chkAutoComplete.Text = "Autocomplete addressbook";
+            this.chkAutoComplete.Text = "为地址薄启用自动完成";
             // 
             // OtherSettings
             // 
@@ -185,7 +185,7 @@
             this.Controls.Add(this.chkGPS);
             this.Menu = this.mainMenu1;
             this.Name = "OtherSettings";
-            this.Text = "Other Settings";
+            this.Text = "其它设置";
             this.Load += new System.EventHandler(this.OtherSettings_Load);
             this.ResumeLayout(false);
 

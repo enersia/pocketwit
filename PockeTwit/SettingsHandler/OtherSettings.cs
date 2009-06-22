@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -48,7 +48,7 @@ namespace PockeTwit
             
             if (ClientSettings.UpdateMinutes != int.Parse(txtUpdate.Text, format))
             {
-                MessageBox.Show("You will need to restart PockeTwit for the update interval to change.", "PockeTwit");
+                MessageBox.Show("你需要重新启动PockeTwit使自动更新频率的设置改动生效。", "PockeTwit");
                 ClientSettings.UpdateMinutes = int.Parse(txtUpdate.Text, format);
             }
             if (ClientSettings.CacheDir != txtCaheDir.Text)
@@ -63,7 +63,7 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("Unable to use that folder as a cache directory");
+                    MessageBox.Show("无法使用指定的目录做为缓存目录。");
                 }
             }
             ClientSettings.SaveSettings();
@@ -88,7 +88,7 @@ namespace PockeTwit
             txtUpdate.Text = ClientSettings.UpdateMinutes.ToString();
             chkTranslate.Checked = ClientSettings.AutoTranslate;
             txtCaheDir.Text = ClientSettings.CacheDir;
-            chkTranslate.Text = "Auto-translate to " + ClientSettings.TranslationLanguage;
+            chkTranslate.Text = "自动翻译到语言类型： " + ClientSettings.TranslationLanguage;
             this.DialogResult = DialogResult.Cancel;
         }
 

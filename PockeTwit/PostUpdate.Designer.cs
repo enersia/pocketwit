@@ -48,12 +48,12 @@ namespace PockeTwit
             // 
             // menuCancel
             // 
-            this.menuCancel.Text = "Cancel";
+            this.menuCancel.Text = "取消";
             this.menuCancel.Click += new System.EventHandler(this.menuCancel_Click);
             // 
             // menuSubmit
             // 
-            this.menuSubmit.Text = "Submit";
+            this.menuSubmit.Text = "发布";
             this.menuSubmit.Click += new System.EventHandler(this.menuSubmit_Click);
             // 
             // cmbAccount

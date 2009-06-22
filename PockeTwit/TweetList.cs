@@ -672,7 +672,7 @@ namespace PockeTwit
             if (statList.SelectedItem == null) { return; }
             StatusItem selectedItem = (StatusItem)statList.SelectedItem;
             Yedda.Twitter Conn = GetMatchingConnection(selectedItem.Tweet.Account);
-            if (MessageBox.Show("Are you sure you want to stop following " + selectedItem.Tweet.user.screen_name + "?", "Stop Following", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            if (MessageBox.Show("你确认要停止关注" + selectedItem.Tweet.user.screen_name + "吗？", "取消关注", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
                 ChangeCursor(Cursors.WaitCursor);
                 if (selectedItem.Tweet.Account.ServerURL.ServerType == Twitter.TwitterServer.fanfou)

@@ -26,19 +26,19 @@ namespace PockeTwit.SettingsHandler
         {
             if (ClientSettings.UseDIB)
             {
-                lblRenderingMethod.Text = "Using DIB";
+                lblRenderingMethod.Text = "使用DIB模式";
                 chkDIB.Checked = true;
             }
             else
             {
                 chkDIB.Checked = false;
-                lblRenderingMethod.Text = "Using DDB";
+                lblRenderingMethod.Text = "使用DDB模式";
             }
         }
         
         private void lnkClearCaches_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to delete all cached statuses?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            if (MessageBox.Show("你确认要删除所有消息缓存吗？", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
                 LocalStorage.DataBaseUtility.CleanDB(0);
             }
@@ -47,7 +47,7 @@ namespace PockeTwit.SettingsHandler
 
         private void lnkClearSettings_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to delete your settings?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            if (MessageBox.Show("你确认要删除所有应用程序的设置吗？", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
                 System.IO.File.Delete(ClientSettings.AppPath + "\\app.config");
             }
@@ -68,7 +68,7 @@ namespace PockeTwit.SettingsHandler
 
         private void lblCompact_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Compacting the database may take a few minutes.\n\nProceed?", "Compact Database", MessageBoxButtons.YesNo,MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+            if (MessageBox.Show("压缩数据库需要几分钟时间。\n\n继续吗？", "压缩数据库", MessageBoxButtons.YesNo,MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
             {
                 Cursor.Current = Cursors.WaitCursor;
                 LocalStorage.DataBaseUtility.VacuumDB();
