@@ -659,7 +659,10 @@ namespace PockeTwit
             if (selectedItem.Tweet.user == null) { return; }
             ChangeCursor(Cursors.WaitCursor);
             Yedda.Twitter Conn = GetMatchingConnection(selectedItem.Tweet.Account);
-            Conn.FollowUser(selectedItem.Tweet.user.screen_name);
+            if (selectedItem.Tweet.Account.ServerURL.ServerType == Twitter.TwitterServer.fanfou)
+                Conn.FollowUser(selectedItem.Tweet.user.id);
+            else
+                Conn.FollowUser(selectedItem.Tweet.user.screen_name);
             FollowingDictionary[Conn].AddUser(selectedItem.Tweet.user);
             UpdateRightMenu();
             ChangeCursor(Cursors.Default);
@@ -672,7 +675,10 @@ namespace PockeTwit
             if (MessageBox.Show("Are you sure you want to stop following " + selectedItem.Tweet.user.screen_name + "?", "Stop Following", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
                 ChangeCursor(Cursors.WaitCursor);
-                Conn.StopFollowingUser(selectedItem.Tweet.user.screen_name);
+                if (selectedItem.Tweet.Account.ServerURL.ServerType == Twitter.TwitterServer.fanfou)
+                    Conn.StopFollowingUser(selectedItem.Tweet.user.id);
+                else
+                    Conn.StopFollowingUser(selectedItem.Tweet.user.screen_name);
                 FollowingDictionary[Conn].StopFollowing(selectedItem.Tweet.user);
                 UpdateRightMenu();
                 ChangeCursor(Cursors.Default);
@@ -1450,8 +1456,11 @@ namespace PockeTwit
             ChangeCursor(Cursors.WaitCursor);
             StatusItem statItem = (StatusItem)statList.SelectedItem;
             if (statItem == null) { return; }
-            ShowUserID = statItem.Tweet.user.screen_name;
             CurrentlySelectedAccount = statItem.Tweet.Account;
+            if (CurrentlySelectedAccount.ServerURL.ServerType == Twitter.TwitterServer.fanfou)
+                ShowUserID = statItem.Tweet.user.id;
+            else
+                ShowUserID = statItem.Tweet.user.screen_name;
             Yedda.Twitter Conn = GetMatchingConnection(CurrentlySelectedAccount);
             SwitchToList("@User_TimeLine");
             HistoryItem i = new HistoryItem();
