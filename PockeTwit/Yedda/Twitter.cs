@@ -339,7 +339,7 @@ namespace Yedda
         {
             get
             {
-                return AccountInfo.ServerURL.ServerType == Yedda.Twitter.TwitterServer.twitter; 
+                return AccountInfo.ServerURL.ServerType == Yedda.Twitter.TwitterServer.twitter || AccountInfo.ServerURL.ServerType == TwitterServer.fanfou; 
             }
         }
         public bool DirectMessagesWork
