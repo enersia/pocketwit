@@ -203,7 +203,7 @@ namespace PockeTwit
             }
             catch
             {
-                MessageBox.Show("操作系统中未设置默认的浏览器。");
+                MessageBox.Show("There is no default web browser defined for the OS.");
             }
         }
 

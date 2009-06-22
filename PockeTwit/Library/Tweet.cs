@@ -76,11 +76,11 @@ namespace PockeTwit.Library
                     Diff = Math.Round(Difference.TotalDays);
                     if (Diff > 1)
                     {
-                        Span = "天";
+                        Span = "days";
                     }
                     else
                     {
-                        Span = "天";
+                        Span = "day";
                     }
                 }
                 else if (Difference.TotalHours > 1)
@@ -88,19 +88,19 @@ namespace PockeTwit.Library
                     Diff = Math.Round(Difference.TotalHours);
                     if (Diff > 1)
                     {
-                        Span = "小时";
+                        Span = "hours";
                     }
                     else
                     {
-                        Span = "小时";
+                        Span = "hour";
                     }
                 }
                 else
                 {
                     Diff = Math.Round(Difference.TotalMinutes);
-                    Span = "分钟";
+                    Span = "min";
                 }
-                return "发表于" + Diff.ToString() + " " + Span + "前";
+                return "about " + Diff.ToString() + " " + Span + " ago.";
             }
         }
 

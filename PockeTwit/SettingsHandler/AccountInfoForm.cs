@@ -106,7 +106,7 @@ namespace PockeTwit
             
             if (!T.Verify())
             {
-                lblError.Text = "登录帐户或密码输入错误，请重新输入。";
+                lblError.Text = "Invalid credentials.";
                 lblError.Visible = true;
                 return;
             }
@@ -135,7 +135,7 @@ namespace PockeTwit
                 txtPassword.Visible = true;
                 lblPassword.Visible = true;
                 linkLabel1.Visible = false;
-                lblUser.Text = "";
+                lblUser.Text = "User";
                 if (DetectDevice.DeviceType == DeviceType.Professional)
                 {
                     txtUserName.ContextMenu = null;
