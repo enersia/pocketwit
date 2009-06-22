@@ -401,7 +401,7 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("The camera is not available.", "PockeTwit");
+                    MessageBox.Show("照像设备不存在，不能拍摄照片。", "PockeTwit");
                     return;
                 }
                 if (string.IsNullOrEmpty(filename))
@@ -723,7 +723,7 @@ namespace PockeTwit
 
         private static string TryToShrinkWith140It(string original)
         {
-            if(MessageBox.Show("The text is too long.  Would you like to use abbreviations to shorten it?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)== System.Windows.Forms.DialogResult.Yes)
+            if(MessageBox.Show("消息文本太长。你希望用一些缩写代替原来的文本以便缩短它的长度吗？", "消息文本太长", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)== System.Windows.Forms.DialogResult.Yes)
             {
                 var shrinker = new _140it();
                 return shrinker.GetShortenedText(original);
@@ -733,7 +733,7 @@ namespace PockeTwit
 
         private string TryToUseShortText(string original)
         {
-            if(MessageBox.Show("The text is too long.  Would you like to add a link to a site with the full text?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)== System.Windows.Forms.DialogResult.Yes)
+            if (MessageBox.Show("消息文本太长。你希望用一个链接来代替这些文本吗？这个链接会指向你所输入的文本内容。", "消息文本太长", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
             {
                 var shrinker = new ShortText();
 
@@ -753,7 +753,7 @@ namespace PockeTwit
 
                 if(updateText.Length>140)
                 {
-                    if (MessageBox.Show("The text is still too long.  If you post it twitter will cut off the end.  Post anyway?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
+                    if (MessageBox.Show("消息文本依然太长，它将被截短到最大允许的长度后发布。继续吗？", "消息文本太长", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
                     {
                         return false;
                     }
@@ -807,7 +807,7 @@ namespace PockeTwit
 
                     if (string.IsNullOrEmpty(retValue))
                     {
-                        MessageBox.Show("Error posting status -- empty response.  You may want to try again later.");
+                        MessageBox.Show("无法发布消息：返回结果为空。请稍候再试。");
                         return false;
                     }
                     try
@@ -816,7 +816,7 @@ namespace PockeTwit
                     }
                     catch
                     {
-                        MessageBox.Show("Error posting status -- bad response.  You may want to try again later.");
+                        MessageBox.Show("无法发布消息：返回结果非法。请稍候再试。");
                         return false;
                     }
 
@@ -892,7 +892,7 @@ namespace PockeTwit
             else
             {
                 //Pre loading logic
-                if (MessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                if (MessageBox.Show("把上传图片的链接添加到消息中吗？", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                 {
                     txtStatusUpdate.Text += uploadedPictureURL;
                     txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
@@ -900,7 +900,7 @@ namespace PockeTwit
                 }
                 else
                 {
-                    if (MessageBox.Show("Load a new picture?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    if (MessageBox.Show("加载一张新的图片？", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                     {
                         uploadedPictureURL = string.Empty;
                         pictureUsed = false;
@@ -922,7 +922,7 @@ namespace PockeTwit
             else
             {
                 //Pre loading picture logic.
-                if (MessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                if (MessageBox.Show("把上传图片的链接添加到消息中吗？", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                 {
                     txtStatusUpdate.Text += uploadedPictureURL;
                     txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
@@ -930,7 +930,7 @@ namespace PockeTwit
                 }
                 else
                 {
-                    if (MessageBox.Show("Take a new picture?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    if (MessageBox.Show("拍摄一张新的照片？", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                     {
                         uploadedPictureURL = string.Empty;
                         pictureUsed = false;
@@ -946,7 +946,7 @@ namespace PockeTwit
             if (!pictureUsed && !ClientSettings.SendMessageToMediaService)
             {
                 //Only show message when pre-loading pictures is enabled.
-                if (MessageBox.Show("Uploaded picture not used, are you sure?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
+                if (MessageBox.Show("图片己经上传，但未被使用。你确定要这样做吗？", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
                 {
                     return;
                 }

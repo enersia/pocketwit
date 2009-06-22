@@ -703,7 +703,7 @@ namespace PockeTwit
             string User = selectedItem.Tweet.user.screen_name;
             if (selectedItem.Tweet.TypeofMessage == StatusTypes.Direct)
             {
-                if (MessageBox.Show("Are you sure you want to reply to a Direct Message?", "Reply to DM?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.No)
+                if (MessageBox.Show("你确信要要公开回复一条私信吗？", "回复私信?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.No)
                 {
                     SendDirectMessage();
                     return;
