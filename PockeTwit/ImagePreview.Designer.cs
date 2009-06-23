@@ -45,7 +45,7 @@
             // 
             // menuItem1
             // 
-            this.menuItem1.Text = "Dismiss";
+            this.menuItem1.Text = "关闭";
             this.menuItem1.Click += new System.EventHandler(this.menuItem1_Click);
             // 
             // menuItem2
@@ -53,17 +53,17 @@
             this.menuItem2.MenuItems.Add(this.menuItem3);
             this.menuItem2.MenuItems.Add(this.menuItem4);
             this.menuItem2.MenuItems.Add(this.menuZoom);
-            this.menuItem2.Text = "View";
+            this.menuItem2.Text = "查看";
             this.menuItem2.Click += new System.EventHandler(this.menuItem2_Click);
             // 
             // menuItem3
             // 
-            this.menuItem3.Text = "Image Viewer";
+            this.menuItem3.Text = "图片浏览器";
             this.menuItem3.Click += new System.EventHandler(this.menuItem3_Click);
             // 
             // menuItem4
             // 
-            this.menuItem4.Text = "Launch URL";
+            this.menuItem4.Text = "打开图片链接";
             this.menuItem4.Click += new System.EventHandler(this.menuItem4_Click);
             // 
             // pictureBox1
@@ -78,7 +78,7 @@
             // menuZoom
             // 
             this.menuZoom.Checked = true;
-            this.menuZoom.Text = "Zoom To Fit";
+            this.menuZoom.Text = "适合屏幕大小";
             this.menuZoom.Click += new System.EventHandler(this.menuZoom_Click);
             // 
             // ImagePreview
@@ -90,7 +90,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Menu = this.mainMenu1;
             this.Name = "ImagePreview";
-            this.Text = "Image Preview";
+            this.Text = "图像预览";
             this.ResumeLayout(false);
 
         }
