@@ -410,7 +410,7 @@ namespace PockeTwit
                 }
                 try
                 {
-                    pictureService = GetMediaService();
+                    pictureService = GetMediaService(AccountToSet.ServerURL.ServerType);
                     StartUpload(pictureService, filename);
                 }
                 catch
@@ -433,7 +433,7 @@ namespace PockeTwit
                 //using (Microsoft.WindowsMobile.Forms.SelectPictureDialog s = new Microsoft.WindowsMobile.Forms.SelectPictureDialog())
                 try
                 {
-                    pictureService = GetMediaService();
+                    pictureService = GetMediaService(AccountToSet.ServerURL.ServerType);
                     filename = SelectFileVisual(pictureService.FileFilter(MediaTypeGroup.ALL));
 
                     //if (pictureService.CanUploadOtherMedia)
@@ -620,12 +620,13 @@ namespace PockeTwit
             UpdatePictureData(eventArgs.ReturnMessage, false);
         }
 
-        private IPictureService GetMediaService()
+        private IPictureService GetMediaService(Yedda.Twitter.TwitterServer server)
         {
             IPictureService service;
-            
-            service = PictureServiceFactory.Instance.GetServiceByName(ClientSettings.SelectedMediaService);
-
+            if (server == Twitter.TwitterServer.fanfou)
+                service = PictureServiceFactory.Instance.GetServiceByName("Fanfou");
+            else
+                service = PictureServiceFactory.Instance.GetServiceByName(ClientSettings.SelectedMediaService);
             SetPictureEventHandlers(service, true);
 
             return service;

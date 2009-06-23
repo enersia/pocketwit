@@ -67,6 +67,8 @@ namespace PockeTwit.MediaServices
             serviceList.Add(TwitGoo.Instance);
             serviceList.Add(Posterous.Instance);
             serviceList.Add(TweetPhoto.Instance);
+            serviceList.Add(FanfouPhoto.Instance);
+
             //serviceList.Add(ImgLy.Instance);
 
             //setup every service the same way
