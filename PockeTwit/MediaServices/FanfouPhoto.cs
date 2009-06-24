@@ -303,6 +303,7 @@ namespace PockeTwit.MediaServices
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
 
                 string boundary = System.Guid.NewGuid().ToString();
+                request.AllowWriteStreamBuffering = true;
                 request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);
                 request.Headers.Add("Accept-Language", "cs,en-us;q=0.7,en;q=0.3");
                 request.PreAuthenticate = true;
