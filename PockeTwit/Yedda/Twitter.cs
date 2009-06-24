@@ -870,7 +870,7 @@ namespace Yedda
 
         public string SendDirectMessage(string userID, string message, OutputFormatType format)
         {
-            return SendDirectMessage(userID, null, message, format);
+            return SendDirectMessage(userID, message, null, format);
         }
 
         public string SendDirectMessage(string userID, string message, string in_reply_to_id, OutputFormatType format)
