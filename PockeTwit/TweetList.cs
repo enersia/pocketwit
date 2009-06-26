@@ -1202,11 +1202,11 @@ namespace PockeTwit
             SetStatus("", "");
         }
 
-        private void SetStatus(string ToUser, string in_reply_to_status_id)
+        private void SetStatus(string Text, string in_reply_to_status_id)
         {
             using (PostUpdate StatusForm = new PostUpdate(false))
             {
-                if (!string.IsNullOrEmpty(ToUser))
+                if (!string.IsNullOrEmpty(Text))
                 {
                     StatusForm.AccountToSet = CurrentlySelectedAccount;
                 }
@@ -1215,9 +1215,9 @@ namespace PockeTwit
                     StatusForm.AccountToSet = ClientSettings.DefaultAccount;
                 }
                 this.statList.Visible = false;
-                if (!string.IsNullOrEmpty(ToUser))
+                if (!string.IsNullOrEmpty(Text))
                 {
-                    StatusForm.StatusText = ToUser + " ";
+                    StatusForm.StatusText = Text + " ";
                 }
                 IsLoaded = false;
                 StatusForm.in_reply_to_status_id = in_reply_to_status_id;
@@ -1558,7 +1558,7 @@ namespace PockeTwit
             if (statList.SelectedItem == null) { return; }
             StatusItem selectedItem = (StatusItem)statList.SelectedItem;
             string quote = "RT @" + selectedItem.Tweet.user.screen_name + ": \"" + selectedItem.Tweet.text + "\"";
-            SetStatus(quote, selectedItem.Tweet.id);
+            SetStatus(quote, "");
         }
 
         void statusList_SelectedItemChanged(object sender, EventArgs e)
