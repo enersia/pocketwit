@@ -747,7 +747,8 @@ namespace PockeTwit
         private bool PostTheUpdate()
         {
             LocationFinder.StopGPS();
-            if (!string.IsNullOrEmpty(StatusText))
+            if (!string.IsNullOrEmpty(StatusText) ||
+                (!string.IsNullOrEmpty(picturePath) && pictureService.CanUploadMessage && ClientSettings.SendMessageToMediaService))
             {
                 Cursor.Current = Cursors.WaitCursor;
                 var updateText = TrimTo140(StatusText);
