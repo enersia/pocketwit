@@ -82,19 +82,26 @@ namespace PockeTwit.OtherServices
 
         public static string GetTranslation(string Original)
         {
-            string origLanguage = GetLanguage(Original);
-            if (origLanguage == ClientSettings.TranslationLanguage)
+            try
+            {
+                string origLanguage = GetLanguage(Original);
+                if (origLanguage == ClientSettings.TranslationLanguage)
+                {
+                    return Original;
+                }
+                string URL = string.Format(apiURL, HttpUtility.UrlEncode(Original), origLanguage, ClientSettings.TranslationLanguage);
+                string response = ExecuteGetCommand(URL);
+                if (string.IsNullOrEmpty(response))
+                {
+                    return Original;
+                }
+                string newOutput = "Translated " + origLanguage + " to " + ClientSettings.TranslationLanguage + " by Google.\r\n\r\n" + HttpUtility.HtmlDecode(getJsonValue(response, "translatedText"));
+                return newOutput;
+            }
+            catch
             {
                 return Original;
             }
-            string URL = string.Format(apiURL, HttpUtility.UrlEncode(Original), origLanguage, ClientSettings.TranslationLanguage);
-            string response = ExecuteGetCommand(URL);
-            if (string.IsNullOrEmpty(response))
-            {
-                return Original;
-            }
-            string newOutput = "Translated " + origLanguage + " to " + ClientSettings.TranslationLanguage + " by Google.\r\n\r\n" + HttpUtility.HtmlDecode(getJsonValue(response, "translatedText"));
-            return newOutput;
         }
 
         private static string getJsonValue(string json, string value)
