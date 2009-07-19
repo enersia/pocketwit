@@ -1772,12 +1772,17 @@ namespace PockeTwit
             Yedda.Twitter Conn = GetMatchingConnection(CurrentlySelectedAccount);
             SwitchToList("Search_TimeLine");
             statList.ClearVisible();
-            List<Library.status> searchResults = new List<status>(Manager.SearchTwitter(Conn, SearchString));
-            if (saveThem)
+            Library.status[] stats = Manager.SearchTwitter(Conn, SearchString);
+
+            if (stats != null)
             {
-                LocalStorage.DataBaseUtility.SaveItems(searchResults);
+                List<Library.status> searchResults = new List<status>(stats);
+                if (saveThem)
+                {
+                    LocalStorage.DataBaseUtility.SaveItems(searchResults);
+                }
+                AddStatusesToList(searchResults.ToArray());
             }
-            AddStatusesToList(searchResults.ToArray());
             ChangeCursor(Cursors.Default);
         }
 
