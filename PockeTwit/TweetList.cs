@@ -67,6 +67,7 @@ namespace PockeTwit
 
         FingerUI.Menu.SideMenuItem PostUpdateMenuItem;
         FingerUI.Menu.SideMenuItem SettingsMenuItem;
+        FingerUI.Menu.SideMenuItem FollowUserMenuItem;
         FingerUI.Menu.SideMenuItem AccountsSettingsMenuItem;
         FingerUI.Menu.SideMenuItem AdvancedSettingsMenuItem;
         FingerUI.Menu.SideMenuItem AvatarSettingsMenuItem;
@@ -717,15 +718,16 @@ namespace PockeTwit
             SearchMenuItem = new FingerUI.Menu.SideMenuItem(this.TwitterSearch, "Search/Local", statList.LeftMenu);
             ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "View Favorites", statList.LeftMenu);
 
-            TimeLinesMenuItem = new FingerUI.Menu.SideMenuItem(null, "Other TimeLines ...", statList.LeftMenu);
+            TimeLinesMenuItem = new FingerUI.Menu.SideMenuItem(null, "Other Timelines ...", statList.LeftMenu);
             TimeLinesMenuItem.SubMenuItems.Add(SearchMenuItem);
             TimeLinesMenuItem.SubMenuItems.Add(PublicMenuItem);
             TimeLinesMenuItem.SubMenuItems.Add(ViewFavoritesMenuItem);
+
+            FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "Follow User ...", statList.LeftMenu);
+
             GroupsMenuItem = new FingerUI.Menu.SideMenuItem(null, "Groups ...", statList.LeftMenu);
             GroupsMenuItem.Visible = false;
             //TimeLinesMenuItem.SubMenuItems.Add(GroupsMenuItem);
-            
-            
             
             PostUpdateMenuItem = new FingerUI.Menu.SideMenuItem(this.SetStatus, "Post Update", statList.LeftMenu);
             
@@ -777,7 +779,7 @@ namespace PockeTwit
             }
 
 
-            statList.LeftMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{BackMenuItem, FriendsTimeLineMenuItem, RefreshFriendsTimeLineMenuItem, MessagesMenuItem, RefreshMessagesMenuItem, GroupsMenuItem, TimeLinesMenuItem, PostUpdateMenuItem, SettingsMenuItem,
+            statList.LeftMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{BackMenuItem, FriendsTimeLineMenuItem, RefreshFriendsTimeLineMenuItem, MessagesMenuItem, RefreshMessagesMenuItem, FollowUserMenuItem, GroupsMenuItem, TimeLinesMenuItem, PostUpdateMenuItem, SettingsMenuItem,
             AboutMenuItem, WindowMenuItem, ExitMenuItem});
         }
 
@@ -1718,6 +1720,39 @@ namespace PockeTwit
                 statList.SwitchTolist(ListName);
             }
             SetLeftMenu();
+        }
+
+        private void FollowUserClicked()
+        {
+            using (FollowUserForm f = new FollowUserForm())
+            {
+                if (f.ShowDialog() == DialogResult.Cancel)
+                {
+                    f.Close();
+                    return;
+                }
+                ChangeCursor(Cursors.WaitCursor);
+                try
+                {
+                    Yedda.Twitter conn = GetMatchingConnection(f.Account);
+                    string response = conn.FollowUser(f.UserName);
+
+                    if (string.IsNullOrEmpty(response))
+                    {
+                        GlobalEventHandler.CallShowErrorMessage("User not found.");
+                    }
+                    else
+                    {
+                        FollowingDictionary[conn].AddUser(Library.User.FromId(f.UserName, f.Account));
+                        UpdateRightMenu();
+                    }
+                }
+                finally
+                {
+                    ChangeCursor(Cursors.Default);
+                }
+                f.Close();
+            }
         }
 
         
