@@ -223,6 +223,11 @@ namespace Yedda
                 ServerURL otherURL = (ServerURL)obj;
                 return this.URL.Equals(otherURL.URL);
             }
+
+            public override int GetHashCode()
+            {
+                return URL.GetHashCode();
+            }
         }
 
         public enum TwitterServer

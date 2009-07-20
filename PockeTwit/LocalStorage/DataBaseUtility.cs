@@ -220,7 +220,7 @@ namespace LocalStorage
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }

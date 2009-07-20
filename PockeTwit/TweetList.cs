@@ -44,7 +44,7 @@ namespace PockeTwit
         private Dictionary<Yedda.Twitter, Following> FollowingDictionary = new Dictionary<Yedda.Twitter, Following>();
         private TimelineManagement Manager;
         private NotificationHandler Notifyer;
-        private bool IsLoaded = false;
+        private bool IsLoaded;
         private string ShowUserID;
         private bool StartBackground = false;
         private ISpecialTimeLine currentSpecialTimeLine = null;
@@ -66,7 +66,6 @@ namespace PockeTwit
         FingerUI.Menu.SideMenuItem TimeLinesMenuItem;
 
         FingerUI.Menu.SideMenuItem PostUpdateMenuItem;
-        FingerUI.Menu.SideMenuItem MapMenuItem;
         FingerUI.Menu.SideMenuItem SettingsMenuItem;
         FingerUI.Menu.SideMenuItem AccountsSettingsMenuItem;
         FingerUI.Menu.SideMenuItem AdvancedSettingsMenuItem;
@@ -958,7 +957,7 @@ namespace PockeTwit
             {
                 ResetDictionaries();
             }
-            catch (OutOfMemoryException ex)
+            catch (OutOfMemoryException)
             {
                 MessageBox.Show("There's not enough memory to run PockeTwit. You may want to close some applications and try again.");
                 if (Manager != null)
@@ -1825,12 +1824,17 @@ namespace PockeTwit
             
             
             GlobalEventHandler.setPid();
-            /*if (!IsLoaded)
+
+           
+            // JohnB2007: changed this in order to avoid unused warning for IsLoaded.
+            // Will result in the same MSIL due to compiler optimization anyway and allows
+            // to reuse the infrastructure if once needed.
+            if (!IsLoaded)
             {
-                isChangingingWindowState = false;
-                return;
+            //    isChangingingWindowState = false;
+            //    return;
             }
-            */
+            
 
 
             if (ClientSettings.IsMaximized)

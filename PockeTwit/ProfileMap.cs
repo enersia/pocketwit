@@ -34,8 +34,8 @@ namespace PockeTwit
         GraphicsRenderer myRenderer = new GraphicsRenderer();
         GoogleMapSession mySession = new GoogleMapSession();
 
-        public Geocode CenterLocation;
-        public double Range = 0;
+        public Geocode CenterLocation { get; set; }
+        public double Range { get; set; }
        
 
         public ProfileMap()

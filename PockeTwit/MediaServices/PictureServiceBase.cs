@@ -362,7 +362,7 @@ namespace PockeTwit.MediaServices
                 {
                     DownloadFinish(this, e);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //Always continue after a missed event
                 }
@@ -377,7 +377,7 @@ namespace PockeTwit.MediaServices
                 {
                     UploadFinish(this, e);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //Always continue after a missed event
                 }
@@ -392,7 +392,7 @@ namespace PockeTwit.MediaServices
                 {
                     ErrorOccured(this, e);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //Always continue after a missed event
                 }
@@ -407,7 +407,7 @@ namespace PockeTwit.MediaServices
                 {
                     MessageReady(this, e);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //Always continue after a missed event
                 }
@@ -422,7 +422,7 @@ namespace PockeTwit.MediaServices
                 {
                     DownloadPart(this, e);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //Always continue after a missed event
                 }

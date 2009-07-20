@@ -677,10 +677,9 @@ else
                             return t.SearchFor(AdditionalParameter);
                         }
                         return t.SearchFor(AdditionalParameter, LastSearchID);
-                        break;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 
             }

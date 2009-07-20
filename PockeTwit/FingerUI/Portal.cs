@@ -61,7 +61,6 @@ namespace FingerUI
         private object synLock = new object();
         
         public int WindowOffset;
-        private Bitmap temp;
         private Bitmap _Rendered;
         public Graphics _RenderedGraphics;
         public Bitmap Rendered
@@ -111,7 +110,7 @@ namespace FingerUI
                 {
                     TestMap = new Bitmap(maxWidth, MaxItems*ClientSettings.ItemHeight);
                 }
-                catch (OutOfMemoryException ex)
+                catch (OutOfMemoryException)
                 {
                     ClientSettings.UseDIB = true;
                     ClientSettings.SaveSettings();
@@ -173,7 +172,7 @@ namespace FingerUI
                         NewImage();
                     }
                     
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         //What happened here?
                         //System.Windows.Forms.MessageBox.Show(ex.Message);
@@ -286,7 +285,7 @@ namespace FingerUI
                     Item.Render(_RenderedGraphics, itemBounds);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //System.Windows.Forms.MessageBox.Show(ex.Message);
             }
@@ -340,7 +339,7 @@ namespace FingerUI
                             NewImage();
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         //JeepNaked's error here?
                         //Specified argument was out of range of valid values. Parameter name: index

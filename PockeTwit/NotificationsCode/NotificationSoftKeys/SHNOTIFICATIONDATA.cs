@@ -128,7 +128,9 @@ namespace christec.windowsce.forms
     // RE-play physical alerts on an update
     SHNF_ALERTONUPDATE  = 0x00000200
 	}
-
+    
+    // Disable warnings for unassigned fields
+    #pragma warning disable 0649
 	internal struct NMSHN
 	{
 		public IntPtr hwndFrom; 
@@ -139,4 +141,7 @@ namespace christec.windowsce.forms
 		public int union1;
 		public int union2;
   }
+  // Restore warnings for unassigned fields
+  #pragma warning restore 0649
+
 }
