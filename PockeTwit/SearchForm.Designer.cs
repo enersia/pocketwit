@@ -183,6 +183,8 @@ namespace PockeTwit
             // 
             // txtDummy
             // 
+            this.txtDummy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDummy.Location = new System.Drawing.Point(57, 87);
             this.txtDummy.Name = "txtDummy";
             this.txtDummy.Size = new System.Drawing.Size(152, 21);
