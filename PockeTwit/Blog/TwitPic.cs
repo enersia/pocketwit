@@ -107,7 +107,7 @@ namespace PockeTwit.Blog
                     }
                     
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     OnErrorOccured(new BlogServiceEventArgs(BlogServiceErrorLevel.Failed, "", "Failed to upload picture to TwitPic."));
                 }
@@ -168,7 +168,7 @@ namespace PockeTwit.Blog
                 }
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //Socket exception 10054 could occur when sending large files.
                 OnErrorOccured(new BlogServiceEventArgs(BlogServiceErrorLevel.Failed, "", "Unable to upload picture."));

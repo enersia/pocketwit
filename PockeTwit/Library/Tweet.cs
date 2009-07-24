@@ -466,7 +466,7 @@ namespace PockeTwit.Library
                 {
                     comm.ExecuteNonQuery();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }
@@ -484,6 +484,11 @@ namespace PockeTwit.Library
             {
                 return false;
             }
+        }
+
+        public override int GetHashCode()
+        {
+            return id.GetHashCode() ^ Account.GetHashCode();
         }
 
         #region IComparable Members
@@ -562,7 +567,7 @@ namespace PockeTwit.Library
                 {
                     comm.ExecuteNonQuery();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }

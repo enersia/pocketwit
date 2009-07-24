@@ -268,14 +268,7 @@ namespace PockeTwit.MediaServices
             }
             set
             {
-                if (value != null)
-                {
-                    _medieTypeClass = value;
-                }
-                else
-                {
-                    _medieTypeClass = MediaTypeGroup.PICTURE;
-                }
+                _medieTypeClass = value;
             }
         }
     }

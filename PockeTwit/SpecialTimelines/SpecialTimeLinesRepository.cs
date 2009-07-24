@@ -327,10 +327,11 @@ namespace PockeTwit.SpecialTimelines
                 {
                     l.Add(item);
                 }
-                var s = new XmlSerializer(typeof (ISpecialTimeLine[]));
+                var s = new XmlSerializer(typeof(SpecialTimeLineSerializationHelper));
+                SpecialTimeLineSerializationHelper helper = new SpecialTimeLineSerializationHelper(l);
                 using (var w = new StreamWriter(fileName))
                 {
-                    s.Serialize(w, l.ToArray());
+                    s.Serialize(w, helper);
                 }
             }
         }
@@ -339,12 +340,12 @@ namespace PockeTwit.SpecialTimelines
         {
             var fileName = ClientSettings.CacheDir + "\\GroupBackup.xml";
             if (!File.Exists(fileName)) return;
-            UserGroupTimeLine[] input;
-            var s = new XmlSerializer(typeof (UserGroupTimeLine[]));
+            ISpecialTimeLine[] input;
+            var s = new XmlSerializer(typeof(SpecialTimeLineSerializationHelper));
 
             using (var r = new StreamReader(fileName))
             {
-                input = (UserGroupTimeLine[]) s.Deserialize(r);
+                input = ((SpecialTimeLineSerializationHelper)s.Deserialize(r)).Items;
             }
 
             lock (Items)

@@ -20,7 +20,7 @@ namespace PockeTwit.Themes
 
                 return new System.Drawing.Bitmap(ClientSettings.IconsFolder() + iconName);
             }
-            catch (System.IO.IOException ex)
+            catch (System.IO.IOException)
             {
                 return new System.Drawing.Bitmap(1,1);
             }
@@ -40,7 +40,7 @@ namespace PockeTwit.Themes
 
                 return ClientSettings.IconsFolder() + iconName;
             }
-            catch (System.IO.IOException ex)
+            catch (System.IO.IOException)
             {
                 return ClientSettings.AppPath + "\\Themes\\Original\\" + iconName;
             }

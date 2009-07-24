@@ -154,7 +154,7 @@ namespace PockeTwit.MediaServices
                         }
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                 }
@@ -189,7 +189,7 @@ namespace PockeTwit.MediaServices
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.NotReady, string.Empty, API_ERROR_NOTREADY));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
             }
@@ -254,7 +254,7 @@ namespace PockeTwit.MediaServices
                         OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                     return false;
@@ -283,7 +283,7 @@ namespace PockeTwit.MediaServices
                     OnDownloadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, resultFileName, string.Empty, pictureURL));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_DOWNLOAD));
             }
@@ -315,7 +315,7 @@ namespace PockeTwit.MediaServices
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
             }
@@ -375,7 +375,7 @@ namespace PockeTwit.MediaServices
 
                 return pictureFileName;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_DOWNLOAD));
                 return string.Empty;
@@ -442,7 +442,7 @@ namespace PockeTwit.MediaServices
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_DOWNLOAD));
             }
@@ -518,7 +518,7 @@ namespace PockeTwit.MediaServices
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //Socket exception 10054 could occur when sending large files.
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
@@ -601,7 +601,7 @@ namespace PockeTwit.MediaServices
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //Socket exception 10054 could occur when sending large files.
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));

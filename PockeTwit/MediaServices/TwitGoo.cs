@@ -150,7 +150,7 @@ namespace PockeTwit.MediaServices
                         }
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                 }
@@ -189,7 +189,7 @@ namespace PockeTwit.MediaServices
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.NotReady, string.Empty, "A request is already running."));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_DOWNLOAD));
             } 
@@ -241,7 +241,7 @@ namespace PockeTwit.MediaServices
                     }
 
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                     return false;
@@ -284,7 +284,7 @@ namespace PockeTwit.MediaServices
                     OnDownloadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, resultFileName, string.Empty, pictureURL));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_DOWNLOAD));
             }
@@ -314,7 +314,7 @@ namespace PockeTwit.MediaServices
                     OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, URL, string.Empty, workerPPO.Filename));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, "", API_ERROR_UPLOAD));
             }
@@ -405,7 +405,7 @@ namespace PockeTwit.MediaServices
 
                 return pictureFileName;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, "", API_ERROR_DOWNLOAD));
                 return string.Empty;
@@ -470,7 +470,7 @@ namespace PockeTwit.MediaServices
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, "", API_ERROR_UPLOAD));
                 return null;
@@ -537,7 +537,7 @@ namespace PockeTwit.MediaServices
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, "", API_ERROR_UPLOAD));
                 return null;

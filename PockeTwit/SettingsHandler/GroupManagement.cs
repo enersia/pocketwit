@@ -24,6 +24,7 @@ namespace PockeTwit.SettingsHandler
 
         private void ResetDisplay()
         {
+            cmbChooseGroup.Items.Clear();
             var Times = SpecialTimeLinesRepository.GetList();
             if (Times.Length == 0)
             {
