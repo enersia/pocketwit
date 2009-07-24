@@ -107,11 +107,14 @@ namespace PockeTwit
             } 
             if (ClientSettings.UpdateMinutes > 0)
             {
-                updateTimer.FirstEventTime = DateTime.Now.Add(new TimeSpan(0, ClientSettings.UpdateMinutes, 0));
-                updateTimer.Interval = new TimeSpan(0, ClientSettings.UpdateMinutes, 0);
-                updateTimer.OneShot = false;
-                updateTimer.Tick += new EventHandler(updateTimer_Tick);
-                updateTimer_Tick(null, null);
+                if (updateTimer != null)
+                {
+                    updateTimer.FirstEventTime = DateTime.Now.Add(new TimeSpan(0, ClientSettings.UpdateMinutes, 0));
+                    updateTimer.Interval = new TimeSpan(0, ClientSettings.UpdateMinutes, 0);
+                    updateTimer.OneShot = false;
+                    updateTimer.Tick += new EventHandler(updateTimer_Tick);
+                    updateTimer_Tick(null, null);
+                }
                 NextUpdate = DateTime.Now.Add(new TimeSpan(0, ClientSettings.UpdateMinutes, 0));
             }
         }
