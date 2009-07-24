@@ -6,21 +6,43 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using System.Globalization;
 using System.Diagnostics;
-using Microsoft.WindowsCE.Forms;
+using System.Globalization;
 
 namespace PockeTwit
 {
-    public partial class AdvancedSearchForm : Form
+    public partial class AdvancedSearchSmartphoneForm : Form
     {
         private string _query;
         public string Query { get { return _query; } }
-        public AdvancedSearchForm()
+        public AdvancedSearchSmartphoneForm()
         {
             InitializeComponent();
         }
 
+        private void lblWords_Click(object sender, EventArgs e)
+        {
+            panelWords.Visible = true;
+            panelMore.Visible = false;
+        }
+        
+        private void lblMore_Click(object sender, EventArgs e)
+        {
+            panelWords.Visible = false;
+            panelMore.Visible = true;
+        }
+
+        bool _hasValidSinceDate;
+        private void dateTimePickerSince_ValueChanged(object sender, EventArgs e)
+        {
+            _hasValidSinceDate = true;
+        }
+
+        private bool _hasValidUntilDate;
+        private void dateTimePickerUntil_ValueChanged(object sender, EventArgs e)
+        {
+            _hasValidUntilDate = true;
+        }
         private void ProcessTextBox(string format, string txt)
         {
             Debug.Assert(_queryText != null);
@@ -30,11 +52,12 @@ namespace PockeTwit
         private void ProcessDate(string format, DateTime date)
         {
             Debug.Assert(_queryText != null);
-            
+
             _queryText.AppendFormat(CultureInfo.InvariantCulture, format, date.ToString("yyyy-MM-dd"));
         }
 
         private StringBuilder _queryText;
+        
         private void menuOK_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.OK;
@@ -84,49 +107,20 @@ namespace PockeTwit
                 ProcessDate("&until={0}", dateTimePickerUntil.Value);
             }
             _query = _queryText.ToString();
-            
+
             // no input
             if (_query.Length == 3)
             {
                 DialogResult = DialogResult.Cancel;
             }
-            this.inputPanel1.EnabledChanged -= new System.EventHandler(this.inputPanel1_EnabledChanged);
+            
         }
 
         private void menuCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
-            this.inputPanel1.EnabledChanged -= new System.EventHandler(this.inputPanel1_EnabledChanged);
         }
 
-        bool _hasValidSinceDate;
-        private void dateTimePickerSince_ValueChanged(object sender, EventArgs e)
-        {
-            _hasValidSinceDate = true;
-        }
-
-        private bool _hasValidUntilDate;
-        private void dateTimePickerUntil_ValueChanged(object sender, EventArgs e)
-        {
-            _hasValidUntilDate = true;
-        }
-
-        private void inputPanel1_EnabledChanged(object sender, EventArgs e)
-        {
-            if (inputPanel1.Enabled)
-            {
-                tabControl1.Dock = DockStyle.None;
-                tabControl1.Size = new Size(inputPanel1.VisibleDesktop.Width, inputPanel1.VisibleDesktop.Height);
-            }
-            else
-            {
-                tabControl1.Dock = DockStyle.Fill;
-            }
-        }
-
-        private void AdvancedSearchForm_Activated(object sender, EventArgs e)
-        {
-            this.inputPanel1.EnabledChanged += new System.EventHandler(this.inputPanel1_EnabledChanged);
-        }
+ 
     }
 }

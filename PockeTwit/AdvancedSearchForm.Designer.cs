@@ -35,6 +35,10 @@ namespace PockeTwit
             this.menuCancel = new System.Windows.Forms.MenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageWords = new System.Windows.Forms.TabPage();
+            this.txtHashtag = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtPhrase = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.txtNone = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtAny = new System.Windows.Forms.TextBox();
@@ -54,10 +58,6 @@ namespace PockeTwit
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.inputPanel1 = new Microsoft.WindowsCE.Forms.InputPanel();
-            this.txtPhrase = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.txtHashtag = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPageWords.SuspendLayout();
             this.tabPagePeople.SuspendLayout();
@@ -108,6 +108,40 @@ namespace PockeTwit
             this.tabPageWords.Name = "tabPageWords";
             this.tabPageWords.Size = new System.Drawing.Size(240, 245);
             this.tabPageWords.Text = "Words";
+            // 
+            // txtHashtag
+            // 
+            this.txtHashtag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtHashtag.Location = new System.Drawing.Point(57, 115);
+            this.txtHashtag.Name = "txtHashtag";
+            this.txtHashtag.Size = new System.Drawing.Size(180, 21);
+            this.txtHashtag.TabIndex = 4;
+            // 
+            // label10
+            // 
+            this.label10.ForeColor = System.Drawing.Color.LightGray;
+            this.label10.Location = new System.Drawing.Point(4, 115);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(48, 20);
+            this.label10.Text = "Hash:";
+            // 
+            // txtPhrase
+            // 
+            this.txtPhrase.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPhrase.Location = new System.Drawing.Point(57, 34);
+            this.txtPhrase.Name = "txtPhrase";
+            this.txtPhrase.Size = new System.Drawing.Size(180, 21);
+            this.txtPhrase.TabIndex = 1;
+            // 
+            // label9
+            // 
+            this.label9.ForeColor = System.Drawing.Color.LightGray;
+            this.label9.Location = new System.Drawing.Point(4, 34);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(48, 20);
+            this.label9.Text = "Phrase:";
             // 
             // txtNone
             // 
@@ -276,40 +310,6 @@ namespace PockeTwit
             this.label7.Size = new System.Drawing.Size(48, 20);
             this.label7.Text = "Since:";
             // 
-            // txtPhrase
-            // 
-            this.txtPhrase.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPhrase.Location = new System.Drawing.Point(57, 34);
-            this.txtPhrase.Name = "txtPhrase";
-            this.txtPhrase.Size = new System.Drawing.Size(180, 21);
-            this.txtPhrase.TabIndex = 1;
-            // 
-            // label9
-            // 
-            this.label9.ForeColor = System.Drawing.Color.LightGray;
-            this.label9.Location = new System.Drawing.Point(4, 34);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(48, 20);
-            this.label9.Text = "Phrase:";
-            // 
-            // txtHashtag
-            // 
-            this.txtHashtag.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtHashtag.Location = new System.Drawing.Point(57, 115);
-            this.txtHashtag.Name = "txtHashtag";
-            this.txtHashtag.Size = new System.Drawing.Size(180, 21);
-            this.txtHashtag.TabIndex = 4;
-            // 
-            // label10
-            // 
-            this.label10.ForeColor = System.Drawing.Color.LightGray;
-            this.label10.Location = new System.Drawing.Point(4, 115);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(48, 20);
-            this.label10.Text = "Hash:";
-            // 
             // AdvancedSearchForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -321,7 +321,7 @@ namespace PockeTwit
             this.Menu = this.mainMenu1;
             this.Name = "AdvancedSearchForm";
             this.Text = "Advanced Search";
-            this.Activated += new System.EventHandler(this.SearchWizardForm_Activated);
+            this.Activated += new System.EventHandler(this.AdvancedSearchForm_Activated);
             this.tabControl1.ResumeLayout(false);
             this.tabPageWords.ResumeLayout(false);
             this.tabPagePeople.ResumeLayout(false);

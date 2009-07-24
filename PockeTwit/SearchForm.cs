@@ -291,15 +291,31 @@ namespace PockeTwit
 
         void btnAdvancedSearch_Click(object sender, EventArgs e)
         {
-            using (AdvancedSearchForm f = new AdvancedSearchForm())
+            if (PockeTwit.DetectDevice.DeviceType == PockeTwit.DeviceType.Standard)
             {
-                if (f.ShowDialog() == DialogResult.Cancel)
+                using (AdvancedSearchSmartphoneForm f = new AdvancedSearchSmartphoneForm())
                 {
+                    if (f.ShowDialog() == DialogResult.Cancel)
+                    {
+                        f.Close();
+                        return;
+                    }
+                    txtSearch.Text = f.Query;
                     f.Close();
-                    return;
                 }
-                txtSearch.Text = f.Query;
-                f.Close();
+            }
+            else
+            {
+                using (AdvancedSearchForm f = new AdvancedSearchForm())
+                {
+                    if (f.ShowDialog() == DialogResult.Cancel)
+                    {
+                        f.Close();
+                        return;
+                    }
+                    txtSearch.Text = f.Query;
+                    f.Close();
+                }
             }
         }
 
