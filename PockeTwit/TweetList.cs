@@ -723,7 +723,7 @@ namespace PockeTwit
             TimeLinesMenuItem.SubMenuItems.Add(PublicMenuItem);
             TimeLinesMenuItem.SubMenuItems.Add(ViewFavoritesMenuItem);
 
-            FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "Follow User ...", statList.LeftMenu);
+            FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "Follow User", statList.LeftMenu);
 
             GroupsMenuItem = new FingerUI.Menu.SideMenuItem(null, "Groups ...", statList.LeftMenu);
             GroupsMenuItem.Visible = false;
