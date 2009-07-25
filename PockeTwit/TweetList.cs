@@ -885,7 +885,7 @@ namespace PockeTwit
                     ConversationMenuItem.Visible = true;
                 }
 
-                if (selectedItem.Tweet.user.screen_name == selectedItem.Tweet.Account.UserName)
+                if (ClientSettings.GetAcountForUser(selectedItem.Tweet.user.screen_name) != null)
                 {
                     DeleteStatusMenuItem.Visible = true;
                 }

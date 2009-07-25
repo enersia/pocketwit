@@ -61,7 +61,16 @@ public static class ClientSettings
             return _ItemHeight;
         }
     }
-    
+
+    public static Yedda.Twitter.Account GetAcountForUser(string userScreenName)
+    {
+        foreach (Yedda.Twitter.Account a in AccountsList)
+        {
+            if (a.UserName==userScreenName) { return a; }
+        }
+        return null;
+    }
+
     public static Yedda.Twitter.Account DefaultAccount
     {
         get
