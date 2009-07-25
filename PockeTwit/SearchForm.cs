@@ -163,7 +163,7 @@ namespace PockeTwit
 
                 if (!txtSearch.Text.StartsWith("q="))
                 {
-                    b.Append("q=&");
+                    b.Append("q=");
                     b.Append(System.Web.HttpUtility.UrlEncode(txtSearch.Text));
                 }
                 else
