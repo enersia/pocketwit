@@ -409,7 +409,11 @@ namespace PockeTwit.Library
         public bool Delete()
         {
             Yedda.Twitter Twitter = new Yedda.Twitter();
-            Twitter.AccountInfo = Account;
+            Yedda.Twitter.Account account = ClientSettings.GetAcountForUser(user.screen_name);
+            if (account == null)
+                return false;
+            Twitter.AccountInfo = account;
+
             Cursor.Current = Cursors.WaitCursor;
             try
             {
