@@ -21,7 +21,8 @@ namespace PockeTwit
         private LocationManager Locator = new LocationManager();
 
         private string _providedLocation;
-        public string providedLocation {
+        public string providedLocation
+        {
             get
             {
                 return _providedLocation;
@@ -36,8 +37,8 @@ namespace PockeTwit
         }
 
         public string providedDistnce
-        { 
-            set 
+        {
+            set
             {
                 cmbDistance.Items.Add(value);
                 cmbDistance.SelectedItem = value;
@@ -46,7 +47,7 @@ namespace PockeTwit
             }
         }
 
-		#region Constructors (1) 
+        #region Constructors (1)
 
         public SearchForm()
         {
@@ -65,7 +66,7 @@ namespace PockeTwit
             if (ClientSettings.UseGPS)
             {
                 Locator.StartGPS();
-                
+
             }
             //cmbMeasurement.SelectedValue = ClientSettings.DistancePreference;
             if (!string.IsNullOrEmpty(ClientSettings.DistancePreference))
@@ -76,7 +77,7 @@ namespace PockeTwit
             {
                 cmbMeasurement.Text = "Miles";
             }
-            
+
             cmbDistance.Text = "15";
 
             txtSearch.Focus();
@@ -108,24 +109,24 @@ namespace PockeTwit
                         cmbLocation.SelectedItem = _providedLocation;
                     }
                     cmbLocation.Items.Add("Current GPS Position");
-                    cmbLocation.Items.Add(Geocode.GetAddress(this.GPSLocation).Replace("\r\n",""));
+                    cmbLocation.Items.Add(Geocode.GetAddress(this.GPSLocation).Replace("\r\n", ""));
                     Locator.StopGPS();
                 }
             }
         }
-        
-		#endregion Constructors 
 
-		#region Properties (1) 
+        #endregion Constructors
 
-        public string SearchText{get;set;}
+        #region Properties (1)
 
-		#endregion Properties 
+        public string SearchText { get; set; }
 
-		#region Methods (2) 
+        #endregion Properties
+
+        #region Methods (2)
 
 
-		// Private Methods (2) 
+        // Private Methods (2) 
 
         private void menuCancel_Click(object sender, EventArgs e)
         {
@@ -139,7 +140,7 @@ namespace PockeTwit
 
         private void menuSearch_Click(object sender, EventArgs e)
         {
-            
+
             if (DetectDevice.DeviceType == DeviceType.Professional)
             {
                 if (!string.IsNullOrEmpty(txtSearch.Text) && !ClientSettings.SearchItems.Contains(txtSearch.Text))
@@ -157,11 +158,19 @@ namespace PockeTwit
                 Locator.StopGPS();
             }
             StringBuilder b = new StringBuilder();
-            if(!string.IsNullOrEmpty(txtSearch.Text))
+            if (!string.IsNullOrEmpty(txtSearch.Text))
             {
-                b.Append("q=");
-                b.Append(System.Web.HttpUtility.UrlEncode(txtSearch.Text));
-                
+
+                if (!txtSearch.Text.StartsWith("q="))
+                {
+                    b.Append("q=&");
+                    b.Append(System.Web.HttpUtility.UrlEncode(txtSearch.Text));
+                }
+                else
+                {
+                    // term is an advanced search
+                    b.Append(txtSearch.Text);
+                }
             }
             if (cmbLocation.Text != "Anywhere")
             {
@@ -190,10 +199,10 @@ namespace PockeTwit
                 }
             }
             this.SearchText = b.ToString();
-            
-            if(chkSaveSearch.Checked && !string.IsNullOrEmpty(txtGroupName.Text))
+
+            if (chkSaveSearch.Checked && !string.IsNullOrEmpty(txtGroupName.Text))
             {
-                if(SureTheyWantToSave())
+                if (SureTheyWantToSave())
                 {
                     SavedSearch = new SavedSearchTimeLine();
                     SavedSearch.name = txtGroupName.Text;
@@ -207,7 +216,7 @@ namespace PockeTwit
                     chkSaveSearch.Checked = false;
                     return;
                 }
-                
+
             }
 
             this.DialogResult = DialogResult.OK;
@@ -216,7 +225,7 @@ namespace PockeTwit
         private bool SureTheyWantToSave()
         {
             //We don't need to warn them about searches without auto-update
-            if(!chkAutoUpdate.Checked)
+            if (!chkAutoUpdate.Checked)
             {
                 return true;
             }
@@ -226,7 +235,7 @@ namespace PockeTwit
         }
 
 
-		#endregion Methods 
+        #endregion Methods
 
         private void cmbMeasurement_SelectedValueChanged(object sender, EventArgs e)
         {
@@ -265,19 +274,49 @@ namespace PockeTwit
             {
                 this.txtSearch = new System.Windows.Forms.TextBox();
             }
-            
+
             this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSearch.Location = new System.Drawing.Point(57, 89);
+            this.txtSearch.Location = new System.Drawing.Point(txtDummy.Left, txtDummy.Top);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = this.cmbLocation.Size;
+            this.txtSearch.Height = this.txtDummy.Size.Height;
+            this.txtSearch.Width = this.txtDummy.Size.Width;
             txtSearch.BringToFront();
             this.txtSearch.TabIndex = 8;
 
-            
             this.Controls.Add(this.txtSearch);
             this.ResumeLayout(false);
 
+        }
+
+        void btnAdvancedSearch_Click(object sender, EventArgs e)
+        {
+            if (PockeTwit.DetectDevice.DeviceType == PockeTwit.DeviceType.Standard)
+            {
+                using (AdvancedSearchSmartphoneForm f = new AdvancedSearchSmartphoneForm())
+                {
+                    if (f.ShowDialog() == DialogResult.Cancel)
+                    {
+                        f.Close();
+                        return;
+                    }
+                    txtSearch.Text = f.Query;
+                    f.Close();
+                }
+            }
+            else
+            {
+                using (AdvancedSearchForm f = new AdvancedSearchForm())
+                {
+                    if (f.ShowDialog() == DialogResult.Cancel)
+                    {
+                        f.Close();
+                        return;
+                    }
+                    txtSearch.Text = f.Query;
+                    f.Close();
+                }
+            }
         }
 
         private void chkSaveSearch_Click(object sender, EventArgs e)

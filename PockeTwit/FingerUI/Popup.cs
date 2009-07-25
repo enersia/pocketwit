@@ -39,10 +39,6 @@ namespace PockeTwit.FingerUI
         {
             
         }
-
-        
-
-        
         
         public void ShowNotification(string Text)
         {
@@ -93,6 +89,10 @@ namespace PockeTwit.FingerUI
                 if (AnimationStep > 0) 
                 {
                     AnimationStep = AnimationStep - AnimationPixels;
+                    if (AnimationStep <= 0)
+                    {
+                        AnimationStep = -1;
+                    }
                 }
                 else 
                 {

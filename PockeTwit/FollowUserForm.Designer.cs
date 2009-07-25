@@ -73,6 +73,8 @@
             // 
             // txtUserName
             // 
+            this.txtUserName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+ 	                        | System.Windows.Forms.AnchorStyles.Right)));
             this.txtUserName.Location = new System.Drawing.Point(65, 51);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(171, 21);

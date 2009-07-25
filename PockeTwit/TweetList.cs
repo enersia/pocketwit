@@ -86,7 +86,7 @@ namespace PockeTwit
         #endregion
         #region RightMenu
         FingerUI.Menu.SideMenuItem ConversationMenuItem;
-        
+        FingerUI.Menu.SideMenuItem DeleteStatusMenuItem;
         FingerUI.Menu.SideMenuItem ReponsesMenuItem;
 
         FingerUI.Menu.SideMenuItem ReplyMenuItem;
@@ -806,6 +806,9 @@ namespace PockeTwit
             ConversationMenuItem = new FingerUI.Menu.SideMenuItem(GetConversation, "Show Conversation", statList.RightMenu);
             ConversationMenuItem.CanHide = true;
 
+            DeleteStatusMenuItem = new FingerUI.Menu.SideMenuItem(DeleteStatus, "Delete Tweet", statList.RightMenu);
+            DeleteStatusMenuItem.CanHide = true;
+
             ReponsesMenuItem = new FingerUI.Menu.SideMenuItem(null, "Respond to @User...", statList.RightMenu);
 
             ReplyMenuItem = new FingerUI.Menu.SideMenuItem(SendReply, "Reply @User", statList.RightMenu);
@@ -837,7 +840,7 @@ namespace PockeTwit
                 AddAddUserToGroupMenuItem(t);
             }
 
-            statList.RightMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{ConversationMenuItem, ReponsesMenuItem, QuoteMenuItem, EmailMenuItem, ToggleFavoriteMenuItem, 
+            statList.RightMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{ConversationMenuItem, DeleteStatusMenuItem, ReponsesMenuItem, QuoteMenuItem, EmailMenuItem, ToggleFavoriteMenuItem, 
                 UserTimelineMenuItem, ProfilePageMenuItem, FollowMenuItem, MoveToGroupMenuItem, CopyToGroupMenuItem});
         }
 
@@ -881,6 +884,17 @@ namespace PockeTwit
                 {
                     ConversationMenuItem.Visible = true;
                 }
+
+                if (selectedItem.Tweet.user.screen_name == selectedItem.Tweet.Account.UserName)
+                {
+                    DeleteStatusMenuItem.Visible = true;
+                }
+                else
+                {
+                    DeleteStatusMenuItem.Visible = false;
+                }
+
+
                 if (conn.FavoritesWork)
                 {
                     if (selectedItem.isFavorite)
@@ -1466,10 +1480,25 @@ namespace PockeTwit
             return;
         }
 
+        private void DeleteStatus()
+        {
+            StatusItem s = (StatusItem)statList.SelectedItem;
+            if (s.Tweet.Delete())
+            {
+                // refresh
+                AddStatusesToList(Manager.GetFriendsImmediately());
+            }
+            else
+            {
+                GlobalEventHandler.CallShowErrorMessage("Could not delete.");
+            }
+        }
+
         private void GetConversation()
         {
             GetConversation(null);
         }
+
         private void GetConversation(HistoryItem history)
         {
             currentSpecialTimeLine = null;

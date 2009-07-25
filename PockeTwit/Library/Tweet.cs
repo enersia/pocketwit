@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using PockeTwit.FingerUI;
 using Yedda;
+using System.Windows.Forms;
 
 namespace PockeTwit.Library
 {
@@ -403,6 +404,30 @@ namespace PockeTwit.Library
                 resultList.Add(newStat);
             }
             return resultList.ToArray();
+        }
+
+        public bool Delete()
+        {
+            Yedda.Twitter Twitter = new Yedda.Twitter();
+            Twitter.AccountInfo = Account;
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                string response = Twitter.Destroy_Status(id, Twitter.OutputFormatType.XML);
+                if (response != null)
+                {
+                    LocalStorage.DataBaseUtility.DeleteStatus(id);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
         }
 
         public static string Serialize(status[] List)
