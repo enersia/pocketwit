@@ -139,6 +139,7 @@ namespace PockeTwit
             if (DetectDevice.DeviceType == DeviceType.Professional)
             {
                 inputPanel1 = new Microsoft.WindowsCE.Forms.InputPanel();
+                TodayScreenRegistrySetup.CheckTodayScreenInstalled();
             }
             if (UpgradeChecker.devBuild)
             {
