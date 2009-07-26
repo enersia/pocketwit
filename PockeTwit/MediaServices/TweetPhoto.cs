@@ -26,7 +26,6 @@ namespace PockeTwit.MediaServices
         private const string API_KEY = "cd6fa2df805addb613d06a91f24bdf01";
 
         private string requestedUrl = string.Empty;
-        private bool redirectedUrlIsPictureUrl = false;
 
         #endregion
 
@@ -581,7 +580,7 @@ namespace PockeTwit.MediaServices
                 }
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //Socket exception 10054 could occur when sending large files.
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));

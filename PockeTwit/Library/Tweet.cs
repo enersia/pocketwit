@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using PockeTwit.FingerUI;
 using Yedda;
+using System.Windows.Forms;
 
 namespace PockeTwit.Library
 {
@@ -39,20 +40,6 @@ namespace PockeTwit.Library
 
         [XmlIgnore]
         public List<StatusItem.Clickable> Clickables { get; set; }
-
-        [XmlIgnore]
-        public string Serialized
-        {
-            get
-            {
-                var sb = new StringBuilder();
-                using (var w = new StringWriter(sb))
-                {
-                    statusSerializer.Serialize(w, this);
-                }
-                return sb.ToString();
-            }
-        }
 
         public StatusTypes type { get; set; }
 
@@ -419,6 +406,34 @@ namespace PockeTwit.Library
             return resultList.ToArray();
         }
 
+        public bool Delete()
+        {
+            Yedda.Twitter Twitter = new Yedda.Twitter();
+            Yedda.Twitter.Account account = ClientSettings.GetAcountForUser(user.screen_name);
+            if (account == null)
+                return false;
+            Twitter.AccountInfo = account;
+
+            Cursor.Current = Cursors.WaitCursor;
+            try
+            {
+                string response = Twitter.Destroy_Status(id, Twitter.OutputFormatType.XML);
+                if (response != null)
+                {
+                    LocalStorage.DataBaseUtility.DeleteStatus(id);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            finally
+            {
+                Cursor.Current = Cursors.Default;
+            }
+        }
+
         public static string Serialize(status[] List)
         {
             if (List.Length == 0)
@@ -480,7 +495,7 @@ namespace PockeTwit.Library
                 {
                     comm.ExecuteNonQuery();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }
@@ -498,6 +513,11 @@ namespace PockeTwit.Library
             {
                 return false;
             }
+        }
+
+        public override int GetHashCode()
+        {
+            return id.GetHashCode() ^ Account.GetHashCode();
         }
 
         #region IComparable Members
@@ -576,7 +596,7 @@ namespace PockeTwit.Library
                 {
                     comm.ExecuteNonQuery();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }

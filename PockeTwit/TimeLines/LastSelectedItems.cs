@@ -6,6 +6,12 @@ using PockeTwit.SpecialTimelines;
 
 namespace PockeTwit.TimeLines
 {
+    internal struct NewestSelectedInformation
+    {
+        public long CreatedAtTicks;
+        public string id;
+    }
+
     internal static class LastSelectedItems
     {
         public delegate void delUnreadCountChanged(string TimeLine, int Count);
@@ -19,8 +25,7 @@ namespace PockeTwit.TimeLines
         private static readonly Dictionary<string, string> LastSelectedItemsDictionary =
             new Dictionary<string, string>();
 
-        private static readonly Dictionary<string, status> NewestSelectedItemsDictionary =
-            new Dictionary<string, status>();
+        private static Dictionary<string, NewestSelectedInformation> NewestSelectedItemsDictionary = new Dictionary<string, NewestSelectedInformation>();
 
         private static readonly Dictionary<string, int> UnreadItemCount =
             new Dictionary<string, int>();
@@ -52,23 +57,30 @@ namespace PockeTwit.TimeLines
                 LastSelectedItemsDictionary.Add(ListName, "");
             }
             LastSelectedItemsDictionary[ListName] = selectedStatus.id;
-            
+
+            var newInfo = new NewestSelectedInformation
+            {
+                CreatedAtTicks = selectedStatus.createdAt.Ticks,
+                id = selectedStatus.id
+            };
+
+
             if (!NewestSelectedItemsDictionary.ContainsKey(ListName))
             {
                 lock(NewestSelectedItemsDictionary)
                 {
-                    NewestSelectedItemsDictionary.Add(ListName, selectedStatus);
-                    StoreStatusInRegistry(ListName, selectedStatus);
+                    NewestSelectedItemsDictionary.Add(ListName, newInfo);
+                    StoreNewestInfoInRegistry(ListName, newInfo);
                 }
                 SetUnreadCount(ListName, selectedStatus.id, specialTime);
             }
             else
             {
-                if (NewestSelectedItemsDictionary[ListName].createdAt <= selectedStatus.createdAt)
+                if (NewestSelectedItemsDictionary[ListName].CreatedAtTicks <= newInfo.CreatedAtTicks)
                 {
-                    NewestSelectedItemsDictionary[ListName] = selectedStatus;
-                    StoreStatusInRegistry(ListName, selectedStatus);
-                    SetUnreadCount(ListName, selectedStatus.id, specialTime);
+                    NewestSelectedItemsDictionary[ListName] = newInfo;
+                    StoreNewestInfoInRegistry(ListName, newInfo);
+                    SetUnreadCount(ListName, newInfo.id, specialTime);
                 }
             }
             
@@ -163,9 +175,9 @@ namespace PockeTwit.TimeLines
         {
             LastSavedItemsRoot.SetValue(ListName, ID, RegistryValueKind.String);
         }
-        private static void StoreStatusInRegistry(string ListName, status Item)
+        private static void StoreNewestInfoInRegistry(string ListName, NewestSelectedInformation Item)
         {
-            NewestSavedItemsRoot.SetValue(ListName, Item.Serialized);
+            NewestSavedItemsRoot.SetValue(ListName, Item.CreatedAtTicks + "|" + Item.id);
         }
 
 
@@ -202,12 +214,24 @@ namespace PockeTwit.TimeLines
             }
             if (NewestSavedItemsRoot != null)
             {
-                string[] StoredItems = NewestSavedItemsRoot.GetValueNames();
-                foreach (string StoredItem in StoredItems)
+                string[] storedItems = NewestSavedItemsRoot.GetValueNames();
+                foreach (string storedItem in storedItems)
                 {
-                    string SerializedItem = (string)NewestSavedItemsRoot.GetValue(StoredItem);
-                    status Deserialized = status.DeserializeSingle(SerializedItem, null);
-                    NewestSelectedItemsDictionary.Add(StoredItem, Deserialized);
+                    var serializedItem = (string)NewestSavedItemsRoot.GetValue(storedItem);
+                    NewestSelectedInformation newItem;
+                    try
+                    {
+                        var splitItem = serializedItem.Split('|');
+                        newItem = new NewestSelectedInformation
+                                          {CreatedAtTicks = long.Parse(splitItem[1]), id = splitItem[1]};
+                    }
+                    catch
+                    {
+                        var deserializedStatus = status.DeserializeSingle(serializedItem, null);
+                        newItem = new NewestSelectedInformation
+                                      {CreatedAtTicks = deserializedStatus.createdAt.Ticks, id = deserializedStatus.id};
+                    }
+                    NewestSelectedItemsDictionary.Add(storedItem, newItem);
                 }
             }
             UpdateUnreadCounts();

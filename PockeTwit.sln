@@ -21,7 +21,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "QuickPost", "QuickPost\Quic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomInstallLib", "CustomInstallLib\CustomInstallLib.csproj", "{FD007F7B-0A31-4009-8164-EE7D0EA2EAC2}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PockeTwitDesktopInstall", "PockeTwitDesktopInstall\PockeTwitDesktopInstall.vdproj", "{21151F6D-C7AE-477F-8DAD-6E6EA7060899}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PocketTwitDesktopInstall", "PockeTwitDesktopInstall\PockeTwitDesktopInstall.vdproj", "{21151F6D-C7AE-477F-8DAD-6E6EA7060899}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -124,7 +124,6 @@ Global
 		{AA23BD6F-BF35-4DAA-836A-7F0438009624}.Release|Windows Mobile 6 Standard SDK (ARMV4I).ActiveCfg = Release
 		{AA23BD6F-BF35-4DAA-836A-7F0438009624}.Release|Windows Mobile 6 Standard SDK (ARMV4I).Build.0 = Release
 		{F8B2BB83-033B-4A6B-9A26-80F322F2773F}.Debug|Any CPU.ActiveCfg = Debug
-		{F8B2BB83-033B-4A6B-9A26-80F322F2773F}.Debug|Any CPU.Build.0 = Debug
 		{F8B2BB83-033B-4A6B-9A26-80F322F2773F}.Debug|Mixed Platforms.ActiveCfg = Debug
 		{F8B2BB83-033B-4A6B-9A26-80F322F2773F}.Debug|Mixed Platforms.Build.0 = Debug
 		{F8B2BB83-033B-4A6B-9A26-80F322F2773F}.Debug|Pocket PC 2003 (ARMV4).ActiveCfg = Debug

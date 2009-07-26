@@ -230,7 +230,7 @@ namespace PockeTwit
                 GetArt.Timeout = 20000;
                 ArtResponse = (HttpWebResponse) GetArt.GetResponse();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 lock (BadURLs)
                 {
@@ -291,7 +291,7 @@ namespace PockeTwit
                                     {
                                         comm.ExecuteNonQuery();
                                     }
-                                    catch (SQLiteException ex)
+                                    catch (SQLiteException)
                                     {
                                     }
                                 }
@@ -302,10 +302,10 @@ namespace PockeTwit
                     }
                 }
             }
-            catch (SQLiteException ex)
+            catch (SQLiteException)
             {
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 lock (BadURLs)
                 {

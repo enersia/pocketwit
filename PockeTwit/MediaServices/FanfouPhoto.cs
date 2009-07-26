@@ -166,14 +166,12 @@ namespace PockeTwit.MediaServices
                         return false;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                     return false;
                 }
             }
-            return true;
- 
         }
 
         public override bool CanFetchUrl(string URL)
@@ -356,7 +354,7 @@ namespace PockeTwit.MediaServices
                 }
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //Socket exception 10054 could occur when sending large files.
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));

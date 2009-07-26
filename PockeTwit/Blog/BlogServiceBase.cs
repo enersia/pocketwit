@@ -116,7 +116,7 @@ namespace PockeTwit.Blog
                 {
                     PostFinish(this, e);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //Always continue after a missed event
                 }
@@ -131,7 +131,7 @@ namespace PockeTwit.Blog
                 {
                     ErrorOccured(this, e);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //Always continue after a missed event
                 }
@@ -146,7 +146,7 @@ namespace PockeTwit.Blog
                 {
                     MessageReady(this, e);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //Always continue after a missed event
                 }

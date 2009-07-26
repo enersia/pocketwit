@@ -168,7 +168,7 @@ namespace PockeTwit.MediaServices
 
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                 }
@@ -207,7 +207,7 @@ namespace PockeTwit.MediaServices
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.NotReady, string.Empty, "A request is already running."));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_DOWNLOAD));
             } 
@@ -253,7 +253,7 @@ namespace PockeTwit.MediaServices
                     
 
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                     return false;
@@ -301,7 +301,7 @@ namespace PockeTwit.MediaServices
                     RetrievePictureAsync(pictureURL);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //No need to throw, postPicture throws event.        
                 //OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, "", "Unable to download picture, try again later."));
@@ -320,7 +320,7 @@ namespace PockeTwit.MediaServices
                     OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, uploadResult, "", workerPPO.Filename));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
             }
@@ -411,12 +411,14 @@ namespace PockeTwit.MediaServices
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return string.Empty;
-                OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
+                // JohnB2007 commented this out to avoid unreachable code warning.
+                // not sure if order should be flipped actually?
+                // OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
             }
-            return string.Empty;
+            //return string.Empty;
         }
 
         /// <summary>
@@ -494,9 +496,8 @@ namespace PockeTwit.MediaServices
                     }
 
                 }
-                return string.Empty;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                 return string.Empty;
@@ -550,7 +551,7 @@ namespace PockeTwit.MediaServices
 
                 return pictureFileName;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                 return string.Empty;
@@ -592,7 +593,7 @@ namespace PockeTwit.MediaServices
 
                 return pictureFileName;
             }
-            catch (Exception e)
+            catch (Exception)
             {            
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                 return string.Empty;
@@ -629,7 +630,7 @@ namespace PockeTwit.MediaServices
 
                 dataStream.BeginRead(readBuffer, 0, PT_READ_BUFFER_SIZE, new System.AsyncCallback(DownloadPartFinished), state);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_DOWNLOAD));
             }

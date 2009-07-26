@@ -14,7 +14,7 @@ namespace PockeTwit
         private Point _offset;
         public userMapOverlay(IMapDrawable drawable, Geocode geocode, Library.User user)
         {
-            _drawable = (userMapDrawable)_drawable;
+            _drawable = (userMapDrawable)drawable;
             _geocode = geocode;
             _user = user;
             _offset = new Point((ClientSettings.SmallArtSize + (ClientSettings.Margin * 2) / 2), (ClientSettings.SmallArtSize + (ClientSettings.Margin * 2)));

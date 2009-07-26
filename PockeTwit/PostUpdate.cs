@@ -29,8 +29,6 @@ namespace PockeTwit
         private bool localPictureEventsSet = false;
         private string picturePath = string.Empty;
 
-        private int availableChars = 140; //should retrieve this from a blogservice.
-
         public delegate void delAddPicture(string ImageFile, PictureBox BoxToUpdate);
         public delegate void delUpdatePictureData(string pictureUrl, bool uploadingPicture);
 
@@ -691,7 +689,7 @@ namespace PockeTwit
                     //}
 
                     uploadedPictureURL = pictureURL;
-                    uploadingPicture = uploadingPicture;
+                    //uploadingPicture = uploadingPicture;
                 }
                 catch (OutOfMemoryException)
                 {

@@ -14,7 +14,6 @@ namespace PockeTwit
         private System.Windows.Forms.MenuItem menuSearch;
 
 		#endregion Fields 
-
 		#region Methods (1) 
 
 
@@ -59,6 +58,7 @@ namespace PockeTwit
             this.label2 = new System.Windows.Forms.Label();
             this.cmbLocation = new System.Windows.Forms.ComboBox();
             this.txtDummy = new System.Windows.Forms.TextBox();
+            this.linkLabelAdvSearch = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -82,7 +82,7 @@ namespace PockeTwit
             this.chkSaveSearch.Location = new System.Drawing.Point(4, 131);
             this.chkSaveSearch.Name = "chkSaveSearch";
             this.chkSaveSearch.Size = new System.Drawing.Size(116, 26);
-            this.chkSaveSearch.TabIndex = 7;
+            this.chkSaveSearch.TabIndex = 5;
             this.chkSaveSearch.Text = "Save as Group";
             this.chkSaveSearch.CheckStateChanged += new System.EventHandler(this.chkSaveSearch_CheckStateChanged);
             this.chkSaveSearch.Click += new System.EventHandler(this.chkSaveSearch_Click);
@@ -95,7 +95,7 @@ namespace PockeTwit
             this.txtGroupName.Location = new System.Drawing.Point(117, 131);
             this.txtGroupName.Name = "txtGroupName";
             this.txtGroupName.Size = new System.Drawing.Size(120, 21);
-            this.txtGroupName.TabIndex = 8;
+            this.txtGroupName.TabIndex = 6;
             // 
             // chkAutoUpdate
             // 
@@ -104,7 +104,7 @@ namespace PockeTwit
             this.chkAutoUpdate.Location = new System.Drawing.Point(25, 163);
             this.chkAutoUpdate.Name = "chkAutoUpdate";
             this.chkAutoUpdate.Size = new System.Drawing.Size(95, 26);
-            this.chkAutoUpdate.TabIndex = 13;
+            this.chkAutoUpdate.TabIndex = 7;
             this.chkAutoUpdate.Text = "AutoUpdate";
             // 
             // lblSearch
@@ -182,11 +182,24 @@ namespace PockeTwit
             // 
             // txtDummy
             // 
+            this.txtDummy.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDummy.Location = new System.Drawing.Point(57, 87);
             this.txtDummy.Name = "txtDummy";
-            this.txtDummy.Size = new System.Drawing.Size(180, 21);
-            this.txtDummy.TabIndex = 28;
+            this.txtDummy.Size = new System.Drawing.Size(152, 21);
+            this.txtDummy.TabIndex = 3;
             this.txtDummy.Visible = false;
+            // 
+            // linkLabelAdvSearch
+            // 
+            this.linkLabelAdvSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.linkLabelAdvSearch.ForeColor = System.Drawing.Color.LightGray;
+            this.linkLabelAdvSearch.Location = new System.Drawing.Point(215, 88);
+            this.linkLabelAdvSearch.Name = "linkLabelAdvSearch";
+            this.linkLabelAdvSearch.Size = new System.Drawing.Size(20, 20);
+            this.linkLabelAdvSearch.TabIndex = 12;
+            this.linkLabelAdvSearch.Text = "...";
+            this.linkLabelAdvSearch.Click += new System.EventHandler(this.btnAdvancedSearch_Click);
             // 
             // SearchForm
             // 
@@ -195,6 +208,7 @@ namespace PockeTwit
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.linkLabelAdvSearch);
             this.Controls.Add(this.txtDummy);
             this.Controls.Add(this.chkAutoUpdate);
             this.Controls.Add(this.txtGroupName);
@@ -210,11 +224,11 @@ namespace PockeTwit
             this.Menu = this.mainMenu1;
             this.Name = "SearchForm";
             this.Text = "Twitter Search";
-            //this.ResumeLayout(false);
+            this.ResumeLayout(false);
+
         }
 
         #endregion
-
         private System.Windows.Forms.Control txtSearch;
         private System.Windows.Forms.CheckBox chkSaveSearch;
         private System.Windows.Forms.TextBox txtGroupName;
@@ -227,5 +241,6 @@ namespace PockeTwit
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cmbLocation;
         private System.Windows.Forms.TextBox txtDummy;
+        private System.Windows.Forms.LinkLabel linkLabelAdvSearch;
     }
 }

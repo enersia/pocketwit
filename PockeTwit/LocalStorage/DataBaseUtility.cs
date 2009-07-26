@@ -220,7 +220,7 @@ namespace LocalStorage
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
         }
@@ -407,6 +407,26 @@ namespace LocalStorage
             }
             ThrottledArtGrabber.ClearUnlinkedAvatars();
         }
+
+        public static void DeleteStatus(string statusId)
+        {
+            using (SQLiteConnection conn = GetConnection())
+            {
+                conn.Open();
+                using (SQLiteTransaction t = conn.BeginTransaction())
+                {
+                    using (var comm = new SQLiteCommand(conn))
+                    {
+                        comm.CommandText = "DELETE FROM statuses WHERE id=@id";
+                        var dParm = new SQLiteParameter(DbType.String);
+                        comm.Parameters.Add(new SQLiteParameter("@id", statusId));
+                        int results = comm.ExecuteNonQuery();                    }
+                    t.Commit();
+                }
+                conn.Close();
+            }
+        }
+
 
         public static void SaveItems(List<status> TempLine)
         {

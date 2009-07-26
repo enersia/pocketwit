@@ -817,7 +817,7 @@ namespace PockeTwit.FingerUI
                 }
                 base.Dispose(disposing);
             }
-            catch(ObjectDisposedException ex){}
+            catch(ObjectDisposedException){}
         }
 
         protected override void OnGotFocus(EventArgs e)
