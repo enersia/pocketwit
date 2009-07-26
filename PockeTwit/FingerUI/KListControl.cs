@@ -647,7 +647,7 @@ namespace PockeTwit.FingerUI
             {
                 delClearMe d = new delClearMe(ClearVisible);
                 this.BeginInvoke(d, null);
-            }
+            }   
             else
             {
                 m_items.Clear();
