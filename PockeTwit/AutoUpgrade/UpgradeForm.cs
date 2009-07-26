@@ -102,7 +102,7 @@ namespace PockeTwit
             else
             {
                 Directory.CreateDirectory(ClientSettings.AppPath + "\\Update");
-                request = (HttpWebRequest) HttpWebRequest.Create(_NewVersion.DownloadURL);
+                request = WebRequestFactory.CreateHttpRequest(_NewVersion.DownloadURL);
                 request.BeginGetResponse((ResponseReceived), null);
                 EnableMenu(false);
 

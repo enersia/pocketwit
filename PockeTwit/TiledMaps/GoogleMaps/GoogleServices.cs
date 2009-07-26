@@ -1,4 +1,4 @@
-using System; // © 2008 Koushik Dutta - www.koushikdutta.com
+using System; // ?2008 Koushik Dutta - www.koushikdutta.com
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Net;
 using System.Runtime.InteropServices;
+using PockeTwit;
 
 namespace TiledMaps
 {
@@ -76,7 +77,7 @@ namespace TiledMaps
 
         public static Geocode GetGeocode(int cellID, int locationAreaCode)
         {
-            HttpWebRequest req = HttpWebRequest.Create("http://www.google.com/glm/mmap") as HttpWebRequest;
+            HttpWebRequest req = WebRequestFactory.CreateHttpRequest("http://www.google.com/glm/mmap") as HttpWebRequest;
             MemoryStream s = new MemoryStream();
             BinaryWriter writer = new BinaryWriter(s, UTF8Encoding.Default);
 
@@ -363,7 +364,7 @@ namespace TiledMaps
         public static T GetDirections<T>(string startLoc, string endLoc) where T: Directions, new()
         {
             string uri = string.Format("http://maps.google.com/maps?f=d&hl=en&saddr={0}&daddr={1}&output=js", startLoc, endLoc);
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+            HttpWebRequest request = WebRequestFactory.CreateHttpRequest(uri);
             request.Method = "GET";
 
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())

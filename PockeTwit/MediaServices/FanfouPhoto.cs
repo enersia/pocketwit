@@ -195,7 +195,7 @@ namespace PockeTwit.MediaServices
         {
             try
             {
-                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
+                HttpWebRequest myRequest = WebRequestFactory.CreateHttpRequest(url);
                 myRequest.Method = "GET";
                 String pictureFileName = String.Empty;
 
@@ -269,7 +269,7 @@ namespace PockeTwit.MediaServices
 
         private string GetPictureUrl(string url)
         {
-            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest myRequest = WebRequestFactory.CreateHttpRequest(url);
             using (HttpWebResponse response = (HttpWebResponse)myRequest.GetResponse())
             {
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
@@ -300,7 +300,7 @@ namespace PockeTwit.MediaServices
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
 
                 string boundary = System.Guid.NewGuid().ToString();
                 request.AllowWriteStreamBuffering = true;

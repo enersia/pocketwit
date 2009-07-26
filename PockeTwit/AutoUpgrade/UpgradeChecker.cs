@@ -79,7 +79,7 @@ namespace PockeTwit
 
         private void GetWebResponse(object o)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(UpgradeURL);
+            HttpWebRequest request = WebRequestFactory.CreateHttpRequest(UpgradeURL);
             try
             {
                 HttpWebResponse httpResponse = (HttpWebResponse)request.GetResponse();

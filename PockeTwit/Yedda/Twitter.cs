@@ -21,6 +21,7 @@ using System.Xml;
 using System.Web;
 using System.Collections.Generic;
 using System.Text;
+using PockeTwit;
 
 namespace Yedda
 {
@@ -449,7 +450,7 @@ namespace Yedda
 
         protected string ExecuteAnonymousGetCommand(string url)
         {
-            HttpWebRequest client = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest client = WebRequestFactory.CreateHttpRequest(url);
             client.Timeout = 20000;
             
             try
@@ -520,7 +521,7 @@ namespace Yedda
 
         protected string ExecuteGetCommand(string url)
         {
-            HttpWebRequest client = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest client = WebRequestFactory.CreateHttpRequest(url);
             client.Timeout = 20000;
             if (!string.IsNullOrEmpty(AccountInfo.UserName) &&
                 !string.IsNullOrEmpty(AccountInfo.Password))
@@ -624,7 +625,7 @@ namespace Yedda
         /// <returns>The response of the request, or null if we got 404 or nothing.</returns>
         protected string ExecutePostCommand(string url, string data)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
             
             if (!string.IsNullOrEmpty(AccountInfo.UserName) && !string.IsNullOrEmpty(AccountInfo.Password))
             {

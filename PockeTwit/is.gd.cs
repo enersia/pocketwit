@@ -19,7 +19,7 @@ namespace PockeTwit
             try
             {
                 string TotalURL = "http://is.gd/api.php?longurl=" + URL;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(TotalURL);
+                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(TotalURL);
                 using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
                 {
                     using (System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream()))

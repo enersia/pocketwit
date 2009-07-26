@@ -327,7 +327,7 @@ namespace PockeTwit.MediaServices
         {
             try
             {
-                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(string.Format(API_SHOW_THUMB_FORMAT, imageId));
+                HttpWebRequest myRequest = WebRequestFactory.CreateHttpRequest(string.Format(API_SHOW_THUMB_FORMAT, imageId));
                 myRequest.Method = "GET";
                 String pictureFileName = String.Empty;
 
@@ -382,7 +382,7 @@ namespace PockeTwit.MediaServices
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
 
                 string boundary = System.Guid.NewGuid().ToString();
                 request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);
@@ -456,7 +456,7 @@ namespace PockeTwit.MediaServices
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
 
                 string boundary = System.Guid.NewGuid().ToString();
                 //request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);

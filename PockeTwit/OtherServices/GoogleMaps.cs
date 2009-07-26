@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web;
 using System.Net;
+using PockeTwit;
 using PockeTwit.OtherServices;
 
 namespace PockeTwit.OtherServices
@@ -104,7 +105,7 @@ namespace PockeTwit.OtherServices
         public static Coordinate GetCoordinates(string address)
         {
             Uri uri = GetGeocodeUri(address);
-            System.Net.HttpWebRequest client = (HttpWebRequest)WebRequest.Create(uri);
+            System.Net.HttpWebRequest client = WebRequestFactory.CreateHttpRequest(uri);
 
             IFormatProvider format = new System.Globalization.CultureInfo(1033);
 
@@ -139,7 +140,7 @@ namespace PockeTwit.OtherServices
         public static string GetAddress(string CoordinateString)
         {
             Uri uri = GetGeocodeUri(CoordinateString);
-            System.Net.HttpWebRequest client = (HttpWebRequest)WebRequest.Create(uri);
+            System.Net.HttpWebRequest client = WebRequestFactory.CreateHttpRequest(uri);
 
 
 
@@ -198,7 +199,7 @@ namespace Yedda
             }
             string markers = string.Join("|", locations);
             string URL = string.Format(staticMapURL, markers, Width, Height, Zoom);
-            HttpWebRequest client = (HttpWebRequest)WebRequest.Create(URL);
+            HttpWebRequest client = WebRequestFactory.CreateHttpRequest(URL);
             using (HttpWebResponse httpResponse = (HttpWebResponse)client.GetResponse())
             {
                 try

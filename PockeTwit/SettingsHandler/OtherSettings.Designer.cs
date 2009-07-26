@@ -58,6 +58,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.txtCaheDir = new System.Windows.Forms.TextBox();
             this.chkAutoComplete = new System.Windows.Forms.CheckBox();
+            this.chkEnableProxy = new System.Windows.Forms.CheckBox();
+            this.txtProxyServer = new System.Windows.Forms.TextBox();
+            this.txtProxyPort = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -143,7 +147,7 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(4, 171);
+            this.label2.Location = new System.Drawing.Point(2, 221);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(233, 20);
             this.label2.Text = "数据缓存目录:";
@@ -152,19 +156,57 @@
             // 
             this.txtCaheDir.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCaheDir.Location = new System.Drawing.Point(4, 194);
+            this.txtCaheDir.Location = new System.Drawing.Point(2, 244);
             this.txtCaheDir.Name = "txtCaheDir";
             this.txtCaheDir.Size = new System.Drawing.Size(233, 21);
-            this.txtCaheDir.TabIndex = 6;
+            this.txtCaheDir.TabIndex = 9;
             // 
             // chkAutoComplete
             // 
             this.chkAutoComplete.ForeColor = System.Drawing.Color.LightGray;
-            this.chkAutoComplete.Location = new System.Drawing.Point(3, 148);
+            this.chkAutoComplete.Location = new System.Drawing.Point(3, 198);
             this.chkAutoComplete.Name = "chkAutoComplete";
             this.chkAutoComplete.Size = new System.Drawing.Size(235, 20);
-            this.chkAutoComplete.TabIndex = 5;
+            this.chkAutoComplete.TabIndex = 8;
             this.chkAutoComplete.Text = "为地址薄启用自动完成";
+            // 
+            // chkEnableProxy
+            // 
+            this.chkEnableProxy.ForeColor = System.Drawing.Color.LightGray;
+            this.chkEnableProxy.Location = new System.Drawing.Point(2, 148);
+            this.chkEnableProxy.Name = "chkEnableProxy";
+            this.chkEnableProxy.Size = new System.Drawing.Size(235, 20);
+            this.chkEnableProxy.TabIndex = 5;
+            this.chkEnableProxy.Text = "Use proxy";
+            this.chkEnableProxy.CheckStateChanged += new System.EventHandler(this.chkEnableProxy_CheckStateChanged);
+            // 
+            // txtProxyServer
+            // 
+            this.txtProxyServer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtProxyServer.Location = new System.Drawing.Point(3, 171);
+            this.txtProxyServer.Name = "txtProxyServer";
+            this.txtProxyServer.Size = new System.Drawing.Size(102, 21);
+            this.txtProxyServer.TabIndex = 6;
+            this.txtProxyServer.Text = "000.000.000.000";
+            // 
+            // txtProxyPort
+            // 
+            this.txtProxyPort.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtProxyPort.Location = new System.Drawing.Point(125, 171);
+            this.txtProxyPort.Name = "txtProxyPort";
+            this.txtProxyPort.Size = new System.Drawing.Size(32, 21);
+            this.txtProxyPort.TabIndex = 7;
+            this.txtProxyPort.Text = "0000";
+            // 
+            // label3
+            // 
+            this.label3.ForeColor = System.Drawing.Color.LightGray;
+            this.label3.Location = new System.Drawing.Point(109, 172);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(10, 20);
+            this.label3.Text = ":";
             // 
             // OtherSettings
             // 
@@ -173,11 +215,15 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.chkEnableProxy);
             this.Controls.Add(this.chkAutoComplete);
+            this.Controls.Add(this.txtProxyPort);
+            this.Controls.Add(this.txtProxyServer);
             this.Controls.Add(this.txtCaheDir);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.chkSkweezer);
             this.Controls.Add(this.chkTranslate);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtUpdate);
             this.Controls.Add(this.lblUpDates);
@@ -203,5 +249,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtCaheDir;
         private System.Windows.Forms.CheckBox chkAutoComplete;
+        private System.Windows.Forms.CheckBox chkEnableProxy;
+        private System.Windows.Forms.TextBox txtProxyServer;
+        private System.Windows.Forms.TextBox txtProxyPort;
+        private System.Windows.Forms.Label label3;
     }
 }

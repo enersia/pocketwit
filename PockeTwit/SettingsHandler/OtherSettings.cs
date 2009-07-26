@@ -66,6 +66,21 @@ namespace PockeTwit
                     MessageBox.Show("无法使用指定的目录做为缓存目录。");
                 }
             }
+            // Proxy settings
+            if (chkEnableProxy.Checked)
+            {
+                ClientSettings.ProxyServer = txtProxyServer.Text.Trim();
+                try
+                {
+                    ClientSettings.ProxyPort = int.Parse(txtProxyPort.Text);
+                }
+                catch
+                {
+                    MessageBox.Show("The proxy setting is invalid. No proxy will be set.");
+                    ClientSettings.ProxyServer = string.Empty;
+                    ClientSettings.ProxyPort = 0;
+                }
+            }
             ClientSettings.SaveSettings();
             
             this.DialogResult = DialogResult.OK;
@@ -89,6 +104,20 @@ namespace PockeTwit
             chkTranslate.Checked = ClientSettings.AutoTranslate;
             txtCaheDir.Text = ClientSettings.CacheDir;
             chkTranslate.Text = "自动翻译到语言类型： " + ClientSettings.TranslationLanguage;
+            chkEnableProxy.Checked = !string.IsNullOrEmpty(ClientSettings.ProxyServer);
+            if (chkEnableProxy.Checked)
+            {
+                txtProxyServer.Text = ClientSettings.ProxyServer;
+                txtProxyPort.Text = ClientSettings.ProxyPort.ToString();
+                txtProxyServer.Enabled = true;
+                txtProxyPort.Enabled = true;
+            }
+            else
+            {
+                txtProxyServer.Text = txtProxyPort.Text = string.Empty;
+                txtProxyServer.Enabled = false;
+                txtProxyPort.Enabled = false;
+            }
             this.DialogResult = DialogResult.Cancel;
         }
 
@@ -99,6 +128,11 @@ namespace PockeTwit
         private void OtherSettings_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void chkEnableProxy_CheckStateChanged(object sender, EventArgs e)
+        {
+            txtProxyServer.Enabled = txtProxyPort.Enabled = chkEnableProxy.Checked;
         }
 
     }
