@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Net;
 using System.IO;
+using PockeTwit;
 
 namespace TiledMaps
 {
@@ -170,7 +171,7 @@ namespace TiledMaps
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(GetUriForKey(data.Key));
+                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(GetUriForKey(data.Key));
                 request.Timeout = 15000;
                 request.Method = "GET";
                 request.UserAgent = "Windows-RSS-Platform/1.0 (MSIE 7.0; Windows NT 5.1)";
@@ -228,7 +229,7 @@ namespace TiledMaps
             {
                 try
                 {
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(data.Uri);
+                    HttpWebRequest request = WebRequestFactory.CreateHttpRequest(data.Uri);
                     request.Timeout = 15000;
                     request.Method = "GET";
                     request.UserAgent = "Windows-RSS-Platform/1.0 (MSIE 7.0; Windows NT 5.1)";

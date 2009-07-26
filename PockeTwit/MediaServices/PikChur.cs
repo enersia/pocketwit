@@ -337,7 +337,7 @@ namespace PockeTwit.MediaServices
             {
                 string URL_FORMAT = "https://s3.amazonaws.com/pikchurimages/pic_{0}_m.jpg";
 
-                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(string.Format(URL_FORMAT, imageId));
+                HttpWebRequest myRequest = WebRequestFactory.CreateHttpRequest(string.Format(URL_FORMAT, imageId));
                 myRequest.Method = "GET";
                 String pictureFileName = String.Empty;
 
@@ -390,7 +390,7 @@ namespace PockeTwit.MediaServices
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(API_AUTH);
+                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(API_AUTH);
 
                 string boundary = System.Guid.NewGuid().ToString();
                 NetworkCredential myCred = new NetworkCredential(ppo.Username, ppo.Password);
@@ -467,7 +467,7 @@ namespace PockeTwit.MediaServices
             }
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(API_UPLOAD);
+                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(API_UPLOAD);
 
                 string boundary = Guid.NewGuid().ToString();
                 request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);
@@ -545,7 +545,7 @@ namespace PockeTwit.MediaServices
             }
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(API_UPLOAD);
+                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(API_UPLOAD);
 
                 string boundary = Guid.NewGuid().ToString();
                 request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);

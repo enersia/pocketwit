@@ -58,7 +58,7 @@ namespace PockeTwit.OtherServices.TextShrinkers
 
         private static string ExecutePostCommand(string url, string data)
         {
-            var request = (HttpWebRequest)WebRequest.Create(url);
+            var request = WebRequestFactory.CreateHttpRequest(url);
             
             
             request.ContentType = "application/x-www-form-urlencoded";

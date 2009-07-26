@@ -338,7 +338,7 @@ namespace PockeTwit.MediaServices
             {
                 string URL_FORMAT = "http://pix.im/{0}/thumbnail";
 
-                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(string.Format(URL_FORMAT, imageId));
+                HttpWebRequest myRequest = WebRequestFactory.CreateHttpRequest(string.Format(URL_FORMAT, imageId));
                 myRequest.Method = "GET";
                 String pictureFileName = String.Empty;
 
@@ -394,7 +394,7 @@ namespace PockeTwit.MediaServices
            
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(API_UPLOAD2);
+                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(API_UPLOAD2);
 
                 string boundary = Guid.NewGuid().ToString();
                 request.AllowWriteStreamBuffering = true;
@@ -463,7 +463,7 @@ namespace PockeTwit.MediaServices
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(API_UPLOAD2);
+                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(API_UPLOAD2);
 
                 string boundary = Guid.NewGuid().ToString();
                 request.AllowWriteStreamBuffering = true;

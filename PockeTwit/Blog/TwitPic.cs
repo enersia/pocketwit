@@ -121,7 +121,7 @@ namespace PockeTwit.Blog
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
 
                 string boundary = System.Guid.NewGuid().ToString();
                 request.Credentials = new NetworkCredential(bpo.Username, bpo.Password);

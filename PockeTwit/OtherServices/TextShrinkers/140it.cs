@@ -37,7 +37,7 @@ namespace PockeTwit.OtherServices.TextShrinkers
 
         private static string ExecuteGetCommand(string url)
         {
-            var request = (HttpWebRequest)WebRequest.Create(url);
+            var request = WebRequestFactory.CreateHttpRequest(url);
             using (var httpResponse = (HttpWebResponse)request.GetResponse())
             {
                 using (Stream stream = httpResponse.GetResponseStream())

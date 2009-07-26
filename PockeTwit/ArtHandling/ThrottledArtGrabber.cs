@@ -226,7 +226,7 @@ namespace PockeTwit
             HttpWebResponse ArtResponse = null;
             try
             {
-                var GetArt = (HttpWebRequest) WebRequest.Create(request);
+                var GetArt = WebRequestFactory.CreateHttpRequest(request);
                 GetArt.Timeout = 20000;
                 ArtResponse = (HttpWebResponse) GetArt.GetResponse();
             }

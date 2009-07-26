@@ -210,6 +210,8 @@ public static class ClientSettings
     public static bool HighQualityAvatars { get; set; }
     public static bool UseClickables { get; set; }
     public static bool UseSkweezer { get; set; }
+    public static string ProxyServer { get; set; }
+    public static int ProxyPort { get; set; }
     public static bool ShowAvatars { get; set; }
     public static bool UseGPS { get; set; }
     public static bool IsMaximized { get; set; }
@@ -472,6 +474,22 @@ public static class ClientSettings
             {
                 UseSkweezer = bool.Parse(ConfigurationSettings.AppSettings["UseSkweezer"]);
             }
+            if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["ProxyServer"]))
+            {
+                ProxyServer = ConfigurationSettings.AppSettings["ProxyServer"];
+            }
+            else
+            {
+                ProxyServer = string.Empty;
+            }
+            if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["ProxyPort"]))
+            {
+                ProxyPort = int.Parse(ConfigurationSettings.AppSettings["ProxyPort"]);
+            }
+            else
+            {
+                ProxyPort = 0;
+            }
             if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["PortalSize"]))
             {
                 PortalSize= int.Parse(ConfigurationSettings.AppSettings["PortalSize"]);
@@ -516,6 +534,8 @@ public static class ClientSettings
         ConfigurationSettings.AppSettings["IncludeScreenName"] = IncludeUserName.ToString();
         ConfigurationSettings.AppSettings["HighQualityAvatars"] = HighQualityAvatars.ToString();
         ConfigurationSettings.AppSettings["UseSkweezer"] = UseSkweezer.ToString();
+        ConfigurationSettings.AppSettings["ProxyServer"] = ProxyServer.ToString();
+        ConfigurationSettings.AppSettings["ProxyPort"] = ProxyPort.ToString();
         ConfigurationSettings.AppSettings["PortalSize"] = PortalSize.ToString();
         ConfigurationSettings.AppSettings["AutoScrollToTop"] = ClientSettings.AutoScrollToTop.ToString();
         if (ConfigurationSettings.AppSettings["UserName"] != null)
