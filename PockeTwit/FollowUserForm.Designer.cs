@@ -60,7 +60,7 @@
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(156, 20);
-            this.label1.Text = "Follow from this account:";
+            this.label1.Text = "关注该帐号中的用户:";
             // 
             // cmbAccounts
             // 
@@ -74,7 +74,7 @@
             // txtUserName
             // 
             this.txtUserName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
- 	                        | System.Windows.Forms.AnchorStyles.Right)));
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.txtUserName.Location = new System.Drawing.Point(65, 51);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(171, 21);
@@ -87,7 +87,7 @@
             this.label2.Location = new System.Drawing.Point(3, 52);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 20);
-            this.label2.Text = "Name:";
+            this.label2.Text = "用户名:";
             // 
             // FollowUserForm
             // 
@@ -103,7 +103,7 @@
             this.ForeColor = System.Drawing.Color.LightGray;
             this.Menu = this.mainMenu1;
             this.Name = "FollowUserForm";
-            this.Text = "Follow User";
+            this.Text = "关注用户";
             this.ResumeLayout(false);
 
         }

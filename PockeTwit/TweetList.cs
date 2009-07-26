@@ -731,7 +731,7 @@ namespace PockeTwit
             TimeLinesMenuItem.SubMenuItems.Add(PublicMenuItem);
             TimeLinesMenuItem.SubMenuItems.Add(ViewFavoritesMenuItem);
 
-            FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "Follow User", statList.LeftMenu);
+            FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "添加关注", statList.LeftMenu);
 
             GroupsMenuItem = new FingerUI.Menu.SideMenuItem(null, "组 ...", statList.LeftMenu);
             GroupsMenuItem.Visible = false;
@@ -816,7 +816,7 @@ namespace PockeTwit
             ConversationMenuItem = new FingerUI.Menu.SideMenuItem(GetConversation, "显示对话", statList.RightMenu);
             ConversationMenuItem.CanHide = true;
 
-            DeleteStatusMenuItem = new FingerUI.Menu.SideMenuItem(DeleteStatus, "Delete Tweet", statList.RightMenu);
+            DeleteStatusMenuItem = new FingerUI.Menu.SideMenuItem(DeleteStatus, "删除消息", statList.RightMenu);
             DeleteStatusMenuItem.CanHide = true;
 
             ReponsesMenuItem = new FingerUI.Menu.SideMenuItem(null, "回复 @User...", statList.RightMenu);
@@ -1781,7 +1781,7 @@ namespace PockeTwit
 
                     if (string.IsNullOrEmpty(response))
                     {
-                        GlobalEventHandler.CallShowErrorMessage("User not found.");
+                        GlobalEventHandler.CallShowErrorMessage("用户未找到。");
                     }
                     else
                     {
