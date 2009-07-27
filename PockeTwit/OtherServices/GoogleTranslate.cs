@@ -14,7 +14,7 @@ namespace PockeTwit.OtherServices
         private const string apiURL = @"http://ajax.googleapis.com/ajax/services/language/translate?v=1.0&q={0}&langpair={1}%7C{2}&format=html";
         protected static string ExecuteGetCommand(string url)
         {
-            HttpWebRequest client = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest client = WebRequestFactory.CreateHttpRequest(url);
             client.Timeout = 20000;
             
             try

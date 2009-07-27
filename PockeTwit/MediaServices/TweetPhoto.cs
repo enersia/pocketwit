@@ -376,7 +376,7 @@ namespace PockeTwit.MediaServices
 
         private string GetRedirectUrl(string url)
         {
-            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(url);
+            HttpWebRequest myRequest = WebRequestFactory.CreateHttpRequest(url);
             string responseUri = string.Empty;
             using (HttpWebResponse response = (HttpWebResponse)myRequest.GetResponse())
             {
@@ -401,7 +401,7 @@ namespace PockeTwit.MediaServices
         {
             try
             {
-                HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(string.Format(API_SHOW_FORMAT, imageId));
+                HttpWebRequest myRequest = WebRequestFactory.CreateHttpRequest(string.Format(API_SHOW_FORMAT, imageId));
                 myRequest.Method = "GET";
                 String pictureFileName = String.Empty;
 
@@ -456,7 +456,7 @@ namespace PockeTwit.MediaServices
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
 
                 string boundary = System.Guid.NewGuid().ToString();
                 request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);
@@ -525,7 +525,7 @@ namespace PockeTwit.MediaServices
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
 
                 string boundary = System.Guid.NewGuid().ToString();
                 request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);

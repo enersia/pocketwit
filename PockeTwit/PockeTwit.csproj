@@ -587,6 +587,7 @@
       <DependentUpon>userListControl.cs</DependentUpon>
     </Compile>
     <Compile Include="MediaServices\ImgLy.cs" />
+    <Compile Include="WebRequestFactory.cs" />
     <Compile Include="Yedda\JSON.cs" />
     <Compile Include="MediaServices\PictureServiceBase.cs" />
     <Compile Include="MediaServices\PikChur.cs" />

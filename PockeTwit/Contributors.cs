@@ -27,7 +27,7 @@ namespace PockeTwit
         private void GetWebResponse(object o)
         {
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(ContributorURL);
+            HttpWebRequest request = WebRequestFactory.CreateHttpRequest(ContributorURL);
             try
             {
                 HttpWebResponse httpResponse = (HttpWebResponse)request.GetResponse();
