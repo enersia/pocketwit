@@ -580,6 +580,7 @@
     <Compile Include="TiledMaps\userMapDrawable.cs" />
     <Compile Include="TiledMaps\userMapOverlay.cs" />
     <Compile Include="TimeLines\LastSelectedItems.cs" />
+    <Compile Include="TodayScreenRegistrySetup.cs" />
     <Compile Include="userListControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

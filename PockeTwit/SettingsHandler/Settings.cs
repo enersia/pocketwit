@@ -66,7 +66,7 @@ public static class ClientSettings
     {
         foreach (Yedda.Twitter.Account a in AccountsList)
         {
-            if (a.UserName==userScreenName) { return a; }
+            if (a.UserName.ToLower()==userScreenName.ToLower()) { return a; }
         }
         return null;
     }

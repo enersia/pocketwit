@@ -87,7 +87,7 @@ namespace PockeTwit
         #region RightMenu
         FingerUI.Menu.SideMenuItem ConversationMenuItem;
         FingerUI.Menu.SideMenuItem DeleteStatusMenuItem;
-        FingerUI.Menu.SideMenuItem ReponsesMenuItem;
+        FingerUI.Menu.SideMenuItem ResponsesMenuItem;
 
         FingerUI.Menu.SideMenuItem ReplyMenuItem;
         FingerUI.Menu.SideMenuItem DirectMenuItem;
@@ -139,6 +139,7 @@ namespace PockeTwit
             if (DetectDevice.DeviceType == DeviceType.Professional)
             {
                 inputPanel1 = new Microsoft.WindowsCE.Forms.InputPanel();
+                TodayScreenRegistrySetup.CheckTodayScreenInstalled();
             }
             if (UpgradeChecker.devBuild)
             {
@@ -723,7 +724,7 @@ namespace PockeTwit
             TimeLinesMenuItem.SubMenuItems.Add(PublicMenuItem);
             TimeLinesMenuItem.SubMenuItems.Add(ViewFavoritesMenuItem);
 
-            FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "Follow User ...", statList.LeftMenu);
+            FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "Follow User", statList.LeftMenu);
 
             GroupsMenuItem = new FingerUI.Menu.SideMenuItem(null, "Groups ...", statList.LeftMenu);
             GroupsMenuItem.Visible = false;
@@ -779,8 +780,10 @@ namespace PockeTwit
             }
 
 
-            statList.LeftMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{BackMenuItem, FriendsTimeLineMenuItem, RefreshFriendsTimeLineMenuItem, MessagesMenuItem, RefreshMessagesMenuItem, FollowUserMenuItem, GroupsMenuItem, TimeLinesMenuItem, PostUpdateMenuItem, SettingsMenuItem,
-            AboutMenuItem, WindowMenuItem, ExitMenuItem});
+            statList.LeftMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{BackMenuItem, FriendsTimeLineMenuItem, 
+                RefreshFriendsTimeLineMenuItem, MessagesMenuItem, RefreshMessagesMenuItem, GroupsMenuItem, 
+                TimeLinesMenuItem, PostUpdateMenuItem, FollowUserMenuItem, SettingsMenuItem,
+                AboutMenuItem, WindowMenuItem, ExitMenuItem});
         }
 
         private void AddGroupSelectMenuItem(ISpecialTimeLine t)
@@ -809,13 +812,14 @@ namespace PockeTwit
             DeleteStatusMenuItem = new FingerUI.Menu.SideMenuItem(DeleteStatus, "Delete Tweet", statList.RightMenu);
             DeleteStatusMenuItem.CanHide = true;
 
-            ReponsesMenuItem = new FingerUI.Menu.SideMenuItem(null, "Respond to @User...", statList.RightMenu);
+            ResponsesMenuItem = new FingerUI.Menu.SideMenuItem(null, "Respond to @User...", statList.RightMenu);
+            ResponsesMenuItem.CanHide = true;
 
             ReplyMenuItem = new FingerUI.Menu.SideMenuItem(SendReply, "Reply @User", statList.RightMenu);
             DirectMenuItem = new FingerUI.Menu.SideMenuItem(SendDirectMessage, "Direct @User", statList.RightMenu);
 
-            ReponsesMenuItem.SubMenuItems.Add(ReplyMenuItem);
-            ReponsesMenuItem.SubMenuItems.Add(DirectMenuItem);
+            ResponsesMenuItem.SubMenuItems.Add(ReplyMenuItem);
+            ResponsesMenuItem.SubMenuItems.Add(DirectMenuItem);
 
             EmailMenuItem = new FingerUI.Menu.SideMenuItem(EmailThisItem, "Email Status", statList.RightMenu);
             QuoteMenuItem = new FingerUI.Menu.SideMenuItem(this.Quote, "Quote", statList.RightMenu);
@@ -840,7 +844,7 @@ namespace PockeTwit
                 AddAddUserToGroupMenuItem(t);
             }
 
-            statList.RightMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{ConversationMenuItem, DeleteStatusMenuItem, ReponsesMenuItem, QuoteMenuItem, EmailMenuItem, ToggleFavoriteMenuItem, 
+            statList.RightMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{ConversationMenuItem, DeleteStatusMenuItem, ResponsesMenuItem, QuoteMenuItem, EmailMenuItem, ToggleFavoriteMenuItem, 
                 UserTimelineMenuItem, ProfilePageMenuItem, FollowMenuItem, MoveToGroupMenuItem, CopyToGroupMenuItem});
         }
 
@@ -888,10 +892,12 @@ namespace PockeTwit
                 if (ClientSettings.GetAcountForUser(selectedItem.Tweet.user.screen_name) != null)
                 {
                     DeleteStatusMenuItem.Visible = true;
+                    ResponsesMenuItem.Visible = false;
                 }
                 else
                 {
                     DeleteStatusMenuItem.Visible = false;
+                    ResponsesMenuItem.Visible = true;
                 }
 
 
