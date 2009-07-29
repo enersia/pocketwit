@@ -218,8 +218,8 @@ namespace PockeTwit.FingerUI
         {
             int itemsBeforeScreen = YOffset / ClientSettings.ItemHeight;
 
-            itemsBeforePortal = itemsBeforeScreen - (SlidingPortal.MaxItems / 2);
-            int itemsAfterPortal = (m_items.Count - itemsBeforeScreen) - (SlidingPortal.MaxItems / 2) - 1;
+            itemsBeforePortal = (itemsBeforeScreen +2 ) - (SlidingPortal.MaxItems / 2); // center to view
+            int itemsAfterPortal = (m_items.Count - (itemsBeforeScreen +2)) - (SlidingPortal.MaxItems / 2) - 1;
             if (itemsAfterPortal < 0)
             {
                 itemsBeforePortal = itemsBeforePortal + itemsAfterPortal;
@@ -1666,10 +1666,7 @@ namespace PockeTwit.FingerUI
                         m_velocity.X = 0;
                     }
                 }
-
-
-                
-
+                            
                 ClipScrollPosition();
                 
                 // Slow down

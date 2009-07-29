@@ -324,19 +324,17 @@ namespace FingerUI
                         {
                             DrawSingleItem(item, _RenderedGraphics);
                             itemsDrawn = reportProgress(itemsDrawn);
+                        }
 
-                            for (int i = 0; i < StartItem; i++)
-                            {
-                                DrawSingleItem(i, _RenderedGraphics);
-                                itemsDrawn = reportProgress(itemsDrawn);
-                            }
-                            for (int i = EndItem; i < Items.Count; i++)
-                            {
-                                DrawSingleItem(i, _RenderedGraphics);
-                                itemsDrawn = reportProgress(itemsDrawn);
-                            }
-
-                            NewImage();
+                        for (int i = 0; i < StartItem; i++)
+                        {
+                            DrawSingleItem(i, _RenderedGraphics);
+                            itemsDrawn = reportProgress(itemsDrawn);
+                        }
+                        for (int i = EndItem; i < Items.Count; i++)
+                        {
+                            DrawSingleItem(i, _RenderedGraphics);
+                            itemsDrawn = reportProgress(itemsDrawn);
                         }
                     }
                     catch (Exception)
