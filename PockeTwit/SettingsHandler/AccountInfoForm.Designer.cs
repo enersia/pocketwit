@@ -128,7 +128,7 @@
             this.lblError.ForeColor = System.Drawing.Color.Red;
             this.lblError.Location = new System.Drawing.Point(83, 154);
             this.lblError.Name = "lblError";
-            this.lblError.Size = new System.Drawing.Size(152, 20);
+            this.lblError.Size = new System.Drawing.Size(152, 58);
             this.lblError.Text = "Unable to verify username and password";
             this.lblError.Visible = false;
             // 
@@ -159,9 +159,9 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.lblError);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.chkDefault);
-            this.Controls.Add(this.lblError);
             this.Controls.Add(this.cmbServers);
             this.Controls.Add(this.lblServer);
             this.Controls.Add(this.txtPassword);

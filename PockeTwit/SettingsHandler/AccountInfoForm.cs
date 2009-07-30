@@ -106,7 +106,7 @@ namespace PockeTwit
             
             if (!T.Verify())
             {
-                lblError.Text = "Invalid credentials.";
+                lblError.Text = "Invalid credentials or network unavailable.";
                 lblError.Visible = true;
                 return;
             }
