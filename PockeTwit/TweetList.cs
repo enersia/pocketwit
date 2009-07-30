@@ -362,6 +362,7 @@ namespace PockeTwit
                 else
                 {
                     statList.SelectedItem = statList[0];
+                    currentItem = statList.SelectedItem;
                     statList.YOffset = 0;
                 }
                 if (currentItem != null)
