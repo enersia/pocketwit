@@ -230,7 +230,7 @@ namespace PockeTwit
                     try
                     {
                         string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Favorites);
-                        Library.status[] NewStats = Library.status.Deserialize(response, t.AccountInfo, PockeTwit.Library.StatusTypes.Reply);
+                        Library.status[] NewStats = Library.status.Deserialize(response, t.AccountInfo, PockeTwit.Library.StatusTypes.Normal);
                         TempLine.AddRange(NewStats);
                         ErrorCleared(t.AccountInfo, Yedda.Twitter.ActionType.Favorites);
                     }
@@ -259,7 +259,7 @@ namespace PockeTwit
                             string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Public_Timeline, null);
                             if (!string.IsNullOrEmpty(response))
                             {
-                                Library.status[] NewStats = Library.status.Deserialize(response, t.AccountInfo, PockeTwit.Library.StatusTypes.Reply);
+                                Library.status[] NewStats = Library.status.Deserialize(response, t.AccountInfo, PockeTwit.Library.StatusTypes.Normal);
                                 TempLine.AddRange(NewStats);
                             }
                         }
