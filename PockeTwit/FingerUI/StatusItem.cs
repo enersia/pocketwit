@@ -344,35 +344,28 @@ namespace PockeTwit.FingerUI
                     }
 
                     //If it's a reply or direct message, overlay that on the avatar
-                    if (Tweet.TypeofMessage == PockeTwit.Library.StatusTypes.Reply)
+                    string overlay;
+
+                    if ((Tweet.TypeofMessage & PockeTwit.Library.StatusTypes.Reply) != 0)
+                        overlay = "@";
+                    else if ((Tweet.TypeofMessage & PockeTwit.Library.StatusTypes.Direct) != 0)
+                        overlay = "D";
+                    else
+                        overlay = String.Empty;
+
+                    if (overlay.Length != 0)
                     {
                         using (Brush sBrush = new SolidBrush(ClientSettings.SelectedForeColor))
                         {
 
                             Rectangle ImageRect = new Rectangle(ImageLocation.X, ImageLocation.Y, ClientSettings.SmallArtSize, ClientSettings.SmallArtSize);
-                            Point sPoint = new Point(ImageRect.Right - 15, ImageRect.Top);
-
+                            SizeF overlaySize = g.MeasureString(overlay, ClientSettings.TextFont);
                             using (Brush bBrush = new SolidBrush(ClientSettings.SelectedBackColor))
                             {
-                                g.FillRectangle(bBrush, new Rectangle(ImageRect.Right - 15, ImageRect.Top, 15, 15));
+                                g.FillRectangle(bBrush, new Rectangle(ImageRect.Right - (int)overlaySize.Width - 4, ImageRect.Top, (int)overlaySize.Width + 4, (int)overlaySize.Height + 4));
                             }
-                            g.DrawString("@", ClientSettings.TextFont, sBrush, new Rectangle(ImageRect.Right - 12, ImageRect.Top - 2, 10, 20));
+                            g.DrawString(overlay, ClientSettings.TextFont, sBrush, new Rectangle(ImageRect.Right - (int)overlaySize.Width - 2, ImageRect.Top - 2, (int)overlaySize.Width, (int)overlaySize.Height));
                         }
-                    }
-                    else if (Tweet.TypeofMessage == PockeTwit.Library.StatusTypes.Direct)
-                    {
-                        using (Brush sBrush = new SolidBrush(ClientSettings.SelectedForeColor))
-                        {
-                            Rectangle ImageRect = new Rectangle(ImageLocation.X, ImageLocation.Y, ClientSettings.SmallArtSize, ClientSettings.SmallArtSize);
-                            Point sPoint = new Point(ImageRect.Right - 15, ImageRect.Top);
-
-                            using (Brush bBrush = new SolidBrush(ClientSettings.SelectedBackColor))
-                            {
-                                g.FillRectangle(bBrush, new Rectangle(ImageRect.Right - 15, ImageRect.Top, 15, 15));
-                            }
-                            g.DrawString("D", ClientSettings.TextFont, sBrush, new Rectangle(ImageRect.Right - 10, ImageRect.Top, 10, 20));
-                        }
-
                     }
                 }
 
