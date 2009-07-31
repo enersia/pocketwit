@@ -224,9 +224,9 @@ namespace PockeTwit.FingerUI
         /// <param name="bounds">The bounds.</param>
         public virtual void Render(Graphics g)
         {
-            Render(g, this.Bounds);
+            Render(g, this.Bounds, false);
         }
-        public virtual void Render(Graphics g, Rectangle bounds)
+        public virtual void Render(Graphics g, Rectangle bounds, bool avatarOnly)
         {
             try
             {
@@ -247,17 +247,26 @@ namespace PockeTwit.FingerUI
                 Rectangle InnerBounds = new Rectangle(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
                 InnerBounds.Offset(1, 1);
                 InnerBounds.Width--; InnerBounds.Height--;
-
-                if (m_selected)
+                if (!avatarOnly)
                 {
-                    ForeBrush = new SolidBrush(ClientSettings.SelectedForeColor);
-                    if (ClientSettings.SelectedBackColor != ClientSettings.SelectedBackGradColor)
+                    if (m_selected)
                     {
-                        try
+                        ForeBrush = new SolidBrush(ClientSettings.SelectedForeColor);
+                        if (ClientSettings.SelectedBackColor != ClientSettings.SelectedBackGradColor)
                         {
-                            Gradient.GradientFill.Fill(g, InnerBounds, ClientSettings.SelectedBackColor, ClientSettings.SelectedBackGradColor, Gradient.GradientFill.FillDirection.TopToBottom);
+                            try
+                            {
+                                Gradient.GradientFill.Fill(g, InnerBounds, ClientSettings.SelectedBackColor, ClientSettings.SelectedBackGradColor, Gradient.GradientFill.FillDirection.TopToBottom);
+                            }
+                            catch
+                            {
+                                using (Brush BackBrush = new SolidBrush(ClientSettings.SelectedBackColor))
+                                {
+                                    g.FillRectangle(BackBrush, InnerBounds);
+                                }
+                            }
                         }
-                        catch
+                        else
                         {
                             using (Brush BackBrush = new SolidBrush(ClientSettings.SelectedBackColor))
                             {
@@ -267,21 +276,21 @@ namespace PockeTwit.FingerUI
                     }
                     else
                     {
-                        using (Brush BackBrush = new SolidBrush(ClientSettings.SelectedBackColor))
+                        if (ClientSettings.BackColor != ClientSettings.BackGradColor)
                         {
-                            g.FillRectangle(BackBrush, InnerBounds);
+                            try
+                            {
+                                Gradient.GradientFill.Fill(g, InnerBounds, ClientSettings.BackColor, ClientSettings.BackGradColor, Gradient.GradientFill.FillDirection.TopToBottom);
+                            }
+                            catch
+                            {
+                                using (Brush BackBrush = new SolidBrush(ClientSettings.BackColor))
+                                {
+                                    g.FillRectangle(BackBrush, InnerBounds);
+                                }
+                            }
                         }
-                    }
-                }
-                else
-                {
-                    if (ClientSettings.BackColor != ClientSettings.BackGradColor)
-                    {
-                        try
-                        {
-                            Gradient.GradientFill.Fill(g, InnerBounds, ClientSettings.BackColor, ClientSettings.BackGradColor, Gradient.GradientFill.FillDirection.TopToBottom);
-                        }
-                        catch
+                        else
                         {
                             using (Brush BackBrush = new SolidBrush(ClientSettings.BackColor))
                             {
@@ -289,26 +298,21 @@ namespace PockeTwit.FingerUI
                             }
                         }
                     }
-                    else
-                    {
-                        using (Brush BackBrush = new SolidBrush(ClientSettings.BackColor))
-                        {
-                            g.FillRectangle(BackBrush, InnerBounds);
-                        }
-                    }
                 }
-
 
                 Point ImageLocation = new Point(bounds.X + ClientSettings.Margin, bounds.Y + ClientSettings.Margin);
 
                 //Add the timestamp if the settings call for it.
-                if (ClientSettings.ShowExtra)
+                if (!avatarOnly)
                 {
-                    Color SmallColor = ClientSettings.SmallTextColor;
-                    if (this.Selected) { SmallColor = ClientSettings.SelectedSmallTextColor; }
-                    using (Brush dateBrush = new SolidBrush(SmallColor))
+                    if (ClientSettings.ShowExtra)
                     {
-                        g.DrawString(Tweet.TimeStamp, ClientSettings.SmallFont, dateBrush, bounds.Left + ClientSettings.Margin, ClientSettings.SmallArtSize + ClientSettings.Margin + bounds.Top, m_stringFormat);
+                        Color SmallColor = ClientSettings.SmallTextColor;
+                        if (this.Selected) { SmallColor = ClientSettings.SelectedSmallTextColor; }
+                        using (Brush dateBrush = new SolidBrush(SmallColor))
+                        {
+                            g.DrawString(Tweet.TimeStamp, ClientSettings.SmallFont, dateBrush, bounds.Left + ClientSettings.Margin, ClientSettings.SmallArtSize + ClientSettings.Margin + bounds.Top, m_stringFormat);
+                        }
                     }
                 }
 
@@ -369,6 +373,8 @@ namespace PockeTwit.FingerUI
                     }
                 }
 
+                if (avatarOnly)
+                    return;
 
                 textBounds.Offset(ClientSettings.Margin, 1);
                 textBounds.Height--;

@@ -100,9 +100,10 @@ namespace PockeTwit
             {
                 return new Bitmap(DefaultArt);
             }
-            if (MemCache.ContainsKey(url))
+            Bitmap result = null;
+            if (MemCache.TryGetValue(url, out result))
             {
-                return (Bitmap)MemCache[url].Clone();
+                return (Bitmap)result.Clone();
             }
             lock (BadURLs)
             {
