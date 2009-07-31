@@ -336,6 +336,8 @@ namespace FingerUI
                             DrawSingleItem(i, _RenderedGraphics);
                             itemsDrawn = reportProgress(itemsDrawn);
                         }
+
+                        NewImage();
                     }
                     catch (Exception)
                     {
