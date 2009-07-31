@@ -605,11 +605,13 @@ namespace PockeTwit.FingerUI
         private void FirstClickableRun(string text)
         {
             Tweet.Clickables = new List<Clickable>();
+            Tweet.ClickablesToDo = new List<string>();
             System.Text.RegularExpressions.MatchCollection m = GetClickables.Matches(text);
             foreach (System.Text.RegularExpressions.Match match in m)
             {
                 Clickable c = new Clickable();
                 c.Text = match.Value.Trim(IgnoredAtChars);
+                Tweet.ClickablesToDo.Add(c.Text);
                 Tweet.Clickables.Add(c);
             }
         }
@@ -623,10 +625,14 @@ namespace PockeTwit.FingerUI
 
             //Still need to handle "wrapped" links
             if (!ClientSettings.UseClickables) { return; }
+            if (Tweet.ClickablesToDo.Count == 0) { return; }
             float Position = ((lineOffSet * (ClientSettings.TextSize)));
             Clickable wrappedClick = null;
             foreach (Clickable c in Tweet.Clickables)
             {
+                if (!Tweet.ClickablesToDo.Contains(c.Text))
+                    continue;
+
                 int i = Line.IndexOf(c.Text);
                 float startpos = 0;
                 if (i >= 0)
@@ -638,19 +644,23 @@ namespace PockeTwit.FingerUI
                     }
                     SizeF WordSize = g.MeasureString(c.Text, ClientSettings.TextFont);
                     c.Location = new RectangleF(startpos, Position, WordSize.Width, WordSize.Height);
+                    Tweet.ClickablesToDo.Remove(c.Text);
                 }
                 else{
                     //Check to see if clickable got wrapped
                     string lastWord = Line;
                     string LineBeforeThisWord = "";
+                    bool containsSpace = false;
                     if (Line.IndexOf(" ") > 0)
                     {
                         lastWord = Line.Substring(Line.LastIndexOf(" "));
-                        LineBeforeThisWord = Line.Substring(0, Line.LastIndexOf(" "));
+                        containsSpace = true;
                     }
 
                     if (c.Text.StartsWith(lastWord))
                     {
+                        if (containsSpace)
+                            LineBeforeThisWord = Line.Substring(0, Line.LastIndexOf(" "));
                         startpos = g.MeasureString(LineBeforeThisWord.ToString(), ClientSettings.TextFont).Width;
                         SizeF WordSize = g.MeasureString(lastWord, ClientSettings.TextFont);
                         c.Location = new RectangleF(startpos, Position, WordSize.Width, WordSize.Height);
@@ -667,6 +677,7 @@ namespace PockeTwit.FingerUI
                             wrapClick.Location = new RectangleF(0F, NextPosition, WordSize.Width, WordSize.Height);
                             wrappedClick = wrapClick;
                         }
+                        Tweet.ClickablesToDo.Remove(c.Text);
                     }
                 }
             }
