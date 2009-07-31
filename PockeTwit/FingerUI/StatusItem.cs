@@ -373,37 +373,37 @@ namespace PockeTwit.FingerUI
                     }
                 }
 
-                if (avatarOnly)
-                    return;
-
-                textBounds.Offset(ClientSettings.Margin, 1);
-                textBounds.Height--;
-
-                BreakUpTheText(g, textBounds);
-                int lineOffset = 0;
-
-                if (!ClientSettings.UseClickables)
+                if (!avatarOnly)
                 {
-                    g.DrawString(Tweet.DisplayText, ClientSettings.TextFont, ForeBrush, new RectangleF((float)textBounds.Left, (float)textBounds.Top, (float)textBounds.Width, (float)textBounds.Height));
-                    //g.DrawString(Tweet.DisplayText, TextFont, ForeBrush, textBounds.Left, textBounds.Top, m_stringFormat);
-                }
-                else
-                {
+                    textBounds.Offset(ClientSettings.Margin, 1);
+                    textBounds.Height--;
 
-                    for (int i = 0; i < Tweet.SplitLines.Count; i++)
+                    BreakUpTheText(g, textBounds);
+                    int lineOffset = 0;
+
+                    if (!ClientSettings.UseClickables)
                     {
-                        if (i >= ClientSettings.LinesOfText)
-                        {
-                            break;
-                        }
-                        float Position = ((lineOffset * (ClientSettings.TextSize)) + textBounds.Top);
-
-                        g.DrawString(Tweet.SplitLines[i], ClientSettings.TextFont, ForeBrush, textBounds.Left, Position, m_stringFormat);
-                        lineOffset++;
+                        g.DrawString(Tweet.DisplayText, ClientSettings.TextFont, ForeBrush, new RectangleF((float)textBounds.Left, (float)textBounds.Top, (float)textBounds.Width, (float)textBounds.Height));
+                        //g.DrawString(Tweet.DisplayText, TextFont, ForeBrush, textBounds.Left, textBounds.Top, m_stringFormat);
                     }
-                    MakeClickable(g, textBounds);
+                    else
+                    {
+
+                        for (int i = 0; i < Tweet.SplitLines.Count; i++)
+                        {
+                            if (i >= ClientSettings.LinesOfText)
+                            {
+                                break;
+                            }
+                            float Position = ((lineOffset * (ClientSettings.TextSize)) + textBounds.Top);
+
+                            g.DrawString(Tweet.SplitLines[i], ClientSettings.TextFont, ForeBrush, textBounds.Left, Position, m_stringFormat);
+                            lineOffset++;
+                        }
+                        MakeClickable(g, textBounds);
+                    }
+                    ForeBrush.Dispose();
                 }
-                ForeBrush.Dispose();
                 g.Clip = new Region();
                 this.Tweet.SplitLines = null;
             }

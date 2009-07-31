@@ -58,7 +58,6 @@ namespace FingerUI
         public event delNewImage Panic = delegate { };
         public delegate void delProgress(int itemnumber, int totalnumber);
         public event delProgress Progress = delegate{ };
-        private object synLock = new object();
         
         public int WindowOffset;
         private Bitmap _Rendered;
@@ -189,88 +188,106 @@ namespace FingerUI
         {
             StatusItem FirstNewItem = SetOfItems[0];
             int SpacesMoved = 0;
-            if (Items.Contains(FirstNewItem) && SetOfItems.Count > SpacesMoved)
+            lock (Items)
             {
-                try
+                if (Items.Contains(FirstNewItem) && SetOfItems.Count > SpacesMoved)
                 {
-                    //Items added to the end
-                    SpacesMoved = Items.IndexOf(FirstNewItem);
-                    StatusItem[] ItemsToAdd = new StatusItem[SpacesMoved];
-                    Array.Copy(SetOfItems.ToArray(), SetOfItems.Count - SpacesMoved, ItemsToAdd, 0, SpacesMoved);
-                    System.Diagnostics.Debug.WriteLine("Blitting " + SpacesMoved + " to the end of the image.");
-                    AddItemsToEnd(ItemsToAdd);
-                    return;
-                }
-                catch(ArgumentOutOfRangeException) { }
-            }
-            else
-            {
-                try
-                {
-                    StatusItem LastNewItem = SetOfItems[SetOfItems.Count - 1];
-                    if (Items.Contains(LastNewItem))
+                    try
                     {
-                        //Items added to the start
-                        SpacesMoved = MaxItems - (Items.IndexOf(LastNewItem) + 1);
+                        //Items added to the end
+                        SpacesMoved = Items.IndexOf(FirstNewItem);
                         StatusItem[] ItemsToAdd = new StatusItem[SpacesMoved];
-                        Array.Copy(SetOfItems.ToArray(), 0, ItemsToAdd, 0, SpacesMoved);
-                        System.Diagnostics.Debug.WriteLine("Blitting " + SpacesMoved + " to the start of the image.");
-                        AddItemsToStart(ItemsToAdd);
+                        Array.Copy(SetOfItems.ToArray(), SetOfItems.Count - SpacesMoved, ItemsToAdd, 0, SpacesMoved);
+                        System.Diagnostics.Debug.WriteLine("Blitting " + SpacesMoved + " to the end of the image.");
+                        AddItemsToEnd(ItemsToAdd);
                         return;
                     }
+                    catch (ArgumentOutOfRangeException) { }
                 }
-                catch (ArgumentOutOfRangeException) { }
-            }
-            System.Diagnostics.Debug.WriteLine("Jumped " + SpacesMoved + " spaces");
-            Items.Clear();
-            Items = new List<StatusItem>(SetOfItems);
-            if (Items.Count > MaxItems)
-            {
-                Items.RemoveRange(MaxItems, Items.Count - MaxItems);
+                else
+                {
+                    try
+                    {
+                        StatusItem LastNewItem = SetOfItems[SetOfItems.Count - 1];
+                        if (Items.Contains(LastNewItem))
+                        {
+                            //Items added to the start
+                            SpacesMoved = MaxItems - (Items.IndexOf(LastNewItem) + 1);
+                            StatusItem[] ItemsToAdd = new StatusItem[SpacesMoved];
+                            Array.Copy(SetOfItems.ToArray(), 0, ItemsToAdd, 0, SpacesMoved);
+                            System.Diagnostics.Debug.WriteLine("Blitting " + SpacesMoved + " to the start of the image.");
+                            AddItemsToStart(ItemsToAdd);
+                            return;
+                        }
+                    }
+                    catch (ArgumentOutOfRangeException) { }
+                }
+                System.Diagnostics.Debug.WriteLine("Jumped " + SpacesMoved + " spaces");
+                Items.Clear();
+                Items = new List<StatusItem>(SetOfItems);
+                if (Items.Count > MaxItems)
+                {
+                    Items.RemoveRange(MaxItems, Items.Count - MaxItems);
+                }
             }
             Rerender();
         }
 
         public void Clear()
         {
-            Items.Clear();
+            lock (Items)
+            {
+                Items.Clear();
+            }
             _RenderedGraphics.Clear(ClientSettings.BackColor);
         }
 
         public void AddItemsToStart(StatusItem[] Items)
         {
-            for (int i = Items.Length - 1; i >= 0; i--)
+            lock (Items)
             {
-                AddItemToStart(Items[i]);
+                for (int i = Items.Length - 1; i >= 0; i--)
+                {
+                    AddItemToStart(Items[i]);
+                }
+                NewImage();
             }
-            NewImage();
         }
         public void AddItemToStart(StatusItem Item)
         {
-            Items.Insert(0, Item);
-            if (Items.Count > MaxItems)
+            lock (Items)
             {
-                Items.RemoveAt(Items.Count - 1);
-                Items.TrimExcess();
-                RenderNewItemAtStart();
+                Items.Insert(0, Item);
+                if (Items.Count > MaxItems)
+                {
+                    Items.RemoveAt(Items.Count - 1);
+                    Items.TrimExcess();
+                    RenderNewItemAtStart();
+                }
             }
         }
         public void AddItemsToEnd(StatusItem[] Items)
         {
-            foreach (StatusItem Item in Items)
+            lock (Items)
             {
-                AddItemToEnd(Item);
+                foreach (StatusItem Item in Items)
+                {
+                    AddItemToEnd(Item);
+                }
             }
             NewImage();
         }
         public void AddItemToEnd(StatusItem Item)
         {
-            Items.Add(Item);
-            if (Items.Count > MaxItems)
+            lock (Items)
             {
-                Items.RemoveAt(0);
-                Items.TrimExcess();
-                RenderNewItemAtEnd();
+                Items.Add(Item);
+                if (Items.Count > MaxItems)
+                {
+                    Items.RemoveAt(0);
+                    Items.TrimExcess();
+                    RenderNewItemAtEnd();
+                }
             }
         }
 
@@ -278,11 +295,14 @@ namespace FingerUI
         {
             try
             {
-                if (Items.Contains(Item))
+                lock (Items)
                 {
-                    int i = Items.IndexOf(Item);
-                    Rectangle itemBounds = new Rectangle(0, ClientSettings.ItemHeight * i, Item.Bounds.Width, ClientSettings.ItemHeight);
-                    Item.Render(_RenderedGraphics, itemBounds, false);
+                    if (Items.Contains(Item))
+                    {
+                        int i = Items.IndexOf(Item);
+                        Rectangle itemBounds = new Rectangle(0, ClientSettings.ItemHeight * i, Item.Bounds.Width, ClientSettings.ItemHeight);
+                        Item.Render(_RenderedGraphics, itemBounds, false);
+                    }
                 }
             }
             catch (Exception)
@@ -374,7 +394,7 @@ namespace FingerUI
 
         private void DrawSingleItem(int i, Graphics g)
         {
-            lock (synLock)
+            lock (Items)
             {
                 StatusItem Item = Items[i];
                 Rectangle ItemBounds = new Rectangle(0, i*ClientSettings.ItemHeight, Item.Bounds.Width,
@@ -390,38 +410,44 @@ namespace FingerUI
         }
         private void RenderNewItemAtStart()
         {
-            //Copy all but last item from top down one.
-            IntPtr gPtr = _RenderedGraphics.GetHdc();
-
-            BitBlt(gPtr, 0, ClientSettings.ItemHeight, _Rendered.Width, _Rendered.Height - ClientSettings.ItemHeight, gPtr, 0, 0, TernaryRasterOperations.SRCCOPY);
-            _RenderedGraphics.ReleaseHdc(gPtr);
-            //Draw the first item.
-            StatusItem Item = Items[0];
-            Rectangle ItemBounds = new Rectangle(0, 0, Item.Bounds.Width, Item.Bounds.Height);
-            using (Pen whitePen = new Pen(ClientSettings.LineColor))
+            lock (Items)
             {
-                _RenderedGraphics.DrawLine(whitePen, ItemBounds.Left, ItemBounds.Top, ItemBounds.Right, ItemBounds.Top);
-                _RenderedGraphics.DrawLine(whitePen, ItemBounds.Left, ItemBounds.Bottom, ItemBounds.Right, ItemBounds.Bottom);
-                _RenderedGraphics.DrawLine(whitePen, ItemBounds.Right, ItemBounds.Top, ItemBounds.Right, ItemBounds.Bottom);
+                //Copy all but last item from top down one.
+                IntPtr gPtr = _RenderedGraphics.GetHdc();
+
+                BitBlt(gPtr, 0, ClientSettings.ItemHeight, _Rendered.Width, _Rendered.Height - ClientSettings.ItemHeight, gPtr, 0, 0, TernaryRasterOperations.SRCCOPY);
+                _RenderedGraphics.ReleaseHdc(gPtr);
+                //Draw the first item.
+                StatusItem Item = Items[0];
+                Rectangle ItemBounds = new Rectangle(0, 0, Item.Bounds.Width, Item.Bounds.Height);
+                using (Pen whitePen = new Pen(ClientSettings.LineColor))
+                {
+                    _RenderedGraphics.DrawLine(whitePen, ItemBounds.Left, ItemBounds.Top, ItemBounds.Right, ItemBounds.Top);
+                    _RenderedGraphics.DrawLine(whitePen, ItemBounds.Left, ItemBounds.Bottom, ItemBounds.Right, ItemBounds.Bottom);
+                    _RenderedGraphics.DrawLine(whitePen, ItemBounds.Right, ItemBounds.Top, ItemBounds.Right, ItemBounds.Bottom);
+                }
+                Item.Render(_RenderedGraphics, ItemBounds, false);
             }
-            Item.Render(_RenderedGraphics, ItemBounds, false);
         }
         private void RenderNewItemAtEnd()
         {
-            //Copy all but first item from top up one.
-            IntPtr gPtr = _RenderedGraphics.GetHdc();
-            BitBlt(gPtr, 0, 0, _Rendered.Width, _Rendered.Height - ClientSettings.ItemHeight, gPtr, 0, ClientSettings.ItemHeight, TernaryRasterOperations.SRCCOPY);
-            _RenderedGraphics.ReleaseHdc(gPtr);
-            //Draw the last item.
-            StatusItem Item = Items[Items.Count - 1];
-            Rectangle ItemBounds = new Rectangle(0, (MaxItems - 1) * ClientSettings.ItemHeight, Item.Bounds.Width, Item.Bounds.Height);
-            using (Pen whitePen = new Pen(ClientSettings.LineColor))
+            lock (Items)
             {
-                _RenderedGraphics.DrawLine(whitePen, ItemBounds.Left, ItemBounds.Top, ItemBounds.Right, ItemBounds.Top);
-                _RenderedGraphics.DrawLine(whitePen, ItemBounds.Left, ItemBounds.Bottom, ItemBounds.Right, ItemBounds.Bottom);
-                _RenderedGraphics.DrawLine(whitePen, ItemBounds.Right, ItemBounds.Top, ItemBounds.Right, ItemBounds.Bottom);
+                //Copy all but first item from top up one.
+                IntPtr gPtr = _RenderedGraphics.GetHdc();
+                BitBlt(gPtr, 0, 0, _Rendered.Width, _Rendered.Height - ClientSettings.ItemHeight, gPtr, 0, ClientSettings.ItemHeight, TernaryRasterOperations.SRCCOPY);
+                _RenderedGraphics.ReleaseHdc(gPtr);
+                //Draw the last item.
+                StatusItem Item = Items[Items.Count - 1];
+                Rectangle ItemBounds = new Rectangle(0, (MaxItems - 1) * ClientSettings.ItemHeight, Item.Bounds.Width, Item.Bounds.Height);
+                using (Pen whitePen = new Pen(ClientSettings.LineColor))
+                {
+                    _RenderedGraphics.DrawLine(whitePen, ItemBounds.Left, ItemBounds.Top, ItemBounds.Right, ItemBounds.Top);
+                    _RenderedGraphics.DrawLine(whitePen, ItemBounds.Left, ItemBounds.Bottom, ItemBounds.Right, ItemBounds.Bottom);
+                    _RenderedGraphics.DrawLine(whitePen, ItemBounds.Right, ItemBounds.Top, ItemBounds.Right, ItemBounds.Bottom);
+                }
+                Item.Render(_RenderedGraphics, ItemBounds, false);
             }
-            Item.Render(_RenderedGraphics, ItemBounds, false);
         }
     }
 }
