@@ -359,12 +359,12 @@ namespace PockeTwit.FingerUI
                         {
 
                             Rectangle ImageRect = new Rectangle(ImageLocation.X, ImageLocation.Y, ClientSettings.SmallArtSize, ClientSettings.SmallArtSize);
-                            SizeF overlaySize = g.MeasureString(overlay, ClientSettings.TextFont);
+                            SizeF overlaySize = g.MeasureString(overlay, ClientSettings.SmallFont);
                             using (Brush bBrush = new SolidBrush(ClientSettings.SelectedBackColor))
                             {
-                                g.FillRectangle(bBrush, new Rectangle(ImageRect.Right - (int)overlaySize.Width - 4, ImageRect.Top, (int)overlaySize.Width + 4, (int)overlaySize.Height + 4));
+                                g.FillRectangle(bBrush, new Rectangle(ImageRect.Right - (int)overlaySize.Width - 2, ImageRect.Top, (int)overlaySize.Width + 2, (int)overlaySize.Height + 2));
                             }
-                            g.DrawString(overlay, ClientSettings.TextFont, sBrush, new Rectangle(ImageRect.Right - (int)overlaySize.Width - 2, ImageRect.Top - 2, (int)overlaySize.Width, (int)overlaySize.Height));
+                            g.DrawString(overlay, ClientSettings.SmallFont, sBrush, new Rectangle(ImageRect.Right - (int)overlaySize.Width + 1, ImageRect.Top , (int)overlaySize.Width, (int)overlaySize.Height));
                         }
                     }
                 }
