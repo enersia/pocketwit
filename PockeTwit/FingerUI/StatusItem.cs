@@ -224,9 +224,9 @@ namespace PockeTwit.FingerUI
         /// <param name="bounds">The bounds.</param>
         public virtual void Render(Graphics g)
         {
-            Render(g, this.Bounds);
+            Render(g, this.Bounds, false);
         }
-        public virtual void Render(Graphics g, Rectangle bounds)
+        public virtual void Render(Graphics g, Rectangle bounds, bool avatarOnly)
         {
             try
             {
@@ -247,17 +247,26 @@ namespace PockeTwit.FingerUI
                 Rectangle InnerBounds = new Rectangle(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
                 InnerBounds.Offset(1, 1);
                 InnerBounds.Width--; InnerBounds.Height--;
-
-                if (m_selected)
+                if (!avatarOnly)
                 {
-                    ForeBrush = new SolidBrush(ClientSettings.SelectedForeColor);
-                    if (ClientSettings.SelectedBackColor != ClientSettings.SelectedBackGradColor)
+                    if (m_selected)
                     {
-                        try
+                        ForeBrush = new SolidBrush(ClientSettings.SelectedForeColor);
+                        if (ClientSettings.SelectedBackColor != ClientSettings.SelectedBackGradColor)
                         {
-                            Gradient.GradientFill.Fill(g, InnerBounds, ClientSettings.SelectedBackColor, ClientSettings.SelectedBackGradColor, Gradient.GradientFill.FillDirection.TopToBottom);
+                            try
+                            {
+                                Gradient.GradientFill.Fill(g, InnerBounds, ClientSettings.SelectedBackColor, ClientSettings.SelectedBackGradColor, Gradient.GradientFill.FillDirection.TopToBottom);
+                            }
+                            catch
+                            {
+                                using (Brush BackBrush = new SolidBrush(ClientSettings.SelectedBackColor))
+                                {
+                                    g.FillRectangle(BackBrush, InnerBounds);
+                                }
+                            }
                         }
-                        catch
+                        else
                         {
                             using (Brush BackBrush = new SolidBrush(ClientSettings.SelectedBackColor))
                             {
@@ -267,21 +276,21 @@ namespace PockeTwit.FingerUI
                     }
                     else
                     {
-                        using (Brush BackBrush = new SolidBrush(ClientSettings.SelectedBackColor))
+                        if (ClientSettings.BackColor != ClientSettings.BackGradColor)
                         {
-                            g.FillRectangle(BackBrush, InnerBounds);
+                            try
+                            {
+                                Gradient.GradientFill.Fill(g, InnerBounds, ClientSettings.BackColor, ClientSettings.BackGradColor, Gradient.GradientFill.FillDirection.TopToBottom);
+                            }
+                            catch
+                            {
+                                using (Brush BackBrush = new SolidBrush(ClientSettings.BackColor))
+                                {
+                                    g.FillRectangle(BackBrush, InnerBounds);
+                                }
+                            }
                         }
-                    }
-                }
-                else
-                {
-                    if (ClientSettings.BackColor != ClientSettings.BackGradColor)
-                    {
-                        try
-                        {
-                            Gradient.GradientFill.Fill(g, InnerBounds, ClientSettings.BackColor, ClientSettings.BackGradColor, Gradient.GradientFill.FillDirection.TopToBottom);
-                        }
-                        catch
+                        else
                         {
                             using (Brush BackBrush = new SolidBrush(ClientSettings.BackColor))
                             {
@@ -289,26 +298,21 @@ namespace PockeTwit.FingerUI
                             }
                         }
                     }
-                    else
-                    {
-                        using (Brush BackBrush = new SolidBrush(ClientSettings.BackColor))
-                        {
-                            g.FillRectangle(BackBrush, InnerBounds);
-                        }
-                    }
                 }
-
 
                 Point ImageLocation = new Point(bounds.X + ClientSettings.Margin, bounds.Y + ClientSettings.Margin);
 
                 //Add the timestamp if the settings call for it.
-                if (ClientSettings.ShowExtra)
+                if (!avatarOnly)
                 {
-                    Color SmallColor = ClientSettings.SmallTextColor;
-                    if (this.Selected) { SmallColor = ClientSettings.SelectedSmallTextColor; }
-                    using (Brush dateBrush = new SolidBrush(SmallColor))
+                    if (ClientSettings.ShowExtra)
                     {
-                        g.DrawString(Tweet.TimeStamp, ClientSettings.SmallFont, dateBrush, bounds.Left + ClientSettings.Margin, ClientSettings.SmallArtSize + ClientSettings.Margin + bounds.Top, m_stringFormat);
+                        Color SmallColor = ClientSettings.SmallTextColor;
+                        if (this.Selected) { SmallColor = ClientSettings.SelectedSmallTextColor; }
+                        using (Brush dateBrush = new SolidBrush(SmallColor))
+                        {
+                            g.DrawString(Tweet.TimeStamp, ClientSettings.SmallFont, dateBrush, bounds.Left + ClientSettings.Margin, ClientSettings.SmallArtSize + ClientSettings.Margin + bounds.Top, m_stringFormat);
+                        }
                     }
                 }
 
@@ -344,67 +348,62 @@ namespace PockeTwit.FingerUI
                     }
 
                     //If it's a reply or direct message, overlay that on the avatar
-                    if (Tweet.TypeofMessage == PockeTwit.Library.StatusTypes.Reply)
+                    string overlay;
+
+                    if ((Tweet.TypeofMessage & PockeTwit.Library.StatusTypes.Reply) != 0)
+                        overlay = "@";
+                    else if ((Tweet.TypeofMessage & PockeTwit.Library.StatusTypes.Direct) != 0)
+                        overlay = "D";
+                    else
+                        overlay = String.Empty;
+
+                    if (overlay.Length != 0)
                     {
                         using (Brush sBrush = new SolidBrush(ClientSettings.SelectedForeColor))
                         {
 
                             Rectangle ImageRect = new Rectangle(ImageLocation.X, ImageLocation.Y, ClientSettings.SmallArtSize, ClientSettings.SmallArtSize);
-                            Point sPoint = new Point(ImageRect.Right - 15, ImageRect.Top);
-
+                            SizeF overlaySize = g.MeasureString(overlay, ClientSettings.SmallFont);
                             using (Brush bBrush = new SolidBrush(ClientSettings.SelectedBackColor))
                             {
-                                g.FillRectangle(bBrush, new Rectangle(ImageRect.Right - 15, ImageRect.Top, 15, 15));
+                                g.FillRectangle(bBrush, new Rectangle(ImageRect.Right - (int)overlaySize.Width - 2, ImageRect.Top, (int)overlaySize.Width + 2, (int)overlaySize.Height + 2));
                             }
-                            g.DrawString("@", ClientSettings.TextFont, sBrush, new Rectangle(ImageRect.Right - 12, ImageRect.Top - 2, 10, 20));
+                            g.DrawString(overlay, ClientSettings.SmallFont, sBrush, new Rectangle(ImageRect.Right - (int)overlaySize.Width + 1, ImageRect.Top , (int)overlaySize.Width, (int)overlaySize.Height));
                         }
                     }
-                    else if (Tweet.TypeofMessage == PockeTwit.Library.StatusTypes.Direct)
-                    {
-                        using (Brush sBrush = new SolidBrush(ClientSettings.SelectedForeColor))
-                        {
-                            Rectangle ImageRect = new Rectangle(ImageLocation.X, ImageLocation.Y, ClientSettings.SmallArtSize, ClientSettings.SmallArtSize);
-                            Point sPoint = new Point(ImageRect.Right - 15, ImageRect.Top);
+                }
 
-                            using (Brush bBrush = new SolidBrush(ClientSettings.SelectedBackColor))
+                if (!avatarOnly)
+                {
+                    textBounds.Offset(ClientSettings.Margin, 1);
+                    textBounds.Height--;
+
+                    BreakUpTheText(g, textBounds);
+                    int lineOffset = 0;
+
+                    if (!ClientSettings.UseClickables)
+                    {
+                        g.DrawString(Tweet.DisplayText, ClientSettings.TextFont, ForeBrush, new RectangleF((float)textBounds.Left, (float)textBounds.Top, (float)textBounds.Width, (float)textBounds.Height));
+                        //g.DrawString(Tweet.DisplayText, TextFont, ForeBrush, textBounds.Left, textBounds.Top, m_stringFormat);
+                    }
+                    else
+                    {
+
+                        for (int i = 0; i < Tweet.SplitLines.Count; i++)
+                        {
+                            if (i >= ClientSettings.LinesOfText)
                             {
-                                g.FillRectangle(bBrush, new Rectangle(ImageRect.Right - 15, ImageRect.Top, 15, 15));
+                                break;
                             }
-                            g.DrawString("D", ClientSettings.TextFont, sBrush, new Rectangle(ImageRect.Right - 10, ImageRect.Top, 10, 20));
+                            float Position = ((lineOffset * (ClientSettings.TextSize)) + textBounds.Top);
+
+                            g.DrawString(Tweet.SplitLines[i], ClientSettings.TextFont, ForeBrush, textBounds.Left, Position, m_stringFormat);
+                            lineOffset++;
                         }
-
+                        MakeClickable(g, textBounds);
                     }
+                    ForeBrush.Dispose();
                 }
-
-
-                textBounds.Offset(ClientSettings.Margin, 1);
-                textBounds.Height--;
-
-                BreakUpTheText(g, textBounds);
-                int lineOffset = 0;
-
-                if (!ClientSettings.UseClickables)
-                {
-                    g.DrawString(Tweet.DisplayText, ClientSettings.TextFont, ForeBrush, new RectangleF((float)textBounds.Left, (float)textBounds.Top, (float)textBounds.Width, (float)textBounds.Height));
-                    //g.DrawString(Tweet.DisplayText, TextFont, ForeBrush, textBounds.Left, textBounds.Top, m_stringFormat);
-                }
-                else
-                {
-
-                    for (int i = 0; i < Tweet.SplitLines.Count; i++)
-                    {
-                        if (i >= ClientSettings.LinesOfText)
-                        {
-                            break;
-                        }
-                        float Position = ((lineOffset * (ClientSettings.TextSize)) + textBounds.Top);
-
-                        g.DrawString(Tweet.SplitLines[i], ClientSettings.TextFont, ForeBrush, textBounds.Left, Position, m_stringFormat);
-                        lineOffset++;
-                    }
-                    MakeClickable(g, textBounds);
-                }
-                ForeBrush.Dispose();
                 g.Clip = new Region();
                 this.Tweet.SplitLines = null;
             }
@@ -460,6 +459,7 @@ namespace PockeTwit.FingerUI
 
             public RectangleF Location;
             public string Text;
+            public int Id;
 
             #endregion�Fields�
 
@@ -606,12 +606,17 @@ namespace PockeTwit.FingerUI
         private void FirstClickableRun(string text)
         {
             Tweet.Clickables = new List<Clickable>();
+            Tweet.ClickablesToDo = new List<int>();
+            int id = 0;
             System.Text.RegularExpressions.MatchCollection m = GetClickables.Matches(text);
             foreach (System.Text.RegularExpressions.Match match in m)
             {
                 Clickable c = new Clickable();
                 c.Text = match.Value.Trim(IgnoredAtChars);
+                c.Id = id;
+                Tweet.ClickablesToDo.Add(id);
                 Tweet.Clickables.Add(c);
+                id++;
             }
         }
 
@@ -624,10 +629,14 @@ namespace PockeTwit.FingerUI
 
             //Still need to handle "wrapped" links
             if (!ClientSettings.UseClickables) { return; }
+            if (Tweet.ClickablesToDo.Count == 0) { return; }
             float Position = ((lineOffSet * (ClientSettings.TextSize)));
             Clickable wrappedClick = null;
             foreach (Clickable c in Tweet.Clickables)
             {
+                if (!Tweet.ClickablesToDo.Contains(c.Id))
+                    continue;
+
                 int i = Line.IndexOf(c.Text);
                 float startpos = 0;
                 if (i >= 0)
@@ -639,19 +648,23 @@ namespace PockeTwit.FingerUI
                     }
                     SizeF WordSize = g.MeasureString(c.Text, ClientSettings.TextFont);
                     c.Location = new RectangleF(startpos, Position, WordSize.Width, WordSize.Height);
+                    Tweet.ClickablesToDo.Remove(c.Id);
                 }
                 else{
                     //Check to see if clickable got wrapped
                     string lastWord = Line;
                     string LineBeforeThisWord = "";
+                    bool containsSpace = false;
                     if (Line.IndexOf(" ") > 0)
                     {
                         lastWord = Line.Substring(Line.LastIndexOf(" "));
-                        LineBeforeThisWord = Line.Substring(0, Line.LastIndexOf(" "));
+                        containsSpace = true;
                     }
 
                     if (c.Text.StartsWith(lastWord))
                     {
+                        if (containsSpace)
+                            LineBeforeThisWord = Line.Substring(0, Line.LastIndexOf(" "));
                         startpos = g.MeasureString(LineBeforeThisWord.ToString(), ClientSettings.TextFont).Width;
                         SizeF WordSize = g.MeasureString(lastWord, ClientSettings.TextFont);
                         c.Location = new RectangleF(startpos, Position, WordSize.Width, WordSize.Height);
@@ -668,6 +681,7 @@ namespace PockeTwit.FingerUI
                             wrapClick.Location = new RectangleF(0F, NextPosition, WordSize.Width, WordSize.Height);
                             wrappedClick = wrapClick;
                         }
+                        Tweet.ClickablesToDo.Remove(c.Id);
                     }
                 }
             }
