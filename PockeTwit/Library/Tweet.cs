@@ -40,7 +40,8 @@ namespace PockeTwit.Library
 
         [XmlIgnore]
         public List<StatusItem.Clickable> Clickables { get; set; }
-        public List<string> ClickablesToDo { get; set; }
+        [XmlIgnore]
+        public List<int> ClickablesToDo { get; set; }
 
         public StatusTypes type { get; set; }
 

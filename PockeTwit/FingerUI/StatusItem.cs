@@ -459,6 +459,7 @@ namespace PockeTwit.FingerUI
 
             public RectangleF Location;
             public string Text;
+            public int Id;
 
             #endregion�Fields�
 
@@ -605,14 +606,17 @@ namespace PockeTwit.FingerUI
         private void FirstClickableRun(string text)
         {
             Tweet.Clickables = new List<Clickable>();
-            Tweet.ClickablesToDo = new List<string>();
+            Tweet.ClickablesToDo = new List<int>();
+            int id = 0;
             System.Text.RegularExpressions.MatchCollection m = GetClickables.Matches(text);
             foreach (System.Text.RegularExpressions.Match match in m)
             {
                 Clickable c = new Clickable();
                 c.Text = match.Value.Trim(IgnoredAtChars);
-                Tweet.ClickablesToDo.Add(c.Text);
+                c.Id = id;
+                Tweet.ClickablesToDo.Add(id);
                 Tweet.Clickables.Add(c);
+                id++;
             }
         }
 
@@ -630,7 +634,7 @@ namespace PockeTwit.FingerUI
             Clickable wrappedClick = null;
             foreach (Clickable c in Tweet.Clickables)
             {
-                if (!Tweet.ClickablesToDo.Contains(c.Text))
+                if (!Tweet.ClickablesToDo.Contains(c.Id))
                     continue;
 
                 int i = Line.IndexOf(c.Text);
@@ -644,7 +648,7 @@ namespace PockeTwit.FingerUI
                     }
                     SizeF WordSize = g.MeasureString(c.Text, ClientSettings.TextFont);
                     c.Location = new RectangleF(startpos, Position, WordSize.Width, WordSize.Height);
-                    Tweet.ClickablesToDo.Remove(c.Text);
+                    Tweet.ClickablesToDo.Remove(c.Id);
                 }
                 else{
                     //Check to see if clickable got wrapped
@@ -677,7 +681,7 @@ namespace PockeTwit.FingerUI
                             wrapClick.Location = new RectangleF(0F, NextPosition, WordSize.Width, WordSize.Height);
                             wrappedClick = wrapClick;
                         }
-                        Tweet.ClickablesToDo.Remove(c.Text);
+                        Tweet.ClickablesToDo.Remove(c.Id);
                     }
                 }
             }
