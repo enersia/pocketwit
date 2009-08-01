@@ -164,7 +164,7 @@ namespace FingerUI
                                 if (s.Tweet.user.profile_image_url == url)
                                 {
                                     Rectangle itemBounds = new Rectangle(0, ClientSettings.ItemHeight * i, s.Bounds.Width, ClientSettings.ItemHeight);
-                                    s.Render(_RenderedGraphics, itemBounds, true);
+                                    s.RenderAvatarArea(_RenderedGraphics, itemBounds);
                                 }
                             }
                         }
@@ -301,7 +301,7 @@ namespace FingerUI
                     {
                         int i = Items.IndexOf(Item);
                         Rectangle itemBounds = new Rectangle(0, ClientSettings.ItemHeight * i, Item.Bounds.Width, ClientSettings.ItemHeight);
-                        Item.Render(_RenderedGraphics, itemBounds, false);
+                        Item.Render(_RenderedGraphics, itemBounds);
                     }
                 }
             }
@@ -405,7 +405,7 @@ namespace FingerUI
                     g.DrawLine(whitePen, ItemBounds.Left, ItemBounds.Bottom, ItemBounds.Right, ItemBounds.Bottom);
                     g.DrawLine(whitePen, ItemBounds.Right, ItemBounds.Top, ItemBounds.Right, ItemBounds.Bottom);
                 }
-                Item.Render(g, ItemBounds, false);
+                Item.Render(g, ItemBounds);
             }
         }
         private void RenderNewItemAtStart()
@@ -426,7 +426,7 @@ namespace FingerUI
                     _RenderedGraphics.DrawLine(whitePen, ItemBounds.Left, ItemBounds.Bottom, ItemBounds.Right, ItemBounds.Bottom);
                     _RenderedGraphics.DrawLine(whitePen, ItemBounds.Right, ItemBounds.Top, ItemBounds.Right, ItemBounds.Bottom);
                 }
-                Item.Render(_RenderedGraphics, ItemBounds, false);
+                Item.Render(_RenderedGraphics, ItemBounds);
             }
         }
         private void RenderNewItemAtEnd()
@@ -446,7 +446,7 @@ namespace FingerUI
                     _RenderedGraphics.DrawLine(whitePen, ItemBounds.Left, ItemBounds.Bottom, ItemBounds.Right, ItemBounds.Bottom);
                     _RenderedGraphics.DrawLine(whitePen, ItemBounds.Right, ItemBounds.Top, ItemBounds.Right, ItemBounds.Bottom);
                 }
-                Item.Render(_RenderedGraphics, ItemBounds, false);
+                Item.Render(_RenderedGraphics, ItemBounds);
             }
         }
     }
