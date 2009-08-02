@@ -744,6 +744,15 @@ namespace PockeTwit
             delMenuClicked showGroupSettings = () => this.ChangeSettings(new SettingsHandler.GroupManagement());
             delMenuClicked showMediaServiceSettings = () => this.ChangeSettings(new MediaService());
 
+            WindowMenuItem = new FingerUI.Menu.SideMenuItem(null, "Window ...", statList.LeftMenu);
+
+            FullScreenMenuItem = new FingerUI.Menu.SideMenuItem(ToggleFullScreen, "Toggle FullScreen", statList.LeftMenu);
+            MinimizeMenuItem = new FingerUI.Menu.SideMenuItem(this.Minimize, "Minimize", statList.LeftMenu);
+            ExitMenuItem = new FingerUI.Menu.SideMenuItem(this.ExitApplication, "Exit", statList.LeftMenu);
+
+            WindowMenuItem.SubMenuItems.Add(FullScreenMenuItem);
+            WindowMenuItem.SubMenuItems.Add(MinimizeMenuItem);
+
             //SettingsMenuItem = new FingerUI.Menu.SideMenuItem(this.ChangeSettings, "Settings", statList.LeftMenu);
             SettingsMenuItem = new FingerUI.Menu.SideMenuItem(null, "Settings...", statList.LeftMenu);
             AccountsSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showAccounts, "Accounts", statList.LeftMenu);
@@ -762,18 +771,9 @@ namespace PockeTwit
             SettingsMenuItem.SubMenuItems.Add(UISettingsMenuItem);
             SettingsMenuItem.SubMenuItems.Add(OtherSettingsMenuItem);
             SettingsMenuItem.SubMenuItems.Add(AdvancedSettingsMenuItem);
+            SettingsMenuItem.SubMenuItems.Add(WindowMenuItem);
 
             AboutMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowAbout, "About/Feedback", statList.LeftMenu);
-
-
-            WindowMenuItem = new FingerUI.Menu.SideMenuItem(null, "Window ...", statList.LeftMenu);
-
-            FullScreenMenuItem = new FingerUI.Menu.SideMenuItem(ToggleFullScreen, "Toggle FullScreen", statList.LeftMenu);
-            MinimizeMenuItem = new FingerUI.Menu.SideMenuItem(this.Minimize, "Minimize", statList.LeftMenu);
-            ExitMenuItem = new FingerUI.Menu.SideMenuItem(this.ExitApplication, "Exit", statList.LeftMenu);
-
-            WindowMenuItem.SubMenuItems.Add(FullScreenMenuItem);
-            WindowMenuItem.SubMenuItems.Add(MinimizeMenuItem);
 
             foreach (ISpecialTimeLine t in SpecialTimeLinesRepository.GetList())
             {
@@ -784,7 +784,7 @@ namespace PockeTwit
             statList.LeftMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{BackMenuItem, FriendsTimeLineMenuItem, 
                 RefreshFriendsTimeLineMenuItem, MessagesMenuItem, RefreshMessagesMenuItem, GroupsMenuItem, 
                 TimeLinesMenuItem, PostUpdateMenuItem, FollowUserMenuItem, SettingsMenuItem,
-                AboutMenuItem, WindowMenuItem, ExitMenuItem});
+                AboutMenuItem, ExitMenuItem});
         }
 
         private void AddGroupSelectMenuItem(ISpecialTimeLine t)
