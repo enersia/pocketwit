@@ -792,7 +792,7 @@
         {
             "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_40E71D37BA55489FBE0B2DC740587735"
             {
-            "SourcePath" = "8:..\\PockeTwit\\obj\\Release\\PockeTwit.exe"
+            "SourcePath" = "8:..\\PockeTwit\\obj\\DevBuild\\PockeTwit.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"
@@ -818,7 +818,7 @@
             }
             "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_47D1F07DBAA548958E1F36C71E760EF5"
             {
-            "SourcePath" = "8:..\\AutoRunInstall\\Pocket PC 2003 (ARMV4)\\Release\\AutoRunInstall.dll"
+            "SourcePath" = "8:..\\AutoRunInstall\\Pocket PC 2003 (ARMV4)\\Debug\\AutoRunInstall.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"
@@ -844,7 +844,7 @@
             }
             "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_A449DB30D6934B66A486B4BEE0ED7C4A"
             {
-            "SourcePath" = "8:..\\QuickPost\\Windows Mobile 6 Professional SDK (ARMV4I)\\Release\\QuickPost.exe"
+            "SourcePath" = "8:..\\QuickPost\\Windows Mobile 6 Professional SDK (ARMV4I)\\Debug\\QuickPost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"
@@ -870,7 +870,7 @@
             }
             "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_CCBE87BED0C749C2910A51AFB4AE3C44"
             {
-            "SourcePath" = "8:..\\PockeTwitTodayPlugin\\Windows Mobile 6 Professional SDK (ARMV4I)\\Release\\PockeTwitTodayPlugin.dll"
+            "SourcePath" = "8:..\\PockeTwitTodayPlugin\\Windows Mobile 6 Professional SDK (ARMV4I)\\Debug\\PockeTwitTodayPlugin.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_A3791BF54CC441AE87C9343C26F02D8A"
@@ -927,117 +927,6 @@
             {
                 "Keys"
                 {
-                    "{B1EBC968-6B66-4532-A885-748B79AF4477}:_0CAE5A318AAF4B4B9C456B0E84ED6A6B"
-                    {
-                    "Name" = "8:Software"
-                    "Condition" = "8:"
-                        "Keys"
-                        {
-                            "{B1EBC968-6B66-4532-A885-748B79AF4477}:_1D36AAACE05A4293A67FE342E3183330"
-                            {
-                            "Name" = "8:Microsoft"
-                            "Condition" = "8:"
-                                "Keys"
-                                {
-                                    "{B1EBC968-6B66-4532-A885-748B79AF4477}:_2B841738E05A4065B190FA6013173A1F"
-                                    {
-                                    "Name" = "8:Today"
-                                    "Condition" = "8:"
-                                        "Keys"
-                                        {
-                                            "{B1EBC968-6B66-4532-A885-748B79AF4477}:_933BB8F74D3E4C6D95ACEFC90E06F39E"
-                                            {
-                                            "Name" = "8:Items"
-                                            "Condition" = "8:"
-                                                "Keys"
-                                                {
-                                                    "{B1EBC968-6B66-4532-A885-748B79AF4477}:_9E0AE11B5D53447C927642A899427CAB"
-                                                    {
-                                                    "Name" = "8:PockeTwit"
-                                                    "Condition" = "8:"
-                                                        "Keys"
-                                                        {
-                                                        }
-                                                        "Values"
-                                                        {
-                                                            "{C3684F64-58E2-4092-8E3C-D7483080DE5A}:_184A7A2CB25A4CA38A393554F198FBF9"
-                                                            {
-                                                            "Name" = "8:Options"
-                                                            "Condition" = "8:"
-                                                            "ValueTypes" = "3:3"
-                                                            "Value" = "3:1"
-                                                            }
-                                                            "{C3684F64-58E2-4092-8E3C-D7483080DE5A}:_48B8213AB8EB4DFF83D1973F07EB40E3"
-                                                            {
-                                                            "Name" = "8:Enabled"
-                                                            "Condition" = "8:"
-                                                            "ValueTypes" = "3:3"
-                                                            "Value" = "3:0"
-                                                            }
-                                                            "{C3684F64-58E2-4092-8E3C-D7483080DE5A}:_8DFDC64A5762426B9A208F43CF1EF09F"
-                                                            {
-                                                            "Name" = "8:UseCompactTodayPlugin"
-                                                            "Condition" = "8:"
-                                                            "ValueTypes" = "3:3"
-                                                            "Value" = "3:0"
-                                                            }
-                                                            "{C3684F64-58E2-4092-8E3C-D7483080DE5A}:_90EF05D13B7246D2AD12464487167483"
-                                                            {
-                                                            "Name" = "8:Type"
-                                                            "Condition" = "8:"
-                                                            "ValueTypes" = "3:3"
-                                                            "Value" = "3:4"
-                                                            }
-                                                            "{C3684F64-58E2-4092-8E3C-D7483080DE5A}:_9C3AB3B89D5E467CAE45E674548B1935"
-                                                            {
-                                                            "Name" = "8:Order"
-                                                            "Condition" = "8:"
-                                                            "ValueTypes" = "3:3"
-                                                            "Value" = "3:0"
-                                                            }
-                                                            "{C3684F64-58E2-4092-8E3C-D7483080DE5A}:_AD45486416314E58837FBA16D1D083FE"
-                                                            {
-                                                            "Name" = "8:Dll"
-                                                            "Condition" = "8:"
-                                                            "ValueTypes" = "3:1"
-                                                            "Value" = "8:\\Windows\\PockeTwitTodayPlugin.dll"
-                                                            }
-                                                            "{C3684F64-58E2-4092-8E3C-D7483080DE5A}:_AD92DEAFC60D4FCD82750EE6B319A77C"
-                                                            {
-                                                            "Name" = "8:Flags"
-                                                            "Condition" = "8:"
-                                                            "ValueTypes" = "3:3"
-                                                            "Value" = "3:0"
-                                                            }
-                                                            "{C3684F64-58E2-4092-8E3C-D7483080DE5A}:_C7FFA046D50C4CC69ADBBC151429D9F9"
-                                                            {
-                                                            "Name" = "8:Selectability"
-                                                            "Condition" = "8:"
-                                                            "ValueTypes" = "3:3"
-                                                            "Value" = "3:2"
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                "Values"
-                                                {
-                                                }
-                                            }
-                                        }
-                                        "Values"
-                                        {
-                                        }
-                                    }
-                                }
-                                "Values"
-                                {
-                                }
-                            }
-                        }
-                        "Values"
-                        {
-                        }
-                    }
                 }
             }
             "HKCU"

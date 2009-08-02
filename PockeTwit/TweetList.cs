@@ -425,7 +425,7 @@ namespace PockeTwit
         {
             StatusItem selectedItem = (StatusItem)statList.SelectedItem;
             if (selectedItem == null) { return; }
-            if (selectedItem.isFavorite)
+            if (selectedItem.IsFavorite)
             {
                 DestroyFavorite();
                 ToggleFavoriteMenuItem.Text = "Make Favorite";
@@ -454,7 +454,7 @@ namespace PockeTwit
             Yedda.Twitter.Account ChosenAccount = selectedItem.Tweet.Account;
 
             ChangeCursor(Cursors.WaitCursor);
-            selectedItem.isFavorite = true;
+            selectedItem.IsFavorite = true;
 
             string ID = selectedItem.Tweet.id;
             System.Threading.ThreadStart ts = delegate { CreateFavorite(ID, ChosenAccount); };
@@ -469,7 +469,7 @@ namespace PockeTwit
             StatusItem selectedItem = (StatusItem)statList.SelectedItem;
             string ID = selectedItem.Tweet.id;
             GetMatchingConnection(selectedItem.Tweet.Account).DestroyFavorite(ID);
-            selectedItem.isFavorite = false;
+            selectedItem.IsFavorite = false;
             UpdateRightMenu();
             statList.Repaint();
             ChangeCursor(Cursors.Default);
@@ -904,7 +904,7 @@ namespace PockeTwit
 
                 if (conn.FavoritesWork)
                 {
-                    if (selectedItem.isFavorite)
+                    if (selectedItem.IsFavorite)
                     {
                         ToggleFavoriteMenuItem.Text = "Remove Favorite";
                     }
