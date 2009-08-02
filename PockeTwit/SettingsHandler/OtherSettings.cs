@@ -81,6 +81,11 @@ namespace PockeTwit
                     ClientSettings.ProxyPort = 0;
                 }
             }
+            else
+            {
+                ClientSettings.ProxyServer = string.Empty;
+                ClientSettings.ProxyPort = 0;
+            }
             ClientSettings.SaveSettings();
             
             this.DialogResult = DialogResult.OK;
