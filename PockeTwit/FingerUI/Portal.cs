@@ -356,8 +356,6 @@ namespace FingerUI
                             DrawSingleItem(i, _RenderedGraphics);
                             itemsDrawn = reportProgress(itemsDrawn);
                         }
-
-                        NewImage();
                     }
                     catch (Exception)
                     {
@@ -365,6 +363,7 @@ namespace FingerUI
                         //Specified argument was out of range of valid values. Parameter name: index
                         //System.Windows.Forms.MessageBox.Show(ex.Message);
                     }
+                    NewImage();
                 }
             }
             catch(OutOfMemoryException)
