@@ -250,8 +250,6 @@ namespace PockeTwit.Library
                     {
                         stat.Account = Account;
                         stat.TypeofMessage = TypeOfMessage;
-                        if (!String.IsNullOrEmpty(stat.in_reply_to_status_id))
-                            stat.TypeofMessage = StatusTypes.Reply;
                     }
                 }
             }
