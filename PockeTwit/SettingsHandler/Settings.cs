@@ -214,6 +214,7 @@ public static class ClientSettings
     public static int ProxyPort { get; set; }
     public static bool ShowAvatars { get; set; }
     public static bool UseGPS { get; set; }
+    public static bool UseCellIDPosition { get; set; }
     public static bool IsMaximized { get; set; }
     public static bool CheckVersion { get; set; }
     public static string DistancePreference { get; set; }
@@ -410,7 +411,14 @@ public static class ClientSettings
             {
                 UseGPS = true;
             }
-
+            if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["UseCellIDPosition"]))
+            {
+                UseCellIDPosition = bool.Parse(ConfigurationSettings.AppSettings["UseCellIDPosition"]);
+            }
+            else
+            {
+                UseCellIDPosition = true;
+            }
             if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["IsMaximized"]))
             {
                 IsMaximized = bool.Parse(ConfigurationSettings.AppSettings["IsMaximized"]);
@@ -525,6 +533,7 @@ public static class ClientSettings
         ConfigurationSettings.AppSettings["ThemeName"] = ThemeName;
         ConfigurationSettings.AppSettings["ShowAvatars"] = ShowAvatars.ToString();
         ConfigurationSettings.AppSettings["UseGPS"] = UseGPS.ToString();
+        ConfigurationSettings.AppSettings["UseCellIDPosition"] = UseGPS.ToString();
         ConfigurationSettings.AppSettings["IsMaximized"] = IsMaximized.ToString();
         ConfigurationSettings.AppSettings["CheckVersion"] = CheckVersion.ToString();
         ConfigurationSettings.AppSettings["AnimationInterval"] = AnimationInterval.ToString();

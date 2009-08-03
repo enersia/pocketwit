@@ -23,8 +23,49 @@ namespace PockeTwit
                 StartGPS();
             }
         }
-
-        public void StartGPS()
+        public void StartPosition()
+        {
+            if (ClientSettings.UseGPS)
+                StartGPS();
+            else if (ClientSettings.UseCellIDPosition)
+                GetCellIDPosition();
+        }
+        public void StopPosition()
+        {
+            StopGPS();
+        }
+        public void SwitchToCellID()
+        {
+            StopGPS();
+            if (!GetCellIDPosition())
+            {
+                // Fallback, continue to try GPS locating
+                if (ClientSettings.UseGPS)
+                    StartGPS();
+            }
+        }
+        private bool GetCellIDPosition()
+        {
+            CellTowerInformation cell = RILWrapper.GetCellTowerInfo();
+            if ((cell.LAC != 0) && (cell.CellID != 0))
+            {
+                GeoPosition position = GoogleMapCellID.GetLatLng(cell);
+                if (position != null)
+                {
+                    if (!Double.IsNaN(position.Longitude) && !Double.IsNaN(position.Latitude))
+                    {
+                        if (LocationReady != null)
+                        {
+                            IFormatProvider format = new System.Globalization.CultureInfo(1033);
+                            LocationReady(position.Latitude.ToString(format) + "," + position.Longitude.ToString(format));
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        private void StartGPS()
         {
             gps.LocationChanged += new PockeTwit.GPS.LocationChangedEventHandler(gps_LocationChanged);
             if (!gps.Opened)
@@ -32,7 +73,7 @@ namespace PockeTwit
                 gps.Open();
             }
         }
-        public void StopGPS()
+        private void StopGPS()
         {
             gps.LocationChanged -= new PockeTwit.GPS.LocationChangedEventHandler(gps_LocationChanged);
             if (gps.Opened)

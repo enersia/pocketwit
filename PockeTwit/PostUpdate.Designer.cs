@@ -41,7 +41,7 @@ namespace PockeTwit
             this.txtStatusUpdate = new System.Windows.Forms.TextBox();
             this.lblCharsLeft = new System.Windows.Forms.Label();
             this.pictureLocation = new System.Windows.Forms.PictureBox();
-            this.lblGPS = new System.Windows.Forms.Label();
+            this.lblGPS = new System.Windows.Forms.LinkLabel();
             this.picAddressBook = new System.Windows.Forms.PictureBox();
             this.userListControl1 = new PockeTwit.userListControl();
             this.SuspendLayout();
@@ -123,11 +123,15 @@ namespace PockeTwit
             // 
             // lblGPS
             // 
+            this.lblGPS.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Regular);
+            this.lblGPS.ForeColor = System.Drawing.SystemColors.ControlText;
             this.lblGPS.Location = new System.Drawing.Point(128, 45);
             this.lblGPS.Name = "lblGPS";
             this.lblGPS.Size = new System.Drawing.Size(95, 20);
+            this.lblGPS.TabIndex = 13;
             this.lblGPS.Text = "Seeking GPS";
             this.lblGPS.Visible = false;
+            this.lblGPS.Click += new System.EventHandler(this.lblGPS_Click);
             // 
             // picAddressBook
             // 
@@ -184,7 +188,7 @@ namespace PockeTwit
         private System.Windows.Forms.Label lblCharsLeft;
         private System.Windows.Forms.PictureBox pictureLocation;
         private userListControl userListControl1;
-        private Label lblGPS;
+        private LinkLabel lblGPS;
         private PictureBox picAddressBook;
     }
 }

@@ -63,9 +63,9 @@ namespace PockeTwit
             }
             this.DialogResult = DialogResult.Cancel;
 
-            if (ClientSettings.UseGPS)
+            if (ClientSettings.UseGPS || ClientSettings.UseCellIDPosition)
             {
-                Locator.StartGPS();
+                Locator.StartPosition();
 
             }
             //cmbMeasurement.SelectedValue = ClientSettings.DistancePreference;
@@ -110,7 +110,7 @@ namespace PockeTwit
                     }
                     cmbLocation.Items.Add("Current GPS Position");
                     cmbLocation.Items.Add(Geocode.GetAddress(this.GPSLocation).Replace("\r\n", ""));
-                    Locator.StopGPS();
+                    Locator.StopPosition();
                 }
             }
         }
@@ -127,9 +127,9 @@ namespace PockeTwit
 		// Private Methods (2) 
         private void menuCancel_Click(object sender, EventArgs e)
         {
-            if (ClientSettings.UseGPS)
+            if (ClientSettings.UseGPS || ClientSettings.UseCellIDPosition)
             {
-                Locator.StopGPS();
+                Locator.StopPosition();
             }
             this.DialogResult = DialogResult.Cancel;
 
@@ -150,9 +150,9 @@ namespace PockeTwit
                     ClientSettings.SaveSettings();
                 }
             }
-            if (ClientSettings.UseGPS)
+            if (ClientSettings.UseGPS || ClientSettings.UseCellIDPosition)
             {
-                Locator.StopGPS();
+                Locator.StopPosition();
             }
             StringBuilder b = new StringBuilder();
             if (!string.IsNullOrEmpty(txtSearch.Text))
@@ -249,9 +249,9 @@ namespace PockeTwit
             }
             cmbLocation.Items.Add("Anywhere");
             cmbLocation.Text = "Anywhere";
-            if (ClientSettings.UseGPS)
+            if (ClientSettings.UseGPS || ClientSettings.UseCellIDPosition)
             {
-                cmbLocation.Items.Add("Seeking GPS...Please Wait");
+                cmbLocation.Items.Add("Seeking Position...Please Wait");
             }
         }
 

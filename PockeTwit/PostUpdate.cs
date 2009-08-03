@@ -183,7 +183,7 @@ namespace PockeTwit
                 {
                     if (!string.IsNullOrEmpty(Location))
                     {
-                        LocationFinder.StopGPS();
+                        LocationFinder.StopPosition();
                         GPSLocation = Location;
                         lblGPS.Text = "找到位置";
                         if (DetectDevice.DeviceType == DeviceType.Standard)
@@ -224,7 +224,7 @@ namespace PockeTwit
         private void StartLocating()
         {   
             //StartAnimation
-            LocationFinder.StartGPS();
+            LocationFinder.StartPosition();
             pictureLocation.Visible = false;
             lblGPS.Visible = true;
         }
@@ -744,7 +744,7 @@ namespace PockeTwit
 
         private bool PostTheUpdate()
         {
-            LocationFinder.StopGPS();
+            LocationFinder.StopPosition();
             if (!string.IsNullOrEmpty(StatusText) ||
                 (!string.IsNullOrEmpty(picturePath) && pictureService.CanUploadMessage && ClientSettings.SendMessageToMediaService))
             {
@@ -865,7 +865,7 @@ namespace PockeTwit
             UpdatePictureData(string.Empty, false);
 
             //Making sure gps is stopped when a location is not found yet.
-            LocationFinder.StopGPS();
+            LocationFinder.StopPosition();
 
             if (_StandAlone)
             {
@@ -963,7 +963,7 @@ namespace PockeTwit
                     Close();
                 }
                 //Making sure gps is stopped when a location is not found yet.
-                LocationFinder.StopGPS();
+                LocationFinder.StopPosition();
                 DialogResult = DialogResult.OK;
             }
         }
@@ -983,6 +983,14 @@ namespace PockeTwit
                 userListControl1.UnHookTextBoxKeyPress();
             }
             base.OnClosed(e);
+        }
+
+        private void lblGPS_Click(object sender, EventArgs e)
+        {
+            if (ClientSettings.UseCellIDPosition)
+            {
+                LocationFinder.SwitchToCellID();
+            }
         }
     }
 }
