@@ -752,6 +752,7 @@ namespace PockeTwit
 
             WindowMenuItem.SubMenuItems.Add(FullScreenMenuItem);
             WindowMenuItem.SubMenuItems.Add(MinimizeMenuItem);
+            WindowMenuItem.SubMenuItems.Add(ExitMenuItem);
 
             //SettingsMenuItem = new FingerUI.Menu.SideMenuItem(this.ChangeSettings, "Settings", statList.LeftMenu);
             SettingsMenuItem = new FingerUI.Menu.SideMenuItem(null, "Settings...", statList.LeftMenu);
@@ -771,8 +772,7 @@ namespace PockeTwit
             SettingsMenuItem.SubMenuItems.Add(UISettingsMenuItem);
             SettingsMenuItem.SubMenuItems.Add(OtherSettingsMenuItem);
             SettingsMenuItem.SubMenuItems.Add(AdvancedSettingsMenuItem);
-            SettingsMenuItem.SubMenuItems.Add(WindowMenuItem);
-
+            
             AboutMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowAbout, "About/Feedback", statList.LeftMenu);
 
             foreach (ISpecialTimeLine t in SpecialTimeLinesRepository.GetList())
@@ -784,7 +784,7 @@ namespace PockeTwit
             statList.LeftMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{BackMenuItem, FriendsTimeLineMenuItem, 
                 RefreshFriendsTimeLineMenuItem, MessagesMenuItem, RefreshMessagesMenuItem, GroupsMenuItem, 
                 TimeLinesMenuItem, PostUpdateMenuItem, FollowUserMenuItem, SettingsMenuItem,
-                AboutMenuItem, ExitMenuItem});
+                AboutMenuItem, WindowMenuItem, ExitMenuItem});
         }
 
         private void AddGroupSelectMenuItem(ISpecialTimeLine t)
