@@ -63,7 +63,7 @@ namespace PockeTwit
         FingerUI.Menu.SideMenuItem ViewFavoritesMenuItem;
         FingerUI.Menu.SideMenuItem GroupsMenuItem;
         
-        FingerUI.Menu.SideMenuItem TimeLinesMenuItem;
+        FingerUI.Menu.SideMenuItem OtherGlobalMenuItem;
 
         FingerUI.Menu.SideMenuItem PostUpdateMenuItem;
         FingerUI.Menu.SideMenuItem SettingsMenuItem;
@@ -721,14 +721,16 @@ namespace PockeTwit
             PublicMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowPublicTimeLine, "Public Timeline", statList.LeftMenu);
             SearchMenuItem = new FingerUI.Menu.SideMenuItem(this.TwitterSearch, "Search/Local", statList.LeftMenu);
             ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "View Favorites", statList.LeftMenu);
-
-            TimeLinesMenuItem = new FingerUI.Menu.SideMenuItem(null, "Other ...", statList.LeftMenu);
-            TimeLinesMenuItem.SubMenuItems.Add(SearchMenuItem);
-            TimeLinesMenuItem.SubMenuItems.Add(PublicMenuItem);
-            TimeLinesMenuItem.SubMenuItems.Add(ViewFavoritesMenuItem);
-            TimeLinesMenuItem.SubMenuItems.Add(AboutMenuItem);
-
             FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "Follow User", statList.LeftMenu);
+
+            OtherGlobalMenuItem = new FingerUI.Menu.SideMenuItem(null, "Other ...", statList.LeftMenu);
+            OtherGlobalMenuItem.SubMenuItems.Add(SearchMenuItem);
+            OtherGlobalMenuItem.SubMenuItems.Add(PublicMenuItem);
+            OtherGlobalMenuItem.SubMenuItems.Add(ViewFavoritesMenuItem);
+            OtherGlobalMenuItem.SubMenuItems.Add(FollowUserMenuItem);
+            OtherGlobalMenuItem.SubMenuItems.Add(AboutMenuItem);
+
+            
 
             GroupsMenuItem = new FingerUI.Menu.SideMenuItem(null, "Groups ...", statList.LeftMenu);
             GroupsMenuItem.Visible = false;
@@ -785,7 +787,7 @@ namespace PockeTwit
 
             statList.LeftMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{BackMenuItem, FriendsTimeLineMenuItem, 
                 RefreshFriendsTimeLineMenuItem, MessagesMenuItem, RefreshMessagesMenuItem, GroupsMenuItem, 
-                TimeLinesMenuItem, PostUpdateMenuItem, FollowUserMenuItem, SettingsMenuItem,
+                OtherGlobalMenuItem, PostUpdateMenuItem, SettingsMenuItem,
                 AboutMenuItem, WindowMenuItem, ExitMenuItem});
         }
 
