@@ -58,6 +58,13 @@ namespace PockeTwit.Themes
                 {
                     c.ForeColor = ClientSettings.LinkColor;
                 }
+                else if (c is TabControl)
+                {
+                    foreach (TabPage page in (c as TabControl).TabPages)
+                    {
+                        SetColors(page);
+                    }
+                }
                 else
                 {
                     c.ForeColor = ClientSettings.ForeColor;
@@ -79,6 +86,13 @@ namespace PockeTwit.Themes
                 else if (c is LinkLabel)
                 {
                     c.ForeColor = ClientSettings.LinkColor;
+                }
+                else if (c is TabControl)
+                {
+                    foreach (TabPage page in (c as TabControl).TabPages)
+                    {
+                        SetColors(page);
+                    }
                 }
                 else
                 {

@@ -18,6 +18,11 @@ namespace PockeTwit
         public AdvancedSearchSmartphoneForm()
         {
             InitializeComponent();
+            PockeTwit.Themes.FormColors.SetColors(this);
+            if (ClientSettings.IsMaximized)
+            {
+                this.WindowState = FormWindowState.Maximized;
+            } 
         }
 
         private void lblWords_Click(object sender, EventArgs e)
