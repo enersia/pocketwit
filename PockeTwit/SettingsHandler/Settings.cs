@@ -343,7 +343,7 @@ public static class ClientSettings
             }
             else
             {
-                AutoTranslate = true;
+                AutoTranslate = false;
             }
 
             if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["TranslationLanguage"]))
