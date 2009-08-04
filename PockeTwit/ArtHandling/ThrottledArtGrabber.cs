@@ -8,7 +8,7 @@ using System.Net;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading;
-using LocalStorage;
+using PockeTwit.LocalStorage;
 using TiledMaps;
 
 namespace PockeTwit
@@ -25,7 +25,7 @@ namespace PockeTwit
 
         private static readonly List<string> BadURLs = new List<string>();
         private static readonly Queue<string> Requests = new Queue<string>();
-        private static readonly Dictionary<string, Bitmap> MemCache = new Dictionary<string, Bitmap>();
+        private static readonly CacheDictionary<string, Bitmap> MemCache = new CacheDictionary<string, Bitmap>(35,5);
 
         public static Bitmap DefaultArt;
         public static Bitmap FavoriteImage;
@@ -81,10 +81,6 @@ namespace PockeTwit
         {
             lock (MemCache)
             {
-                foreach (string url in MemCache.Keys)
-                {
-                    MemCache[url].Dispose();
-                }
                 MemCache.Clear();
             }
         }
@@ -144,10 +140,6 @@ namespace PockeTwit
                     byte[] imageData = (byte[])comm.ExecuteScalar();
                     MemoryStream stream = new MemoryStream(imageData);
                     Bitmap b = new Bitmap(stream);
-                    if (MemCache.Keys.Count > 40)
-                    {
-                        ClearMem();
-                    }
                     MemCache.Add(url, (Bitmap)b.Clone());
                     return b;
                 }

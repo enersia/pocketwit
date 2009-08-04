@@ -8,7 +8,7 @@ using PockeTwit.Library;
 using PockeTwit.SpecialTimelines;
 using Yedda;
 
-namespace LocalStorage
+namespace PockeTwit.LocalStorage
 {
     internal class DataBaseUtility
     {

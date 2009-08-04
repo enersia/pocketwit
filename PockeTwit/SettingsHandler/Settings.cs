@@ -191,7 +191,7 @@ public static class ClientSettings
             }
             if(!string.IsNullOrEmpty(_CacheDir) && value!=_CacheDir)
             {
-                LocalStorage.DataBaseUtility.MoveDB(value);
+                PockeTwit.LocalStorage.DataBaseUtility.MoveDB(value);
             }
             _CacheDir = value;
         }

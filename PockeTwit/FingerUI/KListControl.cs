@@ -565,10 +565,10 @@ namespace PockeTwit.FingerUI
                         LastSelectedItems.SetLastSelected(thisList, SelectedItem.Tweet);
                     }
                 }
-                if (ListName != thisList)
+                /*if (ListName != thisList)
                 {
                     PockeTwit.ThrottledArtGrabber.ClearMem();
-                }
+                }*/
             }
             if (!ItemLists.ContainsKey(ListName))
             {

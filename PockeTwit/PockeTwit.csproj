@@ -487,6 +487,7 @@
     </Compile>
     <Compile Include="GraphicsLibs\DetermineColorDepth.cs" />
     <Compile Include="GraphicsLibs\DIB.cs" />
+    <Compile Include="LocalStorage\CacheDictionary.cs" />
     <Compile Include="MediaServices\SwitchToTweetPhoto.cs">
       <SubType>Form</SubType>
     </Compile>
