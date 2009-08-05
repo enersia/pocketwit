@@ -575,6 +575,7 @@
     <Compile Include="TiledMaps\GoogleMaps\GoogleServices.cs" />
     <Compile Include="TiledMaps\GoogleMaps\GoogleTerrainSession.cs" />
     <Compile Include="TiledMaps\GoogleMaps\GoogleTrafficSession.cs" />
+    <Compile Include="TiledMaps\GoogleMaps\OpenStreetMapSession.cs" />
     <Compile Include="TiledMaps\GraphicsRenderer.cs" />
     <Compile Include="TiledMaps\HttpMapSession.cs" />
     <Compile Include="TiledMaps\IImage.cs" />
