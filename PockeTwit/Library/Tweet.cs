@@ -537,8 +537,18 @@ namespace PockeTwit.Library
     public class User
     {
         #region Properties
-
-        public bool needsFetching { get; set; }
+        private bool _needsFetching = true;
+        public bool needsFetching 
+        {
+            get
+            {
+                return _needsFetching;
+            }
+            set
+            {
+                _needsFetching = value;
+            }
+        }
 
         public string location { get; set; }
         public string description { get; set; }
@@ -628,7 +638,9 @@ namespace PockeTwit.Library
                 }
                 using (var r = new StringReader(response))
                 {
-                    return (User) s.Deserialize(r);
+                    User result = (User)s.Deserialize(r);
+                    result._needsFetching = false;
+                    return result;
                 }
             }
             catch

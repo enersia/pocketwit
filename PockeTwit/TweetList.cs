@@ -788,7 +788,7 @@ namespace PockeTwit
             statList.LeftMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{BackMenuItem, FriendsTimeLineMenuItem, 
                 RefreshFriendsTimeLineMenuItem, MessagesMenuItem, RefreshMessagesMenuItem, GroupsMenuItem, 
                 OtherGlobalMenuItem, PostUpdateMenuItem, SettingsMenuItem,
-                AboutMenuItem, WindowMenuItem, ExitMenuItem});
+                WindowMenuItem, ExitMenuItem});
         }
 
         private void AddGroupSelectMenuItem(ISpecialTimeLine t)
