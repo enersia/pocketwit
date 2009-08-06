@@ -63,7 +63,7 @@ namespace PockeTwit
         FingerUI.Menu.SideMenuItem ViewFavoritesMenuItem;
         FingerUI.Menu.SideMenuItem GroupsMenuItem;
         
-        FingerUI.Menu.SideMenuItem TimeLinesMenuItem;
+        FingerUI.Menu.SideMenuItem OtherGlobalMenuItem;
 
         FingerUI.Menu.SideMenuItem PostUpdateMenuItem;
         FingerUI.Menu.SideMenuItem SettingsMenuItem;
@@ -712,6 +712,8 @@ namespace PockeTwit
             BackMenuItem = new FingerUI.Menu.SideMenuItem(this.GoBackInHistory, "Back", statList.LeftMenu);
             BackMenuItem.CanHide = true;
 
+            AboutMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowAbout, "About/Feedback", statList.LeftMenu);
+
             FriendsTimeLineMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFriendsTimeLine, "Friends Timeline", statList.LeftMenu, "Friends_TimeLine");
             RefreshFriendsTimeLineMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshFriendsTimeLine, "Refresh Friends", statList.LeftMenu, "Friends_TimeLine");
             MessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowMessagesTimeLine, "Messages", statList.LeftMenu, "Messages_TimeLine");
@@ -719,13 +721,16 @@ namespace PockeTwit
             PublicMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowPublicTimeLine, "Public Timeline", statList.LeftMenu);
             SearchMenuItem = new FingerUI.Menu.SideMenuItem(this.TwitterSearch, "Search/Local", statList.LeftMenu);
             ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "View Favorites", statList.LeftMenu);
-
-            TimeLinesMenuItem = new FingerUI.Menu.SideMenuItem(null, "Other Timelines ...", statList.LeftMenu);
-            TimeLinesMenuItem.SubMenuItems.Add(SearchMenuItem);
-            TimeLinesMenuItem.SubMenuItems.Add(PublicMenuItem);
-            TimeLinesMenuItem.SubMenuItems.Add(ViewFavoritesMenuItem);
-
             FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "Follow User", statList.LeftMenu);
+
+            OtherGlobalMenuItem = new FingerUI.Menu.SideMenuItem(null, "Other ...", statList.LeftMenu);
+            OtherGlobalMenuItem.SubMenuItems.Add(SearchMenuItem);
+            OtherGlobalMenuItem.SubMenuItems.Add(PublicMenuItem);
+            OtherGlobalMenuItem.SubMenuItems.Add(ViewFavoritesMenuItem);
+            OtherGlobalMenuItem.SubMenuItems.Add(FollowUserMenuItem);
+            OtherGlobalMenuItem.SubMenuItems.Add(AboutMenuItem);
+
+            
 
             GroupsMenuItem = new FingerUI.Menu.SideMenuItem(null, "Groups ...", statList.LeftMenu);
             GroupsMenuItem.Visible = false;
@@ -752,8 +757,7 @@ namespace PockeTwit
 
             WindowMenuItem.SubMenuItems.Add(FullScreenMenuItem);
             WindowMenuItem.SubMenuItems.Add(MinimizeMenuItem);
-            WindowMenuItem.SubMenuItems.Add(ExitMenuItem);
-
+            
             //SettingsMenuItem = new FingerUI.Menu.SideMenuItem(this.ChangeSettings, "Settings", statList.LeftMenu);
             SettingsMenuItem = new FingerUI.Menu.SideMenuItem(null, "Settings...", statList.LeftMenu);
             AccountsSettingsMenuItem = new FingerUI.Menu.SideMenuItem(showAccounts, "Accounts", statList.LeftMenu);
@@ -773,7 +777,7 @@ namespace PockeTwit
             SettingsMenuItem.SubMenuItems.Add(OtherSettingsMenuItem);
             SettingsMenuItem.SubMenuItems.Add(AdvancedSettingsMenuItem);
             
-            AboutMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowAbout, "About/Feedback", statList.LeftMenu);
+            
 
             foreach (ISpecialTimeLine t in SpecialTimeLinesRepository.GetList())
             {
@@ -783,8 +787,8 @@ namespace PockeTwit
 
             statList.LeftMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{BackMenuItem, FriendsTimeLineMenuItem, 
                 RefreshFriendsTimeLineMenuItem, MessagesMenuItem, RefreshMessagesMenuItem, GroupsMenuItem, 
-                TimeLinesMenuItem, PostUpdateMenuItem, FollowUserMenuItem, SettingsMenuItem,
-                AboutMenuItem, WindowMenuItem, ExitMenuItem});
+                OtherGlobalMenuItem, PostUpdateMenuItem, SettingsMenuItem,
+                WindowMenuItem, ExitMenuItem});
         }
 
         private void AddGroupSelectMenuItem(ISpecialTimeLine t)

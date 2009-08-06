@@ -41,6 +41,10 @@ namespace PockeTwit
                 lblVersion.Text = "PockeTwit v" + UpgradeChecker.currentVersion.ToString() + " d" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision;
                 menuUpdate.Text = "Upgrade";
             }
+            if(UpgradeChecker.isBeta)
+            {
+                lblVersion.Text = "PockeTwit v" + UpgradeChecker.currentVersion.ToString() + " beta";
+            }
             this.lnkContributors.Focus();
         }
 

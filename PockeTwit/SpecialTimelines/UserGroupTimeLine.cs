@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace PockeTwit.SpecialTimelines
 {
@@ -23,6 +24,7 @@ namespace PockeTwit.SpecialTimelines
         }
 
         public string name { get; set; }
+        [XmlArray]
         public GroupTerm[] Terms { get; set; }
 
         
