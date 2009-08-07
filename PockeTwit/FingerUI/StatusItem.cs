@@ -5,7 +5,7 @@ using System.Drawing;
 
 namespace PockeTwit.FingerUI
 {
-    public class StatusItem : IDisposable, IComparable
+    public class StatusItem : IDisposable, IComparable, IDisplayItem
     {
 
         public static char[] IgnoredAtChars = new[] { ':', ',', '-', '.', '!', '?', '~','=','&','*','>',')', '(' };
@@ -215,10 +215,10 @@ namespace PockeTwit.FingerUI
         /// </summary>
         /// <param name="g">The graphics.</param>
         /// <param name="bounds">The bounds.</param>
-        public virtual void Render(Graphics g)
-        {
-            Render(g, Bounds);
-        }
+        //public virtual void Render(Graphics g)
+        //{
+        //    Render(g, Bounds);
+        //}
         public virtual void Render(Graphics g, Rectangle bounds)
         {
             try

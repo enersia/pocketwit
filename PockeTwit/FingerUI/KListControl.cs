@@ -167,7 +167,7 @@ namespace PockeTwit.FingerUI
 
         void SlidingPortal_Panic()
         {
-            foreach (StatusItem i in m_items.Values)
+            foreach (IDisplayItem i in m_items.Values)
             {
                 i.ParentGraphics = SlidingPortal._RenderedGraphics;
             }
@@ -225,7 +225,7 @@ namespace PockeTwit.FingerUI
                 itemsBeforePortal = itemsBeforePortal + itemsAfterPortal;
             }
             if (itemsBeforePortal < 0) { itemsBeforePortal = 0; }
-            List<StatusItem> NewSet = new List<StatusItem>();
+            List<IDisplayItem> NewSet = new List<IDisplayItem>();
             int MaxSize = Math.Min(itemsBeforePortal + SlidingPortal.MaxItems, m_items.Count);
             for (int i = itemsBeforePortal; i < MaxSize; i++)
             {
@@ -418,7 +418,7 @@ namespace PockeTwit.FingerUI
                 return m_selectedIndex;
             }
         }
-        public StatusItem SelectedItem
+        public IDisplayItem SelectedItem
         {
             get
             {
@@ -435,7 +435,7 @@ namespace PockeTwit.FingerUI
                 SlidingPortal.ReRenderItem(m_items[m_selectedIndex]);
                 for(int i=0;i<m_items.Count;i++)
                 {
-                    StatusItem item = m_items[i];
+                    IDisplayItem item = m_items[i];
                     if (item == value)
                     {
                         item.Selected = true;
@@ -451,7 +451,7 @@ namespace PockeTwit.FingerUI
             }
         }
 
-        public StatusItem this[int index]
+        public IDisplayItem this[int index]
         {
             get
             {
@@ -558,11 +558,12 @@ namespace PockeTwit.FingerUI
             string thisList = CurrentList();
             if (!string.IsNullOrEmpty(thisList))
             {
-                if (SelectedItem != null)
+                // TODO
+                if ((SelectedItem != null) && (SelectedItem is StatusItem))
                 {
                     if (ListName != "Conversation" && ListName != "Search_TimeLine")
                     {
-                        LastSelectedItems.SetLastSelected(thisList, SelectedItem.Tweet);
+                        LastSelectedItems.SetLastSelected(thisList, (SelectedItem as StatusItem).Tweet);
                     }
                 }
                 /*if (ListName != thisList)
@@ -581,14 +582,15 @@ namespace PockeTwit.FingerUI
 
         public void JumpToLastSelected()
         {
-
-
             string jumpID = LastSelectedItems.GetLastSelected(CurrentList());
+            // TODO
             if (!string.IsNullOrEmpty(jumpID))
             {
                 for (int i = 0; i < m_items.Count; i++)
                 {
-                    if (m_items[i].Tweet.id == jumpID)
+                    if (!(m_items[i] is StatusItem))
+                        continue;
+                    if ((m_items[i] as StatusItem).Tweet.id == jumpID)
                     {
                         m_selectedIndex = i;
                         SelectAndJump();
@@ -663,10 +665,15 @@ namespace PockeTwit.FingerUI
         
         public void JumpToItem(object Value)
         {
+            // TODO
             for (int i = 0; i < this.Count; i++)
             {
-                StatusItem item = this[i];
-                if (item.Value.ToString() == Value.ToString())
+                IDisplayItem item = this[i];
+                if (!(item is StatusItem))
+                    continue;
+                if ((item as StatusItem).Value == null)
+                    continue;
+                if ((item as StatusItem).Value.ToString() == Value.ToString())
                 {
                     JumpToItem(item);
                 }
@@ -778,9 +785,13 @@ namespace PockeTwit.FingerUI
                     m_selectedIndex = m_items.Count - 1;
                     m_items[m_selectedIndex].Selected = true;
                     SlidingPortal.ReRenderItem(m_items[m_selectedIndex]);
-                    StatusItem s = (StatusItem)SelectedItem;
-                    RightMenu.UserName = s.Tweet.user.screen_name;
-                    LastSelectedItems.SetLastSelected(CurrentList(), m_items[m_selectedIndex].Tweet);
+                    StatusItem s = SelectedItem as StatusItem;
+                    // TODO
+                    if (s != null)
+                    {
+                        RightMenu.UserName = s.Tweet.user.screen_name;
+                        LastSelectedItems.SetLastSelected(CurrentList(), (m_items[m_selectedIndex] as StatusItem).Tweet);
+                    }
                     //FillBuffer();
                 }
             }
@@ -1329,7 +1340,7 @@ namespace PockeTwit.FingerUI
                 //I want to do this async, but I'm running into race conditions right now.
                 FillBackBuffer(null);
                  */
-                SlidingPortal.SetItemList(new List<StatusItem>(m_items.Values));
+                SlidingPortal.SetItemList(new List<IDisplayItem>(m_items.Values));
                 SlidingPortalCurrentEnd = SlidingPortal.MaxItems;
                 //SlidingPortal.RenderImmediately();
             }
@@ -1445,7 +1456,7 @@ namespace PockeTwit.FingerUI
 
 
         // Private Methods (22) 
-
+        // TODO
         private void CheckForClicks(Point point)
         {
             if (m_items.Count == 0) { return; }
@@ -1485,6 +1496,7 @@ namespace PockeTwit.FingerUI
             if (TextClicked == "Detailed View" | ShortText.IsShortTextURL(TextClicked))
             {
                 //Show the full tweet somehow.
+                // TODO
                 StatusItem s = (StatusItem)SelectedItem;
 
                 fsDisplay.Status = s.Tweet;
@@ -1723,7 +1735,7 @@ namespace PockeTwit.FingerUI
         private void SelectAndJump()
         {
             //m_items[m_selectedIndex].Render(m_backBuffer, m_items[m_selectedIndex].Bounds);
-            StatusItem item = null;
+            IDisplayItem item = null;
             try
             {
                 item = m_items[m_selectedIndex];
@@ -1741,9 +1753,13 @@ namespace PockeTwit.FingerUI
             }
             if (fsDisplay.Visible)
             {
-                StatusItem s = (StatusItem)m_items[m_selectedIndex];
-                fsDisplay.Status = s.Tweet;
-                fsDisplay.Render();
+                // TODO
+                StatusItem s = m_items[m_selectedIndex] as StatusItem;
+                if (s != null)
+                {
+                    fsDisplay.Status = s.Tweet;
+                    fsDisplay.Render();
+                }
             }
             JumpToItem(item);
             RerenderPortal();
@@ -1881,7 +1897,7 @@ namespace PockeTwit.FingerUI
         #endregion Methods 
 
         #region Nested Classes (1) 
-        public class ItemList : Dictionary<int, StatusItem>
+        public class ItemList : Dictionary<int, IDisplayItem>
         {
         }
         #endregion Nested Classes 
