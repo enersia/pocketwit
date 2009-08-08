@@ -448,6 +448,10 @@ namespace PockeTwit.FingerUI
                         item.Selected = false;
                     }
                 }
+                if (SelectedItemChanged != null)
+                {
+                    SelectedItemChanged(this, new EventArgs());
+                }
             }
         }
 
@@ -1053,6 +1057,9 @@ namespace PockeTwit.FingerUI
 
         public void OpenRightMenu()
         {
+            if (RightMenu.Count == 0)
+                return;
+
             m_velocity.X = (this.Width / 2);
             XOffset = XOffset + 3;
             m_timer.Enabled = true;
@@ -1165,7 +1172,7 @@ namespace PockeTwit.FingerUI
                 }
 
                 // if right menu is disabled, do not allow scroll
-                if (RightMenu.Count == 0)
+                if (RightMenu.Count == 0 && distanceX > 0)
                 {
                     distanceX = 0;
                 }
@@ -1449,10 +1456,13 @@ namespace PockeTwit.FingerUI
 
             this.ItemWidth = this.Width;
 
-            foreach (StatusItem item in m_items.Values)
+            foreach (IDisplayItem item in m_items.Values)
             {
                 item.Bounds = ItemBounds(0, item.Index);
-                item.ResetTexts();
+                if (item is StatusItem)
+                {
+                    (item as StatusItem).ResetTexts();
+                }
             }
             
 
