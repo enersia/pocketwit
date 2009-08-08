@@ -270,18 +270,21 @@ namespace PockeTwit.FingerUI.Menu
                     }
                 }
                 _items.Clear();
-                _items.AddRange(newItems);
-                SetMenuHeight();
-                foreach (SideMenuItem item in _items)
+                if (newItems != null)
                 {
-                    item.DoneWithClick += ItemDoneWithClick;
-                    item.MenuExpandedOrCollapsed += ItemMenuExpandedOrCollapsed;
-                    if (item.HasChildren)
+                    _items.AddRange(newItems);
+                    SetMenuHeight();
+                    foreach (SideMenuItem item in _items)
                     {
-                        foreach (SideMenuItem subItem in item.SubMenuItems)
+                        item.DoneWithClick += ItemDoneWithClick;
+                        item.MenuExpandedOrCollapsed += ItemMenuExpandedOrCollapsed;
+                        if (item.HasChildren)
                         {
-                            subItem.DoneWithClick += ItemDoneWithClick;
-                            subItem.MenuExpandedOrCollapsed += ItemMenuExpandedOrCollapsed;
+                            foreach (SideMenuItem subItem in item.SubMenuItems)
+                            {
+                                subItem.DoneWithClick += ItemDoneWithClick;
+                                subItem.MenuExpandedOrCollapsed += ItemMenuExpandedOrCollapsed;
+                            }
                         }
                     }
                 }
@@ -527,6 +530,9 @@ namespace PockeTwit.FingerUI.Menu
             var expandedRect = new Rectangle();
             lock (_items)
             {
+                if (_items.Count == 0)
+                    return;
+
                 var menuTextColor = AnimationTextColor;
                 var menuLineColor = AnimationLineColor;
                 

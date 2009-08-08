@@ -195,9 +195,30 @@ namespace PockeTwit
             }
         }
 
-        
-        public Library.status[] SearchTwitter(Yedda.Twitter t, string SearchString)
+        private int _currentSearchPageNo = 1;
+        private string _firstSearchHitId = String.Empty;
+        private string _lastSearchTerm = String.Empty;
+
+        public Library.status[] SearchTwitter(Yedda.Twitter t, string SearchString, bool usePaging)
         {
+            if (!usePaging)
+            {
+                _lastSearchTerm = SearchString;
+                _currentSearchPageNo = 1;
+            }
+            else
+            {
+                if (_lastSearchTerm != SearchString)
+                    _currentSearchPageNo = 1;
+
+                _lastSearchTerm = SearchString;
+
+                if (_currentSearchPageNo != 1)
+                {
+                    SearchString = String.Format("max_id={0}&page={1}&{2}", _firstSearchHitId, _currentSearchPageNo, SearchString);
+                }
+            }
+
             string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Search, SearchString);
             if (string.IsNullOrEmpty(response))
             {
@@ -217,6 +238,20 @@ namespace PockeTwit
                     item.SearchTerm = SearchString;
                 }
             }
+
+            if (usePaging)
+            {
+                if (_currentSearchPageNo == 1)
+                {
+                    _firstSearchHitId = Items[0].id;
+                }
+                _currentSearchPageNo++;
+            }
+            else
+            {
+                _currentSearchPageNo++;
+            }
+
             return Items;
         }
 
@@ -292,7 +327,7 @@ namespace PockeTwit
             return Library.status.Deserialize(response, t.AccountInfo);
         }
 
-        public Library.status[] GetGroupedTimeLine(ISpecialTimeLine t)
+        public Library.status[] GetGroupedTimeLine(ISpecialTimeLine t, bool usePaging)
         {
             TimeLineType timeLineType = TimeLineType.Friends;
             if(t is SavedSearchTimeLine)
@@ -300,14 +335,14 @@ namespace PockeTwit
                 var savedLine = (SavedSearchTimeLine) t;
                 if(!savedLine.autoUpdate)
                 {
-                    return GetRegularSavedSearchTimeLine(savedLine);
+                    return GetRegularSavedSearchTimeLine(savedLine, usePaging);
                 }
                 timeLineType = TimeLineType.Searches;
             }
             return LocalStorage.DataBaseUtility.GetList(timeLineType, ClientSettings.MaxTweets, t.GetConstraints()).ToArray();
         }
 
-        private Library.status[] GetRegularSavedSearchTimeLine(SavedSearchTimeLine searchLine)
+        private Library.status[] GetRegularSavedSearchTimeLine(SavedSearchTimeLine searchLine, bool usePaging)
         {
             // TODO: add paging here as well
             var TwitterConn = new Twitter
@@ -320,9 +355,7 @@ namespace PockeTwit
                     Enabled = ClientSettings.DefaultAccount.Enabled
                 }
             };
-
-
-            status[] items = SearchTwitter(TwitterConn, searchLine.SearchPhrase);
+            status[] items = SearchTwitter(TwitterConn, searchLine.SearchPhrase, usePaging);
             
             return items;
         }
@@ -581,7 +614,7 @@ namespace PockeTwit
                 if (searchLine.autoUpdate)
                 {
                     //Need a way to specify "since_id" here too.
-                    status[] Items = SearchTwitter(TwitterConn, searchLine.SearchPhrase);
+                    status[] Items = SearchTwitter(TwitterConn, searchLine.SearchPhrase, false);
                     if (Items != null)
                     {
                         tempLine.AddRange(Items);

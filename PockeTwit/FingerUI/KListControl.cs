@@ -665,6 +665,10 @@ namespace PockeTwit.FingerUI
         
         public void JumpToItem(object Value)
         {
+            if (Value is IDisplayItem)
+            {
+                JumpToItem(Value as IDisplayItem);
+            }
             // TODO
             for (int i = 0; i < this.Count; i++)
             {
@@ -680,7 +684,7 @@ namespace PockeTwit.FingerUI
             }
         }
 
-        public void JumpToItem(StatusItem item)
+        public void JumpToItem(IDisplayItem item)
         {
             
             Rectangle VisibleBounds = new Rectangle(0, YOffset, 10, this.Height);
@@ -1156,6 +1160,12 @@ namespace PockeTwit.FingerUI
                 //if we're primarily moving vertically, ignore horizontal movement.
                 //It makes it "stick" to the middle better!
                 if (XOffset==0 & Math.Abs(distanceX) < Math.Abs(distanceY))
+                {
+                    distanceX = 0;
+                }
+
+                // if right menu is disabled, do not allow scroll
+                if (RightMenu.Count == 0)
                 {
                     distanceX = 0;
                 }
@@ -1844,9 +1854,15 @@ namespace PockeTwit.FingerUI
         }
         private void ShowClickablesControl()
         {
+
             StatusItem s = null;
             try
             {
+                if (!(m_items[m_selectedIndex] is StatusItem))
+                {
+                    m_items[m_selectedIndex].OnMouseDblClick();
+                    return;
+                }
                 s = (StatusItem)m_items[m_selectedIndex];
             }
             catch (KeyNotFoundException) 

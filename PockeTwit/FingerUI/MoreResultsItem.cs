@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using PockeTwit.FingerUI.Menu;
 
 namespace PockeTwit.FingerUI
 {
@@ -17,6 +18,15 @@ namespace PockeTwit.FingerUI
             _list = list;
             _searchString = searchString;
             _saveResults = saveResults;
+            Value = this.GetType().ToString();
+
+        }
+        ISpecialTimeLine _timeLine;
+        public MoreResultsItem(TweetList list, ISpecialTimeLine timeLine)
+        {
+            _list = list;
+            _timeLine = timeLine;
+            Value = this.GetType().ToString();
         }
 
         #region IDisplayItem Members
@@ -35,7 +45,15 @@ namespace PockeTwit.FingerUI
 
         public void OnMouseClick(Point p)
         {
-            _list.ShowSearchResults(_searchString, _saveResults, true);
+            OnMouseDblClick();
+        }
+
+        public void OnMouseDblClick()
+        {
+            if (_timeLine == null) // direct Search
+                _list.ShowSearchResults(_searchString, _saveResults, true);
+            else
+                _list.ShowSpecialTimeLine(_timeLine, true);
         }
 
 
@@ -44,61 +62,11 @@ namespace PockeTwit.FingerUI
             try
             {
                 g.Clip = new Region(bounds);
-                var foreBrush = new SolidBrush(ClientSettings.ForeColor);
+          
                 Rectangle textBounds;
                 textBounds = new Rectangle(bounds.X + ClientSettings.Margin, bounds.Y, bounds.Width - (ClientSettings.Margin * 2), bounds.Height);
-                var innerBounds = new Rectangle(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
-                innerBounds.Offset(1, 1);
-                innerBounds.Width--; innerBounds.Height--;
-                if (Selected)
-                {
-                    foreBrush = new SolidBrush(ClientSettings.SelectedForeColor);
-                    if (ClientSettings.SelectedBackColor != ClientSettings.SelectedBackGradColor)
-                    {
-                        try
-                        {
-                            Gradient.GradientFill.Fill(g, innerBounds, ClientSettings.SelectedBackColor, ClientSettings.SelectedBackGradColor, Gradient.GradientFill.FillDirection.TopToBottom);
-                        }
-                        catch
-                        {
-                            using (Brush backBrush = new SolidBrush(ClientSettings.SelectedBackColor))
-                            {
-                                g.FillRectangle(backBrush, innerBounds);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        using (Brush backBrush = new SolidBrush(ClientSettings.SelectedBackColor))
-                        {
-                            g.FillRectangle(backBrush, innerBounds);
-                        }
-                    }
-                }
-                else
-                {
-                    if (ClientSettings.BackColor != ClientSettings.BackGradColor)
-                    {
-                        try
-                        {
-                            Gradient.GradientFill.Fill(g, innerBounds, ClientSettings.BackColor, ClientSettings.BackGradColor, Gradient.GradientFill.FillDirection.TopToBottom);
-                        }
-                        catch
-                        {
-                            using (Brush backBrush = new SolidBrush(ClientSettings.BackColor))
-                            {
-                                g.FillRectangle(backBrush, innerBounds);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        using (Brush backBrush = new SolidBrush(ClientSettings.BackColor))
-                        {
-                            g.FillRectangle(backBrush, innerBounds);
-                        }
-                    }
-                }
+
+                DisplayItemDrawingHelper.DrawItemBackground(g, bounds, Selected);
 
                 SizeF textSize = g.MeasureString("More...", ClientSettings.MenuFont);
                 Point startPoint = new Point((int)(bounds.Left + (bounds.Width - textSize.Width) / 2),(int)(bounds.Top + (bounds.Height - textSize.Height) / 2));
@@ -106,7 +74,7 @@ namespace PockeTwit.FingerUI
                 Color drawColor = ClientSettings.MenuTextColor;
                 using (Brush drawBrush = new SolidBrush(drawColor))
                 {
-                    g.DrawString("More...", ClientSettings.MenuFont, drawBrush, startPoint.X, startPoint.Y);
+                    g.DrawString("more...", ClientSettings.MenuFont, drawBrush, startPoint.X, startPoint.Y);
                 }
             }
             catch (ObjectDisposedException)
@@ -125,6 +93,18 @@ namespace PockeTwit.FingerUI
             get;
             set;
         }
+
+        public void CreateRightMenu(SideMenu menu)
+        {
+            return;
+        }
+
+        public void UpdateRightMenu(SideMenu menu)
+        {
+            return;
+        }
+
+        public object Value { get; set; }
 
         #endregion
     }
