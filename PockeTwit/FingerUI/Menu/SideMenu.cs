@@ -105,7 +105,7 @@ namespace PockeTwit.FingerUI.Menu
                     }
                     if(_selectedItem==null)
                     {
-                        return _items[1];
+                        return _items[0];
                     }
                     return _selectedItem;
                 }
@@ -230,7 +230,7 @@ namespace PockeTwit.FingerUI.Menu
                                 i++;
                             }
                         }
-                        _itemHeight = (screenHeight - (ClientSettings.TextSize * multiplyer)) / (i-1);
+                        _itemHeight = (screenHeight - (ClientSettings.TextSize * multiplyer)) / i;
                         _topOfMenu = ((screenHeight / 2) - ((i * ItemHeight) / 2));
                         if (ClientSettings.IsMaximized)
                         {

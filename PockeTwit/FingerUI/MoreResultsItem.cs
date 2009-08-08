@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 using PockeTwit.FingerUI.Menu;
+using System.Windows.Forms;
 
 namespace PockeTwit.FingerUI
 {
@@ -93,9 +94,18 @@ namespace PockeTwit.FingerUI
             get;
             set;
         }
+        /*
+        private void Test()
+        {
+            MessageBox.Show("Works!");
+        }
+        */
 
         public void CreateRightMenu(SideMenu menu)
         {
+            /* Test Code for menu creation, left here as template
+            FingerUI.Menu.SideMenuItem TestMenuItem = new FingerUI.Menu.SideMenuItem(Test, "Test", menu);
+            menu.ResetMenu(new FingerUI.Menu.SideMenuItem[] { TestMenuItem });*/
             return;
         }
 

@@ -344,7 +344,6 @@ namespace PockeTwit
 
         private Library.status[] GetRegularSavedSearchTimeLine(SavedSearchTimeLine searchLine, bool usePaging)
         {
-            // TODO: add paging here as well
             var TwitterConn = new Twitter
             {
                 AccountInfo =

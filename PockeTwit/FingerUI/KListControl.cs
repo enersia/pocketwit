@@ -562,7 +562,6 @@ namespace PockeTwit.FingerUI
             string thisList = CurrentList();
             if (!string.IsNullOrEmpty(thisList))
             {
-                // TODO
                 if ((SelectedItem != null) && (SelectedItem is StatusItem))
                 {
                     if (ListName != "Conversation" && ListName != "Search_TimeLine")
@@ -587,7 +586,6 @@ namespace PockeTwit.FingerUI
         public void JumpToLastSelected()
         {
             string jumpID = LastSelectedItems.GetLastSelected(CurrentList());
-            // TODO
             if (!string.IsNullOrEmpty(jumpID))
             {
                 for (int i = 0; i < m_items.Count; i++)
@@ -673,7 +671,6 @@ namespace PockeTwit.FingerUI
             {
                 JumpToItem(Value as IDisplayItem);
             }
-            // TODO
             for (int i = 0; i < this.Count; i++)
             {
                 IDisplayItem item = this[i];
@@ -794,7 +791,6 @@ namespace PockeTwit.FingerUI
                     m_items[m_selectedIndex].Selected = true;
                     SlidingPortal.ReRenderItem(m_items[m_selectedIndex]);
                     StatusItem s = SelectedItem as StatusItem;
-                    // TODO
                     if (s != null)
                     {
                         RightMenu.UserName = s.Tweet.user.screen_name;
@@ -1172,7 +1168,7 @@ namespace PockeTwit.FingerUI
                 }
 
                 // if right menu is disabled, do not allow scroll
-                if (RightMenu.Count == 0 && distanceX > 0)
+                if (RightMenu.Count == 0 && XOffset >= 0 && distanceX > 0)
                 {
                     distanceX = 0;
                 }
@@ -1476,7 +1472,6 @@ namespace PockeTwit.FingerUI
 
 
         // Private Methods (22) 
-        // TODO
         private void CheckForClicks(Point point)
         {
             if (m_items.Count == 0) { return; }
@@ -1485,7 +1480,6 @@ namespace PockeTwit.FingerUI
                 int itemNumber = FindIndex(point.X, point.Y).Y;
                 if (itemNumber > m_items.Count - 1) { return; }
 
-                // TODO
                 if (m_items[itemNumber] is StatusItem)
                 {
                     StatusItem s = (StatusItem)m_items[itemNumber];
@@ -1525,7 +1519,6 @@ namespace PockeTwit.FingerUI
             if (TextClicked == "Detailed View" | ShortText.IsShortTextURL(TextClicked))
             {
                 //Show the full tweet somehow.
-                // TODO
                 StatusItem s = (StatusItem)SelectedItem;
 
                 fsDisplay.Status = s.Tweet;
@@ -1782,7 +1775,6 @@ namespace PockeTwit.FingerUI
             }
             if (fsDisplay.Visible)
             {
-                // TODO
                 StatusItem s = m_items[m_selectedIndex] as StatusItem;
                 if (s != null)
                 {
@@ -1832,14 +1824,12 @@ namespace PockeTwit.FingerUI
                         {
                             SelectedItemChanged(this, new EventArgs());
                         }
-                        // TODO
                         if (fsDisplay.Visible && m_items[m_selectedIndex] is StatusItem)
                         {
                             StatusItem s = (StatusItem)m_items[m_selectedIndex];
                             fsDisplay.Status = s.Tweet;
                             fsDisplay.Render();
                         }
-                        // TODO
                         if (m_items[m_selectedIndex] is StatusItem)
                             SetRightMenuUser();
                         m_velocity.X = 0;
