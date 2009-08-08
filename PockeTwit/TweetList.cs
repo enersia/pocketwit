@@ -1858,8 +1858,35 @@ namespace PockeTwit
         {
             ShowSearchResults(SearchString,false);
         }
+
         private void ShowSearchResults(string SearchString, bool saveThem)
         {
+            ShowSearchResults(SearchString, saveThem, false);
+        }
+
+        private int _currentSearchPageNo = 1;
+        private string _firstSearchHitId = String.Empty;
+        private string _lastSearchTerm = String.Empty;
+
+        internal void ShowSearchResults(string SearchString, bool saveThem, bool usePaging)
+        {
+            if (!usePaging)
+            {
+                _lastSearchTerm = SearchString;
+                _currentSearchPageNo = 1;
+            }
+            else
+            {
+                if (_lastSearchTerm != SearchString)
+                    _currentSearchPageNo = 1;
+
+                _lastSearchTerm = SearchString;
+
+                if (_currentSearchPageNo != 1)
+                {
+                    SearchString = String.Format("max_id={0}&page={1}&{2}", _firstSearchHitId, _currentSearchPageNo, SearchString);
+                }
+            }
             UpdateHistoryPosition();
             ChangeCursor(Cursors.WaitCursor);
             statList.SetSelectedMenu(SearchMenuItem);
@@ -1881,6 +1908,21 @@ namespace PockeTwit
                     LocalStorage.DataBaseUtility.SaveItems(searchResults);
                 }
                 AddStatusesToList(searchResults.ToArray());
+
+                if (usePaging)
+                {
+                    if (_currentSearchPageNo == 1)
+                    {
+                        _firstSearchHitId = searchResults[0].id;
+                    }
+                    _currentSearchPageNo++;
+                }
+                else
+                {
+                    _currentSearchPageNo++;
+                }
+
+                statList.AddItem(new MoreResultsItem(this, _lastSearchTerm, saveThem));
             }
             ChangeCursor(Cursors.Default);
         }

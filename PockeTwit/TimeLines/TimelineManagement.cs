@@ -195,7 +195,7 @@ namespace PockeTwit
             }
         }
 
-
+        
         public Library.status[] SearchTwitter(Yedda.Twitter t, string SearchString)
         {
             string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Search, SearchString);
@@ -309,6 +309,7 @@ namespace PockeTwit
 
         private Library.status[] GetRegularSavedSearchTimeLine(SavedSearchTimeLine searchLine)
         {
+            // TODO: add paging here as well
             var TwitterConn = new Twitter
             {
                 AccountInfo =

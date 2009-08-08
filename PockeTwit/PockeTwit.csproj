@@ -477,6 +477,7 @@
     <Compile Include="FingerUI\IDisplayItem.cs" />
     <Compile Include="FingerUI\Menu\MenuManager.cs" />
     <Compile Include="FingerUI\Menu\SideMenuItem.cs" />
+    <Compile Include="FingerUI\MoreResultsItem.cs" />
     <Compile Include="FingerUI\Portal.cs">
       <SubType>Component</SubType>
     </Compile>

@@ -499,7 +499,7 @@ namespace PockeTwit.FingerUI
 
         // Delegates (4) 
 
-        public delegate void delAddItem(StatusItem item);
+        public delegate void delAddItem(IDisplayItem item);
         public delegate void delClearMe();
         
         // Events (5) 
@@ -609,7 +609,7 @@ namespace PockeTwit.FingerUI
             AddItem(item);
         }
 
-        public void AddItem(StatusItem item)
+        public void AddItem(IDisplayItem item)
         {
             if (InvokeRequired)
             {
@@ -1163,7 +1163,7 @@ namespace PockeTwit.FingerUI
                 m_velocity.X = distanceX / 2;
                 m_velocity.Y = distanceY / 2;
 
-                if (distanceX != 0 || distanceY != 0)
+                if (distanceX > 2 || distanceY > 2)
                 {
                     HasMoved = true;
                 }
@@ -1465,20 +1465,29 @@ namespace PockeTwit.FingerUI
                 int itemNumber = FindIndex(point.X, point.Y).Y;
                 if (itemNumber > m_items.Count - 1) { return; }
 
-                StatusItem s = (StatusItem)m_items[itemNumber];
-
-                foreach (StatusItem.Clickable c in s.Tweet.Clickables)
+                // TODO
+                if (m_items[itemNumber] is StatusItem)
                 {
-                    Rectangle itemRect = s.Bounds;
-                    itemRect.Offset(-XOffset, -YOffset);
-                    Rectangle cRect = new Rectangle(((int)c.Location.X + itemRect.Left) + (ClientSettings.SmallArtSize + 10), (int)c.Location.Y + itemRect.Top, (int)c.Location.Width, (int)c.Location.Height);
-                    if (cRect.Contains(point))
+                    StatusItem s = (StatusItem)m_items[itemNumber];
+
+                    foreach (StatusItem.Clickable c in s.Tweet.Clickables)
                     {
-                        if (WordClicked != null)
+                        Rectangle itemRect = s.Bounds;
+                        itemRect.Offset(-XOffset, -YOffset);
+                        Rectangle cRect = new Rectangle(((int)c.Location.X + itemRect.Left) + (ClientSettings.SmallArtSize + 10), (int)c.Location.Y + itemRect.Top, (int)c.Location.Width, (int)c.Location.Height);
+                        if (cRect.Contains(point))
                         {
-                            WordClicked(c.Text);
+                            if (WordClicked != null)
+                            {
+                                WordClicked(c.Text);
+                            }
                         }
                     }
+                }
+                else
+                {
+                    // call clicked handler from the interface
+                    m_items[itemNumber].OnMouseClick(point);
                 }
             }
             catch (ObjectDisposedException)
@@ -1803,13 +1812,16 @@ namespace PockeTwit.FingerUI
                         {
                             SelectedItemChanged(this, new EventArgs());
                         }
-                        if (fsDisplay.Visible)
+                        // TODO
+                        if (fsDisplay.Visible && m_items[m_selectedIndex] is StatusItem)
                         {
                             StatusItem s = (StatusItem)m_items[m_selectedIndex];
                             fsDisplay.Status = s.Tweet;
                             fsDisplay.Render();
                         }
-                        SetRightMenuUser();
+                        // TODO
+                        if (m_items[m_selectedIndex] is StatusItem)
+                            SetRightMenuUser();
                         m_velocity.X = 0;
                         m_velocity.Y = 0;
                     }

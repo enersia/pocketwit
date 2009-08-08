@@ -616,5 +616,11 @@ namespace PockeTwit.FingerUI
         }
 
         #endregion
+
+        public void OnMouseClick(Point p)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
