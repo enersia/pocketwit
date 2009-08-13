@@ -30,6 +30,7 @@ namespace PockeTwit
             public Yedda.Twitter.Account Account;
             public int SelectedItemIndex = -1;
             public int itemsOffset = -1;
+            public object ItemInfo = null;
         }
 
         private Stack<HistoryItem> History = new Stack<HistoryItem>();
@@ -509,7 +510,7 @@ namespace PockeTwit
             }
         }
        
-        internal void ShowSpecialTimeLine(ISpecialTimeLine t, bool usePaging)
+        internal void ShowSpecialTimeLine(ISpecialTimeLine t, Yedda.Twitter.PagingMode pagingMode)
         {
             UpdateHistoryPosition();
             currentSpecialTimeLine = t;
@@ -517,11 +518,13 @@ namespace PockeTwit
             HistoryItem i = new HistoryItem();
             i.Action = Yedda.Twitter.ActionType.Search;
             i.Argument = t.name;
+            i.ItemInfo = t;
+            
             History.Push(i);
 
             SwitchToList(t.ListName);
             statList.ClearVisible();
-            AddStatusesToList(Manager.GetGroupedTimeLine(t, usePaging), true);
+            AddStatusesToList(Manager.GetGroupedTimeLine(t, pagingMode), true);
             if (t.Timelinetype == SpecialTimeLinesRepository.TimeLineType.SavedSearch)
                 statList.AddItem(new MoreResultsItem(this,t));
             ChangeCursor(Cursors.Default);
@@ -581,7 +584,7 @@ namespace PockeTwit
             {
                 if (statList.CurrentList().StartsWith("Grouped") || statList.CurrentList().StartsWith("SavedSearch_TimeLine_"))
                 {
-                    AddStatusesToList(Manager.GetGroupedTimeLine(currentSpecialTimeLine, false), true);
+                    AddStatusesToList(Manager.GetGroupedTimeLine(currentSpecialTimeLine, Yedda.Twitter.PagingMode.None), true);
                     if (currentSpecialTimeLine.Timelinetype == SpecialTimeLinesRepository.TimeLineType.SavedSearch)
                         statList.AddItem(new MoreResultsItem(this, currentSpecialTimeLine));
 
@@ -799,7 +802,7 @@ namespace PockeTwit
         {
             delMenuClicked showItemClicked = delegate()
             {
-                ShowSpecialTimeLine(t, false);
+                ShowSpecialTimeLine(t, Yedda.Twitter.PagingMode.None);
             };
 
             GroupsMenuItem.Visible = true;
@@ -1092,7 +1095,7 @@ namespace PockeTwit
         {
             if (currentSpecialTimeLine != null && statList.CurrentList()== currentSpecialTimeLine.ListName)
             {
-                AddStatusesToList(Manager.GetGroupedTimeLine(currentSpecialTimeLine, false), true);
+                AddStatusesToList(Manager.GetGroupedTimeLine(currentSpecialTimeLine, Yedda.Twitter.PagingMode.None), true);
                 if (currentSpecialTimeLine.Timelinetype == SpecialTimeLinesRepository.TimeLineType.SavedSearch)
                     statList.AddItem(new MoreResultsItem(this, currentSpecialTimeLine));
 
@@ -1162,7 +1165,7 @@ namespace PockeTwit
             {
                 if(currentSpecialTimeLine!=null && statList.CurrentList() == currentSpecialTimeLine.ListName)
                 {
-                    AddStatusesToList(Manager.GetGroupedTimeLine(currentSpecialTimeLine, false), true);
+                    AddStatusesToList(Manager.GetGroupedTimeLine(currentSpecialTimeLine, Yedda.Twitter.PagingMode.None), true);
                     if (currentSpecialTimeLine.Timelinetype == SpecialTimeLinesRepository.TimeLineType.SavedSearch)
                         statList.AddItem(new MoreResultsItem(this, currentSpecialTimeLine));
 
@@ -1408,8 +1411,22 @@ namespace PockeTwit
                         ShowMessagesTimeLine();
                         break;
                     case Yedda.Twitter.ActionType.Search:
-                        statList.SetSelectedMenu(SearchMenuItem);
-                        ShowSearchResults(prev.Argument);
+                        if (prev.ItemInfo == null)
+                        {
+                            statList.SetSelectedMenu(SearchMenuItem);
+                            ShowSearchResults(prev.Argument, false, Twitter.PagingMode.Back);
+                        }
+                        else
+                        {
+                            if (currentSpecialTimeLine != null && prev.Argument == currentSpecialTimeLine.name)
+                            {
+                                ShowSpecialTimeLine(prev.ItemInfo as ISpecialTimeLine, Yedda.Twitter.PagingMode.Back);
+                            }
+                            else
+                            {
+                                ShowSpecialTimeLine(prev.ItemInfo as ISpecialTimeLine, Yedda.Twitter.PagingMode.Neutral);
+                            }
+                        }
                         break;
                     case Yedda.Twitter.ActionType.User_Timeline:
                         statList.SetSelectedMenu(UserTimelineMenuItem);
@@ -1423,6 +1440,10 @@ namespace PockeTwit
                         statList.SelectedItem = statList[prev.SelectedItemIndex];
                     }
                     catch (KeyNotFoundException) { }
+                }
+                else
+                {
+                    statList.SelectedItem = statList[0];
                 }
                 if (prev.itemsOffset >= 0)
                 {
@@ -1605,7 +1626,7 @@ namespace PockeTwit
         private List<PockeTwit.Library.status> GetConversationFROMTHEFUTURE(PockeTwit.Library.status lastStatus)
         {
             Yedda.Twitter Conn = GetMatchingConnection(lastStatus.Account);
-            Library.status[] SearchResults = Manager.SearchTwitter(Conn, "@" + lastStatus.user.screen_name, false);
+            Library.status[] SearchResults = Manager.SearchTwitter(Conn, "@" + lastStatus.user.screen_name, Yedda.Twitter.PagingMode.None);
             List<Library.status> Results = new List<PockeTwit.Library.status>();
             foreach (Library.status s in SearchResults)
             {
@@ -1875,10 +1896,10 @@ namespace PockeTwit
 
         private void ShowSearchResults(string SearchString, bool saveThem)
         {
-            ShowSearchResults(SearchString, saveThem, false);
+            ShowSearchResults(SearchString, saveThem, Yedda.Twitter.PagingMode.None);
         }
 
-        internal void ShowSearchResults(string SearchString, bool saveThem, bool usePaging)
+        internal void ShowSearchResults(string SearchString, bool saveThem, Yedda.Twitter.PagingMode pagingMode)
         {
             UpdateHistoryPosition();
             ChangeCursor(Cursors.WaitCursor);
@@ -1891,7 +1912,7 @@ namespace PockeTwit
             Yedda.Twitter Conn = GetMatchingConnection(CurrentlySelectedAccount);
             SwitchToList("Search_TimeLine");
             statList.ClearVisible();
-            Library.status[] stats = Manager.SearchTwitter(Conn, SearchString, usePaging);
+            Library.status[] stats = Manager.SearchTwitter(Conn, SearchString, pagingMode);
 
             if (stats != null)
             {
@@ -2075,7 +2096,7 @@ namespace PockeTwit
                     ISpecialTimeLine t = SpecialTimeLinesRepository.GetFromReadableName(GroupName);
                     if (t != null)
                     {
-                        ShowSpecialTimeLine(t, false);
+                        ShowSpecialTimeLine(t, Yedda.Twitter.PagingMode.None);
                         
                     }
                     if (GroupName == "Friends TimeLine")

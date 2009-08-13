@@ -195,13 +195,13 @@ namespace PockeTwit
             }
         }
 
-        private int _currentSearchPageNo = 1;
+        private int _currentSearchPageNo = 0;
         private string _firstSearchHitId = String.Empty;
         private string _lastSearchTerm = String.Empty;
 
-        public Library.status[] SearchTwitter(Yedda.Twitter t, string SearchString, bool usePaging)
+        public Library.status[] SearchTwitter(Yedda.Twitter t, string SearchString, Yedda.Twitter.PagingMode pagingMode)
         {
-            if (!usePaging)
+            if (pagingMode == Twitter.PagingMode.None)
             {
                 _lastSearchTerm = SearchString;
                 _currentSearchPageNo = 1;
@@ -212,6 +212,18 @@ namespace PockeTwit
                     _currentSearchPageNo = 1;
 
                 _lastSearchTerm = SearchString;
+                          
+                switch (pagingMode)
+                {
+                    case Twitter.PagingMode.Forward:
+                        _currentSearchPageNo++;
+                        break;
+                    case Twitter.PagingMode.Back:
+                        _currentSearchPageNo--;
+                        break;
+                    case Twitter.PagingMode.Neutral:
+                        break;
+                }
 
                 if (_currentSearchPageNo != 1)
                 {
@@ -238,18 +250,10 @@ namespace PockeTwit
                     item.SearchTerm = SearchString;
                 }
             }
-
-            if (usePaging)
+         
+            if (_currentSearchPageNo == 1)
             {
-                if (_currentSearchPageNo == 1)
-                {
-                    _firstSearchHitId = Items[0].id;
-                }
-                _currentSearchPageNo++;
-            }
-            else
-            {
-                _currentSearchPageNo++;
+                _firstSearchHitId = Items[0].id;
             }
 
             return Items;
@@ -327,7 +331,7 @@ namespace PockeTwit
             return Library.status.Deserialize(response, t.AccountInfo);
         }
 
-        public Library.status[] GetGroupedTimeLine(ISpecialTimeLine t, bool usePaging)
+        public Library.status[] GetGroupedTimeLine(ISpecialTimeLine t, Yedda.Twitter.PagingMode pagingMode)
         {
             TimeLineType timeLineType = TimeLineType.Friends;
             if(t is SavedSearchTimeLine)
@@ -335,14 +339,14 @@ namespace PockeTwit
                 var savedLine = (SavedSearchTimeLine) t;
                 if(!savedLine.autoUpdate)
                 {
-                    return GetRegularSavedSearchTimeLine(savedLine, usePaging);
+                    return GetRegularSavedSearchTimeLine(savedLine, pagingMode);
                 }
                 timeLineType = TimeLineType.Searches;
             }
             return LocalStorage.DataBaseUtility.GetList(timeLineType, ClientSettings.MaxTweets, t.GetConstraints()).ToArray();
         }
 
-        private Library.status[] GetRegularSavedSearchTimeLine(SavedSearchTimeLine searchLine, bool usePaging)
+        private Library.status[] GetRegularSavedSearchTimeLine(SavedSearchTimeLine searchLine, Yedda.Twitter.PagingMode pagingMode)
         {
             var TwitterConn = new Twitter
             {
@@ -354,7 +358,7 @@ namespace PockeTwit
                     Enabled = ClientSettings.DefaultAccount.Enabled
                 }
             };
-            status[] items = SearchTwitter(TwitterConn, searchLine.SearchPhrase, usePaging);
+            status[] items = SearchTwitter(TwitterConn, searchLine.SearchPhrase, pagingMode);
             
             return items;
         }
@@ -613,7 +617,7 @@ namespace PockeTwit
                 if (searchLine.autoUpdate)
                 {
                     //Need a way to specify "since_id" here too.
-                    status[] Items = SearchTwitter(TwitterConn, searchLine.SearchPhrase, false);
+                    status[] Items = SearchTwitter(TwitterConn, searchLine.SearchPhrase, Yedda.Twitter.PagingMode.None);
                     if (Items != null)
                     {
                         tempLine.AddRange(Items);
