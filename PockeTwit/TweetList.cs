@@ -1414,11 +1414,18 @@ namespace PockeTwit
                         if (prev.ItemInfo == null)
                         {
                             statList.SetSelectedMenu(SearchMenuItem);
-                            ShowSearchResults(prev.Argument, false, Twitter.PagingMode.Back);
+                            if (CurrentList == "Search_Timeline" && LastSearchTerm == prev.Argument)
+                            {
+                                ShowSearchResults(prev.Argument, false, Twitter.PagingMode.Back);
+                            }
+                            else
+                            {
+                                ShowSearchResults(prev.Argument, false, Twitter.PagingMode.Neutral);
+                            }
                         }
                         else
                         {
-                            if (currentSpecialTimeLine != null && prev.Argument == currentSpecialTimeLine.name)
+                            if (CurrentList == "Search_Timeline" && currentSpecialTimeLine != null && prev.Argument == currentSpecialTimeLine.name)
                             {
                                 ShowSpecialTimeLine(prev.ItemInfo as ISpecialTimeLine, Yedda.Twitter.PagingMode.Back);
                             }
@@ -1812,12 +1819,17 @@ namespace PockeTwit
             this.Refresh();
             StartBackground = false;
         }
-
+        private string CurrentList
+        {
+            get;
+            set;
+        }
         private void SwitchToList(string ListName)
         {
             if (statList.CurrentList() != ListName)
             {
                 statList.SwitchTolist(ListName);
+                CurrentList = ListName;
             }
             SetLeftMenu();
         }
@@ -1899,8 +1911,15 @@ namespace PockeTwit
             ShowSearchResults(SearchString, saveThem, Yedda.Twitter.PagingMode.None);
         }
 
+        internal string LastSearchTerm
+        {
+            get;
+            set;
+        }
+
         internal void ShowSearchResults(string SearchString, bool saveThem, Yedda.Twitter.PagingMode pagingMode)
         {
+            LastSearchTerm = SearchString;
             UpdateHistoryPosition();
             ChangeCursor(Cursors.WaitCursor);
             statList.SetSelectedMenu(SearchMenuItem);

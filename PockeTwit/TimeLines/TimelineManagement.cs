@@ -198,7 +198,7 @@ namespace PockeTwit
         private int _currentSearchPageNo = 0;
         private string _firstSearchHitId = String.Empty;
         private string _lastSearchTerm = String.Empty;
-
+ 
         public Library.status[] SearchTwitter(Yedda.Twitter t, string SearchString, Yedda.Twitter.PagingMode pagingMode)
         {
             if (pagingMode == Twitter.PagingMode.None)
