@@ -1425,7 +1425,7 @@ namespace PockeTwit
                         }
                         else
                         {
-                            if (CurrentList == "Search_Timeline" && currentSpecialTimeLine != null && prev.Argument == currentSpecialTimeLine.name)
+                            if (CurrentList.StartsWith("SavedSearch_TimeLine_") && currentSpecialTimeLine != null && prev.Argument == currentSpecialTimeLine.name)
                             {
                                 ShowSpecialTimeLine(prev.ItemInfo as ISpecialTimeLine, Yedda.Twitter.PagingMode.Back);
                             }
