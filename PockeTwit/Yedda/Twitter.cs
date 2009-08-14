@@ -299,7 +299,8 @@ namespace Yedda
             Leave,
             Verify_Credentials,
             Update_Location,
-            Conversation
+            Conversation,
+            Retweet
         }
 
 
@@ -1124,6 +1125,31 @@ namespace Yedda
                 return ExecutePostCommand(url, null);
             }
         }
+
+        public string Retweet_Status(string status_id, OutputFormatType format)
+        {
+
+            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.pingfm)
+            {
+                return null;
+            }
+            else if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
+            {
+                return null;
+            }
+            else
+            {
+                if (format != OutputFormatType.JSON && format != OutputFormatType.XML)
+                {
+                    throw new ArgumentException("Update support only XML and JSON output format", "format");
+                }
+
+                string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Retweet) + "/{0}", GetFormatTypeString(format), AccountInfo.ServerURL.URL);
+                url = String.Format(url, status_id);
+                return ExecutePostCommand(url, null);
+            }
+        }
+
 
        public string Destroy_StatusAsJSON(string statusId)
         {
