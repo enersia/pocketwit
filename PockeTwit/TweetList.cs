@@ -1455,6 +1455,9 @@ namespace PockeTwit
                 if (prev.itemsOffset >= 0)
                 {
                     statList.YOffset = prev.itemsOffset;
+                    statList.Redraw();
+                    statList.RerenderPortal();
+                    statList.Repaint();
                 }
             }
         }
