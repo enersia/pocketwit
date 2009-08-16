@@ -495,6 +495,7 @@
     <Compile Include="GraphicsLibs\DIB.cs" />
     <Compile Include="Localization\XmlBasedResourceManager.cs" />
     <Compile Include="LocalStorage\CacheDictionary.cs" />
+    <Compile Include="Localization\LocalizedMessageBox.cs" />
     <Compile Include="MediaServices\SwitchToTweetPhoto.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -243,6 +243,7 @@ namespace PockeTwit
                 ErrorCleared(t.AccountInfo, Yedda.Twitter.ActionType.Search);
             }
             var Items = Library.status.DeserializeArrayFromJSON(response, t.AccountInfo, StatusTypes.SearchResult);
+            if (Items == null) return null;
             if (Items.Length > 0)
             {
                 foreach (status item in Items)

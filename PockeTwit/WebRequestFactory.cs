@@ -14,10 +14,11 @@ namespace PockeTwit
 
         public static HttpWebRequest CreateHttpRequest(Uri uri)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
+            var request = (HttpWebRequest)WebRequest.Create(uri);
+            request.AllowAutoRedirect = true;
             if (!string.IsNullOrEmpty(ClientSettings.ProxyServer))
             {
-                WebProxy proxy = new WebProxy(ClientSettings.ProxyServer, ClientSettings.ProxyPort);
+                var proxy = new WebProxy(ClientSettings.ProxyServer, ClientSettings.ProxyPort);
                 proxy.BypassProxyOnLocal = true;
                 proxy.Credentials = CredentialCache.DefaultCredentials;
                 request.Proxy = proxy;
