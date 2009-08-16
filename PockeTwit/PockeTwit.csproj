@@ -289,6 +289,9 @@
     <Content Include="default_profile_bigger.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Localization\pocketwit_de.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SQLite.Interop.060.DLL">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -490,6 +493,7 @@
     </Compile>
     <Compile Include="GraphicsLibs\DetermineColorDepth.cs" />
     <Compile Include="GraphicsLibs\DIB.cs" />
+    <Compile Include="Localization\XmlBasedResourceManager.cs" />
     <Compile Include="LocalStorage\CacheDictionary.cs" />
     <Compile Include="MediaServices\SwitchToTweetPhoto.cs">
       <SubType>Form</SubType>
