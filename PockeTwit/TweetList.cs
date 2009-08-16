@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -1379,8 +1379,29 @@ namespace PockeTwit
                         ShowMessagesTimeLine();
                         break;
                     case Yedda.Twitter.ActionType.Search:
-                        statList.SetSelectedMenu(SearchMenuItem);
-                        ShowSearchResults(prev.Argument);
+                        if (prev.ItemInfo == null)
+                        {
+                            statList.SetSelectedMenu(SearchMenuItem);
+                            if (CurrentList == "Search_Timeline" && LastSearchTerm == prev.Argument)
+                            {
+                                ShowSearchResults(prev.Argument, false, Twitter.PagingMode.Back);
+                            }
+                            else
+                            {
+                                ShowSearchResults(prev.Argument, false, Twitter.PagingMode.Neutral);
+                            }
+                        }
+                        else
+                        {
+                            if (CurrentList.StartsWith("SavedSearch_TimeLine_") && currentSpecialTimeLine != null && prev.Argument == currentSpecialTimeLine.name)
+                            {
+                                ShowSpecialTimeLine(prev.ItemInfo as ISpecialTimeLine, Yedda.Twitter.PagingMode.Back);
+                            }
+                            else
+                            {
+                                ShowSpecialTimeLine(prev.ItemInfo as ISpecialTimeLine, Yedda.Twitter.PagingMode.Neutral);
+                            }
+                        }
                         break;
                     case Yedda.Twitter.ActionType.User_Timeline:
                         statList.SetSelectedMenu(UserTimelineMenuItem);
