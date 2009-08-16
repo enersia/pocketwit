@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Globalization;
-using System.Threading;
 using System.Xml;
 using System.IO;
 using System.Windows.Forms;
@@ -11,14 +9,14 @@ namespace PockeTwit.Localization
 {
     public static class XmlBasedResourceManager
     {
-        private static Dictionary<string, string> _cache = new Dictionary<string, string>();
-        private static string _directory;
-        private static string _nameBase;
+        private static readonly Dictionary<string, string> Cache = new Dictionary<string, string>();
+        private static readonly string Directory;
+        private static readonly string NameBase;
 
         static XmlBasedResourceManager()
         {
-            _directory = String.Concat(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase), "\\Localization\\");
-            _nameBase = "PockeTwit";
+            Directory = String.Concat(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase), "\\Localization\\");
+            NameBase = "PockeTwit";
             CultureInfo = CultureInfo.CurrentUICulture;
         }
 
@@ -38,13 +36,13 @@ namespace PockeTwit.Localization
 
         private static void InitLanguageDictionary()
         {
-            _cache.Clear();
+            Cache.Clear();
 
-            string fileName = String.Concat(_directory, _nameBase, "_", _cultureInfo.Name, ".xml");
+            var fileName = String.Concat(Directory, NameBase, "_", _cultureInfo.Name, ".xml");
             if (!File.Exists(fileName))
             {
                 // try fallback to neutral language
-                fileName = String.Concat(_directory, _nameBase, "_", _cultureInfo.TwoLetterISOLanguageName, ".xml");
+                fileName = String.Concat(Directory, NameBase, "_", _cultureInfo.TwoLetterISOLanguageName, ".xml");
                 if (!File.Exists(fileName))
                 {
                     // give up
@@ -52,7 +50,7 @@ namespace PockeTwit.Localization
                 }
             }
 
-            XmlTextReader xmlReader = new XmlTextReader(fileName);
+            var xmlReader = new XmlTextReader(fileName);
 
             try
             {
@@ -61,21 +59,19 @@ namespace PockeTwit.Localization
 
                 while (xmlReader.Read())
                 {
-                    if (xmlReader.MoveToContent() == XmlNodeType.Element)
-                    {
-                        string name = xmlReader.GetAttribute("name");
-                        if (!String.IsNullOrEmpty(name))
-                        {
-                            string value = xmlReader.GetAttribute("localized");
-                            if (!String.IsNullOrEmpty(value))
-                                _cache.Add(name, value);
-                        }
-                    }
+                    if (xmlReader.MoveToContent() != XmlNodeType.Element) continue;
+
+                    var name = xmlReader.GetAttribute("name");
+                    if (String.IsNullOrEmpty(name)) continue;
+
+                    var value = xmlReader.GetAttribute("localized");
+                    if (!String.IsNullOrEmpty(value))
+                        Cache.Add(name, value);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(String.Format("Malformed resource: caught {0} in line {1}", ex.GetType().ToString(), xmlReader.LineNumber));
+                MessageBox.Show(String.Format("Malformed resource: caught {0} in line {1}", ex.GetType(), xmlReader.LineNumber));
             }
             finally
             {
@@ -85,45 +81,52 @@ namespace PockeTwit.Localization
         public static string GetString(string name, string defaultValue)
         {
             string result;
-            if (!_cache.TryGetValue(name, out result))
-            {
-                return defaultValue;
-            }
-            return result;
+            return !Cache.TryGetValue(name, out result) ? defaultValue : result;
         }
 
         private static void LocalizeMenuItem(MenuItem item)
         {
             item.Text = GetString(item.Text, item.Text);
-            if (item.MenuItems != null)
+            if (item.MenuItems == null) return;
+            foreach (MenuItem subItem in item.MenuItems)
             {
-                foreach (MenuItem subItem in item.MenuItems)
-                {
-                    LocalizeMenuItem(subItem);
-                }
+                LocalizeMenuItem(subItem);
             }
         }
 
-        public static void LocalizeForm(Form form)
+        public static void LocalizeForm(Control parent)
         {
-            if (form.Menu != null)
+            if (parent is Form)
             {
-                foreach (MenuItem item in form.Menu.MenuItems)
-                {
-                    LocalizeMenuItem(item);
-                }
+                var form = (Form)parent;
+                LocalizeMenu(form);
             }
-
-            form.Text = GetString(form.Text, form.Text);
-
-            foreach (Control c in form.Controls)
+            LocalizeControlAndChildren(parent);
+        }
+        private static void LocalizeMenu(Form form)
+        {
+            if (form.Menu == null) return;
+            foreach (MenuItem item in form.Menu.MenuItems)
             {
-                if ((c is Label) || (c is CheckBox) || (c is TextBox))
-                {                  
-                    c.Text = GetString(c.Text, c.Text);
+                LocalizeMenuItem(item);
+            }
+        }
+
+        private static void LocalizeControlAndChildren(Control parentControl)
+        {
+            foreach (Control control in parentControl.Controls)
+            {
+                if ((control is Label) || (control is CheckBox) ||
+                    (control is RadioButton) || (control is LinkLabel) ||
+                    (control is Form))
+                {
+                    control.Text = GetString(control.Text, control.Text);
                     continue;
                 }
-
+                if (control.Controls.Count > 0)
+                {
+                    LocalizeControlAndChildren(control);
+                }
             }
         }
     }
