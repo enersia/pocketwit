@@ -33,7 +33,7 @@ namespace PockeTwit.FingerUI.Menu
 
         private void Initialize(string TextTemplate, delMenuClicked Callback, SideMenu Parent, string List)
         {
-            _TextTemplate = PockeTwit.Localization.XmlBasedResourceManager.GetString(TextTemplate, TextTemplate); 
+            _TextTemplate = PockeTwit.Localization.XmlBasedResourceManager.GetString(TextTemplate); 
             ClickedMethod = Callback;
             ParentMenu = Parent;
             CorrespondingList = List;
@@ -111,7 +111,7 @@ namespace PockeTwit.FingerUI.Menu
                     Expanded = false;
                     MenuExpandedOrCollapsed(null, Expanded);
                     ParentMenu.IsDirty = true;
-                    _TextTemplate = PockeTwit.Localization.XmlBasedResourceManager.GetString(value, value);
+                    _TextTemplate = PockeTwit.Localization.XmlBasedResourceManager.GetString(value);
 
                 }
             }

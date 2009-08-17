@@ -136,7 +136,7 @@ namespace PockeTwit
 
             progressBar1.Visible = false;
             lblProgress.Visible = true;
-            lblProgress.Text = "Initializing";
+            lblProgress.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Initializing");
             if (DetectDevice.DeviceType == DeviceType.Professional)
             {
                 inputPanel1 = new Microsoft.WindowsCE.Forms.InputPanel();
@@ -144,7 +144,7 @@ namespace PockeTwit
             }
             if (UpgradeChecker.devBuild)
             {
-                this.lblTitle.Text = "Launching PockeTwit Dev";
+                this.lblTitle.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Launching PockeTwit Dev");
             }
             
             SizeF currentScreen = this.CurrentAutoScaleDimensions;
@@ -435,12 +435,12 @@ namespace PockeTwit
             if (selectedItem.IsFavorite)
             {
                 DestroyFavorite();
-                ToggleFavoriteMenuItem.Text = "Make Favorite";
+                ToggleFavoriteMenuItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Make Favorite");
             }
             else
             {
                 CreateFavoriteAsync();
-                ToggleFavoriteMenuItem.Text = "Remove Favorite";
+                ToggleFavoriteMenuItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Remove Favorite");
             }
         }
 
@@ -622,7 +622,7 @@ namespace PockeTwit
 
             if (MatchingAccounts.Count > 1)
             {
-                FollowMenuItem.Text = "Follow...";
+                FollowMenuItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Follow...");
                 FollowMenuItem.ClickedMethod = null;
                 foreach (var account in MatchingAccounts)
                 {
@@ -635,7 +635,7 @@ namespace PockeTwit
             }
 
             delMenuClicked  followClicked = () => FollowUser(MatchingAccounts[0]);
-            FollowMenuItem.Text = "Follow";
+            FollowMenuItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Follow");
             FollowMenuItem.ClickedMethod = followClicked;
 
         }
@@ -649,12 +649,12 @@ namespace PockeTwit
             if (FollowingDictionary[Conn].IsFollowing(selectedItem.Tweet.user))
             {
                 StopFollowingUser();
-                FollowMenuItem.Text = "Follow";
+                FollowMenuItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Follow");
             }
             else
             {
                 FollowUser();
-                FollowMenuItem.Text = "Stop Following";
+                FollowMenuItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Stop Following");
             }
         }
         private void FollowUser()
@@ -934,11 +934,11 @@ namespace PockeTwit
                     {
                         if (item.IsFavorite)
                         {
-                            ToggleFavoriteMenuItem.Text = "Remove Favorite";
+                            ToggleFavoriteMenuItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Remove Favorite");
                         }
                         else
                         {
-                            ToggleFavoriteMenuItem.Text = "Make Favorite";
+                            ToggleFavoriteMenuItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Make Favorite");
                         }
                     }
 

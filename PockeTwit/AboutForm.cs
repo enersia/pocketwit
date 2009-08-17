@@ -40,7 +40,7 @@ namespace PockeTwit
             if (UpgradeChecker.devBuild)
             {
                 lblVersion.Text = "PockeTwit v" + UpgradeChecker.currentVersion.ToString() + " d" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision;
-                menuUpdate.Text = "Upgrade";
+                menuUpdate.Text = Localization.XmlBasedResourceManager.GetString("Upgrade");
             }
             if(UpgradeChecker.isBeta)
             {
@@ -92,7 +92,7 @@ namespace PockeTwit
                     topOfLabel = nameLabel.Bottom + 5;
                 }
                 LinkLabel YouToo = new LinkLabel();
-                YouToo.Text = "Your name can be here!";
+                YouToo.Text = Localization.XmlBasedResourceManager.GetString("Your name can be here!");
                 YouToo.ForeColor = ClientSettings.LinkColor;
                 YouToo.Width = panel1.Width - 2;
                 YouToo.Height = ClientSettings.TextSize+5;

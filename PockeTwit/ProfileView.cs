@@ -56,7 +56,7 @@ namespace PockeTwit
             }
             if (string.IsNullOrEmpty(User.description))
             {
-                lblDescription.Text = "No description available.";
+                lblDescription.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("No description available.");
             }
             else
             {

@@ -16,7 +16,7 @@ namespace FingerUI
         #region Fields (2)
 
         private int _CurrentlyFocused = 0;
-        private List<string> TextItems = new List<string>(new string[] { "Close Menu" });
+        private List<string> TextItems = new List<string>(new string[] { PockeTwit.Localization.XmlBasedResourceManager.GetString("Close Menu") });
 
         #endregion Fields
 
@@ -38,7 +38,7 @@ namespace FingerUI
             set
             {
                 TextItems = new List<string>();
-                TextItems.Add("Detailed View");
+                TextItems.Add(PockeTwit.Localization.XmlBasedResourceManager.GetString("Detailed View"));
                 foreach (StatusItem.Clickable c in value)
                 {
                     if (!TextItems.Contains(c.Text))
@@ -46,7 +46,7 @@ namespace FingerUI
                         TextItems.Add(c.Text);
                     }
                 }
-                TextItems.Add("Close Menu");
+                TextItems.Add(PockeTwit.Localization.XmlBasedResourceManager.GetString("Close Menu"));
             }
         }
 
@@ -107,7 +107,7 @@ namespace FingerUI
                     Rectangle r = new Rectangle(this.Left, TopOfItem, this.Width, ItemHeight);
                     if (r.Contains(p))
                     {
-                        if (TextItems[_CurrentlyFocused] != "Close Menu")
+                        if (TextItems[_CurrentlyFocused] != PockeTwit.Localization.XmlBasedResourceManager.GetString("Close Menu"))
                         {
                             WordClicked(Item);
                         }
@@ -152,7 +152,7 @@ namespace FingerUI
                 }
                 if (e.KeyCode == Keys.Enter)
                 {
-                    if (TextItems[_CurrentlyFocused] != "Close Menu")
+                    if (TextItems[_CurrentlyFocused] != PockeTwit.Localization.XmlBasedResourceManager.GetString("Close Menu"))
                     {
                         if (WordClicked != null)
                         {

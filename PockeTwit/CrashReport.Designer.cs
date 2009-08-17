@@ -77,8 +77,7 @@
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(234, 69);
-            this.label2.Text = "An unexpected error has occured.  May I send a crash report to the developer? If " +
-                "so, please choose the account to send from below.\r\n";
+            this.label2.Text = "An unexpected error has occured.  May I send a crash report to the developer? If so, please choose the account to send from below.\r\n";
             // 
             // ChooseAccount
             // 

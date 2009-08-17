@@ -1516,7 +1516,7 @@ namespace PockeTwit.FingerUI
 
         void ClickablesControl_WordClicked(string TextClicked)
         {
-            if (TextClicked == "Detailed View" | ShortText.IsShortTextURL(TextClicked))
+            if (TextClicked == PockeTwit.Localization.XmlBasedResourceManager.GetString("Detailed View", "Detailed View") | ShortText.IsShortTextURL(TextClicked))
             {
                 //Show the full tweet somehow.
                 StatusItem s = (StatusItem)SelectedItem;

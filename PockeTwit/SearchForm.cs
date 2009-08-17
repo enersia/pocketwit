@@ -43,7 +43,7 @@ namespace PockeTwit
                 cmbDistance.Items.Add(value);
                 cmbDistance.SelectedItem = value;
                 cmbDistance.Text = value;
-                cmbMeasurement.Text = "Miles";
+                cmbMeasurement.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Miles");
             }
         }
 
@@ -76,7 +76,7 @@ namespace PockeTwit
             }
             else
             {
-                cmbMeasurement.Text = "Miles";
+                cmbMeasurement.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Miles");
             }
 
             cmbDistance.Text = "15";
@@ -103,13 +103,13 @@ namespace PockeTwit
                 if (!string.IsNullOrEmpty(this.GPSLocation))
                 {
                     cmbLocation.Items.Clear();
-                    cmbLocation.Items.Add("Anywhere");
+                    cmbLocation.Items.Add(PockeTwit.Localization.XmlBasedResourceManager.GetString("Anywhere"));
                     if (!string.IsNullOrEmpty(_providedLocation))
                     {
                         cmbLocation.Items.Add(_providedLocation);
                         cmbLocation.SelectedItem = _providedLocation;
                     }
-                    cmbLocation.Items.Add("Current GPS Position");
+                    cmbLocation.Items.Add(PockeTwit.Localization.XmlBasedResourceManager.GetString("Current GPS Position"));
                     cmbLocation.Items.Add(Geocode.GetAddress(this.GPSLocation).Replace("\r\n", ""));
                     Locator.StopGPS();
                 }
@@ -173,7 +173,7 @@ namespace PockeTwit
                     b.Append(txtSearch.Text);
                 }
             }
-            if (cmbLocation.Text != "Anywhere")
+            if (cmbLocation.Text != PockeTwit.Localization.XmlBasedResourceManager.GetString("Anywhere"))
             {
                 if (!string.IsNullOrEmpty(cmbLocation.Text))
                 {
@@ -187,15 +187,11 @@ namespace PockeTwit
                         }
                         b.Append("geocode=" + this.GPSLocation);
                         b.Append("," + cmbDistance.Text);
-                        switch (cmbMeasurement.Text)
-                        {
-                            case "Miles":
-                                b.Append("mi");
-                                break;
-                            case "Kilometers":
-                                b.Append("km");
-                                break;
-                        }
+                        string miles = PockeTwit.Localization.XmlBasedResourceManager.GetString("Miles");
+                        if (cmbMeasurement.Text == miles)
+                            b.Append("mi");
+                        else                           
+                            b.Append("km");
                     }
                 }
             }
@@ -250,11 +246,12 @@ namespace PockeTwit
             {
                 cmbLocation.DropDownStyle = ComboBoxStyle.DropDown;
             }
-            cmbLocation.Items.Add("Anywhere");
-            cmbLocation.Text = "Anywhere";
+            string item = PockeTwit.Localization.XmlBasedResourceManager.GetString("Anywhere");
+            cmbLocation.Items.Add(item);
+            cmbLocation.Text = item;
             if (ClientSettings.UseGPS)
             {
-                cmbLocation.Items.Add("Seeking GPS...Please Wait");
+                cmbLocation.Items.Add(PockeTwit.Localization.XmlBasedResourceManager.GetString("Seeking GPS...Please Wait"));
             }
         }
 

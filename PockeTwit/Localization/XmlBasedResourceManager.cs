@@ -78,6 +78,12 @@ namespace PockeTwit.Localization
                 xmlReader.Close();
             }
         }
+
+        public static string GetString(string nameAndDefault)
+        {
+            return GetString(nameAndDefault, nameAndDefault);
+        }
+
         public static string GetString(string name, string defaultValue)
         {
             string result;
@@ -123,6 +129,23 @@ namespace PockeTwit.Localization
                     control.Text = GetString(control.Text, control.Text);
                     continue;
                 }
+                else if (control is TabControl)
+                {
+                    foreach (TabPage page in (control as TabControl).TabPages)
+                    {
+                        page.Text = GetString(page.Text);
+                        LocalizeControlAndChildren(page);
+                    }
+                }
+                else if (control is ComboBox)
+                {
+                    ComboBox box = control as ComboBox;
+                    for (int i = 0; i < box.Items.Count; i++)
+                    {
+                        box.Items[i] = GetString(box.Items[i].ToString());
+                    }
+                }
+
                 if (control.Controls.Count > 0)
                 {
                     LocalizeControlAndChildren(control);

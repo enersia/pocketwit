@@ -75,7 +75,7 @@ namespace PockeTwit
             this.mnuCancel.Text = "Cancel";
             this.mnuCancel.Click += new System.EventHandler(this.menuCancel_Click);
 
-            this.mnuAction.Text = "Ok";
+            this.mnuAction.Text = "OK";
             this.mnuAction.Click += new System.EventHandler(this.menuSubmit_Click);
            
 

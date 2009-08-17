@@ -125,10 +125,10 @@ namespace PockeTwit
             copyPasteMenu = new System.Windows.Forms.ContextMenu();
 
             PasteItem = new System.Windows.Forms.MenuItem();
-            PasteItem.Text = "Paste";
+            PasteItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Paste");
 
             CopyItem = new MenuItem();
-            CopyItem.Text = "Copy";
+            CopyItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Copy");
 
             copyPasteMenu.MenuItems.Add(CopyItem);
             copyPasteMenu.MenuItems.Add(PasteItem);
@@ -186,7 +186,7 @@ namespace PockeTwit
                     {
                         LocationFinder.StopGPS();
                         GPSLocation = Location;
-                        lblGPS.Text = "Location Found";
+                        lblGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Location Found");
                         if (DetectDevice.DeviceType == DeviceType.Standard)
                         {
                             // just enable the menuItem
@@ -200,7 +200,7 @@ namespace PockeTwit
                             // hide the label, add a new button
                             lblGPS.Visible = false;
                             LinkLabel llGPS = new LinkLabel();
-                            llGPS.Text = "Ins. GPS Link";
+                            llGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Ins. GPS Link");
                             llGPS.ForeColor = Color.White;
                             llGPS.Left = lblGPS.Left;
                             llGPS.Top = lblGPS.Top;
@@ -248,37 +248,37 @@ namespace PockeTwit
             pictureURL.Visible = false;
             picAddressBook.Visible = false;
             menuExist = new MenuItem();
-            menuExist.Text = "Existing Picture";
+            menuExist.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Existing Picture");
             menuExist.Click += new EventHandler(menuExist_Click);
 
             menuCamera = new MenuItem();
-            menuCamera.Text = "Take Picture";
+            menuCamera.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Take Picture");
             menuCamera.Click += new EventHandler(menuCamera_Click);
             
             menuURL = new MenuItem();
-            menuURL.Text = "URL...";
+            menuURL.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("URL...");
             menuURL.Click += new EventHandler(menuURL_Click);
 
             menuGPS = new MenuItem();
-            menuGPS.Text = "Update Location";
+            menuGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Update Location");
             menuGPS.Click += new EventHandler(menuGPS_Click);
 
             menuGPSInsert = new MenuItem();
-            menuGPSInsert.Text = "Insert GPS Location";
+            menuGPSInsert.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Insert GPS Location");
             menuGPSInsert.Click += new EventHandler(menuGPSInsert_Click);
             menuGPSInsert.Enabled = false;
 
             menuAddressBook = new MenuItem();
-            menuAddressBook.Text = "Address Book";
+            menuAddressBook.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Address Book");
             menuAddressBook.Click += new EventHandler(menuAddressBook_Click);
             menuAddressBook.Enabled = true;
 
             PasteItem = new MenuItem();
-            PasteItem.Text = "Paste";
+            PasteItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Paste");
             PasteItem.Click += new EventHandler(PasteItem_Click);
 
             menuItem1 = new System.Windows.Forms.MenuItem();
-            menuItem1.Text = "Action";
+            menuItem1.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Action");
 
             menuItem1.MenuItems.Add(menuSubmit);
             menuItem1.MenuItems.Add(menuAddressBook);
