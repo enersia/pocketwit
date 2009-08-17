@@ -162,6 +162,8 @@ namespace PockeTwit
             this.Visible = !InBackGround;
             statList.Visible = false;
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
+
             this.Refresh();
             
             Application.DoEvents();
@@ -409,6 +411,8 @@ namespace PockeTwit
                 CreateRightMenu();
                 CreateLeftMenu();
                 PockeTwit.Themes.FormColors.SetColors(this);
+                PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
+
                 ReloadTimeLine();
                 statList.ResetFullScreenColors();
                 statList.RerenderBySize();

@@ -56,7 +56,8 @@ namespace PockeTwit
             SetUpSearchBox();
             SetupLocationBox();
             this.ResumeLayout(false);
-            PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Themes.FormColors.SetColors(this); 
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             if (ClientSettings.IsMaximized)
             {
                 this.WindowState = FormWindowState.Maximized;

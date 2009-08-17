@@ -87,6 +87,7 @@ namespace PockeTwit
                 userListControl1.HookTextBoxKeyPress(txtStatusUpdate);
             }
             FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             if (ClientSettings.IsMaximized)
             {
                 WindowState = FormWindowState.Maximized;

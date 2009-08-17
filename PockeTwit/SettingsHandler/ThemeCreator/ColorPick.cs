@@ -25,6 +25,8 @@ namespace PockeTwit
             InitializeComponent();
             if (ClientSettings.IsMaximized){this.WindowState = FormWindowState.Maximized;}
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
+
             LoadColorFile();
         }
         void LoadColorFile()

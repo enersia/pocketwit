@@ -15,6 +15,7 @@ namespace PockeTwit
         {
             InitializeComponent();
             Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
 
         }
 

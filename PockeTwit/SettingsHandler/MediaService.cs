@@ -18,6 +18,7 @@ namespace PockeTwit
             InitializeComponent();
             PockeTwit.Themes.FormColors.SetColors(this);
             PockeTwit.Themes.FormColors.SetColors(this.pnlCapabilites);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
 
             if (ClientSettings.IsMaximized)
             {
