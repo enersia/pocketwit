@@ -27,13 +27,13 @@ namespace PockeTwit.SettingsHandler
         {
             if (ClientSettings.UseDIB)
             {
-                lblRenderingMethod.Text = "Using DIB";
+                lblRenderingMethod.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Using DIB");
                 chkDIB.Checked = true;
             }
             else
             {
                 chkDIB.Checked = false;
-                lblRenderingMethod.Text = "Using DDB";
+                lblRenderingMethod.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Using DDB");
             }
         }
         

@@ -136,8 +136,7 @@
             this.lblPreLoadText.Location = new System.Drawing.Point(24, 136);
             this.lblPreLoadText.Name = "lblPreLoadText";
             this.lblPreLoadText.Size = new System.Drawing.Size(195, 114);
-            this.lblPreLoadText.Text = "Turning this ON will upload pictures instantly to the service without a message. " +
-                "A URL to the picture is placed in the message field.";
+            this.lblPreLoadText.Text = "Turning this ON will upload pictures instantly to the service without a message. A URL to the picture is placed in the message field.";
             // 
             // MediaService
             // 

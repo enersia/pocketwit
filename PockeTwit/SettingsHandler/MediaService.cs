@@ -76,7 +76,7 @@ namespace PockeTwit
 
             chkMessage.Checked = service.CanUploadMessage;
             chkGPS.Checked = service.CanUploadGPS;
-            this.lblMediaLabel.Text = ServiceName + " can: ";
+            this.lblMediaLabel.Text = String.Format(PockeTwit.Localization.XmlBasedResourceManager.GetString("{0} can: "), ServiceName);
         }
     }
 }

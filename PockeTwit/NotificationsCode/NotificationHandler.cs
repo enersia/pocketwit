@@ -109,8 +109,10 @@ namespace PockeTwit.NotificationsCode
         private static void LoadAll()
         {
             _notifications = new Dictionary<string, NotificationInfoClass>();
-            var friends = new NotificationInfoClass {Name = "PockeTwit: Friends Update", Group = null, GUID = FriendsTweets, Type= TimelineManagement.TimeLineType.Friends};
-            var messages = new NotificationInfoClass{Name = "PockeTwit: Messages", Group = null, GUID = MessageTweets, Type=TimelineManagement.TimeLineType.Messages};
+            string name = PockeTwit.Localization.XmlBasedResourceManager.GetString("PockeTwit: Friends Update");
+            var friends = new NotificationInfoClass {Name = name, Group = null, GUID = FriendsTweets, Type= TimelineManagement.TimeLineType.Friends};
+            name = PockeTwit.Localization.XmlBasedResourceManager.GetString("PockeTwit: Messages");
+            var messages = new NotificationInfoClass{Name = name, Group = null, GUID = MessageTweets, Type=TimelineManagement.TimeLineType.Messages};
 
             _notifications.Add(FriendsTweets, friends);
             _notifications.Add(MessageTweets, messages);

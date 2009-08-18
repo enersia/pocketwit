@@ -19,6 +19,9 @@ namespace PockeTwit
         public EmailStatusForm(string Message)
         {
             InitializeComponent();
+            PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
+
             MessageText = Message;
             accounts = sess.EmailAccounts;
 

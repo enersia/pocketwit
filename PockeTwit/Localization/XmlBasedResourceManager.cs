@@ -105,11 +105,12 @@ namespace PockeTwit.Localization
             if (parent is Form)
             {
                 var form = (Form)parent;
+                form.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString(form.Text);
                 LocalizeMenu(form);
             }
             LocalizeControlAndChildren(parent);
         }
-        private static void LocalizeMenu(Form form)
+        public static void LocalizeMenu(Form form)
         {
             if (form.Menu == null) return;
             foreach (MenuItem item in form.Menu.MenuItems)
@@ -140,9 +141,12 @@ namespace PockeTwit.Localization
                 else if (control is ComboBox)
                 {
                     ComboBox box = control as ComboBox;
-                    for (int i = 0; i < box.Items.Count; i++)
+                    if (box.Tag!= null && box.Tag.ToString() == "AutoLocalize")
                     {
-                        box.Items[i] = GetString(box.Items[i].ToString());
+                        for (int i = 0; i < box.Items.Count; i++)
+                        {
+                            box.Items[i] = GetString(box.Items[i].ToString());
+                        }
                     }
                 }
 

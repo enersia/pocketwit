@@ -104,10 +104,10 @@ namespace PockeTwit.SettingsHandler
             int width = pnlUsers.Width - (ClientSettings.TextSize + 10);
             Label lblName = new Label();
             Label lblExclusive = new Label();
-            lblName.Text = "User";
+            lblName.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("User");
             lblName.Width = width;
             lblName.Height = ClientSettings.TextSize + 5;
-            lblExclusive.Text = "Exclusive";
+            lblExclusive.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Exclusive");
             lblExclusive.Left = pnlUsers.Width - ((ClientSettings.TextSize * 4) + 10);
             lblExclusive.Height = lblName.Height;
             pnlUsers.Controls.Add(lblExclusive);

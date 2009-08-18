@@ -55,6 +55,7 @@ namespace PockeTwit
             InitializeComponent();
             SetUpSearchBox();
             SetupLocationBox();
+            cmbMeasurement.Tag = "AutoLocalize";
             this.ResumeLayout(false);
             PockeTwit.Themes.FormColors.SetColors(this); 
             PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
@@ -253,6 +254,7 @@ namespace PockeTwit
             {
                 cmbLocation.Items.Add(PockeTwit.Localization.XmlBasedResourceManager.GetString("Seeking GPS...Please Wait"));
             }
+            cmbLocation.Tag = "AutoLocalize";
         }
 
         private void SetUpSearchBox()

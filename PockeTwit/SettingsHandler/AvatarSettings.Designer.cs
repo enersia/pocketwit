@@ -70,13 +70,15 @@ namespace PockeTwit
             // 
             // lnkClearAvatars
             // 
-            this.lnkClearAvatars.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lnkClearAvatars.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.lnkClearAvatars.ForeColor = System.Drawing.Color.LightBlue;
-            this.lnkClearAvatars.Location = new System.Drawing.Point(126, 248);
+            this.lnkClearAvatars.Location = new System.Drawing.Point(3, 248);
             this.lnkClearAvatars.Name = "lnkClearAvatars";
-            this.lnkClearAvatars.Size = new System.Drawing.Size(109, 20);
+            this.lnkClearAvatars.Size = new System.Drawing.Size(232, 20);
             this.lnkClearAvatars.TabIndex = 3;
             this.lnkClearAvatars.Text = "Clear Avatar Cache";
+            this.lnkClearAvatars.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.lnkClearAvatars.Click += new System.EventHandler(this.lnkClearAvatars_Click);
             // 
             // chkAvatar

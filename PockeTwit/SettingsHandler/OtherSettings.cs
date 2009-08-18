@@ -110,7 +110,7 @@ namespace PockeTwit
             txtUpdate.Text = ClientSettings.UpdateMinutes.ToString();
             chkTranslate.Checked = ClientSettings.AutoTranslate;
             txtCaheDir.Text = ClientSettings.CacheDir;
-            chkTranslate.Text = "Auto-translate to " + ClientSettings.TranslationLanguage;
+            chkTranslate.Text = String.Format(PockeTwit.Localization.XmlBasedResourceManager.GetString("Auto-translate to {0}"), ClientSettings.TranslationLanguage);
             chkEnableProxy.Checked = !string.IsNullOrEmpty(ClientSettings.ProxyServer);
             if (chkEnableProxy.Checked)
             {

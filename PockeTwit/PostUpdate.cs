@@ -104,6 +104,7 @@ namespace PockeTwit
                 SetupTouchScreen();
             }
             mainMenu1.MenuItems.Add(menuCancel);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeMenu(this);
             ResumeLayout(false);
 
             LocationFinder.LocationReady += new LocationManager.delLocationReady(l_LocationReady);
@@ -136,7 +137,6 @@ namespace PockeTwit
 
             CopyItem.Click += new EventHandler(CopyItem_Click);
             PasteItem.Click += new EventHandler(PasteItem_Click);
-
         }
 
         void picAddressBook_Click(object sender, EventArgs e)
