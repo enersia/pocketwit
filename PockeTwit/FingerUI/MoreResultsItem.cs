@@ -69,13 +69,15 @@ namespace PockeTwit.FingerUI
 
                 DisplayItemDrawingHelper.DrawItemBackground(g, bounds, Selected);
 
-                SizeF textSize = g.MeasureString("more", ClientSettings.MenuFont);
+                string itemText = PockeTwit.Localization.XmlBasedResourceManager.GetString("more");
+
+                SizeF textSize = g.MeasureString(itemText, ClientSettings.MenuFont);
                 Point startPoint = new Point((int)(bounds.Left + (bounds.Width - textSize.Width) / 2),(int)(bounds.Top + (bounds.Height - textSize.Height) / 2));
                 
                 Color drawColor = ClientSettings.MenuTextColor;
                 using (Brush drawBrush = new SolidBrush(drawColor))
                 {
-                    g.DrawString("more", ClientSettings.MenuFont, drawBrush, startPoint.X, startPoint.Y);
+                    g.DrawString(itemText, ClientSettings.MenuFont, drawBrush, startPoint.X, startPoint.Y);
                 }
             }
             catch (ObjectDisposedException)

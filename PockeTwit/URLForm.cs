@@ -61,6 +61,7 @@ namespace PockeTwit
 
             this.mainMenu1.MenuItems.Add(this.mnuAction);
             this.mainMenu1.MenuItems.Add(this.mnuCancel);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeMenu(this);
         }
 
         private void ProfesionalMenus()

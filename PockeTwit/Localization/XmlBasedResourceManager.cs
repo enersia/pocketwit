@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Xml;
 using System.IO;
 using System.Windows.Forms;
+using System.Collections.ObjectModel;
 
 namespace PockeTwit.Localization
 {
@@ -29,15 +30,32 @@ namespace PockeTwit.Localization
             }
             set
             {
-                _cultureInfo = value;
-                InitLanguageDictionary();
+                if (_cultureInfo != value)
+                {
+                    _cultureInfo = value;
+                    InitLanguageDictionary();
+                }
             }
         }
 
+        public static ReadOnlyCollection<System.Globalization.CultureInfo> AvailableCultures()
+        {
+            List<System.Globalization.CultureInfo> result = new List<CultureInfo>();
+            String[] files = System.IO.Directory.GetFiles(Directory, String.Concat(NameBase, "_*.xml"));
+
+            foreach (string fileName in files)
+            {
+                string cultureInfoString = fileName.Substring(fileName.LastIndexOf('_')+1);
+                cultureInfoString = (cultureInfoString.Split('.'))[0];
+                System.Globalization.CultureInfo cultureInfo = new CultureInfo(cultureInfoString);
+                result.Add(cultureInfo);
+            }
+            return result.AsReadOnly();
+        }
+        private static string _loadedFile = String.Empty;
+
         private static void InitLanguageDictionary()
         {
-            Cache.Clear();
-
             var fileName = String.Concat(Directory, NameBase, "_", _cultureInfo.Name, ".xml");
             if (!File.Exists(fileName))
             {
@@ -46,10 +64,20 @@ namespace PockeTwit.Localization
                 if (!File.Exists(fileName))
                 {
                     // give up
+                    Cache.Clear();
+                    _loadedFile = String.Empty;
                     return;
                 }
+                else
+                {
+                    _cultureInfo = new CultureInfo(_cultureInfo.TwoLetterISOLanguageName);
+                }
             }
+     
+            if (_loadedFile == fileName)
+                return;
 
+            Cache.Clear();
             var xmlReader = new XmlTextReader(fileName);
 
             try
@@ -76,6 +104,7 @@ namespace PockeTwit.Localization
             finally
             {
                 xmlReader.Close();
+                _loadedFile = fileName;
             }
         }
 
