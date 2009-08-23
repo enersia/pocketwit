@@ -127,7 +127,7 @@ namespace PockeTwit
 
         void Checker_CurrentVersion(UpgradeChecker.UpgradeInfo Info)
         {
-            MessageBox.Show(Info.webVersion.ToString() + " is the latest version.", "No upgrades found.");
+            PockeTwit.Localization.LocalizedMessageBox.Show("{0} is the latest version.", "No upgrades found.", Info.webVersion.ToString()); 
         }
 
         void Checker_UpdateFound(UpgradeChecker.UpgradeInfo Info)
@@ -208,7 +208,7 @@ namespace PockeTwit
             }
             catch
             {
-                MessageBox.Show("There is no default web browser defined for the OS.");
+                PockeTwit.Localization.LocalizedMessageBox.Show("There is no default web browser defined for the OS.");
             }
         }
 

@@ -313,7 +313,7 @@ namespace PockeTwit
             if (string.IsNullOrEmpty(gpsUrl))
             {
                 Cursor.Current = Cursors.Default;
-                MessageBox.Show("A communication error occured shortening the URL. Please try again later.");
+                PockeTwit.Localization.LocalizedMessageBox.Show("A communication error occured shortening the URL. Please try again later.");
                 return;
             }
             txtStatusUpdate.Text = txtStatusUpdate.Text + " " + gpsUrl;
@@ -400,7 +400,7 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("The camera is not available.", "PockeTwit");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("The camera is not available.", "PockeTwit");
                     return;
                 }
                 if (string.IsNullOrEmpty(filename))
@@ -414,12 +414,12 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("Unable to upload picture.", "PockeTwit");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("Unable to upload picture.", "PockeTwit");
                 }
             }
             else
             {
-                MessageBox.Show("Uploading picture...");
+                PockeTwit.Localization.LocalizedMessageBox.Show("Uploading picture...");
             }
         }
 
@@ -460,7 +460,7 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("Unable to select picture.", "PockeTwit");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("Unable to select picture.", "PockeTwit");
                 }
                 if  (string.IsNullOrEmpty(filename))
                 {
@@ -474,12 +474,12 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("Unable to upload picture.", "PockeTwit");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("Unable to upload picture.", "PockeTwit");
                 } 
             }
             else
             {
-                MessageBox.Show("Uploading picture...");
+                PockeTwit.Localization.LocalizedMessageBox.Show("Uploading picture...");
             }
         }
 
@@ -722,7 +722,7 @@ namespace PockeTwit
 
         private static string TryToShrinkWith140It(string original)
         {
-            if(MessageBox.Show("The text is too long.  Would you like to use abbreviations to shorten it?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)== System.Windows.Forms.DialogResult.Yes)
+            if(PockeTwit.Localization.LocalizedMessageBox.Show("The text is too long.  Would you like to use abbreviations to shorten it?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)== System.Windows.Forms.DialogResult.Yes)
             {
                 var shrinker = new _140it();
                 return shrinker.GetShortenedText(original);
@@ -732,7 +732,7 @@ namespace PockeTwit
 
         private string TryToUseShortText(string original)
         {
-            if(MessageBox.Show("The text is too long.  Would you like to add a link to a site with the full text?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)== System.Windows.Forms.DialogResult.Yes)
+            if (PockeTwit.Localization.LocalizedMessageBox.Show("The text is too long.  Would you like to add a link to a site with the full text?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
             {
                 var shrinker = new ShortText();
 
@@ -752,7 +752,7 @@ namespace PockeTwit
 
                 if(updateText.Length>140)
                 {
-                    if (MessageBox.Show("The text is still too long.  If you post it twitter will cut off the end.  Post anyway?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
+                    if (PockeTwit.Localization.LocalizedMessageBox.Show("The text is still too long.  If you post it twitter will cut off the end.  Post anyway?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
                     {
                         return false;
                     }
@@ -802,7 +802,7 @@ namespace PockeTwit
 
                     if (string.IsNullOrEmpty(retValue))
                     {
-                        MessageBox.Show("Error posting status -- empty response.  You may want to try again later.");
+                        PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- empty response.  You may want to try again later.");
                         return false;
                     }
                     try
@@ -811,7 +811,7 @@ namespace PockeTwit
                     }
                     catch
                     {
-                        MessageBox.Show("Error posting status -- bad response.  You may want to try again later.");
+                        PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- bad response.  You may want to try again later.");
                         return false;
                     }
 
@@ -836,7 +836,7 @@ namespace PockeTwit
         {
             if (!string.IsNullOrEmpty(txtStatusUpdate.Text))
             {
-                if (MessageBox.Show("Are you sure you want to cancel the update?", "Cancel", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Are you sure you want to cancel the update?", "Cancel", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
                 {
                     return;
                 }
@@ -873,7 +873,7 @@ namespace PockeTwit
             else
             {
                 //Pre loading logic
-                if (MessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                 {
                     txtStatusUpdate.Text += uploadedPictureURL;
                     txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
@@ -881,7 +881,7 @@ namespace PockeTwit
                 }
                 else
                 {
-                    if (MessageBox.Show("Load a new picture?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    if (PockeTwit.Localization.LocalizedMessageBox.Show("Load a new picture?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                     {
                         uploadedPictureURL = string.Empty;
                         pictureUsed = false;
@@ -903,7 +903,7 @@ namespace PockeTwit
             else
             {
                 //Pre loading picture logic.
-                if (MessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                 {
                     txtStatusUpdate.Text += uploadedPictureURL;
                     txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
@@ -911,7 +911,7 @@ namespace PockeTwit
                 }
                 else
                 {
-                    if (MessageBox.Show("Take a new picture?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    if (PockeTwit.Localization.LocalizedMessageBox.Show("Take a new picture?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                     {
                         uploadedPictureURL = string.Empty;
                         pictureUsed = false;
@@ -927,7 +927,7 @@ namespace PockeTwit
             if (!pictureUsed && !ClientSettings.SendMessageToMediaService)
             {
                 //Only show message when pre-loading pictures is enabled.
-                if (MessageBox.Show("Uploaded picture not used, are you sure?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Uploaded picture not used, are you sure?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
                 {
                     return;
                 }

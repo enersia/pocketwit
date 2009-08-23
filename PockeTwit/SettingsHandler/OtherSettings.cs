@@ -50,7 +50,7 @@ namespace PockeTwit
             
             if (ClientSettings.UpdateMinutes != int.Parse(txtUpdate.Text, format))
             {
-                MessageBox.Show("You will need to restart PockeTwit for the update interval to change.", "PockeTwit");
+                PockeTwit.Localization.LocalizedMessageBox.Show("You will need to restart PockeTwit for the update interval to change.", "PockeTwit");
                 ClientSettings.UpdateMinutes = int.Parse(txtUpdate.Text, format);
             }
             if (ClientSettings.CacheDir != txtCaheDir.Text)
@@ -65,7 +65,7 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("Unable to use that folder as a cache directory");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("Unable to use that folder as a cache directory.");
                 }
             }
             // Proxy settings
@@ -78,7 +78,7 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("The proxy setting is invalid. No proxy will be set.");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("The proxy setting is invalid. No proxy will be set.");
                     ClientSettings.ProxyServer = string.Empty;
                     ClientSettings.ProxyPort = 0;
                 }

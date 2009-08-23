@@ -89,7 +89,7 @@ namespace PockeTwit
         {
             if (cmbAccounts.Items.Count == 0)
             {
-                MessageBox.Show("You must enter at least one account or cancel.");
+                PockeTwit.Localization.LocalizedMessageBox.Show("You must enter at least one account or cancel.");
                 return;
             }
             this.DialogResult = DialogResult.OK;

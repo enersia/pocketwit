@@ -119,7 +119,7 @@ namespace PockeTwit
                 _URL = isgd.ShortenURL(this.txtURL.Text);
                 if (string.IsNullOrEmpty(_URL))
                 {
-                    MessageBox.Show("A communication error occured shortening the URL. Please try again later.");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("A communication error occured shortening the URL. Please try again later.");
                     return;
                 }
                 this.DialogResult = DialogResult.OK;

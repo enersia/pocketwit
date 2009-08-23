@@ -419,7 +419,7 @@ namespace PockeTwit
             }
             if(f.NeedsReset)
             {
-                MessageBox.Show("Your settings changes require that you restart the application.");
+                PockeTwit.Localization.LocalizedMessageBox.Show("Your settings changes require that you restart the application.");
                 ExitApplication();
             }
             this.statList.Visible = true;
@@ -548,19 +548,15 @@ namespace PockeTwit
             switch (Exclusive)
             {
                 case true:
-                    Message="This will move "+selectedItem.Tweet.user.screen_name+
-                    " out of the Friends timeline and into the " + t.name +
-                    " group.\n\nAre you sure you want to proceed?";
+                    Message="This will move {0} out of the Friends timeline and into the {1} group.\n\nAre you sure you want to proceed?";
                     break;
                 case false:
-                    Message = "This will copy " + selectedItem.Tweet.user.screen_name +
-                    " into the " + t.name + " group and still show them in the Friends timeline.\n\n" + 
-                    "Are you sure you want to proceed?";
+                    Message = "This will copy {0} into the {1} group and still show them in the Friends timeline.\n\nAre you sure you want to proceed?";
 
                     break;
 
             }
-            if (MessageBox.Show(Message, "Group " + selectedItem.Tweet.user.screen_name, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            if (PockeTwit.Localization.LocalizedMessageBox.Show(Message, "Group User", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, selectedItem.Tweet.user.screen_name, t.name) == DialogResult.Yes)
             {
                 t.AddItem(selectedItem.Tweet.user.id, selectedItem.Tweet.user.screen_name, Exclusive);
                 SpecialTimeLinesRepository.Save();
@@ -682,7 +678,7 @@ namespace PockeTwit
             if (statList.SelectedItem == null) { return; }
             StatusItem selectedItem = (StatusItem)statList.SelectedItem;
             Yedda.Twitter Conn = GetMatchingConnection(selectedItem.Tweet.Account);
-            if (MessageBox.Show("Are you sure you want to stop following " + selectedItem.Tweet.user.screen_name + "?", "Stop Following", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            if (PockeTwit.Localization.LocalizedMessageBox.Show("Are you sure you want to stop following {0}?", "Stop Following", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, selectedItem.Tweet.user.screen_name) == DialogResult.Yes)
             {
                 ChangeCursor(Cursors.WaitCursor);
                 Conn.StopFollowingUser(selectedItem.Tweet.user.screen_name);
@@ -709,7 +705,7 @@ namespace PockeTwit
             string User = selectedItem.Tweet.user.screen_name;
             if (selectedItem.Tweet.isDirect)
             {
-                if (MessageBox.Show("Are you sure you want to reply to a Direct Message?", "Reply to DM?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.No)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Are you sure you want to reply to a Direct Message?", "Reply?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.No)
                 {
                     SendDirectMessage();
                     return;
@@ -1016,7 +1012,7 @@ namespace PockeTwit
             }
             catch (OutOfMemoryException)
             {
-                MessageBox.Show("There's not enough memory to run PockeTwit. You may want to close some applications and try again.");
+                PockeTwit.Localization.LocalizedMessageBox.Show("There's not enough memory to run PockeTwit. You may want to close some applications and try again.");
                 if (Manager != null)
                 {
                     Manager.ShutDown();
@@ -1025,7 +1021,7 @@ namespace PockeTwit
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Corrupt settings-- " + ex.Message + "\r\nPlease reconfigure.");
+                PockeTwit.Localization.LocalizedMessageBox.Show("Corrupt settings - {0}\r\nPlease reconfigure.", ex.Message);
                 ClearSettings();
                 ResetDictionaries();
             }
@@ -1345,7 +1341,7 @@ namespace PockeTwit
 
             if (accounts.Count == 0)
             {
-                MessageBox.Show("You don't have any email accounts set up on this phone.");
+                PockeTwit.Localization.LocalizedMessageBox.Show("You don't have any email accounts set up on this phone.");
                 return;
             }
             else if (accounts.Count>1)
@@ -1732,7 +1728,7 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("There is no default web browser defined for the OS.");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("There is no default web browser defined for the OS.");
                 }
             }
             else if (TextClicked.StartsWith("#"))
@@ -1758,7 +1754,7 @@ namespace PockeTwit
                 p.DownloadFinish -= new PockeTwit.MediaServices.DownloadFinishEventHandler(p_DownloadFinish);
                 p.ErrorOccured -= new PockeTwit.MediaServices.ErrorOccuredEventHandler(p_ErrorOccured);
                 Cursor.Current = Cursors.Default;
-                MessageBox.Show("Unable to fetch picture.  You may want to try again.");
+                PockeTwit.Localization.LocalizedMessageBox.Show("Unable to fetch picture. You may want to try again.");
             }
         }
 

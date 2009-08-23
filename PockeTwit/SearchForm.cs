@@ -227,7 +227,7 @@ namespace PockeTwit
             {
                 return true;
             }
-            return MessageBox.Show("Saved searches can affect battery life. Are you sure you want to add this?",
+            return PockeTwit.Localization.LocalizedMessageBox.Show("Saved searches can affect battery life. Are you sure you want to add this?",
                                    "Saved Search", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                                    MessageBoxDefaultButton.Button2) == DialogResult.Yes;
         }
