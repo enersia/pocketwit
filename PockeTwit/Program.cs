@@ -92,7 +92,7 @@ namespace PockeTwit
             {
                 w.Write(b.ToString());
             }
-            PockeTwit.Localization.LocalizedMessageBox.Show("An unexpected error has occured and PockeTwit must shut down.\r\n\r\nYou will have an opportunity to submit a crash report to the developer on the next run.", "PockeTwit");
+            PockeTwit.Localization.LocalizedMessageBox.Show("An unexpected error has occured and PockeTwit must shut down.\n\nYou will have an opportunity to submit a crash report to the developer on the next run.", "PockeTwit");
 
         }
         /// <summary>

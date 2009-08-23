@@ -66,6 +66,7 @@ namespace PockeTwit.Localization
                     // give up
                     Cache.Clear();
                     _loadedFile = String.Empty;
+                    _cultureInfo = new CultureInfo("en");
                     return;
                 }
                 else

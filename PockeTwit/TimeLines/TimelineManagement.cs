@@ -71,7 +71,7 @@ namespace PockeTwit
                 if (level <= BatteryLevel.VeryLow)
                 {
                     updateTimer.Enabled = false;
-                    PockeTwit.Localization.LocalizedMessageBox.Show("Battery low - disabling auto-updates.\r\n{0}", "PockeTwit", level.ToString());
+                    PockeTwit.Localization.LocalizedMessageBox.Show("Battery low - disabling auto-updates.\n{0}", "PockeTwit", level.ToString());
                 }
                 else
                 {
@@ -80,7 +80,7 @@ namespace PockeTwit
                         if (level >= BatteryLevel.Low)
                         {
                             updateTimer.Enabled = false;
-                            PockeTwit.Localization.LocalizedMessageBox.Show("Battery charged - re-enabling auto-updates.\r\n{0}", "PockeTwit", level.ToString());
+                            PockeTwit.Localization.LocalizedMessageBox.Show("Battery charged - re-enabling auto-updates.\n{0}", "PockeTwit", level.ToString());
                         }
                     }
                 }

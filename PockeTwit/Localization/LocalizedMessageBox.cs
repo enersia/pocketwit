@@ -37,8 +37,10 @@ namespace PockeTwit.Localization
         public static DialogResult Show(string text, string caption, MessageBoxButtons buttons,
             MessageBoxIcon icon, MessageBoxDefaultButton defaultButton, params object[] args)
         {
-            var translatedText = string.Format(Localization.XmlBasedResourceManager.GetString(text), args);
-            
+            var translatedText = Localization.XmlBasedResourceManager.GetString(text);
+            if (args!=null)
+                translatedText = string.Format(translatedText, args);
+
             var translatedCaption = Localization.XmlBasedResourceManager.GetString(caption);
             return MessageBox.Show(translatedText, translatedCaption, buttons, icon, defaultButton);
         }
