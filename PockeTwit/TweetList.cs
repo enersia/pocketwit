@@ -528,7 +528,7 @@ namespace PockeTwit
 
             SwitchToList(t.ListName);
             statList.ClearVisible();
-            AddStatusesToList(Manager.GetGroupedTimeLine(t, pagingMode), true);
+            AddStatusesToList(Manager.GetGroupedTimeLine(t, pagingMode), false);
             if (t.Timelinetype == SpecialTimeLinesRepository.TimeLineType.SavedSearch)
                 statList.AddItem(new MoreResultsItem(this,t));
             ChangeCursor(Cursors.Default);
