@@ -87,6 +87,7 @@ namespace PockeTwit
                 userListControl1.HookTextBoxKeyPress(txtStatusUpdate);
             }
             FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             if (ClientSettings.IsMaximized)
             {
                 WindowState = FormWindowState.Maximized;
@@ -103,6 +104,7 @@ namespace PockeTwit
                 SetupTouchScreen();
             }
             mainMenu1.MenuItems.Add(menuCancel);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeMenu(this);
             ResumeLayout(false);
 
             LocationFinder.LocationReady += new LocationManager.delLocationReady(l_LocationReady);
@@ -124,10 +126,10 @@ namespace PockeTwit
             copyPasteMenu = new System.Windows.Forms.ContextMenu();
 
             PasteItem = new System.Windows.Forms.MenuItem();
-            PasteItem.Text = "Paste";
+            PasteItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Paste");
 
             CopyItem = new MenuItem();
-            CopyItem.Text = "Copy";
+            CopyItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Copy");
 
             copyPasteMenu.MenuItems.Add(CopyItem);
             copyPasteMenu.MenuItems.Add(PasteItem);
@@ -135,7 +137,6 @@ namespace PockeTwit
 
             CopyItem.Click += new EventHandler(CopyItem_Click);
             PasteItem.Click += new EventHandler(PasteItem_Click);
-
         }
 
         void picAddressBook_Click(object sender, EventArgs e)
@@ -185,7 +186,7 @@ namespace PockeTwit
                     {
                         LocationFinder.StopGPS();
                         GPSLocation = Location;
-                        lblGPS.Text = "Location Found";
+                        lblGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Location Found");
                         if (DetectDevice.DeviceType == DeviceType.Standard)
                         {
                             // just enable the menuItem
@@ -199,7 +200,7 @@ namespace PockeTwit
                             // hide the label, add a new button
                             lblGPS.Visible = false;
                             LinkLabel llGPS = new LinkLabel();
-                            llGPS.Text = "Ins. GPS Link";
+                            llGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Ins. GPS Link");
                             llGPS.ForeColor = Color.White;
                             llGPS.Left = lblGPS.Left;
                             llGPS.Top = lblGPS.Top;
@@ -247,37 +248,37 @@ namespace PockeTwit
             pictureURL.Visible = false;
             picAddressBook.Visible = false;
             menuExist = new MenuItem();
-            menuExist.Text = "Existing Picture";
+            menuExist.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Existing Picture");
             menuExist.Click += new EventHandler(menuExist_Click);
 
             menuCamera = new MenuItem();
-            menuCamera.Text = "Take Picture";
+            menuCamera.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Take Picture");
             menuCamera.Click += new EventHandler(menuCamera_Click);
             
             menuURL = new MenuItem();
-            menuURL.Text = "URL...";
+            menuURL.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("URL...");
             menuURL.Click += new EventHandler(menuURL_Click);
 
             menuGPS = new MenuItem();
-            menuGPS.Text = "Update Location";
+            menuGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Update Location");
             menuGPS.Click += new EventHandler(menuGPS_Click);
 
             menuGPSInsert = new MenuItem();
-            menuGPSInsert.Text = "Insert GPS Location";
+            menuGPSInsert.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Insert GPS Location");
             menuGPSInsert.Click += new EventHandler(menuGPSInsert_Click);
             menuGPSInsert.Enabled = false;
 
             menuAddressBook = new MenuItem();
-            menuAddressBook.Text = "Address Book";
+            menuAddressBook.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Address Book");
             menuAddressBook.Click += new EventHandler(menuAddressBook_Click);
             menuAddressBook.Enabled = true;
 
             PasteItem = new MenuItem();
-            PasteItem.Text = "Paste";
+            PasteItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Paste");
             PasteItem.Click += new EventHandler(PasteItem_Click);
 
             menuItem1 = new System.Windows.Forms.MenuItem();
-            menuItem1.Text = "Action";
+            menuItem1.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Action");
 
             menuItem1.MenuItems.Add(menuSubmit);
             menuItem1.MenuItems.Add(menuAddressBook);
@@ -312,7 +313,7 @@ namespace PockeTwit
             if (string.IsNullOrEmpty(gpsUrl))
             {
                 Cursor.Current = Cursors.Default;
-                MessageBox.Show("A communication error occured shortening the URL. Please try again later.");
+                PockeTwit.Localization.LocalizedMessageBox.Show("A communication error occured shortening the URL. Please try again later.");
                 return;
             }
             txtStatusUpdate.Text = txtStatusUpdate.Text + " " + gpsUrl;
@@ -399,7 +400,7 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("The camera is not available.", "PockeTwit");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("The camera is not available.", "PockeTwit");
                     return;
                 }
                 if (string.IsNullOrEmpty(filename))
@@ -413,12 +414,12 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("Unable to upload picture.", "PockeTwit");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("Unable to upload picture.", "PockeTwit");
                 }
             }
             else
             {
-                MessageBox.Show("Uploading picture...");
+                PockeTwit.Localization.LocalizedMessageBox.Show("Uploading picture...");
             }
         }
 
@@ -459,7 +460,7 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("Unable to select picture.", "PockeTwit");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("Unable to select picture.", "PockeTwit");
                 }
                 if  (string.IsNullOrEmpty(filename))
                 {
@@ -473,12 +474,12 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("Unable to upload picture.", "PockeTwit");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("Unable to upload picture.", "PockeTwit");
                 } 
             }
             else
             {
-                MessageBox.Show("Uploading picture...");
+                PockeTwit.Localization.LocalizedMessageBox.Show("Uploading picture...");
             }
         }
 
@@ -721,7 +722,7 @@ namespace PockeTwit
 
         private static string TryToShrinkWith140It(string original)
         {
-            if(MessageBox.Show("The text is too long.  Would you like to use abbreviations to shorten it?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)== System.Windows.Forms.DialogResult.Yes)
+            if(PockeTwit.Localization.LocalizedMessageBox.Show("The text is too long.  Would you like to use abbreviations to shorten it?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)== System.Windows.Forms.DialogResult.Yes)
             {
                 var shrinker = new _140it();
                 return shrinker.GetShortenedText(original);
@@ -731,7 +732,7 @@ namespace PockeTwit
 
         private string TryToUseShortText(string original)
         {
-            if(MessageBox.Show("The text is too long.  Would you like to add a link to a site with the full text?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)== System.Windows.Forms.DialogResult.Yes)
+            if (PockeTwit.Localization.LocalizedMessageBox.Show("The text is too long.  Would you like to add a link to a site with the full text?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
             {
                 var shrinker = new ShortText();
 
@@ -751,7 +752,7 @@ namespace PockeTwit
 
                 if(updateText.Length>140)
                 {
-                    if (MessageBox.Show("The text is still too long.  If you post it twitter will cut off the end.  Post anyway?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
+                    if (PockeTwit.Localization.LocalizedMessageBox.Show("The text is still too long.  If you post it twitter will cut off the end.  Post anyway?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
                     {
                         return false;
                     }
@@ -801,7 +802,7 @@ namespace PockeTwit
 
                     if (string.IsNullOrEmpty(retValue))
                     {
-                        MessageBox.Show("Error posting status -- empty response.  You may want to try again later.");
+                        PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- empty response.  You may want to try again later.");
                         return false;
                     }
                     try
@@ -810,7 +811,7 @@ namespace PockeTwit
                     }
                     catch
                     {
-                        MessageBox.Show("Error posting status -- bad response.  You may want to try again later.");
+                        PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- bad response.  You may want to try again later.");
                         return false;
                     }
 
@@ -835,7 +836,7 @@ namespace PockeTwit
         {
             if (!string.IsNullOrEmpty(txtStatusUpdate.Text))
             {
-                if (MessageBox.Show("Are you sure you want to cancel the update?", "Cancel", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Are you sure you want to cancel the update?", "Cancel", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
                 {
                     return;
                 }
@@ -872,7 +873,7 @@ namespace PockeTwit
             else
             {
                 //Pre loading logic
-                if (MessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                 {
                     txtStatusUpdate.Text += uploadedPictureURL;
                     txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
@@ -880,7 +881,7 @@ namespace PockeTwit
                 }
                 else
                 {
-                    if (MessageBox.Show("Load a new picture?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    if (PockeTwit.Localization.LocalizedMessageBox.Show("Load a new picture?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                     {
                         uploadedPictureURL = string.Empty;
                         pictureUsed = false;
@@ -902,7 +903,7 @@ namespace PockeTwit
             else
             {
                 //Pre loading picture logic.
-                if (MessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                 {
                     txtStatusUpdate.Text += uploadedPictureURL;
                     txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
@@ -910,7 +911,7 @@ namespace PockeTwit
                 }
                 else
                 {
-                    if (MessageBox.Show("Take a new picture?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    if (PockeTwit.Localization.LocalizedMessageBox.Show("Take a new picture?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                     {
                         uploadedPictureURL = string.Empty;
                         pictureUsed = false;
@@ -926,7 +927,7 @@ namespace PockeTwit
             if (!pictureUsed && !ClientSettings.SendMessageToMediaService)
             {
                 //Only show message when pre-loading pictures is enabled.
-                if (MessageBox.Show("Uploaded picture not used, are you sure?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Uploaded picture not used, are you sure?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
                 {
                     return;
                 }

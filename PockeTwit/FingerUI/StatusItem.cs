@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
+using PockeTwit.FingerUI.Menu;
 
 namespace PockeTwit.FingerUI
 {
-    public class StatusItem : IDisposable, IComparable
+    public class StatusItem : IDisposable, IComparable, IDisplayItem
     {
 
         public static char[] IgnoredAtChars = new[] { ':', ',', '-', '.', '!', '?', '~','=','&','*','>',')', '(' };
@@ -56,29 +57,6 @@ namespace PockeTwit.FingerUI
             get { return _currentOffset; }
         }
 
-        /// <summary>
-        /// The unscrolled bounds for this item.
-        /// </summary>
-        public Rectangle Bounds { get { return _mBounds; }
-            set 
-            {
-                if (_mBounds.Width!=0 && value.Width != _mBounds.Width)
-                {
-                    ResetTexts();
-                }
-                _mBounds = value;
-                Rectangle textBounds;
-                if (ClientSettings.ShowAvatars)
-                {
-                    textBounds = new Rectangle(ClientSettings.SmallArtSize + ClientSettings.Margin, 0, _mBounds.Width - (ClientSettings.SmallArtSize + (ClientSettings.Margin * 2)), _mBounds.Height);
-                }
-                else
-                {
-                    textBounds = new Rectangle(ClientSettings.Margin, 0, _mBounds.Width - (ClientSettings.Margin * 2), _mBounds.Height);
-                }
-                BreakUpTheText(_parentGraphics, textBounds);
-            }
-        }
 
         public void ResetTexts()
         {
@@ -111,40 +89,6 @@ namespace PockeTwit.FingerUI
             }
         }
 
-        /// <summary>
-        /// Gets or sets the parent.
-        /// </summary>
-        /// <value>The parent.</value>
-        public KListControl Parent { get { return _mParent; } 
-            set 
-            {
-                _mParent = value;
-            }
-        }
-
-        public Graphics ParentGraphics 
-        {
-            set
-            {
-                _parentGraphics = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="KListItem"/> is selected.
-        /// </summary>
-        /// <value><c>true</c> if selected; otherwise, <c>false</c>.</value>
-        public bool Selected
-        { 
-            get 
-            { 
-                return _mSelected;  
-            } 
-            set 
-            {
-                _mSelected = value; 
-            } 
-        }
 
         /// <summary>
         /// Gets or sets the text.
@@ -210,139 +154,6 @@ namespace PockeTwit.FingerUI
             _mParent = null;
         }
 
-        /// <summary>
-        /// Renders to the specified graphics.
-        /// </summary>
-        /// <param name="g">The graphics.</param>
-        /// <param name="bounds">The bounds.</param>
-        public virtual void Render(Graphics g)
-        {
-            Render(g, Bounds);
-        }
-        public virtual void Render(Graphics g, Rectangle bounds)
-        {
-            try
-            {
-                g.Clip = new Region(bounds);
-                _currentOffset = bounds;
-                var foreBrush = new SolidBrush(ClientSettings.ForeColor);
-                Rectangle textBounds;
-                //Shrink the text area to accomidate avatars if appropriate
-                if (ClientSettings.ShowAvatars)
-                {
-                    textBounds = new Rectangle(bounds.X + (ClientSettings.SmallArtSize + ClientSettings.Margin), bounds.Y, bounds.Width - (ClientSettings.SmallArtSize + (ClientSettings.Margin * 2)), bounds.Height);
-                }
-                else
-                {
-                    textBounds = new Rectangle(bounds.X + ClientSettings.Margin, bounds.Y, bounds.Width - (ClientSettings.Margin * 2), bounds.Height);
-                }
-
-                var innerBounds = new Rectangle(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
-                innerBounds.Offset(1, 1);
-                innerBounds.Width--; innerBounds.Height--;
-                if (_mSelected)
-                {
-                    foreBrush = new SolidBrush(ClientSettings.SelectedForeColor);
-                    if (ClientSettings.SelectedBackColor != ClientSettings.SelectedBackGradColor)
-                    {
-                        try
-                        {
-                            Gradient.GradientFill.Fill(g, innerBounds, ClientSettings.SelectedBackColor, ClientSettings.SelectedBackGradColor, Gradient.GradientFill.FillDirection.TopToBottom);
-                        }
-                        catch
-                        {
-                            using (Brush backBrush = new SolidBrush(ClientSettings.SelectedBackColor))
-                            {
-                                g.FillRectangle(backBrush, innerBounds);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        using (Brush backBrush = new SolidBrush(ClientSettings.SelectedBackColor))
-                        {
-                            g.FillRectangle(backBrush, innerBounds);
-                        }
-                    }
-                }
-                else
-                {
-                    if (ClientSettings.BackColor != ClientSettings.BackGradColor)
-                    {
-                        try
-                        {
-                            Gradient.GradientFill.Fill(g, innerBounds, ClientSettings.BackColor, ClientSettings.BackGradColor, Gradient.GradientFill.FillDirection.TopToBottom);
-                        }
-                        catch
-                        {
-                            using (Brush backBrush = new SolidBrush(ClientSettings.BackColor))
-                            {
-                                g.FillRectangle(backBrush, innerBounds);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        using (Brush backBrush = new SolidBrush(ClientSettings.BackColor))
-                        {
-                            g.FillRectangle(backBrush, innerBounds);
-                        }
-                    }
-                }
-
-                //Add the timestamp if the settings call for it.
-            
-                if (ClientSettings.ShowExtra)
-                {
-                    Color smallColor = ClientSettings.SmallTextColor;
-                    if (Selected) { smallColor = ClientSettings.SelectedSmallTextColor; }
-                    using (Brush dateBrush = new SolidBrush(smallColor))
-                    {
-                        g.DrawString(Tweet.TimeStamp, ClientSettings.SmallFont, dateBrush, bounds.Left + ClientSettings.Margin, ClientSettings.SmallArtSize + ClientSettings.Margin + bounds.Top, _mStringFormat);
-                    }
-                }
-            
-                //Get and draw the avatar area.
-                RenderAvatarArea(g, bounds);
-
-            
-                textBounds.Offset(ClientSettings.Margin, 1);
-                textBounds.Height--;
-
-                BreakUpTheText(g, textBounds);
-                int lineOffset = 0;
-
-                if (!ClientSettings.UseClickables)
-                {
-                    g.DrawString(Tweet.DisplayText, ClientSettings.TextFont, foreBrush, new RectangleF(textBounds.Left, textBounds.Top, textBounds.Width, textBounds.Height));
-                    //g.DrawString(Tweet.DisplayText, TextFont, ForeBrush, textBounds.Left, textBounds.Top, _mStringFormat);
-                }
-                else
-                {
-
-                    for (int i = 0; i < Tweet.SplitLines.Count; i++)
-                    {
-                        if (i >= ClientSettings.LinesOfText)
-                        {
-                            break;
-                        }
-                        float position = ((lineOffset * (ClientSettings.TextSize)) + textBounds.Top);
-
-                        g.DrawString(Tweet.SplitLines[i], ClientSettings.TextFont, foreBrush, textBounds.Left, position, _mStringFormat);
-                        lineOffset++;
-                    }
-                    MakeClickable(g, textBounds);
-                foreBrush.Dispose();
-                }
-                g.Clip = new Region();
-                Tweet.SplitLines = null;
-            }
-            catch (ObjectDisposedException)
-            {
-            }
-            
-            
-        }
 
         public void RenderAvatarArea(Graphics g, Rectangle bounds)
         {
@@ -616,5 +427,172 @@ namespace PockeTwit.FingerUI
         }
 
         #endregion
+
+        #region IDisplayItem Members 
+        public void OnMouseClick(Point p)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Renders to the specified graphics.
+        /// </summary>
+        /// <param name="g">The graphics.</param>
+        /// <param name="bounds">The bounds.</param>
+        public virtual void Render(Graphics g, Rectangle bounds)
+        {
+            try
+            {
+                g.Clip = new Region(bounds);
+                _currentOffset = bounds;
+                var foreBrush = new SolidBrush(ClientSettings.ForeColor);
+                Rectangle textBounds;
+                //Shrink the text area to accomidate avatars if appropriate
+                if (ClientSettings.ShowAvatars)
+                {
+                    textBounds = new Rectangle(bounds.X + (ClientSettings.SmallArtSize + ClientSettings.Margin), bounds.Y, bounds.Width - (ClientSettings.SmallArtSize + (ClientSettings.Margin * 2)), bounds.Height);
+                }
+                else
+                {
+                    textBounds = new Rectangle(bounds.X + ClientSettings.Margin, bounds.Y, bounds.Width - (ClientSettings.Margin * 2), bounds.Height);
+                }
+
+                var innerBounds = new Rectangle(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
+                innerBounds.Offset(1, 1);
+                innerBounds.Width--; innerBounds.Height--;
+                DisplayItemDrawingHelper.DrawItemBackground(g, bounds, Selected);
+                //Add the timestamp if the settings call for it.
+
+                if (ClientSettings.ShowExtra)
+                {
+                    Color smallColor = ClientSettings.SmallTextColor;
+                    if (Selected) { smallColor = ClientSettings.SelectedSmallTextColor; }
+                    using (Brush dateBrush = new SolidBrush(smallColor))
+                    {
+                        g.DrawString(Tweet.TimeStamp, ClientSettings.SmallFont, dateBrush, bounds.Left + ClientSettings.Margin, ClientSettings.SmallArtSize + ClientSettings.Margin + bounds.Top, _mStringFormat);
+                    }
+                }
+
+                //Get and draw the avatar area.
+                RenderAvatarArea(g, bounds);
+
+
+                textBounds.Offset(ClientSettings.Margin, 1);
+                textBounds.Height--;
+
+                BreakUpTheText(g, textBounds);
+                int lineOffset = 0;
+
+                if (!ClientSettings.UseClickables)
+                {
+                    g.DrawString(Tweet.DisplayText, ClientSettings.TextFont, foreBrush, new RectangleF(textBounds.Left, textBounds.Top, textBounds.Width, textBounds.Height));
+                    //g.DrawString(Tweet.DisplayText, TextFont, ForeBrush, textBounds.Left, textBounds.Top, _mStringFormat);
+                }
+                else
+                {
+
+                    for (int i = 0; i < Tweet.SplitLines.Count; i++)
+                    {
+                        if (i >= ClientSettings.LinesOfText)
+                        {
+                            break;
+                        }
+                        float position = ((lineOffset * (ClientSettings.TextSize)) + textBounds.Top);
+
+                        g.DrawString(Tweet.SplitLines[i], ClientSettings.TextFont, foreBrush, textBounds.Left, position, _mStringFormat);
+                        lineOffset++;
+                    }
+                    MakeClickable(g, textBounds);
+                    foreBrush.Dispose();
+                }
+                g.Clip = new Region();
+                Tweet.SplitLines = null;
+            }
+            catch (ObjectDisposedException)
+            {
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the parent.
+        /// </summary>
+        /// <value>The parent.</value>
+        public KListControl Parent
+        {
+            get { return _mParent; }
+            set
+            {
+                _mParent = value;
+            }
+        }
+
+        public Graphics ParentGraphics
+        {
+            set
+            {
+                _parentGraphics = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="KListItem"/> is selected.
+        /// </summary>
+        /// <value><c>true</c> if selected; otherwise, <c>false</c>.</value>
+        public bool Selected
+        {
+            get
+            {
+                return _mSelected;
+            }
+            set
+            {
+                _mSelected = value;
+            }
+        }
+
+        /// <summary>
+        /// The unscrolled bounds for this item.
+        /// </summary>
+        public Rectangle Bounds
+        {
+            get { return _mBounds; }
+            set
+            {
+                if (_mBounds.Width != 0 && value.Width != _mBounds.Width)
+                {
+                    ResetTexts();
+                }
+                _mBounds = value;
+                Rectangle textBounds;
+                if (ClientSettings.ShowAvatars)
+                {
+                    textBounds = new Rectangle(ClientSettings.SmallArtSize + ClientSettings.Margin, 0, _mBounds.Width - (ClientSettings.SmallArtSize + (ClientSettings.Margin * 2)), _mBounds.Height);
+                }
+                else
+                {
+                    textBounds = new Rectangle(ClientSettings.Margin, 0, _mBounds.Width - (ClientSettings.Margin * 2), _mBounds.Height);
+                }
+                BreakUpTheText(_parentGraphics, textBounds);
+            }
+        }
+
+        public void CreateRightMenu(SideMenu menu)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateRightMenu(SideMenu menu)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnMouseDblClick()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+
     }
 }

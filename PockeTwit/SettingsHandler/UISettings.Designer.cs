@@ -63,6 +63,8 @@ namespace PockeTwit
             this.label2 = new System.Windows.Forms.Label();
             this.txtFontSize = new System.Windows.Forms.TextBox();
             this.chkAutoScrroll = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cmbLanguage = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -178,7 +180,7 @@ namespace PockeTwit
             // 
             this.txtFontSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFontSize.Location = new System.Drawing.Point(81, 163);
+            this.txtFontSize.Location = new System.Drawing.Point(81, 162);
             this.txtFontSize.Name = "txtFontSize";
             this.txtFontSize.Size = new System.Drawing.Size(102, 21);
             this.txtFontSize.TabIndex = 8;
@@ -193,6 +195,23 @@ namespace PockeTwit
             this.chkAutoScrroll.TabIndex = 5;
             this.chkAutoScrroll.Text = "Auto-Scroll To Top";
             // 
+            // label3
+            // 
+            this.label3.ForeColor = System.Drawing.Color.White;
+            this.label3.Location = new System.Drawing.Point(4, 191);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(66, 20);
+            this.label3.Text = "Language:";
+            // 
+            // cmbLanguage
+            // 
+            this.cmbLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbLanguage.Location = new System.Drawing.Point(81, 189);
+            this.cmbLanguage.Name = "cmbLanguage";
+            this.cmbLanguage.Size = new System.Drawing.Size(102, 22);
+            this.cmbLanguage.TabIndex = 16;
+            // 
             // UISettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -200,6 +219,8 @@ namespace PockeTwit
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.cmbLanguage);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.chkAutoScrroll);
             this.Controls.Add(this.txtFontSize);
             this.Controls.Add(this.label2);
@@ -230,6 +251,8 @@ namespace PockeTwit
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtFontSize;
         private System.Windows.Forms.CheckBox chkAutoScrroll;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox cmbLanguage;
 
     }
 }

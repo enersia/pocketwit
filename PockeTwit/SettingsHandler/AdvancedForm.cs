@@ -15,6 +15,7 @@ namespace PockeTwit.SettingsHandler
         {
             InitializeComponent();
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             if (ClientSettings.IsMaximized)
             {
                 this.WindowState = FormWindowState.Maximized;
@@ -26,19 +27,19 @@ namespace PockeTwit.SettingsHandler
         {
             if (ClientSettings.UseDIB)
             {
-                lblRenderingMethod.Text = "Using DIB";
+                lblRenderingMethod.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Using DIB");
                 chkDIB.Checked = true;
             }
             else
             {
                 chkDIB.Checked = false;
-                lblRenderingMethod.Text = "Using DDB";
+                lblRenderingMethod.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Using DDB");
             }
         }
         
         private void lnkClearCaches_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to delete all cached statuses?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            if (PockeTwit.Localization.LocalizedMessageBox.Show("Are you sure you want to delete all cached statuses?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
                 LocalStorage.DataBaseUtility.CleanDB(0);
             }
@@ -47,7 +48,7 @@ namespace PockeTwit.SettingsHandler
 
         private void lnkClearSettings_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Are you sure you want to delete your settings?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            if (PockeTwit.Localization.LocalizedMessageBox.Show("Are you sure you want to delete your settings?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
                 System.IO.File.Delete(ClientSettings.AppPath + "\\app.config");
             }
@@ -68,7 +69,7 @@ namespace PockeTwit.SettingsHandler
 
         private void lblCompact_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Compacting the database may take a few minutes.\n\nProceed?", "Compact Database", MessageBoxButtons.YesNo,MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+            if (PockeTwit.Localization.LocalizedMessageBox.Show("Compacting the database may take a few minutes.\n\nProceed?", "Compact Database", MessageBoxButtons.YesNo,MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
             {
                 Cursor.Current = Cursors.WaitCursor;
                 LocalStorage.DataBaseUtility.VacuumDB();

@@ -25,6 +25,8 @@ namespace PockeTwit
         {
             InitializeComponent();
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
+
             if (ClientSettings.IsMaximized)
             {
                 this.WindowState = FormWindowState.Maximized;
@@ -59,6 +61,7 @@ namespace PockeTwit
 
             this.mainMenu1.MenuItems.Add(this.mnuAction);
             this.mainMenu1.MenuItems.Add(this.mnuCancel);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeMenu(this);
         }
 
         private void ProfesionalMenus()
@@ -73,7 +76,7 @@ namespace PockeTwit
             this.mnuCancel.Text = "Cancel";
             this.mnuCancel.Click += new System.EventHandler(this.menuCancel_Click);
 
-            this.mnuAction.Text = "Ok";
+            this.mnuAction.Text = "OK";
             this.mnuAction.Click += new System.EventHandler(this.menuSubmit_Click);
            
 
@@ -116,7 +119,7 @@ namespace PockeTwit
                 _URL = isgd.ShortenURL(this.txtURL.Text);
                 if (string.IsNullOrEmpty(_URL))
                 {
-                    MessageBox.Show("A communication error occured shortening the URL. Please try again later.");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("A communication error occured shortening the URL. Please try again later.");
                     return;
                 }
                 this.DialogResult = DialogResult.OK;

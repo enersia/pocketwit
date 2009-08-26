@@ -70,7 +70,7 @@ namespace FingerUI
             }
         }
 
-        private List<StatusItem> Items = new List<StatusItem>();
+        private List<IDisplayItem> Items = new List<IDisplayItem>();
         public int MaxItems = 11;
         private int _BitmapHeight = 0;
         public int BitmapHeight
@@ -184,9 +184,9 @@ namespace FingerUI
             }
         }
 
-        public void SetItemList(List<StatusItem> SetOfItems)
+        public void SetItemList(List<IDisplayItem> SetOfItems)
         {
-            StatusItem FirstNewItem = SetOfItems[0];
+            IDisplayItem FirstNewItem = SetOfItems[0];
             int SpacesMoved = 0;
             lock (Items)
             {
@@ -196,7 +196,7 @@ namespace FingerUI
                     {
                         //Items added to the end
                         SpacesMoved = Items.IndexOf(FirstNewItem);
-                        StatusItem[] ItemsToAdd = new StatusItem[SpacesMoved];
+                        IDisplayItem[] ItemsToAdd = new IDisplayItem[SpacesMoved];
                         Array.Copy(SetOfItems.ToArray(), SetOfItems.Count - SpacesMoved, ItemsToAdd, 0, SpacesMoved);
                         System.Diagnostics.Debug.WriteLine("Blitting " + SpacesMoved + " to the end of the image.");
                         AddItemsToEnd(ItemsToAdd);
@@ -208,12 +208,12 @@ namespace FingerUI
                 {
                     try
                     {
-                        StatusItem LastNewItem = SetOfItems[SetOfItems.Count - 1];
+                        IDisplayItem LastNewItem = SetOfItems[SetOfItems.Count - 1];
                         if (Items.Contains(LastNewItem))
                         {
                             //Items added to the start
                             SpacesMoved = MaxItems - (Items.IndexOf(LastNewItem) + 1);
-                            StatusItem[] ItemsToAdd = new StatusItem[SpacesMoved];
+                            IDisplayItem[] ItemsToAdd = new IDisplayItem[SpacesMoved];
                             Array.Copy(SetOfItems.ToArray(), 0, ItemsToAdd, 0, SpacesMoved);
                             System.Diagnostics.Debug.WriteLine("Blitting " + SpacesMoved + " to the start of the image.");
                             AddItemsToStart(ItemsToAdd);
@@ -224,7 +224,7 @@ namespace FingerUI
                 }
                 System.Diagnostics.Debug.WriteLine("Jumped " + SpacesMoved + " spaces");
                 Items.Clear();
-                Items = new List<StatusItem>(SetOfItems);
+                Items = new List<IDisplayItem>(SetOfItems);
                 if (Items.Count > MaxItems)
                 {
                     Items.RemoveRange(MaxItems, Items.Count - MaxItems);
@@ -242,7 +242,7 @@ namespace FingerUI
             _RenderedGraphics.Clear(ClientSettings.BackColor);
         }
 
-        public void AddItemsToStart(StatusItem[] Items)
+        public void AddItemsToStart(IDisplayItem[] Items)
         {
             lock (Items)
             {
@@ -253,7 +253,7 @@ namespace FingerUI
                 NewImage();
             }
         }
-        public void AddItemToStart(StatusItem Item)
+        public void AddItemToStart(IDisplayItem Item)
         {
             lock (Items)
             {
@@ -266,18 +266,18 @@ namespace FingerUI
                 }
             }
         }
-        public void AddItemsToEnd(StatusItem[] Items)
+        public void AddItemsToEnd(IDisplayItem[] Items)
         {
             lock (Items)
             {
-                foreach (StatusItem Item in Items)
+                foreach (IDisplayItem Item in Items)
                 {
                     AddItemToEnd(Item);
                 }
             }
             NewImage();
         }
-        public void AddItemToEnd(StatusItem Item)
+        public void AddItemToEnd(IDisplayItem Item)
         {
             lock (Items)
             {
@@ -291,7 +291,7 @@ namespace FingerUI
             }
         }
 
-        public void ReRenderItem(StatusItem Item)
+        public void ReRenderItem(IDisplayItem Item)
         {
             try
             {
@@ -395,7 +395,7 @@ namespace FingerUI
         {
             lock (Items)
             {
-                StatusItem Item = Items[i];
+                IDisplayItem Item = Items[i];
                 Rectangle ItemBounds = new Rectangle(0, i*ClientSettings.ItemHeight, Item.Bounds.Width,
                                                      ClientSettings.ItemHeight);
                 using (Pen whitePen = new Pen(ClientSettings.LineColor))
@@ -417,7 +417,7 @@ namespace FingerUI
                 BitBlt(gPtr, 0, ClientSettings.ItemHeight, _Rendered.Width, _Rendered.Height - ClientSettings.ItemHeight, gPtr, 0, 0, TernaryRasterOperations.SRCCOPY);
                 _RenderedGraphics.ReleaseHdc(gPtr);
                 //Draw the first item.
-                StatusItem Item = Items[0];
+                IDisplayItem Item = Items[0];
                 Rectangle ItemBounds = new Rectangle(0, 0, Item.Bounds.Width, Item.Bounds.Height);
                 using (Pen whitePen = new Pen(ClientSettings.LineColor))
                 {
@@ -437,7 +437,7 @@ namespace FingerUI
                 BitBlt(gPtr, 0, 0, _Rendered.Width, _Rendered.Height - ClientSettings.ItemHeight, gPtr, 0, ClientSettings.ItemHeight, TernaryRasterOperations.SRCCOPY);
                 _RenderedGraphics.ReleaseHdc(gPtr);
                 //Draw the last item.
-                StatusItem Item = Items[Items.Count - 1];
+                IDisplayItem Item = Items[Items.Count - 1];
                 Rectangle ItemBounds = new Rectangle(0, (MaxItems - 1) * ClientSettings.ItemHeight, Item.Bounds.Width, Item.Bounds.Height);
                 using (Pen whitePen = new Pen(ClientSettings.LineColor))
                 {

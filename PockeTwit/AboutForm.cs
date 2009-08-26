@@ -26,6 +26,7 @@ namespace PockeTwit
         {
             InitializeComponent();
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             lblWait.ForeColor = ClientSettings.FieldForeColor;
             ContributorChecker = new Contributors();
             ContributorChecker.ContributorsReady += new Contributors.delContributorsReady(ContributorChecker_ContributorsReady);
@@ -39,7 +40,7 @@ namespace PockeTwit
             if (UpgradeChecker.devBuild)
             {
                 lblVersion.Text = "PockeTwit v" + UpgradeChecker.currentVersion.ToString() + " d" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision;
-                menuUpdate.Text = "Upgrade";
+                menuUpdate.Text = Localization.XmlBasedResourceManager.GetString("Upgrade");
             }
             if(UpgradeChecker.isBeta)
             {
@@ -91,7 +92,7 @@ namespace PockeTwit
                     topOfLabel = nameLabel.Bottom + 5;
                 }
                 LinkLabel YouToo = new LinkLabel();
-                YouToo.Text = "Your name can be here!";
+                YouToo.Text = Localization.XmlBasedResourceManager.GetString("Your name can be here!");
                 YouToo.ForeColor = ClientSettings.LinkColor;
                 YouToo.Width = panel1.Width - 2;
                 YouToo.Height = ClientSettings.TextSize+5;
@@ -126,7 +127,7 @@ namespace PockeTwit
 
         void Checker_CurrentVersion(UpgradeChecker.UpgradeInfo Info)
         {
-            MessageBox.Show(Info.webVersion.ToString() + " is the latest version.", "No upgrades found.");
+            PockeTwit.Localization.LocalizedMessageBox.Show("{0} is the latest version.", "No upgrades found.", Info.webVersion.ToString()); 
         }
 
         void Checker_UpdateFound(UpgradeChecker.UpgradeInfo Info)
@@ -207,7 +208,7 @@ namespace PockeTwit
             }
             catch
             {
-                MessageBox.Show("There is no default web browser defined for the OS.");
+                PockeTwit.Localization.LocalizedMessageBox.Show("There is no default web browser defined for the OS.");
             }
         }
 

@@ -1,8 +1,4 @@
-﻿using System;
-
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 
 namespace PockeTwit.Localization
 {
@@ -37,9 +33,9 @@ namespace PockeTwit.Localization
         public static DialogResult Show(string text, string caption, MessageBoxButtons buttons,
             MessageBoxIcon icon, MessageBoxDefaultButton defaultButton, params object[] args)
         {
-            var translatedText = string.Format(Localization.XmlBasedResourceManager.GetString(text, text), args);
+            var translatedText = string.Format(XmlBasedResourceManager.GetString(text, text), args);
             
-            var translatedCaption = Localization.XmlBasedResourceManager.GetString(caption, caption);
+            var translatedCaption = XmlBasedResourceManager.GetString(caption, caption);
             return MessageBox.Show(translatedText, translatedCaption, buttons, icon, defaultButton);
         }
     }

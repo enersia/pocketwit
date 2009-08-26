@@ -17,6 +17,7 @@ namespace PockeTwit
         {
             InitializeComponent();
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             if (ClientSettings.IsMaximized)
             {
                 this.WindowState = FormWindowState.Maximized;
@@ -88,7 +89,7 @@ namespace PockeTwit
         {
             if (cmbAccounts.Items.Count == 0)
             {
-                MessageBox.Show("You must enter at least one account or cancel.");
+                PockeTwit.Localization.LocalizedMessageBox.Show("You must enter at least one account or cancel.");
                 return;
             }
             this.DialogResult = DialogResult.OK;

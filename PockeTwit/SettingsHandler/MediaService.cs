@@ -18,6 +18,7 @@ namespace PockeTwit
             InitializeComponent();
             PockeTwit.Themes.FormColors.SetColors(this);
             PockeTwit.Themes.FormColors.SetColors(this.pnlCapabilites);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
 
             if (ClientSettings.IsMaximized)
             {
@@ -75,7 +76,7 @@ namespace PockeTwit
 
             chkMessage.Checked = service.CanUploadMessage;
             chkGPS.Checked = service.CanUploadGPS;
-            this.lblMediaLabel.Text = ServiceName + " can: ";
+            this.lblMediaLabel.Text = String.Format(PockeTwit.Localization.XmlBasedResourceManager.GetString("{0} can: "), ServiceName);
         }
     }
 }

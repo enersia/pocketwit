@@ -345,7 +345,14 @@ public static class ClientSettings
             {
                 AutoTranslate = true;
             }
-
+            if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["UILanguage"]))
+            {
+                PockeTwit.Localization.XmlBasedResourceManager.CultureInfo = new System.Globalization.CultureInfo(ConfigurationSettings.AppSettings["UILanguage"]);
+            }
+            else
+            {
+                PockeTwit.Localization.XmlBasedResourceManager.CultureInfo = System.Globalization.CultureInfo.CurrentUICulture;
+            }
             if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["TranslationLanguage"]))
             {
                 TranslationLanguage = ConfigurationSettings.AppSettings["TranslationLanguage"];
@@ -548,6 +555,7 @@ public static class ClientSettings
         }
         ConfigurationSettings.AppSettings["ShowExtra"] = ShowExtra.ToString();
         ConfigurationSettings.AppSettings["UpdateMinutes"] = UpdateMinutes.ToString();
+        ConfigurationSettings.AppSettings["UILanguage"] = PockeTwit.Localization.XmlBasedResourceManager.CultureInfo.Name;
         ConfigurationSettings.Accounts = AccountsList;
         ConfigurationSettings.SaveConfig();
     }

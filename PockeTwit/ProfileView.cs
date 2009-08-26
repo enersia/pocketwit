@@ -23,6 +23,7 @@ namespace PockeTwit
             _User = User;
             InitializeComponent();
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             if (ClientSettings.IsMaximized)
             {
                 this.WindowState = FormWindowState.Maximized;
@@ -55,7 +56,7 @@ namespace PockeTwit
             }
             if (string.IsNullOrEmpty(User.description))
             {
-                lblDescription.Text = "No description available.";
+                lblDescription.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("No description available.");
             }
             else
             {

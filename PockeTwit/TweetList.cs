@@ -30,6 +30,7 @@ namespace PockeTwit
             public Yedda.Twitter.Account Account;
             public int SelectedItemIndex = -1;
             public int itemsOffset = -1;
+            public object ItemInfo = null;
         }
 
         private Stack<HistoryItem> History = new Stack<HistoryItem>();
@@ -307,8 +308,8 @@ namespace PockeTwit
                 int newItems = 0;
                 if(KeepPosition)
                 {
-                    StatusItem selectedItem = statList.SelectedItem;
-                    if (selectedItem != null)
+                    IDisplayItem selectedItem = statList.SelectedItem;
+                    if (selectedItem != null && selectedItem is StatusItem)
                     {
                         TimelineManagement.TimeLineType t = TimelineManagement.TimeLineType.Friends;
                         if (statList.CurrentList() == "Messages_TimeLine")
@@ -320,7 +321,7 @@ namespace PockeTwit
                         {
                             constraints = currentSpecialTimeLine.GetConstraints();
                         }
-                        newItems = LocalStorage.DataBaseUtility.CountItemsNewerThan(t, selectedItem.Tweet.id, constraints);
+                        newItems = LocalStorage.DataBaseUtility.CountItemsNewerThan(t, (selectedItem as StatusItem).Tweet.id, constraints);
                     }
                 }
             
@@ -337,7 +338,7 @@ namespace PockeTwit
                     StatusItem item = new StatusItem {Tweet = stat};
                     statList.AddItem(item);
                 }
-                StatusItem currentItem = null;
+                IDisplayItem currentItem = null;
                 if (!ClientSettings.AutoScrollToTop)
                 {
                     if (oldIndex >= 0 && KeepPosition && newItems < ClientSettings.MaxTweets)
@@ -365,9 +366,11 @@ namespace PockeTwit
                     currentItem = statList.SelectedItem;
                     statList.YOffset = 0;
                 }
+
                 if (currentItem != null)
                 {
-                    CurrentlySelectedAccount = currentItem.Tweet.Account;
+                    if (currentItem is StatusItem)
+                        CurrentlySelectedAccount = (currentItem as StatusItem).Tweet.Account;
                     UpdateRightMenu();
                 }
                 statList.Redraw();
@@ -506,10 +509,8 @@ namespace PockeTwit
                 }
             }
         }
-
-
-        
-        private void ShowSpecialTimeLine(ISpecialTimeLine t)
+       
+        internal void ShowSpecialTimeLine(ISpecialTimeLine t, Yedda.Twitter.PagingMode pagingMode)
         {
             UpdateHistoryPosition();
             currentSpecialTimeLine = t;
@@ -517,12 +518,15 @@ namespace PockeTwit
             HistoryItem i = new HistoryItem();
             i.Action = Yedda.Twitter.ActionType.Search;
             i.Argument = t.name;
+            i.ItemInfo = t;
+            
             History.Push(i);
 
             SwitchToList(t.ListName);
             statList.ClearVisible();
-            AddStatusesToList(Manager.GetGroupedTimeLine(t));
-            
+            AddStatusesToList(Manager.GetGroupedTimeLine(t, pagingMode), false);
+            if (t.Timelinetype == SpecialTimeLinesRepository.TimeLineType.SavedSearch)
+                statList.AddItem(new MoreResultsItem(this,t));
             ChangeCursor(Cursors.Default);
         }
 
@@ -580,7 +584,10 @@ namespace PockeTwit
             {
                 if (statList.CurrentList().StartsWith("Grouped") || statList.CurrentList().StartsWith("SavedSearch_TimeLine_"))
                 {
-                    AddStatusesToList(Manager.GetGroupedTimeLine(currentSpecialTimeLine), true);
+                    AddStatusesToList(Manager.GetGroupedTimeLine(currentSpecialTimeLine, Yedda.Twitter.PagingMode.None), true);
+                    if (currentSpecialTimeLine.Timelinetype == SpecialTimeLinesRepository.TimeLineType.SavedSearch)
+                        statList.AddItem(new MoreResultsItem(this, currentSpecialTimeLine));
+
                 }
             }
             
@@ -795,7 +802,7 @@ namespace PockeTwit
         {
             delMenuClicked showItemClicked = delegate()
             {
-                ShowSpecialTimeLine(t);
+                ShowSpecialTimeLine(t, Yedda.Twitter.PagingMode.None);
             };
 
             GroupsMenuItem.Visible = true;
@@ -806,11 +813,21 @@ namespace PockeTwit
 
         private void CreateRightMenu()
         {
+            if ((statList != null) && (statList.SelectedItem != null) && statList.SelectedItem.GetType() != typeof(StatusItem))
+            {
+                statList.RightMenu.ResetMenu(null);
+                statList.SelectedItem.CreateRightMenu(statList.RightMenu);
+                if (statList.RightMenu.Count == 0)
+                    this.specificMenu.Enabled = false;
+                else
+                    this.specificMenu.Enabled = true;
+                return;
+            }
+
             // "Show Conversation", "Reply @User", "Direct @User", "Quote", 
             //   "Make Favorite", "@User TimeLine", "Profile Page", "Stop Following",
             // "Minimize" 
-
-
+            this.specificMenu.Enabled = true;
             ConversationMenuItem = new FingerUI.Menu.SideMenuItem(GetConversation, "Show Conversation", statList.RightMenu);
             ConversationMenuItem.CanHide = true;
 
@@ -878,67 +895,75 @@ namespace PockeTwit
         }
         private void UpdateRightMenu()
         {
-
-            StatusItem selectedItem = (StatusItem)statList.SelectedItem;
+            IDisplayItem selectedItem = statList.SelectedItem;
             if (selectedItem == null) { return; }
-            Yedda.Twitter conn = GetMatchingConnection(selectedItem.Tweet.Account);
-            if (selectedItem != null)
+
+            if (selectedItem is StatusItem)
             {
-                statList.SetRightMenuUser();
-                if (string.IsNullOrEmpty(selectedItem.Tweet.in_reply_to_status_id))
+                StatusItem item = selectedItem as StatusItem;
+                Yedda.Twitter conn = GetMatchingConnection(item.Tweet.Account);
+                if (selectedItem != null)
                 {
-                    ConversationMenuItem.Visible = false;
-                }
-                else
-                {
-                    ConversationMenuItem.Visible = true;
-                }
-
-                if (ClientSettings.GetAcountForUser(selectedItem.Tweet.user.screen_name) != null)
-                {
-                    DeleteStatusMenuItem.Visible = true;
-                    ResponsesMenuItem.Visible = false;
-                }
-                else
-                {
-                    DeleteStatusMenuItem.Visible = false;
-                    ResponsesMenuItem.Visible = true;
-                }
-
-
-                if (conn.FavoritesWork)
-                {
-                    if (selectedItem.IsFavorite)
+                    statList.SetRightMenuUser();
+                    if (string.IsNullOrEmpty(item.Tweet.in_reply_to_status_id))
                     {
-                        ToggleFavoriteMenuItem.Text = "Remove Favorite";
+                        ConversationMenuItem.Visible = false;
                     }
                     else
                     {
-                        ToggleFavoriteMenuItem.Text = "Make Favorite";
+                        ConversationMenuItem.Visible = true;
+                    }
+
+                    if (ClientSettings.GetAcountForUser(item.Tweet.user.screen_name) != null)
+                    {
+                        DeleteStatusMenuItem.Visible = true;
+                        ResponsesMenuItem.Visible = false;
+                    }
+                    else
+                    {
+                        DeleteStatusMenuItem.Visible = false;
+                        ResponsesMenuItem.Visible = true;
+                    }
+
+
+                    if (conn.FavoritesWork)
+                    {
+                        if (item.IsFavorite)
+                        {
+                            ToggleFavoriteMenuItem.Text = "Remove Favorite";
+                        }
+                        else
+                        {
+                            ToggleFavoriteMenuItem.Text = "Make Favorite";
+                        }
+                    }
+
+
+
+
+                    FollowMenuItem.Visible = true;
+                    if (FollowingDictionary[conn].IsFollowing(item.Tweet.user))
+                    {
+                        FollowMenuItem.Text = "Stop Following";
+                        delMenuClicked followClicked = StopFollowingUser;
+                        FollowMenuItem.SubMenuItems.Clear();
+
+                        MoveToGroupMenuItem.Visible = true;
+                        CopyToGroupMenuItem.Visible = true;
+                    }
+                    else
+                    {
+                        FollowMenuItem.Text = "Follow";
+                        SetFollowMenu();
+
+                        MoveToGroupMenuItem.Visible = false;
+                        CopyToGroupMenuItem.Visible = false;
                     }
                 }
-
-
-                
-                
-                FollowMenuItem.Visible = true;
-                if (FollowingDictionary[conn].IsFollowing(selectedItem.Tweet.user))
-                {
-                    FollowMenuItem.Text = "Stop Following";
-                    delMenuClicked followClicked = StopFollowingUser;
-                    FollowMenuItem.SubMenuItems.Clear();
-                    
-                    MoveToGroupMenuItem.Visible = true;
-                    CopyToGroupMenuItem.Visible = true;
-                }
-                else
-                {
-                    FollowMenuItem.Text = "Follow";
-                    SetFollowMenu();
-
-                    MoveToGroupMenuItem.Visible = false;
-                    CopyToGroupMenuItem.Visible = false;
-                }
+            }
+            else
+            {
+                selectedItem.UpdateRightMenu(statList.RightMenu);
             }
         }
 
@@ -949,6 +974,7 @@ namespace PockeTwit
                 SetConnectedMenus(TwitterConnections[0], null);
             }
         }
+
         private void SetConnectedMenus(Yedda.Twitter t, StatusItem item)
         {
             SetLeftMenu();
@@ -1069,7 +1095,10 @@ namespace PockeTwit
         {
             if (currentSpecialTimeLine != null && statList.CurrentList()== currentSpecialTimeLine.ListName)
             {
-                AddStatusesToList(Manager.GetGroupedTimeLine(currentSpecialTimeLine), true);
+                AddStatusesToList(Manager.GetGroupedTimeLine(currentSpecialTimeLine, Yedda.Twitter.PagingMode.None), true);
+                if (currentSpecialTimeLine.Timelinetype == SpecialTimeLinesRepository.TimeLineType.SavedSearch)
+                    statList.AddItem(new MoreResultsItem(this, currentSpecialTimeLine));
+
             }
             LastSelectedItems.UpdateUnreadCounts();
             Notifyer.NewItems();
@@ -1136,7 +1165,10 @@ namespace PockeTwit
             {
                 if(currentSpecialTimeLine!=null && statList.CurrentList() == currentSpecialTimeLine.ListName)
                 {
-                    AddStatusesToList(Manager.GetGroupedTimeLine(currentSpecialTimeLine), true);
+                    AddStatusesToList(Manager.GetGroupedTimeLine(currentSpecialTimeLine, Yedda.Twitter.PagingMode.None), true);
+                    if (currentSpecialTimeLine.Timelinetype == SpecialTimeLinesRepository.TimeLineType.SavedSearch)
+                        statList.AddItem(new MoreResultsItem(this, currentSpecialTimeLine));
+
                 }
             }
             LastSelectedItems.UpdateUnreadCounts();
@@ -1152,60 +1184,60 @@ namespace PockeTwit
             LastSelectedItems.UpdateUnreadCounts();
         }
 
-        private void MapList()
-        {
-            Cursor.Current = Cursors.WaitCursor;
-            Application.DoEvents();
-            using (ProfileMap m = new ProfileMap())
-            {
-                List<Library.User> users = new List<Library.User>();
-                for (int i = 0; i < statList.m_items.Count; i++)
-                {
-                    Library.User thisUser = statList.m_items[i].Tweet.user;
-                    if (thisUser.needsFetching)
-                    {
-                        thisUser = Library.User.FromId(thisUser.screen_name, statList.m_items[i].Tweet.Account);
-                        thisUser.needsFetching = false;
-                    }
-                    users.Add(thisUser);
-                }
-                m.Users = users;
-                m.ShowDialog();
-                if (m.Range > 0)
-                {
+        //private void MapList()
+        //{
+        //    Cursor.Current = Cursors.WaitCursor;
+        //    Application.DoEvents();
+        //    using (ProfileMap m = new ProfileMap())
+        //    {
+        //        List<Library.User> users = new List<Library.User>();
+        //        for (int i = 0; i < statList.m_items.Count; i++)
+        //        {
+        //            Library.User thisUser = statList.m_items[i].Tweet.user;
+        //            if (thisUser.needsFetching)
+        //            {
+        //                thisUser = Library.User.FromId(thisUser.screen_name, statList.m_items[i].Tweet.Account);
+        //                thisUser.needsFetching = false;
+        //            }
+        //            users.Add(thisUser);
+        //        }
+        //        m.Users = users;
+        //        m.ShowDialog();
+        //        if (m.Range > 0)
+        //        {
 
-                    SearchForm f = new SearchForm();
-                    f.providedDistnce = m.Range.ToString();
-                    string secondLoc = Geocode.GetAddress(m.CenterLocation.ToString());
-                    if (string.IsNullOrEmpty(secondLoc))
-                    {
-                        secondLoc = m.CenterLocation.ToString();
-                    }
+        //            SearchForm f = new SearchForm();
+        //            f.providedDistnce = m.Range.ToString();
+        //            string secondLoc = Geocode.GetAddress(m.CenterLocation.ToString());
+        //            if (string.IsNullOrEmpty(secondLoc))
+        //            {
+        //                secondLoc = m.CenterLocation.ToString();
+        //            }
 
-                    f.providedLocation = secondLoc;
+        //            f.providedLocation = secondLoc;
 
-                    this.statList.Visible = false;
-                    IsLoaded = false;
-                    if (f.ShowDialog() == DialogResult.Cancel)
-                    {
-                        IsLoaded = true;
-                        this.statList.Visible = true;
-                        f.Close();
-                        return;
-                    }
+        //            this.statList.Visible = false;
+        //            IsLoaded = false;
+        //            if (f.ShowDialog() == DialogResult.Cancel)
+        //            {
+        //                IsLoaded = true;
+        //                this.statList.Visible = true;
+        //                f.Close();
+        //                return;
+        //            }
 
-                    IsLoaded = true;
-                    this.statList.Visible = true;
-                    f.Hide();
-                    string SearchString = f.SearchText;
-                    f.Close();
-                    this.statList.Visible = true;
+        //            IsLoaded = true;
+        //            this.statList.Visible = true;
+        //            f.Hide();
+        //            string SearchString = f.SearchText;
+        //            f.Close();
+        //            this.statList.Visible = true;
 
-                    ShowSearchResults(SearchString);
-                }
-                m.Close();
-            }
-        }
+        //            ShowSearchResults(SearchString);
+        //        }
+        //        m.Close();
+        //    }
+        //}
 
         private void ToggleFullScreen()
         {
@@ -1302,8 +1334,8 @@ namespace PockeTwit
         }
         private void EmailThisItem()
         {
-            if (statList.SelectedItem == null) { return; }
-            StatusItem selectedItem = statList.SelectedItem;
+            if ((statList.SelectedItem == null) || (statList.SelectedItem as StatusItem == null)) { return; }
+            StatusItem selectedItem = statList.SelectedItem as StatusItem;
             Microsoft.WindowsMobile.PocketOutlook.OutlookSession sess = new Microsoft.WindowsMobile.PocketOutlook.OutlookSession();
             Microsoft.WindowsMobile.PocketOutlook.EmailAccountCollection accounts = sess.EmailAccounts;
 
@@ -1379,8 +1411,29 @@ namespace PockeTwit
                         ShowMessagesTimeLine();
                         break;
                     case Yedda.Twitter.ActionType.Search:
-                        statList.SetSelectedMenu(SearchMenuItem);
-                        ShowSearchResults(prev.Argument);
+                        if (prev.ItemInfo == null)
+                        {
+                            statList.SetSelectedMenu(SearchMenuItem);
+                            if (CurrentList == "Search_Timeline" && LastSearchTerm == prev.Argument)
+                            {
+                                ShowSearchResults(prev.Argument, false, Twitter.PagingMode.Back);
+                            }
+                            else
+                            {
+                                ShowSearchResults(prev.Argument, false, Twitter.PagingMode.Neutral);
+                            }
+                        }
+                        else
+                        {
+                            if (CurrentList.StartsWith("SavedSearch_TimeLine_") && currentSpecialTimeLine != null && prev.Argument == currentSpecialTimeLine.name)
+                            {
+                                ShowSpecialTimeLine(prev.ItemInfo as ISpecialTimeLine, Yedda.Twitter.PagingMode.Back);
+                            }
+                            else
+                            {
+                                ShowSpecialTimeLine(prev.ItemInfo as ISpecialTimeLine, Yedda.Twitter.PagingMode.Neutral);
+                            }
+                        }
                         break;
                     case Yedda.Twitter.ActionType.User_Timeline:
                         statList.SetSelectedMenu(UserTimelineMenuItem);
@@ -1395,9 +1448,16 @@ namespace PockeTwit
                     }
                     catch (KeyNotFoundException) { }
                 }
+                else
+                {
+                    statList.SelectedItem = statList[0];
+                }
                 if (prev.itemsOffset >= 0)
                 {
                     statList.YOffset = prev.itemsOffset;
+                    statList.Redraw();
+                    statList.RerenderPortal();
+                    statList.Repaint();
                 }
             }
         }
@@ -1576,7 +1636,7 @@ namespace PockeTwit
         private List<PockeTwit.Library.status> GetConversationFROMTHEFUTURE(PockeTwit.Library.status lastStatus)
         {
             Yedda.Twitter Conn = GetMatchingConnection(lastStatus.Account);
-            Library.status[] SearchResults = Manager.SearchTwitter(Conn, "@" + lastStatus.user.screen_name);
+            Library.status[] SearchResults = Manager.SearchTwitter(Conn, "@" + lastStatus.user.screen_name, Yedda.Twitter.PagingMode.None);
             List<Library.status> Results = new List<PockeTwit.Library.status>();
             foreach (Library.status s in SearchResults)
             {
@@ -1602,17 +1662,27 @@ namespace PockeTwit
             SetStatus(quote, "");
         }
 
+        Type _lastSelectedItemType = typeof(StatusItem);
+
         void statusList_SelectedItemChanged(object sender, EventArgs e)
         {
-            StatusItem statItem = (StatusItem)statList.SelectedItem;
+            Type selectedType = statList.SelectedItem.GetType();
+            if (selectedType != _lastSelectedItemType)
+            {
+                // item type has changed, update menus
+                CreateRightMenu();
+                UpdateRightMenu();
+                _lastSelectedItemType = selectedType;
+            }
+
+            StatusItem statItem = statList.SelectedItem as StatusItem;
             if (statItem == null) { return; }
             CurrentlySelectedAccount = statItem.Tweet.Account;
             SetConnectedMenus(GetMatchingConnection(CurrentlySelectedAccount), statItem);
             //UpdateRightMenu(); -- THIS IS DONE IN SETCONNECTEDMENUS
             UpdateHistoryPosition();
             int clickedNumber = statItem.Index + 1;
-            SetLeftMenu();
-            
+            SetLeftMenu();            
             LastSelectedItems.SetLastSelected(statList.CurrentList(), statItem.Tweet, currentSpecialTimeLine);
         }
 
@@ -1752,12 +1822,17 @@ namespace PockeTwit
             this.Refresh();
             StartBackground = false;
         }
-
+        private string CurrentList
+        {
+            get;
+            set;
+        }
         private void SwitchToList(string ListName)
         {
             if (statList.CurrentList() != ListName)
             {
                 statList.SwitchTolist(ListName);
+                CurrentList = ListName;
             }
             SetLeftMenu();
         }
@@ -1833,8 +1908,21 @@ namespace PockeTwit
         {
             ShowSearchResults(SearchString,false);
         }
+
         private void ShowSearchResults(string SearchString, bool saveThem)
         {
+            ShowSearchResults(SearchString, saveThem, Yedda.Twitter.PagingMode.None);
+        }
+
+        internal string LastSearchTerm
+        {
+            get;
+            set;
+        }
+
+        internal void ShowSearchResults(string SearchString, bool saveThem, Yedda.Twitter.PagingMode pagingMode)
+        {
+            LastSearchTerm = SearchString;
             UpdateHistoryPosition();
             ChangeCursor(Cursors.WaitCursor);
             statList.SetSelectedMenu(SearchMenuItem);
@@ -1846,7 +1934,7 @@ namespace PockeTwit
             Yedda.Twitter Conn = GetMatchingConnection(CurrentlySelectedAccount);
             SwitchToList("Search_TimeLine");
             statList.ClearVisible();
-            Library.status[] stats = Manager.SearchTwitter(Conn, SearchString);
+            Library.status[] stats = Manager.SearchTwitter(Conn, SearchString, pagingMode);
 
             if (stats != null)
             {
@@ -1856,6 +1944,8 @@ namespace PockeTwit
                     LocalStorage.DataBaseUtility.SaveItems(searchResults);
                 }
                 AddStatusesToList(searchResults.ToArray());
+
+                statList.AddItem(new MoreResultsItem(this, SearchString, saveThem));
             }
             ChangeCursor(Cursors.Default);
         }
@@ -2028,7 +2118,7 @@ namespace PockeTwit
                     ISpecialTimeLine t = SpecialTimeLinesRepository.GetFromReadableName(GroupName);
                     if (t != null)
                     {
-                        ShowSpecialTimeLine(t);
+                        ShowSpecialTimeLine(t, Yedda.Twitter.PagingMode.None);
                         
                     }
                     if (GroupName == "Friends TimeLine")

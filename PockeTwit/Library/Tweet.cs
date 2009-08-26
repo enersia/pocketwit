@@ -65,11 +65,11 @@ namespace PockeTwit.Library
                     Diff = Math.Round(Difference.TotalDays);
                     if (Diff > 1)
                     {
-                        Span = "days";
+                        Span = PockeTwit.Localization.XmlBasedResourceManager.GetString("days");
                     }
                     else
                     {
-                        Span = "day";
+                        Span = PockeTwit.Localization.XmlBasedResourceManager.GetString("day");
                     }
                 }
                 else if (Difference.TotalHours > 1)
@@ -77,19 +77,19 @@ namespace PockeTwit.Library
                     Diff = Math.Round(Difference.TotalHours);
                     if (Diff > 1)
                     {
-                        Span = "hours";
+                        Span = PockeTwit.Localization.XmlBasedResourceManager.GetString("hours");
                     }
                     else
                     {
-                        Span = "hour";
+                        Span = PockeTwit.Localization.XmlBasedResourceManager.GetString("hour");
                     }
                 }
                 else
                 {
                     Diff = Math.Round(Difference.TotalMinutes);
-                    Span = "min";
+                    Span = PockeTwit.Localization.XmlBasedResourceManager.GetString("min");
                 }
-                return "about " + Diff.ToString() + " " + Span + " ago.";
+                return String.Format(PockeTwit.Localization.XmlBasedResourceManager.GetString("about {0} {1} ago."), Diff.ToString(), Span);
             }
         }
 
