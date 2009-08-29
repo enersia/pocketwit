@@ -250,13 +250,12 @@ namespace PockeTwit
                 {
                     item.SearchTerm = SearchString;
                 }
+                if (_currentSearchPageNo == 1)
+                {
+                    _firstSearchHitId = Items[0].id;
+                }
             }
          
-            if (_currentSearchPageNo == 1)
-            {
-                _firstSearchHitId = Items[0].id;
-            }
-
             return Items;
         }
 
