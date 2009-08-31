@@ -71,12 +71,12 @@ namespace PockeTwit
             // 
             // menuAccept
             // 
-            this.menuAccept.Text = "确定";
+            this.menuAccept.Text = "Accept";
             this.menuAccept.Click += new System.EventHandler(this.menuAccept_Click);
             // 
             // menuCancel
             // 
-            this.menuCancel.Text = "取消";
+            this.menuCancel.Text = "Cancel";
             this.menuCancel.Click += new System.EventHandler(this.menuCancel_Click);
             // 
             // chkGPS
@@ -86,7 +86,7 @@ namespace PockeTwit
             this.chkGPS.Name = "chkGPS";
             this.chkGPS.Size = new System.Drawing.Size(235, 20);
             this.chkGPS.TabIndex = 1;
-            this.chkGPS.Text = "使用GPS";
+            this.chkGPS.Text = "Use GPS";
             // 
             // chkVersion
             // 
@@ -95,7 +95,7 @@ namespace PockeTwit
             this.chkVersion.Name = "chkVersion";
             this.chkVersion.Size = new System.Drawing.Size(235, 20);
             this.chkVersion.TabIndex = 0;
-            this.chkVersion.Text = "自动检查新版本";
+            this.chkVersion.Text = "Automatically check for new version";
             // 
             // lblUpDates
             // 
@@ -103,7 +103,7 @@ namespace PockeTwit
             this.lblUpDates.Location = new System.Drawing.Point(3, 52);
             this.lblUpDates.Name = "lblUpDates";
             this.lblUpDates.Size = new System.Drawing.Size(234, 20);
-            this.lblUpDates.Text = "自动更新频率（分钟）";
+            this.lblUpDates.Text = "Automatic Update (Minutes)";
             // 
             // txtUpdate
             // 
@@ -118,7 +118,7 @@ namespace PockeTwit
             this.label1.Location = new System.Drawing.Point(99, 72);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(124, 20);
-            this.label1.Text = "0表示禁用";
+            this.label1.Text = "0 to disable";
             // 
             // chkTranslate
             // 
@@ -129,7 +129,7 @@ namespace PockeTwit
             this.chkTranslate.Name = "chkTranslate";
             this.chkTranslate.Size = new System.Drawing.Size(220, 20);
             this.chkTranslate.TabIndex = 3;
-            this.chkTranslate.Text = "自动翻译";
+            this.chkTranslate.Text = "Automatically translate";
             // 
             // chkSkweezer
             // 
@@ -140,7 +140,7 @@ namespace PockeTwit
             this.chkSkweezer.Name = "chkSkweezer";
             this.chkSkweezer.Size = new System.Drawing.Size(216, 20);
             this.chkSkweezer.TabIndex = 4;
-            this.chkSkweezer.Text = "通过Skweezer打开网页";
+            this.chkSkweezer.Text = "Load URLs in Skweezer";
             // 
             // label2
             // 
@@ -150,7 +150,7 @@ namespace PockeTwit
             this.label2.Location = new System.Drawing.Point(2, 221);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(233, 20);
-            this.label2.Text = "数据缓存目录:";
+            this.label2.Text = "Cache Directory:";
             // 
             // txtCaheDir
             // 
@@ -231,7 +231,7 @@ namespace PockeTwit
             this.Controls.Add(this.chkGPS);
             this.Menu = this.mainMenu1;
             this.Name = "OtherSettings";
-            this.Text = "其它设置";
+            this.Text = "Other Settings";
             this.Load += new System.EventHandler(this.OtherSettings_Load);
             this.ResumeLayout(false);
 

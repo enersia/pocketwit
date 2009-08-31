@@ -87,7 +87,7 @@
             this.lnkDismiss.Name = "lnkDismiss";
             this.lnkDismiss.Size = new System.Drawing.Size(212, 20);
             this.lnkDismiss.TabIndex = 5;
-            this.lnkDismiss.Text = "关闭";
+            this.lnkDismiss.Text = "Close";
             this.lnkDismiss.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.lnkDismiss.Click += new System.EventHandler(this.lnkDismiss_Click);
             // 

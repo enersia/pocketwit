@@ -139,7 +139,7 @@ namespace PockeTwit
                 txtPassword.Visible = true;
                 lblPassword.Visible = true;
                 linkLabel1.Visible = false;
-                lblUser.Text = "帐户:";
+                lblUser.Text = "User";
                 if (DetectDevice.DeviceType == DeviceType.Professional)
                 {
                     txtUserName.ContextMenu = null;

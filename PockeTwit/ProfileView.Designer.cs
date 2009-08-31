@@ -45,7 +45,7 @@
             // 
             // menuClose
             // 
-            this.menuClose.Text = "关闭";
+            this.menuClose.Text = "Close";
             this.menuClose.Click += new System.EventHandler(this.menuClose_Click);
             // 
             // lblUserName

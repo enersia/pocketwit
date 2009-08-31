@@ -46,12 +46,12 @@
             // 
             // menuCancel
             // 
-            this.menuCancel.Text = "取消";
+            this.menuCancel.Text = "Cancel";
             this.menuCancel.Click += new System.EventHandler(this.menuCancel_Click);
             // 
             // menuAccept
             // 
-            this.menuAccept.Text = "确认";
+            this.menuAccept.Text = "Accept";
             this.menuAccept.Click += new System.EventHandler(this.menuAccept_Click);
             // 
             // label1
@@ -61,7 +61,7 @@
             this.label1.Location = new System.Drawing.Point(4, 4);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(100, 20);
-            this.label1.Text = "帐户:";
+            this.label1.Text = "Accounts:";
             // 
             // lnkAdd
             // 
@@ -72,7 +72,7 @@
             this.lnkAdd.Name = "lnkAdd";
             this.lnkAdd.Size = new System.Drawing.Size(234, 20);
             this.lnkAdd.TabIndex = 1;
-            this.lnkAdd.Text = "添加新帐户";
+            this.lnkAdd.Text = "Add New";
             this.lnkAdd.Click += new System.EventHandler(this.lnkAdd_Click);
             // 
             // lnkEdit
@@ -84,7 +84,7 @@
             this.lnkEdit.Name = "lnkEdit";
             this.lnkEdit.Size = new System.Drawing.Size(234, 20);
             this.lnkEdit.TabIndex = 2;
-            this.lnkEdit.Text = "编辑所选帐户";
+            this.lnkEdit.Text = "Edit Selected";
             this.lnkEdit.Click += new System.EventHandler(this.lnkEdit_Click);
             // 
             // lnkRemove
@@ -96,7 +96,7 @@
             this.lnkRemove.Name = "lnkRemove";
             this.lnkRemove.Size = new System.Drawing.Size(234, 20);
             this.lnkRemove.TabIndex = 3;
-            this.lnkRemove.Text = "删除所选帐户";
+            this.lnkRemove.Text = "Remove Selected";
             this.lnkRemove.Click += new System.EventHandler(this.lnkRemove_Click);
             // 
             // cmbAccounts

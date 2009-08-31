@@ -84,7 +84,7 @@
             this.label1.Location = new System.Drawing.Point(4, 4);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(233, 20);
-            this.label1.Text = "输入网址:";
+            this.label1.Text = "Enter the URL:";
             // 
             // URLForm
             // 
@@ -97,7 +97,7 @@
             this.Controls.Add(this.txtURL);
             this.Menu = this.mainMenu1;
             this.Name = "URLForm";
-            this.Text = "输入网址";
+            this.Text = "Enter a URL";
             this.ResumeLayout(false);
 
         }

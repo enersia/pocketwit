@@ -60,12 +60,12 @@
             // 
             // menuAccept
             // 
-            this.menuAccept.Text = "确认";
+            this.menuAccept.Text = "Accept";
             this.menuAccept.Click += new System.EventHandler(this.menuAccept_Click);
             // 
             // menuCancel
             // 
-            this.menuCancel.Text = "取消";
+            this.menuCancel.Text = "Cancel";
             this.menuCancel.Click += new System.EventHandler(this.menuCancel_Click);
             // 
             // lnkClearAvatars
@@ -77,7 +77,7 @@
             this.lnkClearAvatars.Name = "lnkClearAvatars";
             this.lnkClearAvatars.Size = new System.Drawing.Size(232, 20);
             this.lnkClearAvatars.TabIndex = 3;
-            this.lnkClearAvatars.Text = "清除头像缓存";
+            this.lnkClearAvatars.Text = "Clear Avatar Cache";
             this.lnkClearAvatars.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.lnkClearAvatars.Click += new System.EventHandler(this.lnkClearAvatars_Click);
             // 
@@ -88,7 +88,7 @@
             this.chkAvatar.Name = "chkAvatar";
             this.chkAvatar.Size = new System.Drawing.Size(235, 20);
             this.chkAvatar.TabIndex = 0;
-            this.chkAvatar.Text = "显示头像";
+            this.chkAvatar.Text = "Show Avatars";
             // 
             // chkHighQuality
             // 
@@ -97,7 +97,7 @@
             this.chkHighQuality.Name = "chkHighQuality";
             this.chkHighQuality.Size = new System.Drawing.Size(235, 20);
             this.chkHighQuality.TabIndex = 1;
-            this.chkHighQuality.Text = "显示高画质头像";
+            this.chkHighQuality.Text = "High-Quality Avatars";
             // 
             // AvatarSettings
             // 

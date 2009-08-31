@@ -1372,7 +1372,7 @@ namespace PockeTwit.FingerUI
                     {
                         using (Brush sBrush = new SolidBrush(ClientSettings.ForeColor))
                         {
-                            flickerGraphics.DrawString("正在获取数据...", ClientSettings.TextFont, sBrush, this.Bounds);
+                            flickerGraphics.DrawString("Let me catch up...", ClientSettings.TextFont, sBrush, this.Bounds);
                         }
                     }
                     flickerGraphics.DrawImage(SlidingPortal.Rendered, 0 - XOffset, 0 - SlidingPortalOffset);
@@ -1389,7 +1389,7 @@ namespace PockeTwit.FingerUI
                     
                     if ((CurrentList() == "Friends_TimeLine" && PockeTwit.GlobalEventHandler.FriendsUpdating) || (CurrentList() == "Messages_TimeLine" && PockeTwit.GlobalEventHandler.MessagesUpdating))
                     {
-                        NotificationArea.ShowNotification("正在更新消息...");
+                        NotificationArea.ShowNotification("Updating...");
                     }
                     else
                     {
@@ -1726,8 +1726,8 @@ namespace PockeTwit.FingerUI
         {
             
             SlidingPortal._RenderedGraphics.Clear(ClientSettings.BackColor);
-            string Message = "请稍候...";
-            if (m_items.Count == 0) { Message = "没有可以显示的项。"; }
+            string Message = "One moment please...";
+            if (m_items.Count == 0) { Message = "There are no items to display"; }
             using (Brush sBrush = new SolidBrush(ClientSettings.ForeColor))
             {
                 SlidingPortal._RenderedGraphics.DrawString(Message, ClientSettings.TextFont, sBrush, new RectangleF(0, 0, this.Width, this.Height));

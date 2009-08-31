@@ -74,12 +74,12 @@
             // 
             // menuAccept
             // 
-            this.menuAccept.Text = "确认";
+            this.menuAccept.Text = "Accept";
             this.menuAccept.Click += new System.EventHandler(this.menuAccept_Click);
             // 
             // menuCancel
             // 
-            this.menuCancel.Text = "取消";
+            this.menuCancel.Text = "Cancel";
             this.menuCancel.Click += new System.EventHandler(this.menuCancel_Click);
             // 
             // label4
@@ -89,7 +89,7 @@
             this.label4.Location = new System.Drawing.Point(4, 4);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(83, 20);
-            this.label4.Text = "最大消息数:";
+            this.label4.Text = "Max Length:";
             // 
             // txtMaxTweets
             // 
@@ -119,7 +119,7 @@
             this.chkTimestamps.Name = "chkTimestamps";
             this.chkTimestamps.Size = new System.Drawing.Size(216, 20);
             this.chkTimestamps.TabIndex = 1;
-            this.chkTimestamps.Text = "显示发布时间";
+            this.chkTimestamps.Text = "Show times";
             // 
             // chkClickables
             // 
@@ -128,7 +128,7 @@
             this.chkClickables.Name = "chkClickables";
             this.chkClickables.Size = new System.Drawing.Size(216, 20);
             this.chkClickables.TabIndex = 2;
-            this.chkClickables.Text = "显示可以点击的链接";
+            this.chkClickables.Text = "Clickable Links";
             // 
             // chkScreenName
             // 
@@ -137,7 +137,7 @@
             this.chkScreenName.Name = "chkScreenName";
             this.chkScreenName.Size = new System.Drawing.Size(216, 20);
             this.chkScreenName.TabIndex = 3;
-            this.chkScreenName.Text = "显示昵称";
+            this.chkScreenName.Text = "Include screenname";
             // 
             // cmbTheme
             // 
@@ -156,7 +156,7 @@
             this.label1.Location = new System.Drawing.Point(4, 136);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(50, 20);
-            this.label1.Text = "主题:";
+            this.label1.Text = "Theme:";
             // 
             // linkLabel1
             // 
@@ -165,7 +165,7 @@
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(36, 20);
             this.linkLabel1.TabIndex = 7;
-            this.linkLabel1.Text = "编辑";
+            this.linkLabel1.Text = "Edit";
             this.linkLabel1.Click += new System.EventHandler(this.linkLabel1_Click);
             // 
             // label2
@@ -174,7 +174,7 @@
             this.label2.Location = new System.Drawing.Point(4, 164);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(66, 20);
-            this.label2.Text = "文字大小:";
+            this.label2.Text = "Font Size:";
             // 
             // txtFontSize
             // 
@@ -193,7 +193,7 @@
             this.chkAutoScrroll.Name = "chkAutoScrroll";
             this.chkAutoScrroll.Size = new System.Drawing.Size(216, 20);
             this.chkAutoScrroll.TabIndex = 5;
-            this.chkAutoScrroll.Text = "自动滚动至列表顶部";
+            this.chkAutoScrroll.Text = "Auto-Scroll To Top";
             // 
             // label3
             // 
@@ -235,7 +235,7 @@
             this.Controls.Add(this.label4);
             this.Menu = this.mainMenu1;
             this.Name = "UISettings";
-            this.Text = "界面设置";
+            this.Text = "UI Settings";
             this.ResumeLayout(false);
 
         }

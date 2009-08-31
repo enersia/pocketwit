@@ -44,7 +44,7 @@
             // 
             // menuItem1
             // 
-            this.menuItem1.Text = "关闭";
+            this.menuItem1.Text = "Done";
             this.menuItem1.Click += new System.EventHandler(this.menuItem1_Click);
             // 
             // lnkClearCaches
@@ -55,7 +55,7 @@
             this.lnkClearCaches.Name = "lnkClearCaches";
             this.lnkClearCaches.Size = new System.Drawing.Size(233, 20);
             this.lnkClearCaches.TabIndex = 1;
-            this.lnkClearCaches.Text = "清除已缓存的消息";
+            this.lnkClearCaches.Text = "Clear Cached statuses";
             this.lnkClearCaches.Click += new System.EventHandler(this.lnkClearCaches_Click);
             // 
             // lnkClearSettings
@@ -66,7 +66,7 @@
             this.lnkClearSettings.Name = "lnkClearSettings";
             this.lnkClearSettings.Size = new System.Drawing.Size(233, 20);
             this.lnkClearSettings.TabIndex = 2;
-            this.lnkClearSettings.Text = "清除应用程序的设置";
+            this.lnkClearSettings.Text = "Clear Application Settings";
             this.lnkClearSettings.Click += new System.EventHandler(this.lnkClearSettings_Click);
             // 
             // chkDIB
@@ -77,7 +77,7 @@
             this.chkDIB.Name = "chkDIB";
             this.chkDIB.Size = new System.Drawing.Size(161, 20);
             this.chkDIB.TabIndex = 3;
-            this.chkDIB.Text = "备用渲染方式";
+            this.chkDIB.Text = "Alternate rendering";
             this.chkDIB.CheckStateChanged += new System.EventHandler(this.chkDIB_CheckStateChanged);
             // 
             // lblRenderingMethod
@@ -95,7 +95,7 @@
             this.lblCompact.Name = "lblCompact";
             this.lblCompact.Size = new System.Drawing.Size(233, 20);
             this.lblCompact.TabIndex = 4;
-            this.lblCompact.Text = "压缩数据库";
+            this.lblCompact.Text = "Compact Database";
             this.lblCompact.Click += new System.EventHandler(this.lblCompact_Click);
             // 
             // AdvancedForm

@@ -48,12 +48,12 @@ namespace PockeTwit
             // 
             // menuCancel
             // 
-            this.menuCancel.Text = "取消";
+            this.menuCancel.Text = "Cancel";
             this.menuCancel.Click += new System.EventHandler(this.menuCancel_Click);
             // 
             // menuSubmit
             // 
-            this.menuSubmit.Text = "发布";
+            this.menuSubmit.Text = "Submit";
             this.menuSubmit.Click += new System.EventHandler(this.menuSubmit_Click);
             // 
             // cmbAccount
@@ -71,7 +71,7 @@ namespace PockeTwit
             this.lblFromAccount.Location = new System.Drawing.Point(4, 4);
             this.lblFromAccount.Name = "lblFromAccount";
             this.lblFromAccount.Size = new System.Drawing.Size(94, 20);
-            this.lblFromAccount.Text = "使用帐号:";
+            this.lblFromAccount.Text = "From Account:";
             // 
             // pictureURL
             // 
@@ -170,7 +170,7 @@ namespace PockeTwit
             this.Controls.Add(this.cmbAccount);
             this.Menu = this.mainMenu1;
             this.Name = "PostUpdate";
-            this.Text = "发布";
+            this.Text = "Post Update";
             this.ResumeLayout(false);
 
         }
