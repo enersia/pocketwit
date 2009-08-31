@@ -48,6 +48,7 @@ namespace PockeTwit
                 SetupProfessional();
             }
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             if (ClientSettings.IsMaximized)
             {
                 this.WindowState = FormWindowState.Maximized;
@@ -60,6 +61,9 @@ namespace PockeTwit
         {
             _AccountInfo = Account;
             InitializeComponent();
+            PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
+
             FillServerList();
             PopulateForm();
         }
@@ -106,7 +110,7 @@ namespace PockeTwit
             
             if (!T.Verify())
             {
-                lblError.Text = "登录帐户或密码输入错误，请重新输入。";
+                lblError.Text = "Invalid credentials or network unavailable.";
                 lblError.Visible = true;
                 return;
             }

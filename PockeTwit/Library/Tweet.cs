@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Diagnostics;
@@ -40,6 +40,8 @@ namespace PockeTwit.Library
 
         [XmlIgnore]
         public List<StatusItem.Clickable> Clickables { get; set; }
+        [XmlIgnore]
+        public List<int> ClickablesToDo { get; set; }
 
         public StatusTypes type { get; set; }
 
@@ -63,11 +65,11 @@ namespace PockeTwit.Library
                     Diff = Math.Round(Difference.TotalDays);
                     if (Diff > 1)
                     {
-                        Span = "天";
+                        Span = PockeTwit.Localization.XmlBasedResourceManager.GetString("days");
                     }
                     else
                     {
-                        Span = "天";
+                        Span = PockeTwit.Localization.XmlBasedResourceManager.GetString("day");
                     }
                 }
                 else if (Difference.TotalHours > 1)
@@ -75,19 +77,19 @@ namespace PockeTwit.Library
                     Diff = Math.Round(Difference.TotalHours);
                     if (Diff > 1)
                     {
-                        Span = "小时";
+                        Span = PockeTwit.Localization.XmlBasedResourceManager.GetString("hours");
                     }
                     else
                     {
-                        Span = "小时";
+                        Span = PockeTwit.Localization.XmlBasedResourceManager.GetString("hour");
                     }
                 }
                 else
                 {
                     Diff = Math.Round(Difference.TotalMinutes);
-                    Span = "分钟";
+                    Span = PockeTwit.Localization.XmlBasedResourceManager.GetString("min");
                 }
-                return "约" + Diff.ToString() + " " + Span + "前";
+                return String.Format(PockeTwit.Localization.XmlBasedResourceManager.GetString("about {0} {1} ago."), Diff.ToString(), Span);
             }
         }
 
@@ -535,8 +537,18 @@ namespace PockeTwit.Library
     public class User
     {
         #region Properties
-
-        public bool needsFetching { get; set; }
+        private bool _needsFetching = true;
+        public bool needsFetching 
+        {
+            get
+            {
+                return _needsFetching;
+            }
+            set
+            {
+                _needsFetching = value;
+            }
+        }
 
         public string location { get; set; }
         public string description { get; set; }
@@ -626,7 +638,9 @@ namespace PockeTwit.Library
                 }
                 using (var r = new StringReader(response))
                 {
-                    return (User) s.Deserialize(r);
+                    User result = (User)s.Deserialize(r);
+                    result._needsFetching = false;
+                    return result;
                 }
             }
             catch

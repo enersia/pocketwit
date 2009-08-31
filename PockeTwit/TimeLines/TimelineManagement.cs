@@ -71,7 +71,7 @@ namespace PockeTwit
                 if (level <= BatteryLevel.VeryLow)
                 {
                     updateTimer.Enabled = false;
-                    MessageBox.Show("Battery low - disabling auto-updates.\r\n"+level.ToString() , "PockeTwit Battery");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("Battery low - disabling auto-updates.\n{0}", "PockeTwit", level.ToString());
                 }
                 else
                 {
@@ -80,7 +80,7 @@ namespace PockeTwit
                         if (level >= BatteryLevel.Low)
                         {
                             updateTimer.Enabled = false;
-                            MessageBox.Show("Battery charged - re-enabling auto-updates.\r\n" + level.ToString(), "PockeTwit Battery");
+                            PockeTwit.Localization.LocalizedMessageBox.Show("Battery charged - re-enabling auto-updates.\n{0}", "PockeTwit", level.ToString());
                         }
                     }
                 }
@@ -195,9 +195,42 @@ namespace PockeTwit
             }
         }
 
-
-        public Library.status[] SearchTwitter(Yedda.Twitter t, string SearchString)
+        private int _currentSearchPageNo = 0;
+        private string _firstSearchHitId = String.Empty;
+        private string _lastSearchTerm = String.Empty;
+ 
+        public Library.status[] SearchTwitter(Yedda.Twitter t, string SearchString, Yedda.Twitter.PagingMode pagingMode)
         {
+            if (pagingMode == Twitter.PagingMode.None)
+            {
+                _lastSearchTerm = SearchString;
+                _currentSearchPageNo = 1;
+            }
+            else
+            {
+                if (_lastSearchTerm != SearchString)
+                    _currentSearchPageNo = 1;
+
+                _lastSearchTerm = SearchString;
+                          
+                switch (pagingMode)
+                {
+                    case Twitter.PagingMode.Forward:
+                        _currentSearchPageNo++;
+                        break;
+                    case Twitter.PagingMode.Back:
+                        _currentSearchPageNo--;
+                        break;
+                    case Twitter.PagingMode.Neutral:
+                        break;
+                }
+
+                if (_currentSearchPageNo != 1)
+                {
+                    SearchString = String.Format("max_id={0}&page={1}&{2}", _firstSearchHitId, _currentSearchPageNo, SearchString);
+                }
+            }
+
             string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Search, SearchString);
             if (string.IsNullOrEmpty(response))
             {
@@ -210,11 +243,16 @@ namespace PockeTwit
                 ErrorCleared(t.AccountInfo, Yedda.Twitter.ActionType.Search);
             }
             var Items = Library.status.DeserializeArrayFromJSON(response, t.AccountInfo, StatusTypes.SearchResult);
+            if (Items == null) return null;
             if (Items.Length > 0)
             {
                 foreach (status item in Items)
                 {
                     item.SearchTerm = SearchString;
+                }
+                if (_currentSearchPageNo == 1)
+                {
+                    _firstSearchHitId = Items[0].id;
                 }
             }
             return Items;
@@ -230,7 +268,7 @@ namespace PockeTwit
                     try
                     {
                         string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Favorites);
-                        Library.status[] NewStats = Library.status.Deserialize(response, t.AccountInfo, PockeTwit.Library.StatusTypes.Reply);
+                        Library.status[] NewStats = Library.status.Deserialize(response, t.AccountInfo, PockeTwit.Library.StatusTypes.Normal);
                         TempLine.AddRange(NewStats);
                         ErrorCleared(t.AccountInfo, Yedda.Twitter.ActionType.Favorites);
                     }
@@ -259,7 +297,7 @@ namespace PockeTwit
                             string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Public_Timeline, null);
                             if (!string.IsNullOrEmpty(response))
                             {
-                                Library.status[] NewStats = Library.status.Deserialize(response, t.AccountInfo, PockeTwit.Library.StatusTypes.Reply);
+                                Library.status[] NewStats = Library.status.Deserialize(response, t.AccountInfo, PockeTwit.Library.StatusTypes.Normal);
                                 TempLine.AddRange(NewStats);
                             }
                         }
@@ -292,7 +330,7 @@ namespace PockeTwit
             return Library.status.Deserialize(response, t.AccountInfo);
         }
 
-        public Library.status[] GetGroupedTimeLine(ISpecialTimeLine t)
+        public Library.status[] GetGroupedTimeLine(ISpecialTimeLine t, Yedda.Twitter.PagingMode pagingMode)
         {
             TimeLineType timeLineType = TimeLineType.Friends;
             if(t is SavedSearchTimeLine)
@@ -300,14 +338,14 @@ namespace PockeTwit
                 var savedLine = (SavedSearchTimeLine) t;
                 if(!savedLine.autoUpdate)
                 {
-                    return GetRegularSavedSearchTimeLine(savedLine);
+                    return GetRegularSavedSearchTimeLine(savedLine, pagingMode);
                 }
                 timeLineType = TimeLineType.Searches;
             }
             return LocalStorage.DataBaseUtility.GetList(timeLineType, ClientSettings.MaxTweets, t.GetConstraints()).ToArray();
         }
 
-        private Library.status[] GetRegularSavedSearchTimeLine(SavedSearchTimeLine searchLine)
+        private Library.status[] GetRegularSavedSearchTimeLine(SavedSearchTimeLine searchLine, Yedda.Twitter.PagingMode pagingMode)
         {
             var TwitterConn = new Twitter
             {
@@ -319,9 +357,7 @@ namespace PockeTwit
                     Enabled = ClientSettings.DefaultAccount.Enabled
                 }
             };
-
-
-            status[] items = SearchTwitter(TwitterConn, searchLine.SearchPhrase);
+            status[] items = SearchTwitter(TwitterConn, searchLine.SearchPhrase, pagingMode);
             
             return items;
         }
@@ -580,7 +616,7 @@ namespace PockeTwit
                 if (searchLine.autoUpdate)
                 {
                     //Need a way to specify "since_id" here too.
-                    status[] Items = SearchTwitter(TwitterConn, searchLine.SearchPhrase);
+                    status[] Items = SearchTwitter(TwitterConn, searchLine.SearchPhrase, Yedda.Twitter.PagingMode.None);
                     if (Items != null)
                     {
                         tempLine.AddRange(Items);

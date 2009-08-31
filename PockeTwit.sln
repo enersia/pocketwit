@@ -24,6 +24,10 @@ EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "PocketTwitDesktopInstall", "PockeTwitDesktopInstall\PockeTwitDesktopInstall.vdproj", "{21151F6D-C7AE-477F-8DAD-6E6EA7060899}"
 EndProject
 Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms

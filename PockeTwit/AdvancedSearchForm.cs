@@ -19,6 +19,12 @@ namespace PockeTwit
         public AdvancedSearchForm()
         {
             InitializeComponent();
+            PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
+            if (ClientSettings.IsMaximized)
+            {
+                this.WindowState = FormWindowState.Maximized;
+            } 
         }
 
         private void ProcessTextBox(string format, string txt)

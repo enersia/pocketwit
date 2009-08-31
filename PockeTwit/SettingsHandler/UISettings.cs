@@ -6,6 +6,8 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Globalization;
+using System.Collections.ObjectModel;
 
 namespace PockeTwit
 {
@@ -19,6 +21,8 @@ namespace PockeTwit
         {
             InitializeComponent();
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
+
             if (ClientSettings.IsMaximized)
             {
                 this.WindowState = FormWindowState.Maximized;
@@ -73,7 +77,13 @@ namespace PockeTwit
                 ClientSettings.FontSize = int.Parse(txtFontSize.Text);
                 NeedsReset = true;
             }
-
+            
+            CultureInfo selectedCuture = (CultureInfo)cmbLanguage.SelectedItem;
+            if (PockeTwit.Localization.XmlBasedResourceManager.CultureInfo != selectedCuture)
+            {
+                PockeTwit.Localization.XmlBasedResourceManager.CultureInfo = selectedCuture;
+                NeedsReset = true;
+            }
 
             string selectedTheme = (string)cmbTheme.SelectedItem;
             if (selectedTheme != OriginalTheme)
@@ -109,6 +119,7 @@ namespace PockeTwit
             txtFontSize.Text = ClientSettings.FontSize.ToString();
             
             ListThemes();
+            ListLanguages();
             this.DialogResult = DialogResult.Cancel;
         }
         private void ListThemes()
@@ -129,7 +140,21 @@ namespace PockeTwit
             cmbTheme.SelectedItem = ClientSettings.ThemeName;
         }
 
-		#endregion Methods 
+        private void ListLanguages()
+        {
+            cmbLanguage.Items.Clear();
+            cmbLanguage.Items.Add(new CultureInfo("en"));
+
+            ReadOnlyCollection<CultureInfo> langs = PockeTwit.Localization.XmlBasedResourceManager.AvailableCultures();
+            foreach (CultureInfo info in langs)
+            {
+                cmbLanguage.Items.Add(info);
+            }
+
+            cmbLanguage.SelectedItem = PockeTwit.Localization.XmlBasedResourceManager.CultureInfo;
+        }
+
+		#endregion Methods
 
         private void cmbTheme_SelectedIndexChanged(object sender, EventArgs e)
         {

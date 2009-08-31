@@ -87,6 +87,7 @@ namespace PockeTwit
                 userListControl1.HookTextBoxKeyPress(txtStatusUpdate);
             }
             FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             if (ClientSettings.IsMaximized)
             {
                 WindowState = FormWindowState.Maximized;
@@ -103,6 +104,7 @@ namespace PockeTwit
                 SetupTouchScreen();
             }
             mainMenu1.MenuItems.Add(menuCancel);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeMenu(this);
             ResumeLayout(false);
 
             LocationFinder.LocationReady += new LocationManager.delLocationReady(l_LocationReady);
@@ -124,10 +126,10 @@ namespace PockeTwit
             copyPasteMenu = new System.Windows.Forms.ContextMenu();
 
             PasteItem = new System.Windows.Forms.MenuItem();
-            PasteItem.Text = "粘贴";
+            PasteItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Paste");
 
             CopyItem = new MenuItem();
-            CopyItem.Text = "复制";
+            CopyItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Copy");
 
             copyPasteMenu.MenuItems.Add(CopyItem);
             copyPasteMenu.MenuItems.Add(PasteItem);
@@ -135,7 +137,6 @@ namespace PockeTwit
 
             CopyItem.Click += new EventHandler(CopyItem_Click);
             PasteItem.Click += new EventHandler(PasteItem_Click);
-
         }
 
         void picAddressBook_Click(object sender, EventArgs e)
@@ -185,7 +186,7 @@ namespace PockeTwit
                     {
                         LocationFinder.StopPosition();
                         GPSLocation = Location;
-                        lblGPS.Text = "找到位置";
+                        lblGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Location Found");
                         if (DetectDevice.DeviceType == DeviceType.Standard)
                         {
                             // just enable the menuItem
@@ -199,7 +200,7 @@ namespace PockeTwit
                             // hide the label, add a new button
                             lblGPS.Visible = false;
                             LinkLabel llGPS = new LinkLabel();
-                            llGPS.Text = "插入GPS链接";
+                            llGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Ins. GPS Link");
                             llGPS.ForeColor = Color.White;
                             llGPS.Left = lblGPS.Left;
                             llGPS.Top = lblGPS.Top;
@@ -247,37 +248,37 @@ namespace PockeTwit
             pictureURL.Visible = false;
             picAddressBook.Visible = false;
             menuExist = new MenuItem();
-            menuExist.Text = "现存图片";
+            menuExist.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Existing Picture");
             menuExist.Click += new EventHandler(menuExist_Click);
 
             menuCamera = new MenuItem();
-            menuCamera.Text = "拍摄图片";
+            menuCamera.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Take Picture");
             menuCamera.Click += new EventHandler(menuCamera_Click);
             
             menuURL = new MenuItem();
-            menuURL.Text = "链接...";
+            menuURL.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("URL...");
             menuURL.Click += new EventHandler(menuURL_Click);
 
             menuGPS = new MenuItem();
-            menuGPS.Text = "更新位置";
+            menuGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Update Location");
             menuGPS.Click += new EventHandler(menuGPS_Click);
 
             menuGPSInsert = new MenuItem();
-            menuGPSInsert.Text = "插入GPS位置";
+            menuGPSInsert.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Insert GPS Location");
             menuGPSInsert.Click += new EventHandler(menuGPSInsert_Click);
             menuGPSInsert.Enabled = false;
 
             menuAddressBook = new MenuItem();
-            menuAddressBook.Text = "地址薄";
+            menuAddressBook.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Address Book");
             menuAddressBook.Click += new EventHandler(menuAddressBook_Click);
             menuAddressBook.Enabled = true;
 
             PasteItem = new MenuItem();
-            PasteItem.Text = "粘贴";
+            PasteItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Paste");
             PasteItem.Click += new EventHandler(PasteItem_Click);
 
             menuItem1 = new System.Windows.Forms.MenuItem();
-            menuItem1.Text = "动作";
+            menuItem1.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Action");
 
             menuItem1.MenuItems.Add(menuSubmit);
             menuItem1.MenuItems.Add(menuAddressBook);
@@ -312,7 +313,7 @@ namespace PockeTwit
             if (string.IsNullOrEmpty(gpsUrl))
             {
                 Cursor.Current = Cursors.Default;
-                MessageBox.Show("试图缩短URL时遇到连接故障。请稍后再试。");
+                PockeTwit.Localization.LocalizedMessageBox.Show("A communication error occured shortening the URL. Please try again later.");
                 return;
             }
             txtStatusUpdate.Text = txtStatusUpdate.Text + " " + gpsUrl;
@@ -399,7 +400,7 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("照像设备不存在，不能拍摄照片。", "PockeTwit");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("The camera is not available.", "PockeTwit");
                     return;
                 }
                 if (string.IsNullOrEmpty(filename))
@@ -413,12 +414,12 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("无法上传图片。", "PockeTwit");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("Unable to upload picture.", "PockeTwit");
                 }
             }
             else
             {
-                MessageBox.Show("正在上传图片...");
+                PockeTwit.Localization.LocalizedMessageBox.Show("Uploading picture...");
             }
         }
 
@@ -459,7 +460,7 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("无法选择图片。", "PockeTwit");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("Unable to select picture.", "PockeTwit");
                 }
                 if  (string.IsNullOrEmpty(filename))
                 {
@@ -473,12 +474,12 @@ namespace PockeTwit
                 }
                 catch
                 {
-                    MessageBox.Show("无法上传图片。", "PockeTwit");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("Unable to upload picture.", "PockeTwit");
                 } 
             }
             else
             {
-                MessageBox.Show("正在上传图片...");
+                PockeTwit.Localization.LocalizedMessageBox.Show("Uploading picture...");
             }
         }
 
@@ -722,7 +723,7 @@ namespace PockeTwit
 
         private static string TryToShrinkWith140It(string original)
         {
-            if(MessageBox.Show("消息文本太长。你希望用一些缩写代替原来的文本以便缩短它的长度吗？", "消息文本太长", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)== System.Windows.Forms.DialogResult.Yes)
+            if(PockeTwit.Localization.LocalizedMessageBox.Show("The text is too long.  Would you like to use abbreviations to shorten it?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)== System.Windows.Forms.DialogResult.Yes)
             {
                 var shrinker = new _140it();
                 return shrinker.GetShortenedText(original);
@@ -732,7 +733,7 @@ namespace PockeTwit
 
         private string TryToUseShortText(string original)
         {
-            if (MessageBox.Show("消息文本太长。你希望用一个链接来代替这些文本吗？这个链接会指向你所输入的文本内容。", "消息文本太长", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
+            if (PockeTwit.Localization.LocalizedMessageBox.Show("The text is too long.  Would you like to add a link to a site with the full text?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
             {
                 var shrinker = new ShortText();
 
@@ -753,7 +754,7 @@ namespace PockeTwit
 
                 if(updateText.Length>140)
                 {
-                    if (MessageBox.Show("消息文本依然太长，它将被截短到最大允许的长度后发布。继续吗？", "消息文本太长", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
+                    if (PockeTwit.Localization.LocalizedMessageBox.Show("The text is still too long.  If you post it twitter will cut off the end.  Post anyway?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.No)
                     {
                         return false;
                     }
@@ -807,7 +808,7 @@ namespace PockeTwit
 
                     if (string.IsNullOrEmpty(retValue))
                     {
-                        MessageBox.Show("无法发布消息：返回结果为空。请稍候再试。");
+                        PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- empty response.  You may want to try again later.");
                         return false;
                     }
                     try
@@ -816,7 +817,7 @@ namespace PockeTwit
                     }
                     catch
                     {
-                        MessageBox.Show("无法发布消息：返回结果非法。请稍候再试。");
+                        PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- bad response.  You may want to try again later.");
                         return false;
                     }
 
@@ -855,7 +856,7 @@ namespace PockeTwit
         {
             if (!string.IsNullOrEmpty(txtStatusUpdate.Text))
             {
-                if (MessageBox.Show("确认要放弃更新吗？", "取消", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Are you sure you want to cancel the update?", "Cancel", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
                 {
                     return;
                 }
@@ -892,7 +893,7 @@ namespace PockeTwit
             else
             {
                 //Pre loading logic
-                if (MessageBox.Show("把上传图片的链接添加到消息中吗？", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                 {
                     txtStatusUpdate.Text += uploadedPictureURL;
                     txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
@@ -900,7 +901,7 @@ namespace PockeTwit
                 }
                 else
                 {
-                    if (MessageBox.Show("加载一张新的图片？", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    if (PockeTwit.Localization.LocalizedMessageBox.Show("Load a new picture?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                     {
                         uploadedPictureURL = string.Empty;
                         pictureUsed = false;
@@ -922,7 +923,7 @@ namespace PockeTwit
             else
             {
                 //Pre loading picture logic.
-                if (MessageBox.Show("把上传图片的链接添加到消息中吗？", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                 {
                     txtStatusUpdate.Text += uploadedPictureURL;
                     txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
@@ -930,7 +931,7 @@ namespace PockeTwit
                 }
                 else
                 {
-                    if (MessageBox.Show("拍摄一张新的照片？", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    if (PockeTwit.Localization.LocalizedMessageBox.Show("Take a new picture?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                     {
                         uploadedPictureURL = string.Empty;
                         pictureUsed = false;
@@ -946,7 +947,7 @@ namespace PockeTwit
             if (!pictureUsed && !ClientSettings.SendMessageToMediaService)
             {
                 //Only show message when pre-loading pictures is enabled.
-                if (MessageBox.Show("图片己经上传，但未被使用。你确定要这样做吗？", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Uploaded picture not used, are you sure?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
                 {
                     return;
                 }

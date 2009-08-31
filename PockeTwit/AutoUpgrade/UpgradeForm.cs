@@ -34,6 +34,7 @@ namespace PockeTwit
         {
             InitializeComponent();
             Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             if (ClientSettings.IsMaximized)
             {
                 WindowState = FormWindowState.Maximized;
@@ -146,13 +147,13 @@ namespace PockeTwit
             }
             catch
             {
-                if (MessageBox.Show("There was an error downloading the upgrade.  Would you like to try again?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("There was an error downloading the upgrade.  Would you like to try again?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                 {
                     PerformUpdate();
                 }
                 else
                 {
-                    MessageBox.Show("You can download the upgrade manually from http://code.google.com/p/pocketwit/");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("You can download the upgrade manually from http://code.google.com/p/pocketwit/");
                     Close();
                 }
             }
@@ -187,15 +188,16 @@ namespace PockeTwit
             }
             catch 
             {
-                if (MessageBox.Show("There was an error downloading the upgrade.  Would you like to try again?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("There was an error downloading the upgrade.  Would you like to try again?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                 {
                     PerformUpdate();
                 }
                 else
                 {
-                    MessageBox.Show("You can download the upgrade manually from http://code.google.com/p/pocketwit/");
-                    this.Close();
+                    PockeTwit.Localization.LocalizedMessageBox.Show("You can download the upgrade manually from http://code.google.com/p/pocketwit/");
+                    Close();
                 }
+
             }
         }
 

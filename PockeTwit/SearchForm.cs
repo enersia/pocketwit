@@ -43,7 +43,7 @@ namespace PockeTwit
                 cmbDistance.Items.Add(value);
                 cmbDistance.SelectedItem = value;
                 cmbDistance.Text = value;
-                cmbMeasurement.Text = "Miles";
+                cmbMeasurement.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Miles");
             }
         }
 
@@ -55,8 +55,10 @@ namespace PockeTwit
             InitializeComponent();
             SetUpSearchBox();
             SetupLocationBox();
+            cmbMeasurement.Tag = "AutoLocalize";
             this.ResumeLayout(false);
-            PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Themes.FormColors.SetColors(this); 
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             if (ClientSettings.IsMaximized)
             {
                 this.WindowState = FormWindowState.Maximized;
@@ -75,7 +77,7 @@ namespace PockeTwit
             }
             else
             {
-                cmbMeasurement.Text = "Miles";
+                cmbMeasurement.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Miles");
             }
 
             cmbDistance.Text = "15";
@@ -102,13 +104,13 @@ namespace PockeTwit
                 if (!string.IsNullOrEmpty(this.GPSLocation))
                 {
                     cmbLocation.Items.Clear();
-                    cmbLocation.Items.Add("Anywhere");
+                    cmbLocation.Items.Add(PockeTwit.Localization.XmlBasedResourceManager.GetString("Anywhere"));
                     if (!string.IsNullOrEmpty(_providedLocation))
                     {
                         cmbLocation.Items.Add(_providedLocation);
                         cmbLocation.SelectedItem = _providedLocation;
                     }
-                    cmbLocation.Items.Add("Current GPS Position");
+                    cmbLocation.Items.Add(PockeTwit.Localization.XmlBasedResourceManager.GetString("Current GPS Position"));
                     cmbLocation.Items.Add(Geocode.GetAddress(this.GPSLocation).Replace("\r\n", ""));
                     Locator.StopPosition();
                 }
@@ -169,7 +171,7 @@ namespace PockeTwit
                     b.Append(txtSearch.Text);
                 }
             }
-            if (cmbLocation.Text != "Anywhere")
+            if (cmbLocation.Text != PockeTwit.Localization.XmlBasedResourceManager.GetString("Anywhere"))
             {
                 if (!string.IsNullOrEmpty(cmbLocation.Text))
                 {
@@ -183,15 +185,11 @@ namespace PockeTwit
                         }
                         b.Append("geocode=" + this.GPSLocation);
                         b.Append("," + cmbDistance.Text);
-                        switch (cmbMeasurement.Text)
-                        {
-                            case "Miles":
-                                b.Append("mi");
-                                break;
-                            case "Kilometers":
-                                b.Append("km");
-                                break;
-                        }
+                        string miles = PockeTwit.Localization.XmlBasedResourceManager.GetString("Miles");
+                        if (cmbMeasurement.Text == miles)
+                            b.Append("mi");
+                        else                           
+                            b.Append("km");
                     }
                 }
             }
@@ -226,7 +224,7 @@ namespace PockeTwit
             {
                 return true;
             }
-            return MessageBox.Show("Saved searches can affect battery life. Are you sure you want to add this?",
+            return PockeTwit.Localization.LocalizedMessageBox.Show("Saved searches can affect battery life. Are you sure you want to add this?",
                                    "Saved Search", MessageBoxButtons.YesNo, MessageBoxIcon.Question,
                                    MessageBoxDefaultButton.Button2) == DialogResult.Yes;
         }
@@ -247,12 +245,14 @@ namespace PockeTwit
             {
                 cmbLocation.DropDownStyle = ComboBoxStyle.DropDown;
             }
-            cmbLocation.Items.Add("Anywhere");
-            cmbLocation.Text = "Anywhere";
+            string item = PockeTwit.Localization.XmlBasedResourceManager.GetString("Anywhere");
+            cmbLocation.Items.Add(item);
+            cmbLocation.Text = item;
             if (ClientSettings.UseGPS || ClientSettings.UseCellIDPosition)
             {
-                cmbLocation.Items.Add("Seeking Position...Please Wait");
+                cmbLocation.Items.Add(PockeTwit.Localization.XmlBasedResourceManager.GetString("Seeking GPS...Please Wait"));
             }
+            cmbLocation.Tag = "AutoLocalize";
         }
 
         private void SetUpSearchBox()

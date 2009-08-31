@@ -62,7 +62,7 @@ namespace PockeTwit
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(240, 31);
-            this.lblTitle.Text = "Launching PockeTwit";
+            this.lblTitle.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Launching PockeTwit", "Launching PockeTwit");
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // mainMenu1

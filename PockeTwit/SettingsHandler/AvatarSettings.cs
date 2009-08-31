@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +18,7 @@ namespace PockeTwit
         {
             InitializeComponent();
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             if (ClientSettings.IsMaximized)
             {
                 this.WindowState = FormWindowState.Maximized;
@@ -34,7 +35,7 @@ namespace PockeTwit
         {
             if (chkHighQuality.Checked != ClientSettings.HighQualityAvatars)
             {
-                if (MessageBox.Show("You should clear the cache when switching avatars.  Would you like to do that now?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("You should clear the cache when switching avatars.  Would you like to do that now?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                 {
                     ClearCache();
                 }
@@ -73,17 +74,17 @@ namespace PockeTwit
 
         private static void ClearCache()
         {
-            if (MessageBox.Show("清除头像缓存可能需要几分钟时间，确认继续吗？", "清除缓存", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
+            if (PockeTwit.Localization.LocalizedMessageBox.Show("This may take several minutes. Proceed?", "Clear Cache", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1) == System.Windows.Forms.DialogResult.Yes)
             {
                 Cursor.Current = Cursors.WaitCursor;
                 try
                 {
                     ThrottledArtGrabber.ClearAvatars();
-                    MessageBox.Show("头像缓存已经清除完毕！", "PockeTwit");
+                    PockeTwit.Localization.LocalizedMessageBox.Show("The avatar cache was cleared.", "PockeTwit");
                 }
                 catch
                 {
-					MessageBox.Show("清除头像缓存时发生了错误，请稍候重试。",
+                    PockeTwit.Localization.LocalizedMessageBox.Show("There was an error when clearing the cache. You may want to try again.",
                                     "PockeTwit");
                 }
                 finally

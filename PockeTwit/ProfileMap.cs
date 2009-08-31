@@ -43,6 +43,7 @@ namespace PockeTwit
             InitializeComponent();
             //marker = myRenderer.LoadBitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream("PockeTwit.Marker.png"));
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             if (ClientSettings.IsMaximized)
             {
                 this.WindowState = FormWindowState.Maximized;

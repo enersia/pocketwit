@@ -81,12 +81,14 @@
             // 
             // lnkDismiss
             // 
-            this.lnkDismiss.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lnkDismiss.Location = new System.Drawing.Point(178, 245);
+            this.lnkDismiss.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lnkDismiss.Location = new System.Drawing.Point(4, 245);
             this.lnkDismiss.Name = "lnkDismiss";
-            this.lnkDismiss.Size = new System.Drawing.Size(38, 20);
+            this.lnkDismiss.Size = new System.Drawing.Size(212, 20);
             this.lnkDismiss.TabIndex = 5;
             this.lnkDismiss.Text = "关闭";
+            this.lnkDismiss.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.lnkDismiss.Click += new System.EventHandler(this.lnkDismiss_Click);
             // 
             // FullScreenTweet

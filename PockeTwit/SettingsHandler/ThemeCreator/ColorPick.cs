@@ -25,6 +25,8 @@ namespace PockeTwit
             InitializeComponent();
             if (ClientSettings.IsMaximized){this.WindowState = FormWindowState.Maximized;}
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
+
             LoadColorFile();
         }
         void LoadColorFile()
@@ -174,7 +176,7 @@ namespace PockeTwit
         {
             if (System.IO.File.Exists(filename))
             {
-                if (MessageBox.Show("That theme already exists, would you like to create a new one?", "New Theme?", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("That theme already exists, would you like to create a new one?", "New Theme?", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                 {
                     string newFile = CloneTheme(filename);
                     if (newFile == filename)

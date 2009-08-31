@@ -1,4 +1,4 @@
-ï»¿namespace PockeTwit
+namespace PockeTwit
 {
     partial class OtherSettings
     {
@@ -71,12 +71,12 @@
             // 
             // menuAccept
             // 
-            this.menuAccept.Text = "ç¡®å®š";
+            this.menuAccept.Text = "È·¶¨";
             this.menuAccept.Click += new System.EventHandler(this.menuAccept_Click);
             // 
             // menuCancel
             // 
-            this.menuCancel.Text = "å–æ¶ˆ";
+            this.menuCancel.Text = "È¡Ïû";
             this.menuCancel.Click += new System.EventHandler(this.menuCancel_Click);
             // 
             // chkGPS
@@ -86,7 +86,7 @@
             this.chkGPS.Name = "chkGPS";
             this.chkGPS.Size = new System.Drawing.Size(235, 20);
             this.chkGPS.TabIndex = 1;
-            this.chkGPS.Text = "ä½¿ç”¨GPS";
+            this.chkGPS.Text = "Ê¹ÓÃGPS";
             // 
             // chkVersion
             // 
@@ -95,7 +95,7 @@
             this.chkVersion.Name = "chkVersion";
             this.chkVersion.Size = new System.Drawing.Size(235, 20);
             this.chkVersion.TabIndex = 0;
-            this.chkVersion.Text = "è‡ªåŠ¨æ£€æŸ¥æ–°ç‰ˆæœ¬";
+            this.chkVersion.Text = "×Ô¶¯¼ì²éĞÂ°æ±¾";
             // 
             // lblUpDates
             // 
@@ -103,7 +103,7 @@
             this.lblUpDates.Location = new System.Drawing.Point(3, 52);
             this.lblUpDates.Name = "lblUpDates";
             this.lblUpDates.Size = new System.Drawing.Size(234, 20);
-            this.lblUpDates.Text = "è‡ªåŠ¨æ›´æ–°é¢‘ç‡ï¼ˆåˆ†é’Ÿï¼‰";
+            this.lblUpDates.Text = "×Ô¶¯¸üĞÂÆµÂÊ£¨·ÖÖÓ£©";
             // 
             // txtUpdate
             // 
@@ -118,7 +118,7 @@
             this.label1.Location = new System.Drawing.Point(99, 72);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(124, 20);
-            this.label1.Text = "0è¡¨ç¤ºç¦ç”¨";
+            this.label1.Text = "0±íÊ¾½ûÓÃ";
             // 
             // chkTranslate
             // 
@@ -129,7 +129,7 @@
             this.chkTranslate.Name = "chkTranslate";
             this.chkTranslate.Size = new System.Drawing.Size(220, 20);
             this.chkTranslate.TabIndex = 3;
-            this.chkTranslate.Text = "è‡ªåŠ¨ç¿»è¯‘";
+            this.chkTranslate.Text = "×Ô¶¯·­Òë";
             // 
             // chkSkweezer
             // 
@@ -140,7 +140,7 @@
             this.chkSkweezer.Name = "chkSkweezer";
             this.chkSkweezer.Size = new System.Drawing.Size(216, 20);
             this.chkSkweezer.TabIndex = 4;
-            this.chkSkweezer.Text = "é€šè¿‡Skweezeræ‰“å¼€ç½‘é¡µ";
+            this.chkSkweezer.Text = "Í¨¹ıSkweezer´ò¿ªÍøÒ³";
             // 
             // label2
             // 
@@ -150,7 +150,7 @@
             this.label2.Location = new System.Drawing.Point(2, 221);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(233, 20);
-            this.label2.Text = "æ•°æ®ç¼“å­˜ç›®å½•:";
+            this.label2.Text = "Êı¾İ»º´æÄ¿Â¼:";
             // 
             // txtCaheDir
             // 
@@ -168,7 +168,7 @@
             this.chkAutoComplete.Name = "chkAutoComplete";
             this.chkAutoComplete.Size = new System.Drawing.Size(235, 20);
             this.chkAutoComplete.TabIndex = 8;
-            this.chkAutoComplete.Text = "ä¸ºåœ°å€è–„å¯ç”¨è‡ªåŠ¨å®Œæˆ";
+            this.chkAutoComplete.Text = "Autocomplete addressbook";
             // 
             // chkEnableProxy
             // 
@@ -231,7 +231,7 @@
             this.Controls.Add(this.chkGPS);
             this.Menu = this.mainMenu1;
             this.Name = "OtherSettings";
-            this.Text = "å…¶å®ƒè®¾ç½®";
+            this.Text = "ÆäËüÉèÖÃ";
             this.Load += new System.EventHandler(this.OtherSettings_Load);
             this.ResumeLayout(false);
 

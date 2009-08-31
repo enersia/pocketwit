@@ -88,7 +88,7 @@ namespace PockeTwit
         }
         public static void CallShowErrorMessage(string Message)
         {
-            ShowErrorMessage(Message);
+            ShowErrorMessage(PockeTwit.Localization.XmlBasedResourceManager.GetString(Message));
         }
 
         public static void NotifyTimeLineFetching(TimelineManagement.TimeLineType TType)

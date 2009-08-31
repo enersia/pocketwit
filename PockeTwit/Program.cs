@@ -34,7 +34,7 @@ namespace PockeTwit
                     ClientSettings.LoadSettings();
                     if (ClientSettings.AccountsList.Count == 0)
                     {
-                        MessageBox.Show("在使用\"快速发布\"功能前，您必须先配置PockeTwit", "PockeTwit快速发布");
+                        PockeTwit.Localization.LocalizedMessageBox.Show("You must configure PockeTwit before using QuickPost.", "PockeTwit QuickPost");
                         return;
                     }
                     PostUpdate PostForm = new PostUpdate(true);
@@ -63,7 +63,7 @@ namespace PockeTwit
             }
             if (ex is LowMemoryException)
             {
-                MessageBox.Show("You do not currently have enough graphics memory to run PockeTwit.  Please close some applications or soft-reset and try again.", "内存不足", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                PockeTwit.Localization.LocalizedMessageBox.Show("You do not currently have enough graphics memory to run PockeTwit.  Please close some applications or soft-reset and try again.", "Low Memory", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
                 return;
             }
             System.Text.StringBuilder b = new System.Text.StringBuilder();
@@ -92,7 +92,7 @@ namespace PockeTwit
             {
                 w.Write(b.ToString());
             }
-            MessageBox.Show("An unexpected error has occured and PockeTwit must shut down.\r\n\r\nYou will have an opportunity to submit a crash report to the developer on the next run.", "PockeTwit");
+            PockeTwit.Localization.LocalizedMessageBox.Show("An unexpected error has occured and PockeTwit must shut down.\n\nYou will have an opportunity to submit a crash report to the developer on the next run.", "PockeTwit");
 
         }
         /// <summary>

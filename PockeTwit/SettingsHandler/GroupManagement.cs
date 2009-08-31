@@ -17,6 +17,7 @@ namespace PockeTwit.SettingsHandler
             InitializeComponent();
             
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             
             ResetDisplay();
         }
@@ -103,10 +104,10 @@ namespace PockeTwit.SettingsHandler
             int width = pnlUsers.Width - (ClientSettings.TextSize + 10);
             Label lblName = new Label();
             Label lblExclusive = new Label();
-            lblName.Text = "User";
+            lblName.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("User");
             lblName.Width = width;
             lblName.Height = ClientSettings.TextSize + 5;
-            lblExclusive.Text = "Exclusive";
+            lblExclusive.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Exclusive");
             lblExclusive.Left = pnlUsers.Width - ((ClientSettings.TextSize * 4) + 10);
             lblExclusive.Height = lblName.Height;
             pnlUsers.Controls.Add(lblExclusive);
@@ -144,7 +145,7 @@ namespace PockeTwit.SettingsHandler
 
         private  void DeleteItem(UserGroupTimeLine t, UserGroupTimeLine.GroupTerm gt)
         {
-            if(MessageBox.Show("Are you sure you want to remove " + gt.Name + " from this group?", "Remove "+ gt.Name, MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2)==DialogResult.Yes)
+            if(PockeTwit.Localization.LocalizedMessageBox.Show("Are you sure you want to remove {0} from this group?", "Remove", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, gt.Name)==DialogResult.Yes)
             {
                 t.RemoveItem(gt.Term);
                 ResetGroupItems();
@@ -163,14 +164,13 @@ namespace PockeTwit.SettingsHandler
         private void lnkDeleteGroup_Click(object sender, EventArgs e)
         {
             ISpecialTimeLine selectedLine = (ISpecialTimeLine) cmbChooseGroup.SelectedItem;
-            string Message = "This will move all users from the " + cmbChooseGroup.SelectedItem +
-                             " group and delete the group.  The users will all appear in your friends timeline.\n\nProceed?";
+            string Message = "This will move all users from the {0} group and delete the group.  The users will all appear in your friends timeline.\n\nProceed?";
 
             if(selectedLine is SavedSearchTimeLine)
             {
-                Message = "This will remove the " + cmbChooseGroup.SelectedItem + "group.\n\nProceed?";
+                Message = "This will delete the {0} group.\n\nProceed?";
             }
-            if (MessageBox.Show(Message, "Delete " + cmbChooseGroup.SelectedItem + " Group", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            if (PockeTwit.Localization.LocalizedMessageBox.Show(Message, "Delete Group", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, cmbChooseGroup.SelectedItem) == DialogResult.Yes)
             {
                 SpecialTimeLinesRepository.Remove((ISpecialTimeLine)cmbChooseGroup.SelectedItem);
                 cmbChooseGroup.Items.Remove(cmbChooseGroup.SelectedItem);

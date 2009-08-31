@@ -44,7 +44,7 @@ namespace PockeTwit.FingerUI
         {
             if (!Visibility)
             {
-                _DisplayText = Text;
+                _DisplayText = PockeTwit.Localization.XmlBasedResourceManager.GetString(Text);
                 parentControl.startAnimation();
                 AnimationStep = 0;
                 Visibility = true;
@@ -53,7 +53,7 @@ namespace PockeTwit.FingerUI
             {
                 if (Text != _DisplayText)
                 {
-                    _DisplayText = Text;
+                    _DisplayText = PockeTwit.Localization.XmlBasedResourceManager.GetString(Text);
                 }
             }
         }

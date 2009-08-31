@@ -46,6 +46,7 @@ namespace FingerUI
             }
             _fontSize = lblText.Font.Size;
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             avatarBox.Width = ClientSettings.SmallArtSize;
             avatarBox.Height = ClientSettings.SmallArtSize;
         }
@@ -53,6 +54,7 @@ namespace FingerUI
         public void ResetRendering()
         {
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
         }
 
         private delegate void DelUpdateArt(string argument);

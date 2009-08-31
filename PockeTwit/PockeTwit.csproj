@@ -288,6 +288,9 @@
     <Content Include="default_profile_bigger.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Localization\pocketwit_de.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SQLite.Interop.060.DLL">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -473,8 +476,11 @@
     <Compile Include="FingerUI\FullScreenTweet.Designer.cs">
       <DependentUpon>FullScreenTweet.cs</DependentUpon>
     </Compile>
+    <Compile Include="FingerUI\IDisplayItem.cs" />
+    <Compile Include="FingerUI\DisplayItemDrawingHelper.cs" />
     <Compile Include="FingerUI\Menu\MenuManager.cs" />
     <Compile Include="FingerUI\Menu\SideMenuItem.cs" />
+    <Compile Include="FingerUI\MoreResultsItem.cs" />
     <Compile Include="FingerUI\Portal.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -489,6 +495,8 @@
     <Compile Include="GraphicsLibs\DetermineColorDepth.cs" />
     <Compile Include="GraphicsLibs\DIB.cs" />
     <Compile Include="MediaServices\FanfouPhoto.cs" />
+    <Compile Include="Localization\XmlBasedResourceManager.cs" />
+    <Compile Include="Localization\LocalizedMessageBox.cs" />
     <Compile Include="MediaServices\SwitchToTweetPhoto.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -576,6 +584,7 @@
     <Compile Include="TiledMaps\GoogleMaps\GoogleServices.cs" />
     <Compile Include="TiledMaps\GoogleMaps\GoogleTerrainSession.cs" />
     <Compile Include="TiledMaps\GoogleMaps\GoogleTrafficSession.cs" />
+    <Compile Include="TiledMaps\GoogleMaps\OpenStreetMapSession.cs" />
     <Compile Include="TiledMaps\GraphicsRenderer.cs" />
     <Compile Include="TiledMaps\HttpMapSession.cs" />
     <Compile Include="TiledMaps\IImage.cs" />

@@ -19,6 +19,7 @@ namespace PockeTwit
             menuZoom.Checked = ClientSettings.ZoomPreview;
             this.pictureBox1.Image = new Bitmap(this.pictureBox1.Width, this.pictureBox1.Height);
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             if (ClientSettings.IsMaximized)
             {
                 this.WindowState = FormWindowState.Maximized;

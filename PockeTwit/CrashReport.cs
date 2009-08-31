@@ -18,6 +18,9 @@ namespace PockeTwit
         public CrashReport()
         {
             InitializeComponent();
+            PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
+
             accounts = sess.EmailAccounts;
 
             using(System.IO.StreamReader r = new System.IO.StreamReader(ClientSettings.AppPath + "\\crash.txt"))
