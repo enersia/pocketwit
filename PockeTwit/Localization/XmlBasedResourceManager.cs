@@ -47,8 +47,14 @@ namespace PockeTwit.Localization
             {
                 string cultureInfoString = fileName.Substring(fileName.LastIndexOf('_')+1);
                 cultureInfoString = (cultureInfoString.Split('.'))[0];
-                System.Globalization.CultureInfo cultureInfo = new CultureInfo(cultureInfoString);
-                result.Add(cultureInfo);
+                try
+                {
+                    System.Globalization.CultureInfo cultureInfo = new CultureInfo(cultureInfoString);
+                    result.Add(cultureInfo);
+                }
+                catch
+                {
+                }
             }
             return result.AsReadOnly();
         }
