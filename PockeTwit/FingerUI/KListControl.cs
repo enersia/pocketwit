@@ -1728,6 +1728,9 @@ namespace PockeTwit.FingerUI
             SlidingPortal._RenderedGraphics.Clear(ClientSettings.BackColor);
             string Message = "One moment please...";
             if (m_items.Count == 0) { Message = "There are no items to display"; }
+
+            Message = PockeTwit.Localization.XmlBasedResourceManager.GetString(Message);
+
             using (Brush sBrush = new SolidBrush(ClientSettings.ForeColor))
             {
                 SlidingPortal._RenderedGraphics.DrawString(Message, ClientSettings.TextFont, sBrush, new RectangleF(0, 0, this.Width, this.Height));
