@@ -1372,7 +1372,7 @@ namespace PockeTwit.FingerUI
                     {
                         using (Brush sBrush = new SolidBrush(ClientSettings.ForeColor))
                         {
-                            flickerGraphics.DrawString("Let me catch up...", ClientSettings.TextFont, sBrush, this.Bounds);
+                            flickerGraphics.DrawString(PockeTwit.Localization.XmlBasedResourceManager.GetString("Let me catch up..."), ClientSettings.TextFont, sBrush, this.Bounds);
                         }
                     }
                     flickerGraphics.DrawImage(SlidingPortal.Rendered, 0 - XOffset, 0 - SlidingPortalOffset);
