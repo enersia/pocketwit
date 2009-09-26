@@ -72,6 +72,18 @@
     <Reference Include="Microsoft.WindowsMobile.PocketOutlook, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="Microsoft.WindowsMobile.Status, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="mscorlib" />
+    <Reference Include="OpenNETCF, Version=2.3.0.39, Culture=neutral, PublicKeyToken=e60dbea84bb431b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Smart Device Framework\Bin\OpenNETCF.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenNETCF.WindowsCE, Version=2.3.0.39, Culture=neutral, PublicKeyToken=e60dbea84bb431b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Smart Device Framework\Bin\OpenNETCF.WindowsCE.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenNETCF.WindowsCE.Messaging, Version=2.3.0.39, Culture=neutral, PublicKeyToken=e60dbea84bb431b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Smart Device Framework\Bin\OpenNETCF.WindowsCE.Messaging.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.60.0, Culture=neutral, PublicKeyToken=1fdb50b1b62b4c84, processorArchitecture=MSIL" />
@@ -124,9 +136,6 @@
     </Compile>
     <Compile Include="NotificationsCode\NotificationSoftKeys\SHNOTIFICATIONDATA.cs" />
     <Compile Include="NotificationsCode\NotificationSoftKeys\SpinnerClickEventHandler.cs" />
-    <Compile Include="OpenNetCF\EventWaitHandle.cs" />
-    <Compile Include="OpenNetCF\LargeIntervalTimer.cs" />
-    <Compile Include="OpenNetCF\NativeMethods.cs" />
     <Compile Include="SettingsHandler\AccountInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -514,13 +523,6 @@
     <Compile Include="LocalStorage\DataBaseUtility.cs" />
     <Compile Include="MsgWindow.cs" />
     <Compile Include="NotificationsCode\NotificationTexts.cs" />
-    <Compile Include="OpenNetCF\LED.cs" />
-    <Compile Include="OpenNetCF\Notify.cs" />
-    <Compile Include="OpenNetCF\SYSTEMTIME.cs" />
-    <Compile Include="OpenNetCF\UserNotification.cs" />
-    <Compile Include="OpenNetCF\UserNotificationInfoHeader.cs" />
-    <Compile Include="OpenNetCF\UserNotificationTrigger.cs" />
-    <Compile Include="OpenNetCF\WaitHandle.cs" />
     <Compile Include="PostUpdate.cs">
       <SubType>Form</SubType>
     </Compile>
