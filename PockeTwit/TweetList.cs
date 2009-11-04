@@ -12,6 +12,7 @@ using PockeTwit.OtherServices;
 using PockeTwit.SpecialTimelines;
 using PockeTwit.TimeLines;
 using Yedda;
+using System.Collections;
 
 
 namespace PockeTwit
@@ -722,7 +723,8 @@ namespace PockeTwit
             RefreshMessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshMessagesTimeLine, "Refresh Messages", statList.LeftMenu, "Messages_TimeLine");
             PublicMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowPublicTimeLine, "Public Timeline", statList.LeftMenu);
             SearchMenuItem = new FingerUI.Menu.SideMenuItem(this.TwitterSearch, "Search/Local", statList.LeftMenu);
-            ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "View Favorites", statList.LeftMenu);
+            //ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "View Favorites", statList.LeftMenu);
+            ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowTrends, "View Favorites", statList.LeftMenu);
             FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "Follow User", statList.LeftMenu);
 
             OtherGlobalMenuItem = new FingerUI.Menu.SideMenuItem(null, "Other ...", statList.LeftMenu);
@@ -1355,12 +1357,41 @@ namespace PockeTwit
         }
         private void ShowProfile()
         {
+            ChangeCursor(Cursors.WaitCursor);
             if (statList.SelectedItem == null) { return; }
             StatusItem selectedItem = (StatusItem)statList.SelectedItem;
-
+            
             using (ProfileView v = new ProfileView(selectedItem.Tweet.user))
             {
+
+                ChangeCursor(Cursors.Default);
+
+                IsLoaded = false;
+                statList.Visible = false;
+
                 v.ShowDialog();
+
+                this.Visible = true;
+                statList.Visible = true;
+                IsLoaded = true;
+
+                //statList.OpenLeftMenu();
+
+                //statList.RightMenu.SelectedItem = null;
+                //statList.LeftMenu.SelectedItem = null;
+                
+                v.Close();
+
+                if (String.IsNullOrEmpty(v.selectedUser))
+                {
+                    return;
+                }
+                
+                if(v.selectedAction == ProfileView.ProfileAction.UserTimeline)
+                {
+                    statList.IgnoreMouse = true;
+                    SwitchToUserTimeLine(v.selectedUser);
+                }
             }
         }
 
@@ -1466,7 +1497,7 @@ namespace PockeTwit
             i.Action = Yedda.Twitter.ActionType.Favorites;
             History.Push(i);
             statList.SetSelectedMenu(ViewFavoritesMenuItem);
-            AddStatusesToList(Manager.GetFavorites());
+            AddStatusesToList(Manager.GetFavorites());       
             ChangeCursor(Cursors.Default);
         }
         private void ShowPublicTimeLine()
@@ -2131,5 +2162,65 @@ namespace PockeTwit
 
 
         }
+
+
+        private void ShowTrends()
+        {
+            currentSpecialTimeLine = null;
+            ChangeCursor(Cursors.WaitCursor);
+
+            SwitchToList("TrendingTopics");
+            HistoryItem i = new HistoryItem();
+            i.Action = Yedda.Twitter.ActionType.Favorites;  //TODO
+            History.Push(i);
+            statList.SetSelectedMenu(ViewFavoritesMenuItem);
+           
+            
+            //test = LetsBeTrends.GetTrend("GoodNight");
+
+            //statList.Clear();
+            //statList.ClearVisible();
+
+            //AddStatusesToList(Manager.GetFavorites());
+
+
+            ArrayList al = LetsBeTrends.GetCurrentTrends();
+
+            foreach (Hashtable a in al)
+            {
+                //Hashtable ht = (Hashtable)a;
+                TrendingTopic tt = new TrendingTopic();
+                tt.Name = (String)a["name"];
+                tt.LastTrended = (String)a["last_trended_at"];
+                tt.FirstTrended = (String)a["first_trended_at"];
+                tt.Query = (String)a["query"];
+                try
+                {
+                    if (a.Contains("description"))
+                    {
+                        Hashtable h = (Hashtable)a["description"];
+                        tt.Description = (String)h["text"];
+                    }
+                    else
+                    {
+                        tt.Description = "No description available.";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                    tt.Description = "No description available.";
+                }
+                statList.AddItem(new TrendingTopicItem(this, null, tt));
+            }
+            statList.SelectedItem = statList[0];
+
+            statList.Redraw();
+            statList.RerenderPortal();
+            statList.Repaint();
+
+            ChangeCursor(Cursors.Default);
+        }
+
     }
 }

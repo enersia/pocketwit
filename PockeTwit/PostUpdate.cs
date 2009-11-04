@@ -7,6 +7,7 @@ using PockeTwit.OtherServices.TextShrinkers;
 using PockeTwit.Themes;
 using Yedda;
 using PockeTwit.MediaServices;
+using PockeTwit.OtherServices.GoogleSpell;
 
 namespace PockeTwit
 {
@@ -31,6 +32,11 @@ namespace PockeTwit
 
         public delegate void delAddPicture(string ImageFile, PictureBox BoxToUpdate);
         public delegate void delUpdatePictureData(string pictureUrl, bool uploadingPicture);
+
+        private SpellCorrection currentSC;
+        private String originalText;
+        private SpellResult result;
+        private String textToCheck;
 
         #region Properties
         private Yedda.Twitter.Account _AccountToSet = ClientSettings.DefaultAccount;
@@ -932,6 +938,20 @@ namespace PockeTwit
                     return;
                 }
             }
+
+
+            if (ClientSettings.SpellCheck)
+            {
+                textToCheck = txtStatusUpdate.Text;
+                CheckSpelling();
+
+                //If you want to allow for continued editing, use a thread
+                //Thread t = new Thread(new ThreadStart(CheckSpelling));
+                //t.Start();
+            }
+
+            //bool Success = false;
+
             bool Success = PostTheUpdate();
 
             Cursor.Current = Cursors.Default;
@@ -964,6 +984,71 @@ namespace PockeTwit
                 userListControl1.UnHookTextBoxKeyPress();
             }
             base.OnClosed(e);
+        }
+
+
+
+        private void CheckSpelling()
+        {
+            SpellRequest request = new SpellRequest(textToCheck, false, false, false);
+            result = SpellCheck.Check(request);
+
+        //combining into one function so it doesn't post until spell checking is complete
+
+        //    this.Invoke(new EventHandler(CorrectSpelling));
+        //}
+
+        //private void CorrectSpelling(object sender, EventArgs e)
+        //{
+            if (result.Corrections == null || result.Corrections.Length <= 0)
+            {
+                MessageBox.Show("Spell Check Complete!");
+                return;
+            }
+
+            originalText = txtStatusUpdate.Text;
+
+            foreach (SpellCorrection sc in result.Corrections)
+            {
+                currentSC = sc;
+                
+                //if the mispelled work no longer exists, ie it was a duplicate
+                if(txtStatusUpdate.Text.IndexOf(originalText.Substring(currentSC.Offset, currentSC.Length)) < 0)
+                {
+                    continue;
+                }
+
+                txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.IndexOf(originalText.Substring(currentSC.Offset, currentSC.Length));
+                txtStatusUpdate.SelectionLength = currentSC.Length;
+
+                contextMenu1.MenuItems.Clear();
+
+                string[] vals = sc.Value.Split('\t');
+
+                foreach (string s in vals)
+                {
+                    MenuItem mi = new MenuItem();
+                    mi.Text = s;
+
+                    mi.Click += new EventHandler(this.SpellMenu_Clicked);
+                    contextMenu1.MenuItems.Add(mi);
+
+                }
+
+                contextMenu1.Show(txtStatusUpdate, new Point(50, 50));
+
+            }
+
+            txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
+            txtStatusUpdate.SelectionLength = 0;
+
+            MessageBox.Show("Spell Check Complete!");
+        }
+
+        private void SpellMenu_Clicked(object sender, EventArgs e)
+        {
+            MenuItem mi = (MenuItem)sender;
+            txtStatusUpdate.Text = txtStatusUpdate.Text.Replace(originalText.Substring(currentSC.Offset, currentSC.Length), mi.Text);
         }
     }
 }
