@@ -405,6 +405,7 @@ namespace Yedda
         protected const string TwitterBaseUrlFormat = "{3}{0}/{1}.{2}";
         protected const string TwitterSimpleURLFormat = "{1}/{0}.xml";
         protected const string TwitterFavoritesUrlFormat = "{3}/{0}/{1}/{2}.xml";
+        protected const string TwitterFavoritesUserUrlFormat = "{2}/{0}/{1}.xml";
         protected const string TwitterSearchUrlFormat = "http://search.twitter.com/search.json?{0}";
         protected const string TwitterConversationUrlFormat = "http://search.twitter.com/search/thread/{0}";
 
@@ -1264,7 +1265,12 @@ namespace Yedda
         }
         public string GetFavorites()
         {
-            string url = string.Format(TwitterSimpleURLFormat, GetActionTypeString(ActionType.Favorites),AccountInfo.ServerURL.URL);
+            string url = string.Format(TwitterSimpleURLFormat, GetActionTypeString(ActionType.Favorites), AccountInfo.ServerURL.URL);
+            return ExecuteGetCommand(url);
+        }
+        public string GetFavorites(string userID)
+        {
+            string url = string.Format(TwitterFavoritesUserUrlFormat, GetActionTypeString(ActionType.Favorites), "/" + userID, AccountInfo.ServerURL.URL);
             return ExecuteGetCommand(url);
         }
         #endregion

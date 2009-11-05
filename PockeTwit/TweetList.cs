@@ -1386,11 +1386,28 @@ namespace PockeTwit
                 {
                     return;
                 }
+
+                statList.IgnoreMouse = true;
                 
                 if(v.selectedAction == ProfileView.ProfileAction.UserTimeline)
                 {
-                    statList.IgnoreMouse = true;
                     SwitchToUserTimeLine(v.selectedUser);
+                }
+                else if (v.selectedAction == ProfileView.ProfileAction.Favorites)
+                {
+                    SwitchToUserFavorites(v.selectedUser);
+                }
+                else if (v.selectedAction == ProfileView.ProfileAction.Followers)
+                {
+                    //TODO
+                }
+                else if (v.selectedAction == ProfileView.ProfileAction.Following)
+                {
+                    //TODO
+                }
+                else
+                {
+                    statList.IgnoreMouse = false; //is this needed?
                 }
             }
         }
@@ -2220,6 +2237,28 @@ namespace PockeTwit
             statList.Repaint();
 
             ChangeCursor(Cursors.Default);
+        }
+
+
+        private void SwitchToUserFavorites(String userID)
+        {
+            //currentSpecialTimeLine = null;
+            UpdateHistoryPosition();
+            userID = userID.Replace("@", "");
+            StatusItem statItem = (StatusItem)statList.SelectedItem;
+            if (statItem == null) { return; }
+            ChangeCursor(Cursors.WaitCursor);
+            HistoryItem i = new HistoryItem();
+            i.Argument = userID;
+            i.Account = statItem.Tweet.Account;
+            i.Action = Yedda.Twitter.ActionType.Favorites; //i.Action = Yedda.Twitter.ActionType.User_Timeline;
+            History.Push(i);
+            CurrentlySelectedAccount = statItem.Tweet.Account;
+            Yedda.Twitter Conn = GetMatchingConnection(CurrentlySelectedAccount);
+            SwitchToList("Favorites_TimeLine"); //SwitchToList("@User_TimeLine"); 
+            AddStatusesToList(Manager.GetUserFavorites(userID)); //AddStatusesToList(Manager.GetUserTimeLine(Conn, ShowUserID));
+            ChangeCursor(Cursors.Default);
+            return;
         }
 
     }

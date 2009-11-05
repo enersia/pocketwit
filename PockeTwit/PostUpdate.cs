@@ -940,7 +940,7 @@ namespace PockeTwit
             }
 
 
-            if (ClientSettings.SpellCheck)
+            //if (ClientSettings.SpellCheck)
             {
                 textToCheck = txtStatusUpdate.Text;
                 CheckSpelling();

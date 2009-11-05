@@ -325,5 +325,14 @@ namespace PockeTwit
 
             return screenSize;
         }
+
+        private void llblFavorites_Click(object sender, EventArgs e)
+        {
+            selectedAction = ProfileAction.Favorites;
+            selectedUser = _User.screen_name;
+
+            PockeTwit.ThrottledArtGrabber.NewArtWasDownloaded -= new ThrottledArtGrabber.ArtIsReady(ThrottledArtGrabber_NewArtWasDownloaded);
+            this.Close();
+        }
     }
 }

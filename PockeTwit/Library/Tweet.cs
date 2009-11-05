@@ -583,6 +583,20 @@ namespace PockeTwit.Library
 
         public string followers_count { get; set; }
 
+        public string friends_count { get; set; }
+
+        public string statuses_count { get; set; }
+
+        public string favourites_count { get; set; }
+
+        public string created_at { get; set; }
+
+        public string url { get; set; }
+
+        //public string following { get; set; }
+
+        public string verified { get; set; }
+
         #endregion Properties 
 
         #region Methods (1) 

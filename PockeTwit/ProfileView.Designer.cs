@@ -162,6 +162,7 @@
             this.llblFavorites.Size = new System.Drawing.Size(53, 20);
             this.llblFavorites.TabIndex = 23;
             this.llblFavorites.TabStop = false;
+            this.llblFavorites.Click += new System.EventHandler(this.llblFavorites_Click);
             // 
             // lblText5
             // 

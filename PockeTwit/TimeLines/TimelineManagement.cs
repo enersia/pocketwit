@@ -283,6 +283,32 @@ namespace PockeTwit
             TempLine.Sort();
             return TempLine.ToArray();
         }
+
+        public PockeTwit.Library.status[] GetUserFavorites(String userID)
+        {
+            List<Library.status> TempLine = new List<PockeTwit.Library.status>();
+            foreach (Yedda.Twitter t in TwitterConnections)
+            {
+                if (t.AccountInfo.Enabled && t.FavoritesWork)
+                {
+                    try
+                    {
+                        string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Favorites, userID);
+                        Library.status[] NewStats = Library.status.Deserialize(response, t.AccountInfo, PockeTwit.Library.StatusTypes.Normal);
+                        TempLine.AddRange(NewStats);
+                        ErrorCleared(t.AccountInfo, Yedda.Twitter.ActionType.Favorites);
+                    }
+                    catch
+                    {
+                        NoData(t.AccountInfo, Yedda.Twitter.ActionType.Favorites);
+                        GlobalEventHandler.CallShowErrorMessage("Communications Error");
+                    }
+                }
+            }
+            TempLine.Sort();
+            return TempLine.ToArray();
+        }
+
         public PockeTwit.Library.status[] GetPublicTimeLine()
         {
             bool twitterDone = false;
@@ -707,7 +733,14 @@ else
                         response = t.GetUserTimeline(AdditionalParameter, Yedda.Twitter.OutputFormatType.XML);
                         break;
                     case Yedda.Twitter.ActionType.Favorites:
-                        response = t.GetFavorites();
+                        if (AdditionalParameter != null)
+                        {
+                            response = t.GetFavorites(AdditionalParameter);
+                        }
+                        else
+                        {
+                            response = t.GetFavorites();
+                        }
                         break;
                     case Yedda.Twitter.ActionType.Search:
                         string LastSearchID = LocalStorage.DataBaseUtility.GetLatestItem(t.AccountInfo,
