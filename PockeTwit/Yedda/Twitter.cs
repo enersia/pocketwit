@@ -269,7 +269,8 @@ namespace Yedda
             Account,
             Users,
             Notifications,
-            Friendships
+            Friendships,
+            Help
         }
 
         /// <summary>
@@ -300,7 +301,9 @@ namespace Yedda
             Verify_Credentials,
             Update_Location,
             Conversation,
-            Retweet
+            Retweet,
+            Test,
+            Report_Spam
         }
 
 
@@ -857,6 +860,7 @@ namespace Yedda
             return ExecuteGetCommand(url);
         }
         #endregion
+
         #region Friends_Timeline
         public string GetFriendsTimeLineMax(OutputFormatType format)
         {
@@ -1403,5 +1407,35 @@ namespace Yedda
             string url = "http://twitter.com/friends/ids.xml";
             return ExecuteGetCommand(url);
         }
+
+        #region Help
+        public bool HelpTest()
+        {
+            if (AccountInfo.ServerURL.ServerType != TwitterServer.twitter)
+            {
+                return false;
+            }
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Help), GetActionTypeString(ActionType.Test), GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
+            string Response = ExecuteGetCommand(url);
+            if (!string.IsNullOrEmpty(Response))
+            {
+                return Response.IndexOf("<ok>true</ok>") > 0;
+            }
+            return false;
+        }
+        #endregion
+
+        #region Report_Spam
+        public string ReportSpam(string SpammerID)
+        {
+            if (AccountInfo.ServerURL.ServerType != TwitterServer.twitter)
+            {
+                return null;
+            }
+            string url = string.Format(TwitterSimpleURLFormat, GetActionTypeString(ActionType.Report_Spam), AccountInfo.ServerURL.URL);
+            string data = string.Format("user_id={0}", HttpUtility.UrlEncode(SpammerID));
+            return ExecutePostCommand(url, data);
+        }
+        #endregion
     }
 }
