@@ -10,6 +10,7 @@ using PockeTwit.OtherServices;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace PockeTwit
 {
@@ -41,6 +42,9 @@ namespace PockeTwit
             _User = User;
             InitializeComponent();
             PockeTwit.Themes.FormColors.SetColors(this);
+            PockeTwit.Themes.FormColors.SetColors(pContent);
+            pContent.BackColor = ClientSettings.BackColor;
+            pViewer.BackColor = ClientSettings.BackColor;
             PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             if (ClientSettings.IsMaximized)
             {
@@ -78,9 +82,7 @@ namespace PockeTwit
             }
             else
             {
-                lblDescription.Size = new Size(100, 600);
-                lblDescription.Text = User.description + "\n\n\n test \n\n\n suppppppppppppppppppppppppppppppp" +
-                    "test test test test test test test test test test test test test test test test ";
+                lblDescription.Text = User.description;
             }
 
             if (!string.IsNullOrEmpty(User.url))
@@ -119,6 +121,7 @@ namespace PockeTwit
             PockeTwit.ThrottledArtGrabber.NewArtWasDownloaded += new ThrottledArtGrabber.ArtIsReady(ThrottledArtGrabber_NewArtWasDownloaded);
 
             b.Text = "Close";
+            //b.Anchor = AnchorStyles.Bottom;
             b.Click += new EventHandler(btnClose_Click);
             if (!ClientSettings.IsMaximized)
             {
@@ -131,10 +134,29 @@ namespace PockeTwit
             this.Controls.Add(b);
             b.BringToFront();
 
-            Button b1 = new Button();
-            b1.Location = new Point(0, 400);
-            this.Controls.Add(b1);
-            b1.BringToFront();
+            pContent.Size = new Size(pContent.Size.Width, lblDescription.Location.Y + lblDescription.Size.Height + 5);
+
+            Pen p = new Pen(ClientSettings.ForeColor, 2);
+
+            upArrow.Location = new Point(pViewer.Width - 30, 0);
+            upArrow.BackColor = ClientSettings.BackColor;
+            Image i = new Bitmap(30, 30);
+            Graphics g = Graphics.FromImage(i);
+            g.Clear(ClientSettings.BackColor);
+            g.DrawLine(p, 0, 30, 13, 10);
+            g.DrawLine(p, 13, 10, 26, 30);
+            upArrow.Image = i;
+
+            downArrow.Location = new Point(pViewer.Width - 30, pViewer.Height - 30);
+            downArrow.BackColor = ClientSettings.BackColor;
+            Image i2 = new Bitmap(30, 30);
+            Graphics g2 = Graphics.FromImage(i2);
+            g2.Clear(ClientSettings.BackColor);
+            g2.DrawLine(p, 0, 0, 13, 20);
+            g2.DrawLine(p, 13, 20, 26, 0);
+            downArrow.Image = i2;
+         
+            //TODO: landscape mode - close button position
         }
 
         private Library.User FetchTheUser(PockeTwit.Library.User User)
@@ -192,46 +214,10 @@ namespace PockeTwit
 
         private void llblTweets_Click(object sender, EventArgs e)
         {
-            
-            this.AutoScrollPosition = new Point(this.AutoScrollPosition.X, -(this.AutoScrollPosition.Y) + 10);
-            //sb.Value += 5;
+            selectedAction = ProfileAction.UserTimeline;
+            selectedUser = _User.screen_name;
 
-            //http://social.msdn.microsoft.com/Forums/en-US/netfxcompact/thread/9950951d-fb82-4b82-85e6-c8f0cc641653
-//            const uint GWL_STYLE = -16;
-//const uint WS_VSCROLL = 0x00200000;
-//const uint WS_HSCROLL = 0x00100000;
-
-//[DllImport("coredll.dll")]
-//extern static IntPtr SetWindowLong(IntPtr hwnd, int nIndex, IntPtr dwNewLong);
-
-//[DllImport("coredll.dll")]
-//extern static IntPtr GetWindowLong(IntPtr hwnd, int nIndex);
-
-//void RemoveWindowStyle(IntPtr handle, uint dwRemove)
-//{
-//  uint dwStyle = (uint)GetWindowLong(handle, GWL_STYLE);
-//  uint dwNewStyle = dwStyle & ~dwRemove;
-  
-//  if (dwStyle == dwNewStyle) 
-//    return;
-  
-//  SetWindowLong(handle, GWL_STYLE, (IntPtr)dwNewStyle);
-//}
-
-//void RemoveScrollBars(Control control)
-//{
-//  RemoveWindowStyle(control.Handle, WS_VSCROLL);
-//  RemoveWindowStyle(control.Handle, WS_HSCROLL);
-//}
-
-
-
-
-            //selectedAction = ProfileAction.UserTimeline;
-            //selectedUser = _User.screen_name;
-
-            //PockeTwit.ThrottledArtGrabber.NewArtWasDownloaded -= new ThrottledArtGrabber.ArtIsReady(ThrottledArtGrabber_NewArtWasDownloaded);
-            //this.Close();
+            closeForm();
         }
 
         private void avatarBox_Click(object sender, EventArgs e)
@@ -313,8 +299,7 @@ namespace PockeTwit
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            PockeTwit.ThrottledArtGrabber.NewArtWasDownloaded -= new ThrottledArtGrabber.ArtIsReady(ThrottledArtGrabber_NewArtWasDownloaded);
-            this.Close();
+            closeForm();
         }
 
         private void llblFavorites_Click(object sender, EventArgs e)
@@ -322,8 +307,23 @@ namespace PockeTwit
             selectedAction = ProfileAction.Favorites;
             selectedUser = _User.screen_name;
 
-            PockeTwit.ThrottledArtGrabber.NewArtWasDownloaded -= new ThrottledArtGrabber.ArtIsReady(ThrottledArtGrabber_NewArtWasDownloaded);
-            this.Close();
+            closeForm();
+        }
+
+        private void downArrow_Click(object sender, EventArgs e)
+        {
+            if (pContent.Top > -(pContent.Size.Height))
+            {
+                pContent.Top -= 40;
+            }
+        }
+
+        private void upArrow_Click(object sender, EventArgs e)
+        {
+            if (pContent.Top < 0)
+            {
+                pContent.Top += 40;
+            }
         }
 
         private DateTime getDate(string date)
@@ -380,11 +380,11 @@ namespace PockeTwit
             return screenSize;
         }
 
-        private void sb_ValueChanged(object sender, EventArgs e)
+        private void closeForm()
         {
-            Console.WriteLine("SCROLL!");
+            PockeTwit.ThrottledArtGrabber.NewArtWasDownloaded -= new ThrottledArtGrabber.ArtIsReady(ThrottledArtGrabber_NewArtWasDownloaded);
+            this.Close();
         }
-
 
     }
 }
