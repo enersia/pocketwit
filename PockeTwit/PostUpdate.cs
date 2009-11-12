@@ -993,16 +993,9 @@ namespace PockeTwit
             SpellRequest request = new SpellRequest(textToCheck, false, false, false);
             result = SpellCheck.Check(request);
 
-        //combining into one function so it doesn't post until spell checking is complete
-
-        //    this.Invoke(new EventHandler(CorrectSpelling));
-        //}
-
-        //private void CorrectSpelling(object sender, EventArgs e)
-        //{
             if (result.Corrections == null || result.Corrections.Length <= 0)
             {
-                MessageBox.Show("Spell Check Complete!");
+                PockeTwit.Localization.LocalizedMessageBox.Show("Spell Check Complete!");
                 return;
             }
 
@@ -1010,13 +1003,20 @@ namespace PockeTwit
 
             foreach (SpellCorrection sc in result.Corrections)
             {
-                currentSC = sc;
-                
-                //if the mispelled work no longer exists, ie it was a duplicate
-                if(txtStatusUpdate.Text.IndexOf(originalText.Substring(currentSC.Offset, currentSC.Length)) < 0)
+                //if the mispelled word is a username or hashtag, don't spell check it
+                if(originalText.Substring(sc.Offset - 1, sc.Length + 1).StartsWith("@") ||
+                    originalText.Substring(sc.Offset - 1, sc.Length + 1).StartsWith("#"))
                 {
                     continue;
                 }
+                
+                //if the mispelled word no longer exists, it was probably a duplicate
+                if(txtStatusUpdate.Text.IndexOf(originalText.Substring(sc.Offset, sc.Length)) < 0)
+                {
+                    continue;
+                }
+
+                currentSC = sc;
 
                 txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.IndexOf(originalText.Substring(currentSC.Offset, currentSC.Length));
                 txtStatusUpdate.SelectionLength = currentSC.Length;
@@ -1042,7 +1042,7 @@ namespace PockeTwit
             txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
             txtStatusUpdate.SelectionLength = 0;
 
-            MessageBox.Show("Spell Check Complete!");
+            PockeTwit.Localization.LocalizedMessageBox.Show("Spell Check Complete!");
         }
 
         private void SpellMenu_Clicked(object sender, EventArgs e)

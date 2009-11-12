@@ -303,7 +303,8 @@ namespace Yedda
             Conversation,
             Retweet,
             Test,
-            Report_Spam
+            Report_Spam,
+            Rate_Limit_Status
         }
 
 
@@ -1411,15 +1412,11 @@ namespace Yedda
         #region Help
         public bool HelpTest()
         {
-            if (AccountInfo.ServerURL.ServerType != TwitterServer.twitter)
-            {
-                return false;
-            }
-            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Help), GetActionTypeString(ActionType.Test), GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Help), GetActionTypeString(ActionType.Test), GetFormatTypeString(OutputFormatType.XML), "http://twitter.com/");
             string Response = ExecuteGetCommand(url);
             if (!string.IsNullOrEmpty(Response))
             {
-                return Response.IndexOf("<ok>true</ok>") > 0;
+                return Response == "<ok>true</ok>";
             }
             return false;
         }
@@ -1435,6 +1432,27 @@ namespace Yedda
             string url = string.Format(TwitterSimpleURLFormat, GetActionTypeString(ActionType.Report_Spam), AccountInfo.ServerURL.URL);
             string data = string.Format("user_id={0}", HttpUtility.UrlEncode(SpammerID));
             return ExecutePostCommand(url, data);
+        }
+        #endregion
+
+        #region Rate_Limit_Status
+        public string GetRateLimitStatusForUser()
+        {
+            if (AccountInfo.ServerURL.ServerType != TwitterServer.twitter)
+            {
+                return null;
+            }
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Account), GetActionTypeString(ActionType.Rate_Limit_Status), GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
+            return ExecuteGetCommand(url);    
+        }
+        public string GetRateLimitStatusForIP()
+        {
+            if (AccountInfo.ServerURL.ServerType != TwitterServer.twitter)
+            {
+                return null;
+            }
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Account), GetActionTypeString(ActionType.Rate_Limit_Status), GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
+            return ExecuteAnonymousGetCommand(url);
         }
         #endregion
     }

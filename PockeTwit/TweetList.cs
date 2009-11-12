@@ -707,7 +707,45 @@ namespace PockeTwit
                     return;
                 }
             }
-            SetStatus("@" + User, selectedItem.Tweet.id);
+            
+            //if the tweet contains a username, check for all users mentioned and reply to all 
+            if (selectedItem.Tweet.text.IndexOf("@") > 0)
+            {
+                char[] IgnoredAtChars = new[] { ':', ',', '-', '.', '!', '?', '~', '=', '&', '*', '>', ')', '(' };
+                System.Text.RegularExpressions.Regex GetClickables =
+                new System.Text.RegularExpressions.Regex(@"(@\w+)", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                System.Text.RegularExpressions.MatchCollection m = GetClickables.Matches(selectedItem.Tweet.text);
+
+                List<string> usersToReplyTo = new List<string>();
+                usersToReplyTo.Add("@" + User);
+                int found = 0;
+
+                foreach (System.Text.RegularExpressions.Match match in m)
+                {
+                    string u = match.Value.Trim(IgnoredAtChars);
+                    //Can't use Contains because it the comparison is case sensitive
+                    //Found this method at http://www.developersdex.com/csharp/message.asp?p=1111&r=6512606
+                    //if (!usersToReplyTo.Contains(match.Value.Trim(IgnoredAtChars)))
+                    found = usersToReplyTo.FindIndex(delegate(string s)
+                    {
+                        return 0 ==
+                            string.Compare(u, s, StringComparison.OrdinalIgnoreCase);
+                    });
+                    if (found < 0)
+                    {
+                        usersToReplyTo.Add(u);
+                    }
+                }
+                string userList = "";
+                usersToReplyTo.ForEach(delegate(String s) { userList += s + " "; });
+                userList = userList.Trim();
+                SetStatus(userList, selectedItem.Tweet.id);
+            }
+            else
+            {
+                SetStatus("@" + User, selectedItem.Tweet.id);
+            }
         }
 
         private void CreateLeftMenu()
