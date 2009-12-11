@@ -35,8 +35,6 @@ namespace PockeTwit
 
         private SpellCorrection currentSC;
         private String originalText;
-        private SpellResult result;
-        private String textToCheck;
 
         #region Properties
         private Yedda.Twitter.Account _AccountToSet = ClientSettings.DefaultAccount;
@@ -942,15 +940,16 @@ namespace PockeTwit
 
             //if (ClientSettings.SpellCheck)
             {
-                textToCheck = txtStatusUpdate.Text;
-                CheckSpelling();
-
-                //If you want to allow for continued editing, use a thread
-                //Thread t = new Thread(new ThreadStart(CheckSpelling));
-                //t.Start();
+                //if SpellCheck went ok
+                if (CheckSpelling(txtStatusUpdate.Text))
+                {
+                    //ask if they want to cancel the tweet submission
+                    if (PockeTwit.Localization.LocalizedMessageBox.Show("Spell check complete! Submit now?", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
+                    {
+                        return;
+                    }
+                }
             }
-
-            //bool Success = false;
 
             bool Success = PostTheUpdate();
 
@@ -975,8 +974,6 @@ namespace PockeTwit
 
         #endregion
 
-
-
         protected override void OnClosed(EventArgs e)
         {
             if (ClientSettings.AutoCompleteAddressBook)
@@ -986,63 +983,75 @@ namespace PockeTwit
             base.OnClosed(e);
         }
 
-
-
-        private void CheckSpelling()
+        private bool CheckSpelling(string textToCheck)
         {
             SpellRequest request = new SpellRequest(textToCheck, false, false, false);
-            result = SpellCheck.Check(request);
+            SpellResult result = SpellCheck.Check(request);
 
             if (result.Corrections == null || result.Corrections.Length <= 0)
             {
-                PockeTwit.Localization.LocalizedMessageBox.Show("Spell Check Complete!");
-                return;
+                return true;
             }
 
             originalText = txtStatusUpdate.Text;
 
             foreach (SpellCorrection sc in result.Corrections)
             {
-                //if the mispelled word is a username or hashtag, don't spell check it
-                if(originalText.Substring(sc.Offset - 1, sc.Length + 1).StartsWith("@") ||
-                    originalText.Substring(sc.Offset - 1, sc.Length + 1).StartsWith("#"))
+                try
                 {
-                    continue;
+                    //if the mispelled word is a username or hashtag, don't spell check it
+                    if (originalText.Substring(sc.Offset - 1, sc.Length + 1).StartsWith("@") ||
+                        originalText.Substring(sc.Offset - 1, sc.Length + 1).StartsWith("#"))
+                    {
+                        continue;
+                    }
+
+                    //if the mispelled word no longer exists, it was probably a duplicate
+                    if (txtStatusUpdate.Text.IndexOf(originalText.Substring(sc.Offset, sc.Length)) < 0)
+                    {
+                        continue;
+                    }
+
+                    currentSC = sc;
+
+                    txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.IndexOf(originalText.Substring(currentSC.Offset, currentSC.Length));
+
+                    //don't select "misspelled" text that starts with @ or #
+                    while (txtStatusUpdate.Text.Substring(txtStatusUpdate.SelectionStart - 1, 1).Equals("@") ||
+                        txtStatusUpdate.Text.Substring(txtStatusUpdate.SelectionStart - 1, 1).Equals("#"))
+                    {
+                        MessageBox.Show("Moving selection pointer again!");
+                        txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.IndexOf(originalText.Substring(currentSC.Offset, currentSC.Length), txtStatusUpdate.SelectionStart + 1);
+                    }
+
+                    txtStatusUpdate.SelectionLength = currentSC.Length;
+
+                    contextMenu1.MenuItems.Clear();
+
+                    string[] vals = sc.Value.Split('\t');
+
+                    foreach (string s in vals)
+                    {
+                        MenuItem mi = new MenuItem();
+                        mi.Text = s;
+
+                        mi.Click += new EventHandler(this.SpellMenu_Clicked);
+                        contextMenu1.MenuItems.Add(mi);
+
+                    }
+
+                    contextMenu1.Show(txtStatusUpdate, new Point(50, 50));
                 }
-                
-                //if the mispelled word no longer exists, it was probably a duplicate
-                if(txtStatusUpdate.Text.IndexOf(originalText.Substring(sc.Offset, sc.Length)) < 0)
+                catch (Exception ex)
                 {
-                    continue;
+                    MessageBox.Show("Spell check error: " + ex.Message());
                 }
-
-                currentSC = sc;
-
-                txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.IndexOf(originalText.Substring(currentSC.Offset, currentSC.Length));
-                txtStatusUpdate.SelectionLength = currentSC.Length;
-
-                contextMenu1.MenuItems.Clear();
-
-                string[] vals = sc.Value.Split('\t');
-
-                foreach (string s in vals)
-                {
-                    MenuItem mi = new MenuItem();
-                    mi.Text = s;
-
-                    mi.Click += new EventHandler(this.SpellMenu_Clicked);
-                    contextMenu1.MenuItems.Add(mi);
-
-                }
-
-                contextMenu1.Show(txtStatusUpdate, new Point(50, 50));
-
             }
 
             txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
             txtStatusUpdate.SelectionLength = 0;
 
-            PockeTwit.Localization.LocalizedMessageBox.Show("Spell Check Complete!");
+            return true;
         }
 
         private void SpellMenu_Clicked(object sender, EventArgs e)

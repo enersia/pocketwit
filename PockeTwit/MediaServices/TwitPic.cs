@@ -17,7 +17,7 @@ namespace PockeTwit.MediaServices
 
         private const string API_UPLOAD = "http://twitpic.com/api/upload";
         private const string API_UPLOAD_POST = "http://twitpic.com/api/uploadAndPost";
-        private const string API_SHOW_THUMB = "http://twitpic.com/show/thumb/";  //The extra / for directly sticking the image-id on.
+        private const string API_SHOW_THUMB = "http://twitpic.com/show/large/";  //The extra / for directly sticking the image-id on.
 
         private const string API_ERROR_UPLOAD = "Unable to upload to TwitPic";
         private const string API_ERROR_DOWNLOAD = "Unable to download from TwitPic";
