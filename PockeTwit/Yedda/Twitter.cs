@@ -304,7 +304,8 @@ namespace Yedda
             Retweet,
             Test,
             Report_Spam,
-            Rate_Limit_Status
+            Rate_Limit_Status,
+            Retweeted_By_Me
         }
 
 
@@ -412,6 +413,7 @@ namespace Yedda
         protected const string TwitterFavoritesUserUrlFormat = "{2}/{0}/{1}.xml";
         protected const string TwitterSearchUrlFormat = "http://search.twitter.com/search.json?{0}";
         protected const string TwitterConversationUrlFormat = "http://search.twitter.com/search/thread/{0}";
+        protected const string TwitterNewBaseUrlFormat = "http://api.twitter.com/1/{0}/{1}.{2}";
 
         public string GetProfileURL(string User)
         {
@@ -1042,6 +1044,7 @@ namespace Yedda
         #endregion
 
         #region Update
+
         public string Update(string status, OutputFormatType format)
         {
             return Update(status, null, format);
@@ -1107,6 +1110,62 @@ namespace Yedda
             return null;
         }
 
+        #endregion
+
+        #region Retweet
+
+        public string Retweet_Status(string status_id, OutputFormatType format)
+        {
+            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.pingfm)
+            {
+                return null;
+            }
+            else if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
+            {
+                return null;
+            }
+            else
+            {
+                if (format != OutputFormatType.JSON && format != OutputFormatType.XML)
+                {
+                    throw new ArgumentException("Retweet supports only XML and JSON output formats", "format");
+                }
+
+                string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Retweet) + "/{0}", GetFormatTypeString(format));
+                url = String.Format(url, status_id);
+                return ExecutePostCommand(url, null);
+            }
+        }
+
+        #endregion
+
+        #region Retweeted_by_me
+
+        public string GetRetweetedByMe(string status_id, OutputFormatType format)
+        {
+            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.pingfm)
+            {
+                return null;
+            }
+            else if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
+            {
+                return null;
+            }
+            else
+            {
+                if (format != OutputFormatType.JSON && format != OutputFormatType.XML && format != OutputFormatType.Atom)
+                {
+                    throw new ArgumentException("Retweeted_by_me supports only XML,JSON, and Atom output formats", "format");
+                }
+
+                string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Retweeted_By_Me), GetFormatTypeString(format));
+                return ExecutePostCommand(url, null);
+            }
+        }
+
+        #endregion
+
+        #region Destroy
 
         public string Destroy_Status(string status_id, OutputFormatType format)
         {
@@ -1132,32 +1191,7 @@ namespace Yedda
             }
         }
 
-        public string Retweet_Status(string status_id, OutputFormatType format)
-        {
-
-            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.pingfm)
-            {
-                return null;
-            }
-            else if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
-            {
-                return null;
-            }
-            else
-            {
-                if (format != OutputFormatType.JSON && format != OutputFormatType.XML)
-                {
-                    throw new ArgumentException("Update support only XML and JSON output format", "format");
-                }
-
-                string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Retweet) + "/{0}", GetFormatTypeString(format), AccountInfo.ServerURL.URL);
-                url = String.Format(url, status_id);
-                return ExecutePostCommand(url, null);
-            }
-        }
-
-
-       public string Destroy_StatusAsJSON(string statusId)
+        public string Destroy_StatusAsJSON(string statusId)
         {
             return Destroy_Status(statusId, OutputFormatType.JSON);
         }
@@ -1175,6 +1209,7 @@ namespace Yedda
 
             return null;
         }
+        
         #endregion
 
         #region Featured

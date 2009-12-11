@@ -13,6 +13,7 @@ using PockeTwit.SpecialTimelines;
 using PockeTwit.TimeLines;
 using Yedda;
 using System.Collections;
+using System.Threading;
 
 
 namespace PockeTwit
@@ -45,6 +46,7 @@ namespace PockeTwit
         private string ShowUserID;
         private bool StartBackground = false;
         private ISpecialTimeLine currentSpecialTimeLine = null;
+        private string urlToLaunch = string.Empty;
 
         #region MenuItems
         #region LeftMenu
@@ -294,7 +296,11 @@ namespace PockeTwit
         }
         private void AddStatusesToList(Library.status[] mergedstatuses, bool KeepPosition)
         {
-            if(mergedstatuses==null){return;} //Why would this turn up null? Comm error?
+            if (mergedstatuses == null) //Why would this turn up null? Comm error?
+            {
+                MessageBox.Show("Status list was null for " + statList.CurrentList()); //TODO: take this out
+                return;
+            } 
             if (mergedstatuses.Length == 0) { return; }
             if (InvokeRequired)
             {
@@ -1739,8 +1745,28 @@ namespace PockeTwit
         {
             if (statList.SelectedItem == null) { return; }
             StatusItem selectedItem = (StatusItem)statList.SelectedItem;
-            string quote = "RT @" + selectedItem.Tweet.user.screen_name + ": \"" + selectedItem.Tweet.text + "\"";
-            SetStatus(quote, "");
+            //string quote = "RT @" + selectedItem.Tweet.user.screen_name + ": " + selectedItem.Tweet.text;
+            //SetStatus(quote, "");
+
+            Yedda.Twitter TwitterConn = new Yedda.Twitter();
+            TwitterConn.AccountInfo = selectedItem.Tweet.Account;
+            
+            string retValue = TwitterConn.Retweet_Status(selectedItem.Tweet.id, Yedda.Twitter.OutputFormatType.XML);
+
+            if (string.IsNullOrEmpty(retValue))
+            {
+                PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- empty response.  You may want to try again later.");
+                return;
+            }
+            try
+            {
+                Library.status.DeserializeSingle(retValue, selectedItem.Tweet.Account);
+            }
+            catch
+            {
+                PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- bad response.  You may want to try again later.");
+                return;
+            }
         }
 
         Type _lastSelectedItemType = typeof(StatusItem);
@@ -1791,26 +1817,11 @@ namespace PockeTwit
                     p.ErrorOccured += new PockeTwit.MediaServices.ErrorOccuredEventHandler(p_ErrorOccured);
                     return;
                 }
-                
 
-                System.Diagnostics.ProcessStartInfo pi = new System.Diagnostics.ProcessStartInfo();
-                if (ClientSettings.UseSkweezer)
-                {
-                    pi.FileName = Skweezer.GetSkweezerURL(TextClicked);
-                }
-                else
-                {
-                    pi.FileName = TextClicked;
-                }
-                try
-                {
-                    pi.UseShellExecute = true;
-                    System.Diagnostics.Process p = System.Diagnostics.Process.Start(pi);
-                }
-                catch
-                {
-                    PockeTwit.Localization.LocalizedMessageBox.Show("There is no default web browser defined for the OS.");
-                }
+                //launch browser in a thread
+                urlToLaunch = TextClicked;
+                Thread t = new Thread(new ThreadStart(LaunchBrowserLink));
+                t.Start();
             }
             else if (TextClicked.StartsWith("#"))
             {
@@ -2297,6 +2308,28 @@ namespace PockeTwit
             AddStatusesToList(Manager.GetUserFavorites(userID)); //AddStatusesToList(Manager.GetUserTimeLine(Conn, ShowUserID));
             ChangeCursor(Cursors.Default);
             return;
+        }
+
+        private void LaunchBrowserLink()
+        {
+            System.Diagnostics.ProcessStartInfo pi = new System.Diagnostics.ProcessStartInfo();
+            if (ClientSettings.UseSkweezer)
+            {
+                pi.FileName = Skweezer.GetSkweezerURL(urlToLaunch);
+            }
+            else
+            {
+                pi.FileName = urlToLaunch;
+            }
+            try
+            {
+                pi.UseShellExecute = true;
+                System.Diagnostics.Process p = System.Diagnostics.Process.Start(pi);
+            }
+            catch
+            {
+                PockeTwit.Localization.LocalizedMessageBox.Show("There is no default web browser defined for the OS.");
+            }
         }
 
     }
