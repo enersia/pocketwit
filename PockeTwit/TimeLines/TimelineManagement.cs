@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.WindowsMobile.Status;
+using OpenNETCF.WindowsCE;
 using PockeTwit.Library;
 using PockeTwit.SpecialTimelines;
 using Yedda;

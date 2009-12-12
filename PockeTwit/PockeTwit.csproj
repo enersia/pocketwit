@@ -72,6 +72,26 @@
     <Reference Include="Microsoft.WindowsMobile.PocketOutlook, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="Microsoft.WindowsMobile.Status, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="mscorlib" />
+    <Reference Include="nunit.core, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\nunit.core.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenNETCF, Version=2.3.0.39, Culture=neutral, PublicKeyToken=e60dbea84bb431b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\OpenNETCF.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenNETCF.WindowsCE, Version=2.3.0.39, Culture=neutral, PublicKeyToken=e60dbea84bb431b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\OpenNETCF.WindowsCE.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenNETCF.WindowsCE.Messaging, Version=2.3.0.39, Culture=neutral, PublicKeyToken=e60dbea84bb431b7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\OpenNETCF.WindowsCE.Messaging.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.60.0, Culture=neutral, PublicKeyToken=1fdb50b1b62b4c84, processorArchitecture=MSIL" />
@@ -124,9 +144,6 @@
     </Compile>
     <Compile Include="NotificationsCode\NotificationSoftKeys\SHNOTIFICATIONDATA.cs" />
     <Compile Include="NotificationsCode\NotificationSoftKeys\SpinnerClickEventHandler.cs" />
-    <Compile Include="OpenNetCF\EventWaitHandle.cs" />
-    <Compile Include="OpenNetCF\LargeIntervalTimer.cs" />
-    <Compile Include="OpenNetCF\NativeMethods.cs" />
     <Compile Include="SettingsHandler\AccountInfoForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -289,10 +306,22 @@
     <Content Include="default_profile_bigger.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Localization\pocketwit_zh-CN.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Localization\pocketwit_de.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Localization\pocketwit_ja.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Localization\pocketwit_pt.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SQLite.Interop.060.DLL">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestCode\Desert.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Themes\DeepPurple\DeepPurple.txt">
@@ -517,13 +546,6 @@
     <Compile Include="LocalStorage\DataBaseUtility.cs" />
     <Compile Include="MsgWindow.cs" />
     <Compile Include="NotificationsCode\NotificationTexts.cs" />
-    <Compile Include="OpenNetCF\LED.cs" />
-    <Compile Include="OpenNetCF\Notify.cs" />
-    <Compile Include="OpenNetCF\SYSTEMTIME.cs" />
-    <Compile Include="OpenNetCF\UserNotification.cs" />
-    <Compile Include="OpenNetCF\UserNotificationInfoHeader.cs" />
-    <Compile Include="OpenNetCF\UserNotificationTrigger.cs" />
-    <Compile Include="OpenNetCF\WaitHandle.cs" />
     <Compile Include="PostUpdate.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -573,6 +595,7 @@
       <DependentUpon>NotificationSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="SpecialTimelines\UserGroupTimeLine.cs" />
+    <Compile Include="TestCode\TestMediaServiceFixture.cs" />
     <Compile Include="TestCode\TestStatusMaker.cs" />
     <Compile Include="TiledMaps\CompositeTiledMapSession.cs" />
     <Compile Include="TiledMaps\Directions.cs" />
