@@ -1044,7 +1044,7 @@ namespace PockeTwit
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Spell check error: " + ex.Message());
+                    MessageBox.Show("Spell check error: " + ex.Message);
                 }
             }
 

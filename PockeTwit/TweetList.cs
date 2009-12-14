@@ -1632,7 +1632,22 @@ namespace PockeTwit
             i.Account = CurrentlySelectedAccount;
             i.Argument = ShowUserID;
             History.Push(i);
-            AddStatusesToList(Manager.GetUserTimeLine(Conn, ShowUserID));
+            if (CurrentlySelectedAccount.UserName == ShowUserID)
+            {
+                List<status> tempList = new List<status>();
+                tempList.AddRange(Manager.GetUserTimeLine(Conn, ShowUserID));
+                tempList.AddRange(Manager.GetRetweetedByMe(Conn, ShowUserID));
+                tempList.Sort();
+                if (tempList.Count > 20)
+                {
+                    tempList.RemoveRange(19, tempList.Count - 20); 
+                }
+                AddStatusesToList(tempList.ToArray());
+            }
+            else
+            {
+                AddStatusesToList(Manager.GetUserTimeLine(Conn, ShowUserID));
+            }
             ChangeCursor(Cursors.Default);
 
             return;

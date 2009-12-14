@@ -1141,7 +1141,7 @@ namespace Yedda
 
         #region Retweeted_by_me
 
-        public string GetRetweetedByMe(string status_id, OutputFormatType format)
+        public string GetRetweetedByMe(OutputFormatType format)
         {
             if (this.AccountInfo.ServerURL.ServerType == TwitterServer.pingfm)
             {
@@ -1159,7 +1159,7 @@ namespace Yedda
                 }
 
                 string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Retweeted_By_Me), GetFormatTypeString(format));
-                return ExecutePostCommand(url, null);
+                return ExecuteGetCommand(url);
             }
         }
 
