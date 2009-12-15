@@ -305,7 +305,8 @@ namespace Yedda
             Test,
             Report_Spam,
             Rate_Limit_Status,
-            Retweeted_By_Me
+            Retweeted_By_Me,
+            Home_Timeline
         }
 
 
@@ -867,13 +868,29 @@ namespace Yedda
         #region Friends_Timeline
         public string GetFriendsTimeLineMax(OutputFormatType format)
         {
-            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Friends_Timeline), GetFormatTypeString(format), AccountInfo.ServerURL.URL)+"?count="+MaxTweets;
-            return ExecuteGetCommand(url);
+            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.twitter)
+            {
+                string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format)) + "?count=" + MaxTweets;
+                return ExecuteGetCommand(url);
+            }
+            else
+            {
+                string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Friends_Timeline), GetFormatTypeString(format), AccountInfo.ServerURL.URL) + "?count=" + MaxTweets;
+                return ExecuteGetCommand(url);
+            }
         }
         public string GetFriendsTimeLineSince(OutputFormatType format, string SinceID)
         {
-            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Friends_Timeline), GetFormatTypeString(format), AccountInfo.ServerURL.URL) + "?since_id=" + SinceID + "&count=" + ClientSettings.MaxTweets;
-            return ExecuteGetCommand(url);
+            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.twitter)
+            {
+                string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format)) + "?since_id=" + SinceID + "&count=" + ClientSettings.MaxTweets;
+                return ExecuteGetCommand(url);
+            }
+            else
+            {
+                string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Friends_Timeline), GetFormatTypeString(format), AccountInfo.ServerURL.URL) + "?since_id=" + SinceID + "&count=" + ClientSettings.MaxTweets;
+                return ExecuteGetCommand(url);
+            }
         }
 
         public string GetFriendsTimeline(OutputFormatType format)
@@ -881,6 +898,11 @@ namespace Yedda
             if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
             {
                 string url = "http://brightkite.com/me/friendstream.xml";
+                return ExecuteGetCommand(url);
+            }
+            else if (this.AccountInfo.ServerURL.ServerType == TwitterServer.twitter)
+            {
+                string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format));
                 return ExecuteGetCommand(url);
             }
             else

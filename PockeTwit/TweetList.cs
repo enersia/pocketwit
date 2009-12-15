@@ -1640,7 +1640,7 @@ namespace PockeTwit
                 tempList.Sort();
                 if (tempList.Count > 20)
                 {
-                    tempList.RemoveRange(19, tempList.Count - 20); 
+                    tempList.RemoveRange(20, tempList.Count - 20); 
                 }
                 AddStatusesToList(tempList.ToArray());
             }
@@ -2259,7 +2259,7 @@ namespace PockeTwit
             
             //test = LetsBeTrends.GetTrend("GoodNight");
 
-            //statList.Clear();
+            statList.Clear();
             //statList.ClearVisible();
 
             //AddStatusesToList(Manager.GetFavorites());
@@ -2295,7 +2295,7 @@ namespace PockeTwit
                 statList.AddItem(new TrendingTopicItem(this, null, tt));
             }
             statList.SelectedItem = statList[0];
-
+            statList.YOffset = 0;
             statList.Redraw();
             statList.RerenderPortal();
             statList.Repaint();

@@ -20,7 +20,7 @@ namespace LocalStorage
 
         private const string SQLFetchDirects = "(statuses.statustypes & 4)";
 
-        private const string SQLFetchFriends = "(statuses.statustypes & 1)";
+        private const string SQLFetchFriends = "(statuses.statustypes & 1 OR statuses.statustypes & 2 OR statuses.statustypes & 16)";
 
         private const string SQLFetchFromCache =
             @"SELECT     statuses.id, statuses.fulltext, statuses.userid, statuses.[timestamp], 

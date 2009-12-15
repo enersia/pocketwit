@@ -50,11 +50,12 @@ namespace PockeTwit.Library
         {
             get
             {
-                if (!string.IsNullOrEmpty(in_reply_to_status_id) || !string.IsNullOrEmpty(in_reply_to_user_id))
-                {
-                    return StatusTypes.Reply;
-                }
-                else if (text.StartsWith("RT "))
+                //if (!string.IsNullOrEmpty(in_reply_to_status_id) || !string.IsNullOrEmpty(in_reply_to_user_id))
+                //{
+                //    return StatusTypes.Reply;
+                //}
+                //else 
+                if (text.StartsWith("RT "))
                 {
                     return StatusTypes.Retweet;
                 }
@@ -171,7 +172,6 @@ namespace PockeTwit.Library
 
         public User user { get; set; }
 
-
         public string AccountSummary
         {
             get
@@ -277,14 +277,14 @@ namespace PockeTwit.Library
                         //    }
                         //    else if(stat.
                         //}
-                        if (stat.type != null)
-                        {
+                        //if (stat.type != null)
+                        //{
                             stat.TypeofMessage = stat.type;
-                        }
-                        else
-                        {
-                            stat.TypeofMessage = TypeOfMessage;
-                        }
+                        //}
+                        //else
+                        //{
+                        //    stat.TypeofMessage = TypeOfMessage;
+                        //}
                     }
                 }
             }
