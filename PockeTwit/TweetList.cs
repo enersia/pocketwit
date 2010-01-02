@@ -12,6 +12,8 @@ using PockeTwit.OtherServices;
 using PockeTwit.SpecialTimelines;
 using PockeTwit.TimeLines;
 using Yedda;
+using System.Collections;
+using System.Threading;
 
 
 namespace PockeTwit
@@ -44,6 +46,7 @@ namespace PockeTwit
         private string ShowUserID;
         private bool StartBackground = false;
         private ISpecialTimeLine currentSpecialTimeLine = null;
+        private string urlToLaunch = string.Empty;
 
         #region MenuItems
         #region LeftMenu
@@ -293,7 +296,11 @@ namespace PockeTwit
         }
         private void AddStatusesToList(Library.status[] mergedstatuses, bool KeepPosition)
         {
-            if(mergedstatuses==null){return;} //Why would this turn up null? Comm error?
+            if (mergedstatuses == null) //Why would this turn up null? Comm error?
+            {
+                MessageBox.Show("Status list was null for " + statList.CurrentList()); //TODO: take this out
+                return;
+            } 
             if (mergedstatuses.Length == 0) { return; }
             if (InvokeRequired)
             {
@@ -706,7 +713,45 @@ namespace PockeTwit
                     return;
                 }
             }
-            SetStatus("@" + User, selectedItem.Tweet.id);
+            
+            //if the tweet contains a username, check for all users mentioned and reply to all 
+            if (selectedItem.Tweet.text.IndexOf("@") > 0)
+            {
+                char[] IgnoredAtChars = new[] { ':', ',', '-', '.', '!', '?', '~', '=', '&', '*', '>', ')', '(' };
+                System.Text.RegularExpressions.Regex GetClickables =
+                new System.Text.RegularExpressions.Regex(@"(@\w+)", System.Text.RegularExpressions.RegexOptions.Compiled | System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+
+                System.Text.RegularExpressions.MatchCollection m = GetClickables.Matches(selectedItem.Tweet.text);
+
+                List<string> usersToReplyTo = new List<string>();
+                usersToReplyTo.Add("@" + User);
+                int found = 0;
+
+                foreach (System.Text.RegularExpressions.Match match in m)
+                {
+                    string u = match.Value.Trim(IgnoredAtChars);
+                    //Can't use Contains because it the comparison is case sensitive
+                    //Found this method at http://www.developersdex.com/csharp/message.asp?p=1111&r=6512606
+                    //if (!usersToReplyTo.Contains(match.Value.Trim(IgnoredAtChars)))
+                    found = usersToReplyTo.FindIndex(delegate(string s)
+                    {
+                        return 0 ==
+                            string.Compare(u, s, StringComparison.OrdinalIgnoreCase);
+                    });
+                    if (found < 0)
+                    {
+                        usersToReplyTo.Add(u);
+                    }
+                }
+                string userList = "";
+                usersToReplyTo.ForEach(delegate(String s) { userList += s + " "; });
+                userList = userList.Trim();
+                SetStatus(userList, selectedItem.Tweet.id);
+            }
+            else
+            {
+                SetStatus("@" + User, selectedItem.Tweet.id);
+            }
         }
 
         private void CreateLeftMenu()
@@ -722,7 +767,8 @@ namespace PockeTwit
             RefreshMessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshMessagesTimeLine, "Refresh Messages", statList.LeftMenu, "Messages_TimeLine");
             PublicMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowPublicTimeLine, "Public Timeline", statList.LeftMenu);
             SearchMenuItem = new FingerUI.Menu.SideMenuItem(this.TwitterSearch, "Search/Local", statList.LeftMenu);
-            ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "View Favorites", statList.LeftMenu);
+            //ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "View Favorites", statList.LeftMenu);
+            ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowTrends, "View Favorites", statList.LeftMenu);
             FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "Follow User", statList.LeftMenu);
 
             OtherGlobalMenuItem = new FingerUI.Menu.SideMenuItem(null, "Other ...", statList.LeftMenu);
@@ -1355,13 +1401,65 @@ namespace PockeTwit
         }
         private void ShowProfile()
         {
+            ChangeCursor(Cursors.WaitCursor);
             if (statList.SelectedItem == null) { return; }
             StatusItem selectedItem = (StatusItem)statList.SelectedItem;
-
-            using (ProfileView v = new ProfileView(selectedItem.Tweet.user))
+            IProfileViewer view;
+            if (DetectDevice.DeviceType == DeviceType.Professional)
             {
-                v.ShowDialog();
+                view = new ProfileView(selectedItem.Tweet.user);
             }
+            else
+            {
+                view = new ProfileViewSmartPhone(selectedItem.Tweet.user);
+            }
+
+            ChangeCursor(Cursors.Default);
+
+            IsLoaded = false;
+            statList.Visible = false;
+
+            ((Form)view).ShowDialog();
+
+            this.Visible = true;
+            statList.Visible = true;
+            IsLoaded = true;
+
+            //statList.OpenLeftMenu();
+
+            //statList.RightMenu.SelectedItem = null;
+            //statList.LeftMenu.SelectedItem = null;
+
+            ((Form)view).Close();
+
+            if (String.IsNullOrEmpty(view.selectedUser))
+            {
+                return;
+            }
+
+            statList.IgnoreMouse = true;
+
+            if (view.selectedAction == ProfileAction.UserTimeline)
+            {
+                SwitchToUserTimeLine(view.selectedUser);
+            }
+            else if (view.selectedAction == ProfileAction.Favorites)
+            {
+                SwitchToUserFavorites(view.selectedUser);
+            }
+            else if (view.selectedAction == ProfileAction.Followers)
+            {
+                //TODO
+            }
+            else if (view.selectedAction == ProfileAction.Following)
+            {
+                //TODO
+            }
+            else
+            {
+                statList.IgnoreMouse = false; //is this needed?
+            }
+            ((Form)view).Dispose();
         }
 
         private void ExitApplication()
@@ -1466,7 +1564,7 @@ namespace PockeTwit
             i.Action = Yedda.Twitter.ActionType.Favorites;
             History.Push(i);
             statList.SetSelectedMenu(ViewFavoritesMenuItem);
-            AddStatusesToList(Manager.GetFavorites());
+            AddStatusesToList(Manager.GetFavorites());       
             ChangeCursor(Cursors.Default);
         }
         private void ShowPublicTimeLine()
@@ -1540,7 +1638,22 @@ namespace PockeTwit
             i.Account = CurrentlySelectedAccount;
             i.Argument = ShowUserID;
             History.Push(i);
-            AddStatusesToList(Manager.GetUserTimeLine(Conn, ShowUserID));
+            if (CurrentlySelectedAccount.UserName == ShowUserID)
+            {
+                List<status> tempList = new List<status>();
+                tempList.AddRange(Manager.GetUserTimeLine(Conn, ShowUserID));
+                tempList.AddRange(Manager.GetRetweetedByMe(Conn, ShowUserID));
+                tempList.Sort();
+                if (tempList.Count > 20)
+                {
+                    tempList.RemoveRange(20, tempList.Count - 20); 
+                }
+                AddStatusesToList(tempList.ToArray());
+            }
+            else
+            {
+                AddStatusesToList(Manager.GetUserTimeLine(Conn, ShowUserID));
+            }
             ChangeCursor(Cursors.Default);
 
             return;
@@ -1653,8 +1766,28 @@ namespace PockeTwit
         {
             if (statList.SelectedItem == null) { return; }
             StatusItem selectedItem = (StatusItem)statList.SelectedItem;
-            string quote = "RT @" + selectedItem.Tweet.user.screen_name + ": \"" + selectedItem.Tweet.text + "\"";
-            SetStatus(quote, "");
+            //string quote = "RT @" + selectedItem.Tweet.user.screen_name + ": " + selectedItem.Tweet.text;
+            //SetStatus(quote, "");
+
+            Yedda.Twitter TwitterConn = new Yedda.Twitter();
+            TwitterConn.AccountInfo = selectedItem.Tweet.Account;
+            
+            string retValue = TwitterConn.Retweet_Status(selectedItem.Tweet.id, Yedda.Twitter.OutputFormatType.XML);
+
+            if (string.IsNullOrEmpty(retValue))
+            {
+                PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- empty response.  You may want to try again later.");
+                return;
+            }
+            try
+            {
+                Library.status.DeserializeSingle(retValue, selectedItem.Tweet.Account);
+            }
+            catch
+            {
+                PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- bad response.  You may want to try again later.");
+                return;
+            }
         }
 
         Type _lastSelectedItemType = typeof(StatusItem);
@@ -1705,26 +1838,11 @@ namespace PockeTwit
                     p.ErrorOccured += new PockeTwit.MediaServices.ErrorOccuredEventHandler(p_ErrorOccured);
                     return;
                 }
-                
 
-                System.Diagnostics.ProcessStartInfo pi = new System.Diagnostics.ProcessStartInfo();
-                if (ClientSettings.UseSkweezer)
-                {
-                    pi.FileName = Skweezer.GetSkweezerURL(TextClicked);
-                }
-                else
-                {
-                    pi.FileName = TextClicked;
-                }
-                try
-                {
-                    pi.UseShellExecute = true;
-                    System.Diagnostics.Process p = System.Diagnostics.Process.Start(pi);
-                }
-                catch
-                {
-                    PockeTwit.Localization.LocalizedMessageBox.Show("There is no default web browser defined for the OS.");
-                }
+                //launch browser in a thread
+                urlToLaunch = TextClicked;
+                Thread t = new Thread(new ThreadStart(LaunchBrowserLink));
+                t.Start();
             }
             else if (TextClicked.StartsWith("#"))
             {
@@ -2131,5 +2249,109 @@ namespace PockeTwit
 
 
         }
+
+
+        private void ShowTrends()
+        {
+            currentSpecialTimeLine = null;
+            ChangeCursor(Cursors.WaitCursor);
+
+            SwitchToList("TrendingTopics");
+            HistoryItem i = new HistoryItem();
+            i.Action = Yedda.Twitter.ActionType.Favorites;  //TODO
+            History.Push(i);
+            statList.SetSelectedMenu(ViewFavoritesMenuItem);
+           
+            
+            //test = LetsBeTrends.GetTrend("GoodNight");
+
+            statList.Clear();
+            //statList.ClearVisible();
+
+            //AddStatusesToList(Manager.GetFavorites());
+
+
+            ArrayList al = LetsBeTrends.GetCurrentTrends();
+
+            foreach (Hashtable a in al)
+            {
+                //Hashtable ht = (Hashtable)a;
+                TrendingTopic tt = new TrendingTopic();
+                tt.Name = (String)a["name"];
+                tt.LastTrended = (String)a["last_trended_at"];
+                tt.FirstTrended = (String)a["first_trended_at"];
+                tt.Query = (String)a["query"];
+                try
+                {
+                    if (a.Contains("description"))
+                    {
+                        Hashtable h = (Hashtable)a["description"];
+                        tt.Description = (String)h["text"];
+                    }
+                    else
+                    {
+                        tt.Description = "No description available.";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: " + ex.Message);
+                    tt.Description = "No description available.";
+                }
+                statList.AddItem(new TrendingTopicItem(this, null, tt));
+            }
+            statList.SelectedItem = statList[0];
+            statList.YOffset = 0;
+            statList.Redraw();
+            statList.RerenderPortal();
+            statList.Repaint();
+
+            ChangeCursor(Cursors.Default);
+        }
+
+
+        private void SwitchToUserFavorites(String userID)
+        {
+            //currentSpecialTimeLine = null;
+            UpdateHistoryPosition();
+            userID = userID.Replace("@", "");
+            StatusItem statItem = (StatusItem)statList.SelectedItem;
+            if (statItem == null) { return; }
+            ChangeCursor(Cursors.WaitCursor);
+            HistoryItem i = new HistoryItem();
+            i.Argument = userID;
+            i.Account = statItem.Tweet.Account;
+            i.Action = Yedda.Twitter.ActionType.Favorites; //i.Action = Yedda.Twitter.ActionType.User_Timeline;
+            History.Push(i);
+            CurrentlySelectedAccount = statItem.Tweet.Account;
+            Yedda.Twitter Conn = GetMatchingConnection(CurrentlySelectedAccount);
+            SwitchToList("Favorites_TimeLine"); //SwitchToList("@User_TimeLine"); 
+            AddStatusesToList(Manager.GetUserFavorites(userID)); //AddStatusesToList(Manager.GetUserTimeLine(Conn, ShowUserID));
+            ChangeCursor(Cursors.Default);
+            return;
+        }
+
+        private void LaunchBrowserLink()
+        {
+            System.Diagnostics.ProcessStartInfo pi = new System.Diagnostics.ProcessStartInfo();
+            if (ClientSettings.UseSkweezer)
+            {
+                pi.FileName = Skweezer.GetSkweezerURL(urlToLaunch);
+            }
+            else
+            {
+                pi.FileName = urlToLaunch;
+            }
+            try
+            {
+                pi.UseShellExecute = true;
+                System.Diagnostics.Process p = System.Diagnostics.Process.Start(pi);
+            }
+            catch
+            {
+                PockeTwit.Localization.LocalizedMessageBox.Show("There is no default web browser defined for the OS.");
+            }
+        }
+
     }
 }

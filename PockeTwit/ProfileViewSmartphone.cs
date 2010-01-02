@@ -5,30 +5,26 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Text;
-using System.Threading;
 using System.Windows.Forms;
 using PockeTwit.OtherServices;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Runtime.InteropServices;
-using Timer=System.Threading.Timer;
 
 namespace PockeTwit
 {
-    public partial class ProfileView : Form, IProfileViewer
+    public partial class ProfileViewSmartPhone : Form, IProfileViewer
     {
         private PockeTwit.Library.User _User;
 
-        
         private PictureBox pb;
         private Panel p;
-        private Button b = new Button();
 
         public ProfileAction selectedAction { get; set; }
         public String selectedUser { get; set; }
 
-        public ProfileView(PockeTwit.Library.User User)
+        public ProfileViewSmartPhone(PockeTwit.Library.User User)
         {
             
             if (User.needsFetching)
@@ -38,9 +34,12 @@ namespace PockeTwit
             _User = User;
             InitializeComponent();
             PockeTwit.Themes.FormColors.SetColors(this);
-            PockeTwit.Themes.FormColors.SetColors(pContent);
-            pContent.BackColor = ClientSettings.BackColor;
-            pViewer.BackColor = ClientSettings.BackColor;
+            PockeTwit.Themes.FormColors.SetColors(panelBasicInfo);
+            PockeTwit.Themes.FormColors.SetColors(panelDescription);
+            PockeTwit.Themes.FormColors.SetColors(panelNumbers);
+            PockeTwit.Themes.FormColors.SetColors(panelNumbers2);
+            PockeTwit.Themes.FormColors.SetColors(panelJoinedLocation);
+
             PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             if (ClientSettings.IsMaximized)
             {
@@ -87,11 +86,11 @@ namespace PockeTwit
             }
             if (!string.IsNullOrEmpty(User.followers_count))
             {
-                llblFollowers.Text = User.followers_count;
+                lblFollowersNumber.Text = User.followers_count;
             }
             if (!string.IsNullOrEmpty(User.friends_count))
             {
-                llblFollowing.Text = User.friends_count;
+                lblFollowingNumber.Text = User.friends_count;
             } 
             if (!string.IsNullOrEmpty(User.statuses_count))
             {
@@ -105,7 +104,7 @@ namespace PockeTwit
             if (!string.IsNullOrEmpty(User.created_at))
             {
                 DateTime d = getDate(User.created_at);
-                lblJoinedOn.Text = d.ToShortDateString();
+                lblJoinedOnDate.Text = d.ToShortDateString();
             }
 
             if (!string.IsNullOrEmpty(User.verified) && User.verified == "true")
@@ -116,23 +115,8 @@ namespace PockeTwit
 
             PockeTwit.ThrottledArtGrabber.NewArtWasDownloaded += new ThrottledArtGrabber.ArtIsReady(ThrottledArtGrabber_NewArtWasDownloaded);
 
-            b.Text = "Close";
-            //b.Anchor = AnchorStyles.Bottom;
-            b.Click += new EventHandler(btnClose_Click);
-            if (!ClientSettings.IsMaximized)
-            {
-                b.Location = new Point((Screen.PrimaryScreen.Bounds.Width / 2) - (b.Width / 2), Screen.PrimaryScreen.WorkingArea.Height - b.Height);
-            }
-            else
-            {
-                b.Location = new Point((Screen.PrimaryScreen.Bounds.Width / 2) - (b.Width / 2), Screen.PrimaryScreen.Bounds.Height - b.Height);
-            }
-            this.Controls.Add(b);
-            b.BringToFront();
-
-            pContent.Size = new Size(pContent.Size.Width, lblDescription.Location.Y + lblDescription.Size.Height + 5);
-
-            //TODO: landscape mode - close button position
+            SwitchToPanel(panelBasicInfo);
+         
         }
 
         private Library.User FetchTheUser(PockeTwit.Library.User User)
@@ -243,18 +227,15 @@ namespace PockeTwit
                     this.Controls.Add(pb);
                     
                     pb.BringToFront();
-                    b.BringToFront();
                     Cursor.Current = Cursors.Default;
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine(ex.Message);
-                    b.Hide();
                     pb.Hide();
                 }
             }
             
-            b.Location = new Point((Screen.PrimaryScreen.Bounds.Width / 2) - (b.Width / 2), Screen.PrimaryScreen.Bounds.Height - b.Height);
         }
 
         private void pb_Click(object sender, EventArgs e)
@@ -264,19 +245,11 @@ namespace PockeTwit
 
             if (!ClientSettings.IsMaximized)
             {
-                b.Location = new Point((Screen.PrimaryScreen.Bounds.Width / 2) - (b.Width / 2), Screen.PrimaryScreen.WorkingArea.Height - b.Height);
                 this.WindowState = FormWindowState.Normal;
-            }
-            else
-            {
-                b.Location = new Point((Screen.PrimaryScreen.Bounds.Width / 2) - (b.Width / 2), Screen.PrimaryScreen.Bounds.Height - b.Height);
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            closeForm();
-        }
+        
 
         private void llblFavorites_Click(object sender, EventArgs e)
         {
@@ -284,22 +257,6 @@ namespace PockeTwit
             selectedUser = _User.screen_name;
 
             closeForm();
-        }
-
-        private void downArrow_Click(object sender, EventArgs e)
-        {
-            if (pContent.Top > -(pContent.Size.Height))
-            {
-                pContent.Top -= 40;
-            }
-        }
-
-        private void upArrow_Click(object sender, EventArgs e)
-        {
-            if (pContent.Top < 0)
-            {
-                pContent.Top += 40;
-            }
         }
 
         private DateTime getDate(string date)
@@ -359,63 +316,61 @@ namespace PockeTwit
         private void closeForm()
         {
             PockeTwit.ThrottledArtGrabber.NewArtWasDownloaded -= new ThrottledArtGrabber.ArtIsReady(ThrottledArtGrabber_NewArtWasDownloaded);
-            timeranimate.Enabled = false;
             this.Close();
         }
 
-        private int mouseDownOn = 0;
-        
-        private void pContent_MouseMove(object sender, MouseEventArgs e)
+        private void SwitchToPanel(Panel panel)
         {
-            int mouseMoved = e.Y - mouseDownOn;
-            pContent.Top = pContent.Top + mouseMoved;
+            panelBasicInfo.Visible = false;
+            panelDescription.Visible = false;
+            panelNumbers.Visible = false;
+            panelNumbers2.Visible = false;
+            panelJoinedLocation.Visible = false;
+            panel.Visible = true;
         }
 
-        private void pContent_MouseDown(object sender, MouseEventArgs e)
+        private void menuBasic_Click(object sender, EventArgs e)
         {
-            mouseDownOn = e.Y;
+            SwitchToPanel(panelBasicInfo);
         }
 
-        private void pContent_MouseUp(object sender, MouseEventArgs e)
+        private void menuFollow_Click(object sender, EventArgs e)
         {
-            mouseDownOn = 0;
-            timeranimate.Enabled = true;
+            SwitchToPanel(panelNumbers);
         }
 
-        private void timeranimate_Tick(object sender, EventArgs e)
+        private void menuTweet_Click(object sender, EventArgs e)
         {
-            int offSet = pContent.Top;
-            int step = offSet/4;
-            if (step < 5 && step > 0) {
-                step = 5; 
-            }
-            if(step >-5 && step <0)
+            SwitchToPanel(panelNumbers2);
+        }
+
+        private void menuDescription_Click(object sender, EventArgs e)
+        {
+            SwitchToPanel(panelDescription);
+        }
+
+        private void menuClose_Click(object sender, EventArgs e)
+        {
+            closeForm();
+        }
+
+        private bool LargeAvatar;
+        private void menuItem1_Click(object sender, EventArgs e)
+        {
+            if (LargeAvatar)
             {
-                step = -5;
-            }
-            if (step == 0) 
-            {
-                timeranimate.Enabled = false;
-                return;
-            }
-            if(offSet>0)
-            {
-                pContent.Top = pContent.Top - step;
-                if(pContent.Top<0)
-                {
-                    pContent.Top = 0;
-                    timeranimate.Enabled = false;
-                }
+                pb_Click(null,null);
             }
             else
             {
-                pContent.Top = pContent.Top - step;
-                if (pContent.Top > 0)
-                {
-                    pContent.Top = 0;
-                    timeranimate.Enabled = false;
-                }
+                avatarBox_Click(null, null);
             }
+            LargeAvatar = !LargeAvatar;
+        }
+
+        private void menuLocationJoined_Click(object sender, EventArgs e)
+        {
+            SwitchToPanel(panelJoinedLocation);
         }
 
     }

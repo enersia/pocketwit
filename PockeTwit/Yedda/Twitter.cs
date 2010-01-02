@@ -269,7 +269,8 @@ namespace Yedda
             Account,
             Users,
             Notifications,
-            Friendships
+            Friendships,
+            Help
         }
 
         /// <summary>
@@ -300,7 +301,12 @@ namespace Yedda
             Verify_Credentials,
             Update_Location,
             Conversation,
-            Retweet
+            Retweet,
+            Test,
+            Report_Spam,
+            Rate_Limit_Status,
+            Retweeted_By_Me,
+            Home_Timeline
         }
 
 
@@ -405,8 +411,10 @@ namespace Yedda
         protected const string TwitterBaseUrlFormat = "{3}{0}/{1}.{2}";
         protected const string TwitterSimpleURLFormat = "{1}/{0}.xml";
         protected const string TwitterFavoritesUrlFormat = "{3}/{0}/{1}/{2}.xml";
+        protected const string TwitterFavoritesUserUrlFormat = "{2}/{0}/{1}.xml";
         protected const string TwitterSearchUrlFormat = "http://search.twitter.com/search.json?{0}";
         protected const string TwitterConversationUrlFormat = "http://search.twitter.com/search/thread/{0}";
+        protected const string TwitterNewBaseUrlFormat = "http://api.twitter.com/1/{0}/{1}.{2}";
 
         public string GetProfileURL(string User)
         {
@@ -856,16 +864,33 @@ namespace Yedda
             return ExecuteGetCommand(url);
         }
         #endregion
+
         #region Friends_Timeline
         public string GetFriendsTimeLineMax(OutputFormatType format)
         {
-            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Friends_Timeline), GetFormatTypeString(format), AccountInfo.ServerURL.URL)+"?count="+MaxTweets;
-            return ExecuteGetCommand(url);
+            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.twitter)
+            {
+                string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format)) + "?count=" + MaxTweets;
+                return ExecuteGetCommand(url);
+            }
+            else
+            {
+                string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Friends_Timeline), GetFormatTypeString(format), AccountInfo.ServerURL.URL) + "?count=" + MaxTweets;
+                return ExecuteGetCommand(url);
+            }
         }
         public string GetFriendsTimeLineSince(OutputFormatType format, string SinceID)
         {
-            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Friends_Timeline), GetFormatTypeString(format), AccountInfo.ServerURL.URL) + "?since_id=" + SinceID + "&count=" + ClientSettings.MaxTweets;
-            return ExecuteGetCommand(url);
+            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.twitter)
+            {
+                string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format)) + "?since_id=" + SinceID + "&count=" + ClientSettings.MaxTweets;
+                return ExecuteGetCommand(url);
+            }
+            else
+            {
+                string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Friends_Timeline), GetFormatTypeString(format), AccountInfo.ServerURL.URL) + "?since_id=" + SinceID + "&count=" + ClientSettings.MaxTweets;
+                return ExecuteGetCommand(url);
+            }
         }
 
         public string GetFriendsTimeline(OutputFormatType format)
@@ -873,6 +898,11 @@ namespace Yedda
             if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
             {
                 string url = "http://brightkite.com/me/friendstream.xml";
+                return ExecuteGetCommand(url);
+            }
+            else if (this.AccountInfo.ServerURL.ServerType == TwitterServer.twitter)
+            {
+                string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format));
                 return ExecuteGetCommand(url);
             }
             else
@@ -1036,6 +1066,7 @@ namespace Yedda
         #endregion
 
         #region Update
+
         public string Update(string status, OutputFormatType format)
         {
             return Update(status, null, format);
@@ -1101,6 +1132,62 @@ namespace Yedda
             return null;
         }
 
+        #endregion
+
+        #region Retweet
+
+        public string Retweet_Status(string status_id, OutputFormatType format)
+        {
+            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.pingfm)
+            {
+                return null;
+            }
+            else if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
+            {
+                return null;
+            }
+            else
+            {
+                if (format != OutputFormatType.JSON && format != OutputFormatType.XML)
+                {
+                    throw new ArgumentException("Retweet supports only XML and JSON output formats", "format");
+                }
+
+                string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Retweet) + "/{0}", GetFormatTypeString(format));
+                url = String.Format(url, status_id);
+                return ExecutePostCommand(url, null);
+            }
+        }
+
+        #endregion
+
+        #region Retweeted_by_me
+
+        public string GetRetweetedByMe(OutputFormatType format)
+        {
+            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.pingfm)
+            {
+                return null;
+            }
+            else if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
+            {
+                return null;
+            }
+            else
+            {
+                if (format != OutputFormatType.JSON && format != OutputFormatType.XML && format != OutputFormatType.Atom)
+                {
+                    throw new ArgumentException("Retweeted_by_me supports only XML,JSON, and Atom output formats", "format");
+                }
+
+                string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Retweeted_By_Me), GetFormatTypeString(format));
+                return ExecuteGetCommand(url);
+            }
+        }
+
+        #endregion
+
+        #region Destroy
 
         public string Destroy_Status(string status_id, OutputFormatType format)
         {
@@ -1126,32 +1213,7 @@ namespace Yedda
             }
         }
 
-        public string Retweet_Status(string status_id, OutputFormatType format)
-        {
-
-            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.pingfm)
-            {
-                return null;
-            }
-            else if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
-            {
-                return null;
-            }
-            else
-            {
-                if (format != OutputFormatType.JSON && format != OutputFormatType.XML)
-                {
-                    throw new ArgumentException("Update support only XML and JSON output format", "format");
-                }
-
-                string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Retweet) + "/{0}", GetFormatTypeString(format), AccountInfo.ServerURL.URL);
-                url = String.Format(url, status_id);
-                return ExecutePostCommand(url, null);
-            }
-        }
-
-
-       public string Destroy_StatusAsJSON(string statusId)
+        public string Destroy_StatusAsJSON(string statusId)
         {
             return Destroy_Status(statusId, OutputFormatType.JSON);
         }
@@ -1169,6 +1231,7 @@ namespace Yedda
 
             return null;
         }
+        
         #endregion
 
         #region Featured
@@ -1264,7 +1327,12 @@ namespace Yedda
         }
         public string GetFavorites()
         {
-            string url = string.Format(TwitterSimpleURLFormat, GetActionTypeString(ActionType.Favorites),AccountInfo.ServerURL.URL);
+            string url = string.Format(TwitterSimpleURLFormat, GetActionTypeString(ActionType.Favorites), AccountInfo.ServerURL.URL);
+            return ExecuteGetCommand(url);
+        }
+        public string GetFavorites(string userID)
+        {
+            string url = string.Format(TwitterFavoritesUserUrlFormat, GetActionTypeString(ActionType.Favorites), "/" + userID, AccountInfo.ServerURL.URL);
             return ExecuteGetCommand(url);
         }
         #endregion
@@ -1397,5 +1465,52 @@ namespace Yedda
             string url = "http://twitter.com/friends/ids.xml";
             return ExecuteGetCommand(url);
         }
+
+        #region Help
+        public bool HelpTest()
+        {
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Help), GetActionTypeString(ActionType.Test), GetFormatTypeString(OutputFormatType.XML), "http://twitter.com/");
+            string Response = ExecuteGetCommand(url);
+            if (!string.IsNullOrEmpty(Response))
+            {
+                return Response == "<ok>true</ok>";
+            }
+            return false;
+        }
+        #endregion
+
+        #region Report_Spam
+        public string ReportSpam(string SpammerID)
+        {
+            if (AccountInfo.ServerURL.ServerType != TwitterServer.twitter)
+            {
+                return null;
+            }
+            string url = string.Format(TwitterSimpleURLFormat, GetActionTypeString(ActionType.Report_Spam), AccountInfo.ServerURL.URL);
+            string data = string.Format("user_id={0}", HttpUtility.UrlEncode(SpammerID));
+            return ExecutePostCommand(url, data);
+        }
+        #endregion
+
+        #region Rate_Limit_Status
+        public string GetRateLimitStatusForUser()
+        {
+            if (AccountInfo.ServerURL.ServerType != TwitterServer.twitter)
+            {
+                return null;
+            }
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Account), GetActionTypeString(ActionType.Rate_Limit_Status), GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
+            return ExecuteGetCommand(url);    
+        }
+        public string GetRateLimitStatusForIP()
+        {
+            if (AccountInfo.ServerURL.ServerType != TwitterServer.twitter)
+            {
+                return null;
+            }
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Account), GetActionTypeString(ActionType.Rate_Limit_Status), GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
+            return ExecuteAnonymousGetCommand(url);
+        }
+        #endregion
     }
 }

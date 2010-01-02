@@ -283,6 +283,32 @@ namespace PockeTwit
             TempLine.Sort();
             return TempLine.ToArray();
         }
+
+        public PockeTwit.Library.status[] GetUserFavorites(String userID)
+        {
+            List<Library.status> TempLine = new List<PockeTwit.Library.status>();
+            foreach (Yedda.Twitter t in TwitterConnections)
+            {
+                if (t.AccountInfo.Enabled && t.FavoritesWork)
+                {
+                    try
+                    {
+                        string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Favorites, userID);
+                        Library.status[] NewStats = Library.status.Deserialize(response, t.AccountInfo, PockeTwit.Library.StatusTypes.Normal);
+                        TempLine.AddRange(NewStats);
+                        ErrorCleared(t.AccountInfo, Yedda.Twitter.ActionType.Favorites);
+                    }
+                    catch
+                    {
+                        NoData(t.AccountInfo, Yedda.Twitter.ActionType.Favorites);
+                        GlobalEventHandler.CallShowErrorMessage("Communications Error");
+                    }
+                }
+            }
+            TempLine.Sort();
+            return TempLine.ToArray();
+        }
+
         public PockeTwit.Library.status[] GetPublicTimeLine()
         {
             bool twitterDone = false;
@@ -315,6 +341,7 @@ namespace PockeTwit
             TempLine.Sort();
             return TempLine.ToArray();
         }
+
         public Library.status[] GetUserTimeLine(Yedda.Twitter t, string UserID)
         {
             string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Show, UserID);
@@ -330,6 +357,42 @@ namespace PockeTwit
             }
             return Library.status.Deserialize(response, t.AccountInfo);
         }
+
+        public Library.status[] GetRetweetedByMe(Yedda.Twitter t, string UserID)
+        {
+            //string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Show, UserID);
+            //if (string.IsNullOrEmpty(response))
+            //{
+            //    NoData(t.AccountInfo, Yedda.Twitter.ActionType.Show);
+            //    GlobalEventHandler.CallShowErrorMessage("Communications Error");
+            //    return null;
+            //}
+            //else
+            //{
+            //    ErrorCleared(t.AccountInfo, Yedda.Twitter.ActionType.Show);
+            //}
+            //return Library.status.Deserialize(response, t.AccountInfo);
+       
+
+            List<Library.status> TempLine = new List<PockeTwit.Library.status>();
+
+            try
+            {
+                string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Retweeted_By_Me);
+                Library.status[] NewStats = Library.status.Deserialize(response, t.AccountInfo, PockeTwit.Library.StatusTypes.Retweet);
+                TempLine.AddRange(NewStats);
+                ErrorCleared(t.AccountInfo, Yedda.Twitter.ActionType.Retweeted_By_Me);
+            }
+            catch
+            {
+                NoData(t.AccountInfo, Yedda.Twitter.ActionType.Retweeted_By_Me);
+                GlobalEventHandler.CallShowErrorMessage("Communications Error");
+            }
+
+            TempLine.Sort();
+            return TempLine.ToArray();
+        }
+
 
         public Library.status[] GetGroupedTimeLine(ISpecialTimeLine t, Yedda.Twitter.PagingMode pagingMode)
         {
@@ -666,7 +729,7 @@ namespace PockeTwit
                         {
                             response = t.GetFriendsTimeline(Yedda.Twitter.OutputFormatType.XML);
                         }
-else
+                        else
                         {
                             string LastStatusID = LocalStorage.DataBaseUtility.GetLatestItem(t.AccountInfo, TimeLineType.Friends);
                             if (string.IsNullOrEmpty(LastStatusID))
@@ -707,7 +770,17 @@ else
                         response = t.GetUserTimeline(AdditionalParameter, Yedda.Twitter.OutputFormatType.XML);
                         break;
                     case Yedda.Twitter.ActionType.Favorites:
-                        response = t.GetFavorites();
+                        if (AdditionalParameter != null)
+                        {
+                            response = t.GetFavorites(AdditionalParameter);
+                        }
+                        else
+                        {
+                            response = t.GetFavorites();
+                        }
+                        break;
+                    case Yedda.Twitter.ActionType.Retweeted_By_Me:
+                        response = t.GetRetweetedByMe(Yedda.Twitter.OutputFormatType.XML);
                         break;
                     case Yedda.Twitter.ActionType.Search:
                         string LastSearchID = LocalStorage.DataBaseUtility.GetLatestItem(t.AccountInfo,
