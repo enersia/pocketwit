@@ -353,9 +353,11 @@ namespace PockeTwit.MediaServices
         private static bool IsTweetPhoto(string toCheckUrl)
         {
             const string siteMarker = "pic.gd";
+            const string siteMarker2 = "tweetphoto.com";
+
             string url = toCheckUrl.ToLower();
 
-            return (url.IndexOf(siteMarker) >= 0);
+            return ((url.IndexOf(siteMarker) >= 0)|| url.IndexOf(siteMarker2)>=0);
         }
 
         /// <summary>
