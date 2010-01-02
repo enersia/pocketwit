@@ -47,8 +47,7 @@
             this.lblJoinedOn = new System.Windows.Forms.Label();
             this.pContent = new System.Windows.Forms.Panel();
             this.pViewer = new System.Windows.Forms.Panel();
-            this.downArrow = new System.Windows.Forms.PictureBox();
-            this.upArrow = new System.Windows.Forms.PictureBox();
+            this.timeranimate = new System.Windows.Forms.Timer();
             this.pContent.SuspendLayout();
             this.pViewer.SuspendLayout();
             this.SuspendLayout();
@@ -211,6 +210,9 @@
             this.pContent.Location = new System.Drawing.Point(0, 0);
             this.pContent.Name = "pContent";
             this.pContent.Size = new System.Drawing.Size(300, 500);
+            this.pContent.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pContent_MouseMove);
+            this.pContent.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pContent_MouseDown);
+            this.pContent.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pContent_MouseUp);
             // 
             // pViewer
             // 
@@ -220,31 +222,15 @@
             this.pViewer.Name = "pViewer";
             this.pViewer.Size = new System.Drawing.Size(240, 294);
             // 
-            // downArrow
+            // timeranimate
             // 
-            this.downArrow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.downArrow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.downArrow.Location = new System.Drawing.Point(201, 252);
-            this.downArrow.Name = "downArrow";
-            this.downArrow.Size = new System.Drawing.Size(30, 30);
-            this.downArrow.Click += new System.EventHandler(this.downArrow_Click);
-            // 
-            // upArrow
-            // 
-            this.upArrow.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.upArrow.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.upArrow.Location = new System.Drawing.Point(201, 8);
-            this.upArrow.Name = "upArrow";
-            this.upArrow.Size = new System.Drawing.Size(30, 30);
-            this.upArrow.Click += new System.EventHandler(this.upArrow_Click);
+            this.timeranimate.Tick += new System.EventHandler(this.timeranimate_Tick);
             // 
             // ProfileView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(240, 294);
-            this.Controls.Add(this.downArrow);
-            this.Controls.Add(this.upArrow);
             this.Controls.Add(this.pViewer);
             this.Name = "ProfileView";
             this.Text = "ProfileView";
@@ -275,7 +261,6 @@
         private System.Windows.Forms.Label lblJoinedOn;
         private System.Windows.Forms.Panel pContent;
         private System.Windows.Forms.Panel pViewer;
-        private System.Windows.Forms.PictureBox downArrow;
-        private System.Windows.Forms.PictureBox upArrow;
+        private System.Windows.Forms.Timer timeranimate;
     }
 }

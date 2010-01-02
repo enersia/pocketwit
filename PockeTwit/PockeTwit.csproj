@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{293BAAE4-E497-44C9-8EAD-81DD4064C588}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -94,7 +94,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SQLite, Version=1.0.60.0, Culture=neutral, PublicKeyToken=1fdb50b1b62b4c84, processorArchitecture=MSIL" />
+    <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=1fdb50b1b62b4c84, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataGrid" />
@@ -283,6 +286,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AdvancedSearchSmartphoneForm.resx">
       <DependentUpon>AdvancedSearchSmartphoneForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProfileViewSmartphone.resx">
+      <DependentUpon>ProfileViewSmartphone.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DefineGroup.resx">
@@ -477,6 +484,13 @@
     </Compile>
     <Compile Include="AdvancedSearchSmartphoneForm.Designer.cs">
       <DependentUpon>AdvancedSearchSmartphoneForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IProfileViewer.cs" />
+    <Compile Include="ProfileViewSmartphone.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProfileViewSmartphone.Designer.cs">
+      <DependentUpon>ProfileViewSmartphone.cs</DependentUpon>
     </Compile>
     <Compile Include="DefineGroup.cs">
       <SubType>Form</SubType>

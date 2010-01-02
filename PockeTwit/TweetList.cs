@@ -1404,56 +1404,62 @@ namespace PockeTwit
             ChangeCursor(Cursors.WaitCursor);
             if (statList.SelectedItem == null) { return; }
             StatusItem selectedItem = (StatusItem)statList.SelectedItem;
-            
-            using (ProfileView v = new ProfileView(selectedItem.Tweet.user))
+            IProfileViewer view;
+            if (DetectDevice.DeviceType == DeviceType.Professional)
             {
-
-                ChangeCursor(Cursors.Default);
-
-                IsLoaded = false;
-                statList.Visible = false;
-
-                v.ShowDialog();
-
-                this.Visible = true;
-                statList.Visible = true;
-                IsLoaded = true;
-
-                //statList.OpenLeftMenu();
-
-                //statList.RightMenu.SelectedItem = null;
-                //statList.LeftMenu.SelectedItem = null;
-                
-                v.Close();
-
-                if (String.IsNullOrEmpty(v.selectedUser))
-                {
-                    return;
-                }
-
-                statList.IgnoreMouse = true;
-                
-                if(v.selectedAction == ProfileView.ProfileAction.UserTimeline)
-                {
-                    SwitchToUserTimeLine(v.selectedUser);
-                }
-                else if (v.selectedAction == ProfileView.ProfileAction.Favorites)
-                {
-                    SwitchToUserFavorites(v.selectedUser);
-                }
-                else if (v.selectedAction == ProfileView.ProfileAction.Followers)
-                {
-                    //TODO
-                }
-                else if (v.selectedAction == ProfileView.ProfileAction.Following)
-                {
-                    //TODO
-                }
-                else
-                {
-                    statList.IgnoreMouse = false; //is this needed?
-                }
+                view = new ProfileView(selectedItem.Tweet.user);
             }
+            else
+            {
+                view = new ProfileViewSmartPhone(selectedItem.Tweet.user);
+            }
+
+            ChangeCursor(Cursors.Default);
+
+            IsLoaded = false;
+            statList.Visible = false;
+
+            ((Form)view).ShowDialog();
+
+            this.Visible = true;
+            statList.Visible = true;
+            IsLoaded = true;
+
+            //statList.OpenLeftMenu();
+
+            //statList.RightMenu.SelectedItem = null;
+            //statList.LeftMenu.SelectedItem = null;
+
+            ((Form)view).Close();
+
+            if (String.IsNullOrEmpty(view.selectedUser))
+            {
+                return;
+            }
+
+            statList.IgnoreMouse = true;
+
+            if (view.selectedAction == ProfileAction.UserTimeline)
+            {
+                SwitchToUserTimeLine(view.selectedUser);
+            }
+            else if (view.selectedAction == ProfileAction.Favorites)
+            {
+                SwitchToUserFavorites(view.selectedUser);
+            }
+            else if (view.selectedAction == ProfileAction.Followers)
+            {
+                //TODO
+            }
+            else if (view.selectedAction == ProfileAction.Following)
+            {
+                //TODO
+            }
+            else
+            {
+                statList.IgnoreMouse = false; //is this needed?
+            }
+            ((Form)view).Dispose();
         }
 
         private void ExitApplication()
