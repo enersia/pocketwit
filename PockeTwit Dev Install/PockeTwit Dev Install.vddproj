@@ -272,7 +272,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_75F70734044D445EA3A7392E697B8550"
+        "MsmKey" = "8:_77A1BFE2950B4A29949F074710EA1F6C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1481,12 +1481,12 @@
                 {
                 }
             }
-            "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_75F70734044D445EA3A7392E697B8550"
+            "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_77A1BFE2950B4A29949F074710EA1F6C"
             {
             "SourcePath" = "8:..\\QuickPost\\Windows Mobile 6 Professional SDK (ARMV4I)\\Debug\\QuickPost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_B43CEF7EBCBA4BC68B3BA40A79063133"
+            "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"
             "Condition" = "8:"
             "Vital" = "11:TRUE"
             "ReadOnly" = "11:FALSE"
@@ -1595,16 +1595,6 @@
         }
         "Shortcut"
         {
-            "{971D45E9-E38C-49AC-B36E-4C5BEA533350}:_8198C2E78C274EB98D5279C3036ECFC7"
-            {
-            "Name" = "8:PockeTwit Dev Quickpost"
-            "Arguments" = "8:"
-            "Description" = "8:"
-            "ShowCmd" = "3:1"
-            "Target" = "8:_75F70734044D445EA3A7392E697B8550"
-            "Folder" = "8:_486AC490580C45378FC3ADA14D0B6083"
-            "WorkingFolder" = "8:_B43CEF7EBCBA4BC68B3BA40A79063133"
-            }
             "{971D45E9-E38C-49AC-B36E-4C5BEA533350}:_AF9AD5B5C8854D07A92A34F08DA123A4"
             {
             "Name" = "8:PockeTwit Dev"
@@ -1612,6 +1602,16 @@
             "Description" = "8:"
             "ShowCmd" = "3:1"
             "Target" = "8:_CCAD80857091443DBD4217B0BFDADB7C"
+            "Folder" = "8:_486AC490580C45378FC3ADA14D0B6083"
+            "WorkingFolder" = "8:_46852C240825406AB2BCFC1C54C85714"
+            }
+            "{971D45E9-E38C-49AC-B36E-4C5BEA533350}:_F05D9C94790649B88B50F833C5E70BB5"
+            {
+            "Name" = "8:PockeTwit Dev QuickPost"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "Target" = "8:_77A1BFE2950B4A29949F074710EA1F6C"
             "Folder" = "8:_486AC490580C45378FC3ADA14D0B6083"
             "WorkingFolder" = "8:_46852C240825406AB2BCFC1C54C85714"
             }
