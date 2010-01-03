@@ -93,12 +93,16 @@ namespace PockeTwit
 
         FingerUI.Menu.SideMenuItem EmailMenuItem;
         FingerUI.Menu.SideMenuItem QuoteMenuItem;
+        FingerUI.Menu.SideMenuItem RetweetMenuItem; 
         FingerUI.Menu.SideMenuItem ToggleFavoriteMenuItem;
         FingerUI.Menu.SideMenuItem UserTimelineMenuItem;
         FingerUI.Menu.SideMenuItem ProfilePageMenuItem;
         FingerUI.Menu.SideMenuItem FollowMenuItem;
+
+        FingerUI.Menu.SideMenuItem SendToGroupMenuItem;
         FingerUI.Menu.SideMenuItem MoveToGroupMenuItem;
         FingerUI.Menu.SideMenuItem CopyToGroupMenuItem;
+        
         private FingerUI.Menu.SideMenuItem CopyNewGroupMenuItem;
         private FingerUI.Menu.SideMenuItem MoveNewGroupMenuItem;
         #endregion
@@ -298,7 +302,7 @@ namespace PockeTwit
         {
             if (mergedstatuses == null) //Why would this turn up null? Comm error?
             {
-                MessageBox.Show("Status list was null for " + statList.CurrentList()); //TODO: take this out
+                //MessageBox.Show("Status list was null for " + statList.CurrentList());
                 return;
             } 
             if (mergedstatuses.Length == 0) { return; }
@@ -885,14 +889,19 @@ namespace PockeTwit
             ResponsesMenuItem.SubMenuItems.Add(DirectMenuItem);
 
             EmailMenuItem = new FingerUI.Menu.SideMenuItem(EmailThisItem, "Email Status", statList.RightMenu);
-            QuoteMenuItem = new FingerUI.Menu.SideMenuItem(this.Quote, "Quote", statList.RightMenu);
+            QuoteMenuItem = new FingerUI.Menu.SideMenuItem(Quote, "Quote", statList.RightMenu);
+            RetweetMenuItem = new FingerUI.Menu.SideMenuItem(Retweet, "Retweet", statList.RightMenu);
             ToggleFavoriteMenuItem = new FingerUI.Menu.SideMenuItem(ToggleFavorite, "Make Favorite", statList.RightMenu);
             UserTimelineMenuItem = new FingerUI.Menu.SideMenuItem(ShowUserTimeLine, "@User Timeline", statList.RightMenu);
             ProfilePageMenuItem = new FingerUI.Menu.SideMenuItem(ShowProfile, "@User Profile", statList.RightMenu);
             FollowMenuItem = new FingerUI.Menu.SideMenuItem(ToggleFollow, "Follow @User", statList.RightMenu);
 
+            SendToGroupMenuItem = new FingerUI.Menu.SideMenuItem(null, "Send to Group...", statList.RightMenu);
             MoveToGroupMenuItem = new FingerUI.Menu.SideMenuItem(null, "Move to Group...", statList.RightMenu);
             CopyToGroupMenuItem = new FingerUI.Menu.SideMenuItem(null, "Copy to Group...", statList.RightMenu);
+
+            SendToGroupMenuItem.SubMenuItems.Add(MoveToGroupMenuItem);
+            SendToGroupMenuItem.SubMenuItems.Add(CopyToGroupMenuItem);
 
             delMenuClicked copyItemClicked = () => CreateNewGroup(false);
 
@@ -907,8 +916,8 @@ namespace PockeTwit
                 AddAddUserToGroupMenuItem(t);
             }
 
-            statList.RightMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{ConversationMenuItem, DeleteStatusMenuItem, ResponsesMenuItem, QuoteMenuItem, EmailMenuItem, ToggleFavoriteMenuItem, 
-                UserTimelineMenuItem, ProfilePageMenuItem, FollowMenuItem, MoveToGroupMenuItem, CopyToGroupMenuItem});
+            statList.RightMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{ConversationMenuItem, DeleteStatusMenuItem, ResponsesMenuItem, QuoteMenuItem, RetweetMenuItem, EmailMenuItem, ToggleFavoriteMenuItem, 
+                UserTimelineMenuItem, ProfilePageMenuItem, FollowMenuItem, SendToGroupMenuItem});
         }
 
         private void AddAddUserToGroupMenuItem(UserGroupTimeLine t)
@@ -1638,6 +1647,7 @@ namespace PockeTwit
             i.Account = CurrentlySelectedAccount;
             i.Argument = ShowUserID;
             History.Push(i);
+            //if getting authenticating user's timeline, you can merge in their retweets
             if (CurrentlySelectedAccount.UserName == ShowUserID)
             {
                 List<status> tempList = new List<status>();
@@ -1766,17 +1776,33 @@ namespace PockeTwit
         {
             if (statList.SelectedItem == null) { return; }
             StatusItem selectedItem = (StatusItem)statList.SelectedItem;
-            //string quote = "RT @" + selectedItem.Tweet.user.screen_name + ": " + selectedItem.Tweet.text;
-            //SetStatus(quote, "");
+            
+            string quote = "RT @" + selectedItem.Tweet.user.screen_name + ": " + selectedItem.Tweet.text;
+            SetStatus(quote, "");
+        }
 
+        private void Retweet()
+        {
+            if (statList.SelectedItem == null) { return; }
+            StatusItem selectedItem = (StatusItem)statList.SelectedItem;
+
+            if (selectedItem.Tweet.Account.UserName == selectedItem.Tweet.user.screen_name)
+            {
+                PockeTwit.Localization.LocalizedMessageBox.Show("Sorry but you can't retweet your own tweets.");
+                return;
+            }
+
+            ChangeCursor(Cursors.WaitCursor);
+            
             Yedda.Twitter TwitterConn = new Yedda.Twitter();
             TwitterConn.AccountInfo = selectedItem.Tweet.Account;
-            
+
             string retValue = TwitterConn.Retweet_Status(selectedItem.Tweet.id, Yedda.Twitter.OutputFormatType.XML);
 
             if (string.IsNullOrEmpty(retValue))
             {
-                PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- empty response.  You may want to try again later.");
+                PockeTwit.Localization.LocalizedMessageBox.Show("Error retweeting status -- empty response.  You may want to try again later.");
+                ChangeCursor(Cursors.Default);
                 return;
             }
             try
@@ -1785,9 +1811,11 @@ namespace PockeTwit
             }
             catch
             {
-                PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- bad response.  You may want to try again later.");
+                PockeTwit.Localization.LocalizedMessageBox.Show("Error retweeting status -- bad response.  You may have already retweeted this.");
+                ChangeCursor(Cursors.Default);
                 return;
             }
+            ChangeCursor(Cursors.Default);
         }
 
         Type _lastSelectedItemType = typeof(StatusItem);
@@ -1911,7 +1939,23 @@ namespace PockeTwit
             CurrentlySelectedAccount = statItem.Tweet.Account;
             Yedda.Twitter Conn = GetMatchingConnection(CurrentlySelectedAccount);
             SwitchToList("@User_TimeLine");
-            AddStatusesToList(Manager.GetUserTimeLine(Conn, ShowUserID));
+            //if getting authenticating user's timeline, you can merge in their retweets
+            if (CurrentlySelectedAccount.UserName == ShowUserID)
+            {
+                List<status> tempList = new List<status>();
+                tempList.AddRange(Manager.GetUserTimeLine(Conn, ShowUserID));
+                tempList.AddRange(Manager.GetRetweetedByMe(Conn, ShowUserID));
+                tempList.Sort();
+                if (tempList.Count > 20)
+                {
+                    tempList.RemoveRange(20, tempList.Count - 20);
+                }
+                AddStatusesToList(tempList.ToArray());
+            }
+            else
+            {
+                AddStatusesToList(Manager.GetUserTimeLine(Conn, ShowUserID));
+            }
             ChangeCursor(Cursors.Default);
             return;
         }
@@ -2262,20 +2306,14 @@ namespace PockeTwit
             History.Push(i);
             statList.SetSelectedMenu(ViewFavoritesMenuItem);
            
-            
             //test = LetsBeTrends.GetTrend("GoodNight");
 
             statList.Clear();
-            //statList.ClearVisible();
-
-            //AddStatusesToList(Manager.GetFavorites());
-
 
             ArrayList al = LetsBeTrends.GetCurrentTrends();
 
             foreach (Hashtable a in al)
             {
-                //Hashtable ht = (Hashtable)a;
                 TrendingTopic tt = new TrendingTopic();
                 tt.Name = (String)a["name"];
                 tt.LastTrended = (String)a["last_trended_at"];

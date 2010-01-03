@@ -98,37 +98,73 @@ namespace PockeTwit.FingerUI
 
         public void OnMouseDblClick()
         {
-            if (_timeLine == null) // direct Search
-                _list.ShowSearchResults(_searchString, _saveResults, Yedda.Twitter.PagingMode.Forward);
-            else
-                _list.ShowSpecialTimeLine(_timeLine, Yedda.Twitter.PagingMode.Forward);
+            //if (_timeLine == null) // direct Search
+            //    _list.ShowSearchResults(_searchString, _saveResults, Yedda.Twitter.PagingMode.Forward);
+            //else
+            //    _list.ShowSpecialTimeLine(_timeLine, Yedda.Twitter.PagingMode.Forward);
         }
 
 
         public void Render(System.Drawing.Graphics g, System.Drawing.Rectangle bounds)
         {
-            //int i = Items.IndexOf(Item);
-            //Rectangle itemBounds = new Rectangle(0, ClientSettings.ItemHeight * i, Item.Bounds.Width, ClientSettings.ItemHeight);
-
             try
             {
                 g.Clip = new Region(bounds);
+                //_currentOffset = bounds;
+                var foreBrush = new SolidBrush(ClientSettings.ForeColor);
+                
+                Rectangle textBounds = new Rectangle(bounds.X + ClientSettings.Margin, bounds.Y, bounds.Width - (ClientSettings.Margin * 2), bounds.Height);
 
-                Rectangle textBounds;
-                textBounds = new Rectangle(bounds.X + ClientSettings.Margin, bounds.Y, bounds.Width - (ClientSettings.Margin * 2), bounds.Height);
+                var innerBounds = new Rectangle(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
+                innerBounds.Offset(1, 1);
+                innerBounds.Width--; innerBounds.Height--;
+                DisplayItemDrawingHelper.DrawItemBackground(g, innerBounds, Selected);
+                
+                textBounds.Offset(ClientSettings.Margin, 1);
+                textBounds.Height--;
 
-                DisplayItemDrawingHelper.DrawItemBackground(g, bounds, Selected);
+                //BreakUpTheText(g, textBounds);
+                //int lineOffset = 0;
 
                 SizeF textSize = g.MeasureString(_trendingTopic.Name, ClientSettings.MenuFont);
                 Point startPoint = new Point((int)(bounds.Left + (bounds.Width - textSize.Width) / 2), (int)(bounds.Top + (bounds.Height - textSize.Height) / 2));
+
+                textBounds.Location = new Point(textBounds.X, textBounds.Y + startPoint.Y);
+
+                textBounds.Height = 20;
 
                 Color drawColor = ClientSettings.MenuTextColor;
                 using (Brush drawBrush = new SolidBrush(drawColor))
                 {
                     g.DrawString(_trendingTopic.Name, ClientSettings.MenuFont, drawBrush, startPoint.X, startPoint.Y - 20);
-                    g.DrawString(_trendingTopic.Description, ClientSettings.MenuFont, drawBrush, bounds.Left + 5, startPoint.Y + 20);
-                
+                    g.DrawString(_trendingTopic.Description, ClientSettings.MenuFont, drawBrush, new RectangleF(textBounds.Left, textBounds.Top, textBounds.Width, textBounds.Height));
                 }
+
+
+                //if (!ClientSettings.UseClickables)
+                //{
+                //    g.DrawString(Tweet.DisplayText, ClientSettings.TextFont, foreBrush, new RectangleF(textBounds.Left, textBounds.Top, textBounds.Width, textBounds.Height));
+                //    //g.DrawString(Tweet.DisplayText, TextFont, ForeBrush, textBounds.Left, textBounds.Top, _mStringFormat);
+                //}
+                //else
+                //{
+
+                //    for (int i = 0; i < Tweet.SplitLines.Count; i++)
+                //    {
+                //        if (i >= ClientSettings.LinesOfText)
+                //        {
+                //            break;
+                //        }
+                //        float position = ((lineOffset * (ClientSettings.TextSize)) + textBounds.Top);
+
+                //        g.DrawString(Tweet.SplitLines[i], ClientSettings.TextFont, foreBrush, textBounds.Left, position, _mStringFormat);
+                //        lineOffset++;
+                //    }
+                //    MakeClickable(g, textBounds);
+                //    foreBrush.Dispose();
+                //}
+                //g.Clip = new Region();
+                //Tweet.SplitLines = null;
             }
             catch (ObjectDisposedException)
             {
