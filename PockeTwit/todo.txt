@@ -1,19 +1,15 @@
 ﻿TODO:
-Change from friends_timeline to home_timeline to include retweets
 Debug fullscreen avatar in landscape
 Trending topics
-Spell Check: setting in options, refresh/repaint screen?
-Profile screen: link to followers and following
-Display verified info
+Spell Check: setting in options
+Profile screen: link to followers and following, report spam, block/unblock, follow/unfollow, display verified info
 Choose a url shortener in settings - move is.gd to new class of URL Shortening Services and add others
 Status page - show API rate limits, istwitterdown.com, network connectivity check
-Report spam
 Draft functionality
 View your own DMs
 Push tweets - see below
 Lists
-When exiting, remove notification icon
-Fix conversation view - use in_reply_to_status_id ?
+When exiting, remove notification icon?
 Quick reply - view tweet you're replying to
 
 
@@ -23,7 +19,8 @@ Google Spell Check: skip words starting with @ or #
 LetsBeTrends API
 Reply to All
 Removed quotes from retweet
-TwitPic previews are no longer cut off and are full size
+TwitPic previews are no longer cut off and are full size - potential issue: pic may be a large download!!!!
+Change from friends_timeline to home_timeline to include retweets
 
 Other:
 http://whatthetrend.com/api
@@ -34,21 +31,3 @@ Push Tweets:
 User signs up to get SMS notifications for tweets from certain users
 PockeTwit SMS monitor looks for SMSes
 When the SMS monitor identifies an SMS, it tells PockeTwit to update and show a notification
-
-
-Profile view scrolling:
-if more content that can be displayed
-    hide scrollbars
-    add down arrow button to the bottom of the screen
-    
-when down arrow button is clicked
-    adjust scroll position
-    reposition close and arrow buttons
-    show up arrow button
-    show down arrow button if there is still more content below
-    
-when up arrow button is clicked
-    adjust scroll position
-    reposition close and arrow buttons
-    show down arrow button
-    show up arrow button if there is still more content above

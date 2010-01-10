@@ -55,7 +55,8 @@ namespace PockeTwit.Library
                 //    return StatusTypes.Reply;
                 //}
                 //else 
-                if (text.StartsWith("RT "))
+                //if (text.StartsWith("RT "))
+                if (retweeted_status != null)
                 {
                     return StatusTypes.Retweet;
                 }
@@ -200,6 +201,8 @@ namespace PockeTwit.Library
             }
             set { _Account = value; }
         }
+
+        public Library.status retweeted_status { get; set; }
 
         #endregion Properties 
 
