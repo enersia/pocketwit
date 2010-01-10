@@ -59,12 +59,9 @@ namespace PockeTwit
         
         FingerUI.Menu.SideMenuItem PublicMenuItem;
         FingerUI.Menu.SideMenuItem SearchMenuItem;
-        FingerUI.Menu.SideMenuItem TrendsMenuItem;
         FingerUI.Menu.SideMenuItem ViewFavoritesMenuItem;
         FingerUI.Menu.SideMenuItem GroupsMenuItem;
-
-        FingerUI.Menu.SideMenuItem ShowTrendMenuItem;
-
+        
         FingerUI.Menu.SideMenuItem OtherGlobalMenuItem;
 
         FingerUI.Menu.SideMenuItem PostUpdateMenuItem;
@@ -774,14 +771,12 @@ namespace PockeTwit
             RefreshMessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshMessagesTimeLine, "Refresh Messages", statList.LeftMenu, "Messages_TimeLine");
             PublicMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowPublicTimeLine, "Public Timeline", statList.LeftMenu);
             SearchMenuItem = new FingerUI.Menu.SideMenuItem(this.TwitterSearch, "Search/Local", statList.LeftMenu);
-            TrendsMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowTrends, "Trends", statList.LeftMenu);
-            
-            ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "View Favorites", statList.LeftMenu);
+            //ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "View Favorites", statList.LeftMenu);
+            ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowTrends, "View Favorites", statList.LeftMenu);
             FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "Follow User", statList.LeftMenu);
 
             OtherGlobalMenuItem = new FingerUI.Menu.SideMenuItem(null, "Other ...", statList.LeftMenu);
             OtherGlobalMenuItem.SubMenuItems.Add(SearchMenuItem);
-            OtherGlobalMenuItem.SubMenuItems.Add(TrendsMenuItem);
             OtherGlobalMenuItem.SubMenuItems.Add(PublicMenuItem);
             OtherGlobalMenuItem.SubMenuItems.Add(ViewFavoritesMenuItem);
             OtherGlobalMenuItem.SubMenuItems.Add(FollowUserMenuItem);
@@ -863,7 +858,17 @@ namespace PockeTwit
 
         private void CreateRightMenu()
         {
-            
+            if ((statList != null) && (statList.SelectedItem != null) && statList.SelectedItem.GetType() != typeof(StatusItem))
+            {
+                statList.RightMenu.ResetMenu(null);
+                statList.SelectedItem.CreateRightMenu(statList.RightMenu);
+                if (statList.RightMenu.Count == 0)
+                    this.specificMenu.Enabled = false;
+                else
+                    this.specificMenu.Enabled = true;
+                return;
+            }
+
             // "Show Conversation", "Reply @User", "Direct @User", "Quote", 
             //   "Make Favorite", "@User TimeLine", "Profile Page", "Stop Following",
             // "Minimize" 
@@ -911,9 +916,6 @@ namespace PockeTwit
                 AddAddUserToGroupMenuItem(t);
             }
 
-            ShowTrendMenuItem = new SideMenuItem(ShowCurrentTrend, "Show Trend", statList.RightMenu);
-            ShowTrendMenuItem.Visible = false;
-            
             statList.RightMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[]{ConversationMenuItem, DeleteStatusMenuItem, ResponsesMenuItem, QuoteMenuItem, RetweetMenuItem, EmailMenuItem, ToggleFavoriteMenuItem, 
                 UserTimelineMenuItem, ProfilePageMenuItem, FollowMenuItem, SendToGroupMenuItem});
         }
@@ -1008,6 +1010,10 @@ namespace PockeTwit
                         CopyToGroupMenuItem.Visible = false;
                     }
                 }
+            }
+            else
+            {
+                selectedItem.UpdateRightMenu(statList.RightMenu);
             }
         }
 
@@ -2287,15 +2293,7 @@ namespace PockeTwit
 
 
         }
-        private void ShowCurrentTrend()
-        {
-            //TODO -- Setup history item
-            var TopicItem = (TrendingTopicItem) statList.SelectedItem;
-            var Query = System.Web.HttpUtility.UrlEncode(TopicItem.TrendingTopic.Query.Trim('"'));
-            ShowSearchResults(Query);
-            statList.RightMenu.ResetMenu(new []{ConversationMenuItem, DeleteStatusMenuItem, ResponsesMenuItem, QuoteMenuItem, RetweetMenuItem, EmailMenuItem, ToggleFavoriteMenuItem, 
-                UserTimelineMenuItem, ProfilePageMenuItem, FollowMenuItem, SendToGroupMenuItem});
-        }
+
 
         private void ShowTrends()
         {
@@ -2306,10 +2304,10 @@ namespace PockeTwit
             HistoryItem i = new HistoryItem();
             i.Action = Yedda.Twitter.ActionType.Favorites;  //TODO
             History.Push(i);
-            ShowTrendMenuItem.Visible = true;
-            statList.RightMenu.ResetMenu(new FingerUI.Menu.SideMenuItem[] { ShowTrendMenuItem });
-            statList.SetSelectedMenu(TrendsMenuItem);
+            statList.SetSelectedMenu(ViewFavoritesMenuItem);
            
+            //test = LetsBeTrends.GetTrend("GoodNight");
+
             statList.Clear();
 
             ArrayList al = LetsBeTrends.GetCurrentTrends();
@@ -2346,7 +2344,6 @@ namespace PockeTwit
             statList.RerenderPortal();
             statList.Repaint();
 
-            
             ChangeCursor(Cursors.Default);
         }
 
