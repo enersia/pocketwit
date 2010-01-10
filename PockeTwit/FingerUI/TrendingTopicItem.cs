@@ -49,7 +49,7 @@ namespace PockeTwit.FingerUI
         string _searchString;
         bool _saveResults;
         ISpecialTimeLine _timeLine;
-        TrendingTopic _trendingTopic;
+        public TrendingTopic TrendingTopic;
 
         public TrendingTopicItem(TweetList list, string searchString, bool saveResults)
         {
@@ -63,7 +63,7 @@ namespace PockeTwit.FingerUI
         {
             _list = list;
             _searchString = searchString;
-            _trendingTopic = trendingTopic;
+            TrendingTopic = trendingTopic;
             Value = this.GetType().ToString();
 
         }
@@ -126,7 +126,7 @@ namespace PockeTwit.FingerUI
                 //BreakUpTheText(g, textBounds);
                 //int lineOffset = 0;
 
-                SizeF textSize = g.MeasureString(_trendingTopic.Name, ClientSettings.MenuFont);
+                SizeF textSize = g.MeasureString(TrendingTopic.Name, ClientSettings.MenuFont);
                 Point startPoint = new Point((int)(bounds.Left + (bounds.Width - textSize.Width) / 2), (int)(bounds.Top + (bounds.Height - textSize.Height) / 2));
 
                 textBounds.Location = new Point(textBounds.X, textBounds.Y + startPoint.Y);
@@ -136,8 +136,8 @@ namespace PockeTwit.FingerUI
                 Color drawColor = ClientSettings.MenuTextColor;
                 using (Brush drawBrush = new SolidBrush(drawColor))
                 {
-                    g.DrawString(_trendingTopic.Name, ClientSettings.MenuFont, drawBrush, startPoint.X, startPoint.Y - 20);
-                    g.DrawString(_trendingTopic.Description, ClientSettings.MenuFont, drawBrush, new RectangleF(textBounds.Left, textBounds.Top, textBounds.Width, textBounds.Height));
+                    g.DrawString(TrendingTopic.Name, ClientSettings.MenuFont, drawBrush, startPoint.X, startPoint.Y - 20);
+                    g.DrawString(TrendingTopic.Description, ClientSettings.MenuFont, drawBrush, new RectangleF(textBounds.Left, textBounds.Top, textBounds.Width, textBounds.Height));
                 }
 
 
@@ -183,29 +183,6 @@ namespace PockeTwit.FingerUI
             set;
         }
         
-        private void Test()
-        {
-            MessageBox.Show("Works!");
-        }
-
-        public void CreateRightMenu(SideMenu menu)
-        {
-            /* Test Code for menu creation, left here as template
-            FingerUI.Menu.SideMenuItem TestMenuItem = new FingerUI.Menu.SideMenuItem(Test, "Test", menu);
-            menu.ResetMenu(new FingerUI.Menu.SideMenuItem[] { TestMenuItem });*/
-
-
-            FingerUI.Menu.SideMenuItem TestMenuItem = new FingerUI.Menu.SideMenuItem(Test, "Test", menu);
-            menu.ResetMenu(new FingerUI.Menu.SideMenuItem[] { TestMenuItem });
-            
-            return;
-        }
-
-        public void UpdateRightMenu(SideMenu menu)
-        {
-            return;
-        }
-
         public object Value { get; set; }
 
         #endregion

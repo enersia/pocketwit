@@ -18,7 +18,5 @@ namespace PockeTwit.FingerUI
         void Render(Graphics g, Rectangle bounds);
         void OnMouseClick(Point p);
         void OnMouseDblClick();
-        void CreateRightMenu(SideMenu menu);
-        void UpdateRightMenu(SideMenu menu);
     }
 }

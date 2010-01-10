@@ -590,16 +590,7 @@ namespace PockeTwit.FingerUI
             }
         }
 
-        public void CreateRightMenu(SideMenu menu)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateRightMenu(SideMenu menu)
-        {
-            throw new NotImplementedException();
-        }
-
+       
         public void OnMouseDblClick()
         {
             throw new NotImplementedException();
