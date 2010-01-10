@@ -44,7 +44,6 @@ namespace PockeTwit
             this.lblGPS = new System.Windows.Forms.Label();
             this.picAddressBook = new System.Windows.Forms.PictureBox();
             this.userListControl1 = new PockeTwit.userListControl();
-            this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.SuspendLayout();
             // 
             // menuCancel
@@ -187,6 +186,5 @@ namespace PockeTwit
         private userListControl userListControl1;
         private Label lblGPS;
         private PictureBox picAddressBook;
-        private ContextMenu contextMenu1;
     }
 }

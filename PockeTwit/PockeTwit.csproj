@@ -288,6 +288,9 @@
       <DependentUpon>AdvancedSearchSmartphoneForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="FingerUI\SpellingCorrections\SmartPhoneCorrector.resx">
+      <DependentUpon>SmartPhoneCorrector.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ProfileViewSmartphone.resx">
       <DependentUpon>ProfileViewSmartphone.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -485,6 +488,14 @@
     <Compile Include="AdvancedSearchSmartphoneForm.Designer.cs">
       <DependentUpon>AdvancedSearchSmartphoneForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FingerUI\SpellingCorrections\ISpellingCorrector.cs" />
+    <Compile Include="FingerUI\SpellingCorrections\PocketPCCorrecter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FingerUI\SpellingCorrections\SmartPhoneCorrector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FingerUI\SpellingCorrections\SpellChecker.cs" />
     <Compile Include="IProfileViewer.cs" />
     <Compile Include="ProfileViewSmartphone.cs">
       <SubType>Form</SubType>

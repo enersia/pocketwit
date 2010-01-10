@@ -858,6 +858,7 @@ namespace PockeTwit
 
         private void CreateRightMenu()
         {
+            /*
             if ((statList != null) && (statList.SelectedItem != null) && statList.SelectedItem.GetType() != typeof(StatusItem))
             {
                 statList.RightMenu.ResetMenu(null);
@@ -868,7 +869,7 @@ namespace PockeTwit
                     this.specificMenu.Enabled = true;
                 return;
             }
-
+            */
             // "Show Conversation", "Reply @User", "Direct @User", "Quote", 
             //   "Make Favorite", "@User TimeLine", "Profile Page", "Stop Following",
             // "Minimize" 
@@ -948,72 +949,65 @@ namespace PockeTwit
             IDisplayItem selectedItem = statList.SelectedItem;
             if (selectedItem == null) { return; }
 
-            if (selectedItem is StatusItem)
+            StatusItem item = selectedItem as StatusItem;
+            Yedda.Twitter conn = GetMatchingConnection(item.Tweet.Account);
+            if (selectedItem != null)
             {
-                StatusItem item = selectedItem as StatusItem;
-                Yedda.Twitter conn = GetMatchingConnection(item.Tweet.Account);
-                if (selectedItem != null)
+                statList.SetRightMenuUser();
+                if (string.IsNullOrEmpty(item.Tweet.in_reply_to_status_id))
                 {
-                    statList.SetRightMenuUser();
-                    if (string.IsNullOrEmpty(item.Tweet.in_reply_to_status_id))
+                    ConversationMenuItem.Visible = false;
+                }
+                else
+                {
+                    ConversationMenuItem.Visible = true;
+                }
+
+                if (ClientSettings.GetAcountForUser(item.Tweet.user.screen_name) != null)
+                {
+                    DeleteStatusMenuItem.Visible = true;
+                    ResponsesMenuItem.Visible = false;
+                }
+                else
+                {
+                    DeleteStatusMenuItem.Visible = false;
+                    ResponsesMenuItem.Visible = true;
+                }
+
+
+                if (conn.FavoritesWork)
+                {
+                    if (item.IsFavorite)
                     {
-                        ConversationMenuItem.Visible = false;
+                        ToggleFavoriteMenuItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Remove Favorite");
                     }
                     else
                     {
-                        ConversationMenuItem.Visible = true;
-                    }
-
-                    if (ClientSettings.GetAcountForUser(item.Tweet.user.screen_name) != null)
-                    {
-                        DeleteStatusMenuItem.Visible = true;
-                        ResponsesMenuItem.Visible = false;
-                    }
-                    else
-                    {
-                        DeleteStatusMenuItem.Visible = false;
-                        ResponsesMenuItem.Visible = true;
-                    }
-
-
-                    if (conn.FavoritesWork)
-                    {
-                        if (item.IsFavorite)
-                        {
-                            ToggleFavoriteMenuItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Remove Favorite");
-                        }
-                        else
-                        {
-                            ToggleFavoriteMenuItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Make Favorite");
-                        }
-                    }
-
-
-
-
-                    FollowMenuItem.Visible = true;
-                    if (FollowingDictionary[conn].IsFollowing(item.Tweet.user))
-                    {
-                        FollowMenuItem.Text = "Stop Following";
-                        delMenuClicked followClicked = StopFollowingUser;
-                        FollowMenuItem.SubMenuItems.Clear();
-
-                        MoveToGroupMenuItem.Visible = true;
-                        CopyToGroupMenuItem.Visible = true;
-                    }
-                    else
-                    {
-                        FollowMenuItem.Text = "Follow";
-                        SetFollowMenu();
-
-                        MoveToGroupMenuItem.Visible = false;
-                        CopyToGroupMenuItem.Visible = false;
+                        ToggleFavoriteMenuItem.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Make Favorite");
                     }
                 }
-            }
-            else
-            {
-                selectedItem.UpdateRightMenu(statList.RightMenu);
+
+
+
+
+                FollowMenuItem.Visible = true;
+                if (FollowingDictionary[conn].IsFollowing(item.Tweet.user))
+                {
+                    FollowMenuItem.Text = "Stop Following";
+                    delMenuClicked followClicked = StopFollowingUser;
+                    FollowMenuItem.SubMenuItems.Clear();
+
+                    MoveToGroupMenuItem.Visible = true;
+                    CopyToGroupMenuItem.Visible = true;
+                }
+                else
+                {
+                    FollowMenuItem.Text = "Follow";
+                    SetFollowMenu();
+
+                    MoveToGroupMenuItem.Visible = false;
+                    CopyToGroupMenuItem.Visible = false;
+                }
             }
         }
 

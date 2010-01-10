@@ -1,8 +1,9 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using PockeTwit.FingerUI.SpellingCorrections;
 using PockeTwit.OtherServices.TextShrinkers;
 using PockeTwit.Themes;
 using Yedda;
@@ -14,6 +15,7 @@ namespace PockeTwit
     public partial class PostUpdate : Form
     {
         private System.Windows.Forms.ContextMenu copyPasteMenu;
+        
         private System.Windows.Forms.MenuItem PasteItem;
         private System.Windows.Forms.MenuItem CopyItem;
 		
@@ -33,8 +35,10 @@ namespace PockeTwit
         public delegate void delAddPicture(string ImageFile, PictureBox BoxToUpdate);
         public delegate void delUpdatePictureData(string pictureUrl, bool uploadingPicture);
 
-        private SpellCorrection currentSC;
         private String originalText;
+        private SpellChecker _checker;
+
+
 
         #region Properties
         private Yedda.Twitter.Account _AccountToSet = ClientSettings.DefaultAccount;
@@ -84,8 +88,12 @@ namespace PockeTwit
         public PostUpdate(bool Standalone)
         {
             _StandAlone = Standalone;
+            
             InitializeComponent();
+            _checker = new SpellChecker(txtStatusUpdate);
+            _checker.Done += _checker_Done;
             SetImages();
+            
             if (ClientSettings.AutoCompleteAddressBook)
             {
                 userListControl1.HookTextBoxKeyPress(txtStatusUpdate);
@@ -117,6 +125,12 @@ namespace PockeTwit
             userListControl1.ItemChosen += new userListControl.delItemChose(userListControl1_ItemChosen);
         }
 
+        void _checker_Done()
+        {
+            ContinuePost();
+        }
+
+        
         private void SetupTouchScreen()
         {
             mainMenu1.MenuItems.Add(menuSubmit);
@@ -936,21 +950,11 @@ namespace PockeTwit
                     return;
                 }
             }
+            _checker.CheckSpelling();
+        }
 
-
-            //if (ClientSettings.SpellCheck)
-            {
-                //if SpellCheck went ok
-                if (CheckSpelling(txtStatusUpdate.Text))
-                {
-                    //ask if they want to cancel the tweet submission
-                    if (PockeTwit.Localization.LocalizedMessageBox.Show("Spell check complete! Submit now?", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
-                    {
-                        return;
-                    }
-                }
-            }
-
+        private void ContinuePost()
+        {
             bool Success = PostTheUpdate();
 
             Cursor.Current = Cursors.Default;
@@ -967,6 +971,7 @@ namespace PockeTwit
                 DialogResult = DialogResult.OK;
             }
         }
+
         private void cmbAccount_SelectedIndexChanged(object sender, EventArgs e)
         {
             AccountToSet = (Yedda.Twitter.Account)cmbAccount.SelectedItem;
@@ -983,81 +988,5 @@ namespace PockeTwit
             base.OnClosed(e);
         }
 
-        private bool CheckSpelling(string textToCheck)
-        {
-            SpellRequest request = new SpellRequest(textToCheck, false, false, false);
-            SpellResult result = SpellCheck.Check(request);
-
-            if (result.Corrections == null || result.Corrections.Length <= 0)
-            {
-                return true;
-            }
-
-            originalText = txtStatusUpdate.Text;
-
-            foreach (SpellCorrection sc in result.Corrections)
-            {
-                try
-                {
-                    //if the mispelled word is a username or hashtag, don't spell check it
-                    if (originalText.Substring(sc.Offset - 1, sc.Length + 1).StartsWith("@") ||
-                        originalText.Substring(sc.Offset - 1, sc.Length + 1).StartsWith("#"))
-                    {
-                        continue;
-                    }
-
-                    //if the mispelled word no longer exists, it was probably a duplicate
-                    if (txtStatusUpdate.Text.IndexOf(originalText.Substring(sc.Offset, sc.Length)) < 0)
-                    {
-                        continue;
-                    }
-
-                    currentSC = sc;
-
-                    txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.IndexOf(originalText.Substring(currentSC.Offset, currentSC.Length));
-
-                    //don't select "misspelled" text that starts with @ or #
-                    while (txtStatusUpdate.Text.Substring(txtStatusUpdate.SelectionStart - 1, 1).Equals("@") ||
-                        txtStatusUpdate.Text.Substring(txtStatusUpdate.SelectionStart - 1, 1).Equals("#"))
-                    {
-                        MessageBox.Show("Moving selection pointer again!");
-                        txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.IndexOf(originalText.Substring(currentSC.Offset, currentSC.Length), txtStatusUpdate.SelectionStart + 1);
-                    }
-
-                    txtStatusUpdate.SelectionLength = currentSC.Length;
-
-                    contextMenu1.MenuItems.Clear();
-
-                    string[] vals = sc.Value.Split('\t');
-
-                    foreach (string s in vals)
-                    {
-                        MenuItem mi = new MenuItem();
-                        mi.Text = s;
-
-                        mi.Click += new EventHandler(this.SpellMenu_Clicked);
-                        contextMenu1.MenuItems.Add(mi);
-
-                    }
-
-                    contextMenu1.Show(txtStatusUpdate, new Point(50, 50));
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Spell check error: " + ex.Message);
-                }
-            }
-
-            txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
-            txtStatusUpdate.SelectionLength = 0;
-
-            return true;
-        }
-
-        private void SpellMenu_Clicked(object sender, EventArgs e)
-        {
-            MenuItem mi = (MenuItem)sender;
-            txtStatusUpdate.Text = txtStatusUpdate.Text.Replace(originalText.Substring(currentSC.Offset, currentSC.Length), mi.Text);
-        }
     }
 }
