@@ -290,7 +290,6 @@ namespace PockeTwit.FingerUI.Menu
                 }
             }
             IsDirty=true;
-            NeedRedraw();
         }
 
         void ItemMenuExpandedOrCollapsed(SideMenuItem sender, bool opened)

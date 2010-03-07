@@ -195,8 +195,6 @@ namespace PockeTwit.FingerUI
                     overlay = "@";
                 else if ((Tweet.TypeofMessage & Library.StatusTypes.Direct) != 0)
                     overlay = "D";
-                else if ((Tweet.TypeofMessage & Library.StatusTypes.Retweet) != 0)
-                    overlay = "RT";
                 else
                     overlay = String.Empty;
 
@@ -263,7 +261,6 @@ namespace PockeTwit.FingerUI
             public RectangleF Location;
             public string Text;
             public int Id;
-            public int Occurrence;
 
             #endregion�Fields�
 
@@ -300,12 +297,6 @@ namespace PockeTwit.FingerUI
         private void BreakUpTheText(Graphics g, Rectangle textBounds)
         {
             if (!ClientSettings.UseClickables) { FirstClickableRun(Tweet.DisplayText); return; }
-
-            if (Tweet == null)
-            {
-                Console.WriteLine("Error: Tweet was null in BreakUpTheText function!");
-                return;
-            }
 
             int lineOffset = 1;
             if (Tweet.SplitLines == null || Tweet.SplitLines.Count == 0)
@@ -351,13 +342,8 @@ namespace PockeTwit.FingerUI
             Tweet.ClickablesToDo = new List<int>();
             int id = 0;
             System.Text.RegularExpressions.MatchCollection m = GetClickables.Matches(text);
-            Dictionary<string, int> occurrencesOfMatches = new Dictionary<string, int>();
             foreach (System.Text.RegularExpressions.Match match in m)
             {
-                if (occurrencesOfMatches.ContainsKey(match.Value.Trim(IgnoredAtChars)))
-                {
-
-                }
                 var c = new Clickable {Text = match.Value.Trim(IgnoredAtChars), Id = id};
                 Tweet.ClickablesToDo.Add(id);
                 Tweet.Clickables.Add(c);
@@ -590,7 +576,16 @@ namespace PockeTwit.FingerUI
             }
         }
 
-       
+        public void CreateRightMenu(SideMenu menu)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateRightMenu(SideMenu menu)
+        {
+            throw new NotImplementedException();
+        }
+
         public void OnMouseDblClick()
         {
             throw new NotImplementedException();

@@ -12,7 +12,6 @@ namespace FingerUI
         const string HTMLTagPattern = "<.*?>";
 
         public PockeTwit.Library.status Status;
-        public Yedda.Twitter Conn;
         private bool _visible;
         public new bool Visible
         {
@@ -104,61 +103,27 @@ namespace FingerUI
             if (Status != null)
             {
                 Cursor.Current = Cursors.WaitCursor;
-
-                PockeTwit.Library.status stat = Status;
-
-                //if (Status.retweeted_status != null)
-                //{
-                //    //why won't this work? does retweeted_status need to 
-                //    //be saved in the db?
-                //    stat = Status.retweeted_status;
-                //}
-
-                //if it's a new retweet, make an API call to get orginal tweet
-                //so we can show all 140 chars of the tweet
-                if (Status.TypeofMessage == PockeTwit.Library.StatusTypes.Retweet)
-                {
-                    foreach (Yedda.Twitter.Account a in ClientSettings.AccountsList)
-                    {
-                        if (a.Equals(Status.Account))
-                        {
-                            Conn = new Yedda.Twitter();
-                            Conn.AccountInfo.ServerURL = a.ServerURL;
-                            Conn.AccountInfo.UserName = a.UserName;
-                            Conn.AccountInfo.Password = a.Password;
-                            Conn.AccountInfo.Enabled = a.Enabled;
-
-                            //Get the tweet again from Twitter
-                            stat = PockeTwit.Library.status.DeserializeSingle(Conn.ShowSingleStatus(stat.id), Conn.AccountInfo);
-                            
-                            //Set the tweet to the original tweet
-                            stat = stat.retweeted_status;
-                            break;
-                        }
-                    }
-                }
-
-                avatarBox.Image = PockeTwit.ThrottledArtGrabber.GetArt(stat.user.profile_image_url);
-                lblUserName.Text = stat.user.screen_name;
-                lblTime.Text = stat.TimeStamp;
-                if (string.IsNullOrEmpty(stat.source))
+                avatarBox.Image = PockeTwit.ThrottledArtGrabber.GetArt(Status.user.profile_image_url);
+                lblUserName.Text = Status.user.screen_name;
+                lblTime.Text = Status.TimeStamp;
+                if(string.IsNullOrEmpty(Status.source))
                 {
                     lblSource.Text = "";
                 }
                 else
                 {
 
-                    lblSource.Text = "from " + StripHTML(System.Web.HttpUtility.HtmlDecode(stat.source));
+                    lblSource.Text = "from " + StripHTML(System.Web.HttpUtility.HtmlDecode(Status.source));
                 }
                 string fullText;
-                if (ShortText.IsShortTextURL(stat.text))
+                if (ShortText.IsShortTextURL(Status.text))
                 {
-                    string[] splitup = stat.text.Split(new[] { ' ' });
+                    string[] splitup = Status.text.Split(new[] { ' ' });
                     fullText = ShortText.GetFullText(splitup[splitup.Length - 1]);
                 }
                 else
                 {
-                    fullText = stat.text;
+                    fullText = Status.text;
                 }
                 if (ClientSettings.AutoTranslate)
                 {

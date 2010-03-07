@@ -19,8 +19,7 @@ namespace PockeTwit.Library
         Normal = 0x1,
         Reply = 0x2,
         Direct = 0x4,
-        SearchResult = 0x8,
-        Retweet = 0x10
+        SearchResult = 0x8
     }
 
     [Serializable]
@@ -41,31 +40,10 @@ namespace PockeTwit.Library
 
         [XmlIgnore]
         public List<StatusItem.Clickable> Clickables { get; set; }
-
         [XmlIgnore]
         public List<int> ClickablesToDo { get; set; }
 
-        [XmlIgnore]
-        public StatusTypes type 
-        {
-            get
-            {
-                //if (!string.IsNullOrEmpty(in_reply_to_status_id) || !string.IsNullOrEmpty(in_reply_to_user_id))
-                //{
-                //    return StatusTypes.Reply;
-                //}
-                //else 
-                //if (text.StartsWith("RT "))
-                if (retweeted_status != null)
-                {
-                    return StatusTypes.Retweet;
-                }
-                else
-                {
-                    return StatusTypes.Normal;
-                }
-            } 
-        }
+        public StatusTypes type { get; set; }
 
         public string in_reply_to_status_id { get; set; }
 
@@ -173,6 +151,7 @@ namespace PockeTwit.Library
 
         public User user { get; set; }
 
+
         public string AccountSummary
         {
             get
@@ -201,8 +180,6 @@ namespace PockeTwit.Library
             }
             set { _Account = value; }
         }
-
-        public Library.status retweeted_status { get; set; }
 
         #endregion Properties 
 
@@ -272,22 +249,7 @@ namespace PockeTwit.Library
                     foreach (status stat in statuses)
                     {
                         stat.Account = Account;
-                        //if (TypeOfMessage == StatusTypes.Normal)
-                        //{
-                        //    if (!string.IsNullOrEmpty(stat.in_reply_to_status_id) || !string.IsNullOrEmpty(stat.in_reply_to_user_id))
-                        //    {
-                        //        TypeOfMessage = StatusTypes.Reply;
-                        //    }
-                        //    else if(stat.
-                        //}
-                        //if (stat.type != null)
-                        //{
-                            stat.TypeofMessage = stat.type;
-                        //}
-                        //else
-                        //{
-                        //    stat.TypeofMessage = TypeOfMessage;
-                        //}
+                        stat.TypeofMessage = TypeOfMessage;
                     }
                 }
             }
@@ -515,14 +477,6 @@ namespace PockeTwit.Library
                         comm.Parameters.Add(new SQLiteParameter("@type", TypeofMessage));
                         comm.ExecuteNonQuery();
                     }
-                    else if (TypeofMessage == StatusTypes.Reply)
-                    {
-                        //Already exists in the DB as a Friends update -- we need to make it an @mention too
-                        TypeofMessage = StatusTypes.Normal | StatusTypes.Retweet;
-                        comm.CommandText = SQLUpdateTypes;
-                        comm.Parameters.Add(new SQLiteParameter("@type", TypeofMessage));
-                        comm.ExecuteNonQuery();
-                    }
                     return;
                 }
             }
@@ -628,20 +582,6 @@ namespace PockeTwit.Library
         }
 
         public string followers_count { get; set; }
-
-        public string friends_count { get; set; }
-
-        public string statuses_count { get; set; }
-
-        public string favourites_count { get; set; }
-
-        public string created_at { get; set; }
-
-        public string url { get; set; }
-
-        //public string following { get; set; }
-
-        public string verified { get; set; }
 
         #endregion Properties 
 

@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
+
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
-using PockeTwit.FingerUI.SpellingCorrections;
 using PockeTwit.OtherServices.TextShrinkers;
 using PockeTwit.Themes;
 using Yedda;
 using PockeTwit.MediaServices;
-using PockeTwit.OtherServices.GoogleSpell;
 
 namespace PockeTwit
 {
     public partial class PostUpdate : Form
     {
         private System.Windows.Forms.ContextMenu copyPasteMenu;
-        
         private System.Windows.Forms.MenuItem PasteItem;
         private System.Windows.Forms.MenuItem CopyItem;
 		
@@ -34,11 +31,6 @@ namespace PockeTwit
 
         public delegate void delAddPicture(string ImageFile, PictureBox BoxToUpdate);
         public delegate void delUpdatePictureData(string pictureUrl, bool uploadingPicture);
-
-        private String originalText;
-        private SpellChecker _checker;
-
-
 
         #region Properties
         private Yedda.Twitter.Account _AccountToSet = ClientSettings.DefaultAccount;
@@ -88,12 +80,8 @@ namespace PockeTwit
         public PostUpdate(bool Standalone)
         {
             _StandAlone = Standalone;
-            
             InitializeComponent();
-            _checker = new SpellChecker(txtStatusUpdate);
-            _checker.Done += _checker_Done;
             SetImages();
-            
             if (ClientSettings.AutoCompleteAddressBook)
             {
                 userListControl1.HookTextBoxKeyPress(txtStatusUpdate);
@@ -125,12 +113,6 @@ namespace PockeTwit
             userListControl1.ItemChosen += new userListControl.delItemChose(userListControl1_ItemChosen);
         }
 
-        void _checker_Done()
-        {
-            ContinuePost();
-        }
-
-        
         private void SetupTouchScreen()
         {
             mainMenu1.MenuItems.Add(menuSubmit);
@@ -950,11 +932,6 @@ namespace PockeTwit
                     return;
                 }
             }
-            _checker.CheckSpelling();
-        }
-
-        private void ContinuePost()
-        {
             bool Success = PostTheUpdate();
 
             Cursor.Current = Cursors.Default;
@@ -971,13 +948,14 @@ namespace PockeTwit
                 DialogResult = DialogResult.OK;
             }
         }
-
         private void cmbAccount_SelectedIndexChanged(object sender, EventArgs e)
         {
             AccountToSet = (Yedda.Twitter.Account)cmbAccount.SelectedItem;
         }
 
         #endregion
+
+
 
         protected override void OnClosed(EventArgs e)
         {
@@ -987,6 +965,5 @@ namespace PockeTwit
             }
             base.OnClosed(e);
         }
-
     }
 }
