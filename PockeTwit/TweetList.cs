@@ -54,7 +54,6 @@ namespace PockeTwit
         FingerUI.Menu.SideMenuItem MessagesMenuItem;
         FingerUI.Menu.SideMenuItem RefreshMessagesMenuItem;
         
-        FingerUI.Menu.SideMenuItem PublicMenuItem;
         FingerUI.Menu.SideMenuItem SearchMenuItem;
         FingerUI.Menu.SideMenuItem ViewFavoritesMenuItem;
         FingerUI.Menu.SideMenuItem GroupsMenuItem;
@@ -720,14 +719,12 @@ namespace PockeTwit
             RefreshFriendsTimeLineMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshFriendsTimeLine, "Refresh Friends", statList.LeftMenu, "Friends_TimeLine");
             MessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowMessagesTimeLine, "Messages", statList.LeftMenu, "Messages_TimeLine");
             RefreshMessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshMessagesTimeLine, "Refresh Messages", statList.LeftMenu, "Messages_TimeLine");
-            PublicMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowPublicTimeLine, "Public Timeline", statList.LeftMenu);
             SearchMenuItem = new FingerUI.Menu.SideMenuItem(this.TwitterSearch, "Search/Local", statList.LeftMenu);
             ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "View Favorites", statList.LeftMenu);
             FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "Follow User", statList.LeftMenu);
 
             OtherGlobalMenuItem = new FingerUI.Menu.SideMenuItem(null, "Other ...", statList.LeftMenu);
             OtherGlobalMenuItem.SubMenuItems.Add(SearchMenuItem);
-            OtherGlobalMenuItem.SubMenuItems.Add(PublicMenuItem);
             OtherGlobalMenuItem.SubMenuItems.Add(ViewFavoritesMenuItem);
             OtherGlobalMenuItem.SubMenuItems.Add(FollowUserMenuItem);
             OtherGlobalMenuItem.SubMenuItems.Add(AboutMenuItem);
@@ -1467,19 +1464,6 @@ namespace PockeTwit
             History.Push(i);
             statList.SetSelectedMenu(ViewFavoritesMenuItem);
             AddStatusesToList(Manager.GetFavorites());
-            ChangeCursor(Cursors.Default);
-        }
-        private void ShowPublicTimeLine()
-        {
-            currentSpecialTimeLine = null;
-            ChangeCursor(Cursors.WaitCursor);
-            
-            SwitchToList("Public_TimeLine");
-            HistoryItem i = new HistoryItem();
-            i.Action = Yedda.Twitter.ActionType.Public_Timeline;
-            History.Push(i);
-            statList.SetSelectedMenu(PublicMenuItem);
-            AddStatusesToList(Manager.GetPublicTimeLine());
             ChangeCursor(Cursors.Default);
         }
 
