@@ -1970,6 +1970,7 @@ namespace PockeTwit
             IsLoaded = true;
             lblTitle.Text = "PockeTwit";
             lblProgress.Visible = false;
+            LastSelectedItems.UpdateUnreadCounts();
             this.Refresh();
             StartBackground = false;
         }
