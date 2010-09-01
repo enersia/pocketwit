@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{293BAAE4-E497-44C9-8EAD-81DD4064C588}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -14,7 +14,7 @@
     <PlatformID>b2c48bd2-963d-4549-9169-1fa021dce484</PlatformID>
     <OSVersion>5.02</OSVersion>
     <DeployDirSuffix>PockeTwit</DeployDirSuffix>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <NativePlatformName>Windows Mobile 6 Professional SDK</NativePlatformName>
     <FormFactorID>
     </FormFactorID>
@@ -66,6 +66,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CustomMarshalers" />
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.WindowsCE.Forms" />
     <Reference Include="Microsoft.WindowsMobile, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="Microsoft.WindowsMobile.Forms, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
@@ -93,12 +97,15 @@
       <HintPath>..\Libraries\OpenNETCF.WindowsCE.Messaging.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=1fdb50b1b62b4c84, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libraries\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Forms.DataGrid" />
     <Reference Include="System.Xml" />
@@ -283,6 +290,7 @@
     </Content>
     <EmbeddedResource Include="AdvancedSearchForm.resx">
       <DependentUpon>AdvancedSearchForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="AdvancedSearchSmartphoneForm.resx">
       <DependentUpon>AdvancedSearchSmartphoneForm.cs</DependentUpon>
@@ -290,6 +298,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FingerUI\SpellingCorrections\SmartPhoneCorrector.resx">
       <DependentUpon>SmartPhoneCorrector.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ProfileViewSmartphone.resx">
       <DependentUpon>ProfileViewSmartphone.cs</DependentUpon>
@@ -327,8 +336,8 @@
     <Content Include="Localization\pocketwit_pt.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SQLite.Interop.060.DLL">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <Content Include="SQLite.Interop.065.DLL">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestCode\Desert.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -401,6 +410,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MediaServices\SwitchToTweetPhoto.resx">
       <DependentUpon>SwitchToTweetPhoto.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PostUpdate.resx">
       <DependentUpon>PostUpdate.cs</DependentUpon>
@@ -497,6 +507,39 @@
     </Compile>
     <Compile Include="FingerUI\SpellingCorrections\SpellChecker.cs" />
     <Compile Include="IProfileViewer.cs" />
+    <Compile Include="Mono\AsyncCompletedEventArgs.cs" />
+    <Compile Include="Mono\AsyncCompletedEventHandler.cs" />
+    <Compile Include="Mono\DecompressionMethods.cs" />
+    <Compile Include="Mono\DownloadDataCompletedEventArgs.cs" />
+    <Compile Include="Mono\DownloadDataCompletedEventHandler.cs" />
+    <Compile Include="Mono\DownloadProgressChangedEventArgs.cs" />
+    <Compile Include="Mono\DownloadProgressChangedEventHandler.cs" />
+    <Compile Include="Mono\DownloadStringCompletedEventArgs.cs" />
+    <Compile Include="Mono\DownloadStringCompletedEventHandler.cs" />
+    <Compile Include="Mono\HttpRequestHeader.cs" />
+    <Compile Include="Mono\NameValueCollection.cs" />
+    <Compile Include="Mono\OpenReadCompletedEventArgs.cs" />
+    <Compile Include="Mono\OpenReadCompletedEventHandler.cs" />
+    <Compile Include="Mono\OpenWriteCompletedEventArgs.cs" />
+    <Compile Include="Mono\OpenWriteCompletedEventHandler.cs" />
+    <Compile Include="Mono\ProgressChangedEventArgs.cs" />
+    <Compile Include="Mono\RequestCacheLevel.cs" />
+    <Compile Include="Mono\RequestCachePolicy.cs" />
+    <Compile Include="Mono\ThreadInterruptedException.cs" />
+    <Compile Include="Mono\UploadDataCompletedEventArgs.cs" />
+    <Compile Include="Mono\UploadDataCompletedEventHandler.cs" />
+    <Compile Include="Mono\UploadFileCompletedEventArgs.cs" />
+    <Compile Include="Mono\UploadFileCompletedEventHandler.cs" />
+    <Compile Include="Mono\UploadProgressChangedEventArgs.cs" />
+    <Compile Include="Mono\UploadProgressChangedEventHandler.cs" />
+    <Compile Include="Mono\UploadStringCompletedEventArgs.cs" />
+    <Compile Include="Mono\UploadStringCompletedEventHandler.cs" />
+    <Compile Include="Mono\UploadValuesCompletedEventArgs.cs" />
+    <Compile Include="Mono\UploadValuesCompletedEventHandler.cs" />
+    <Compile Include="Mono\UriBuilder.cs" />
+    <Compile Include="Mono\WebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ProfileViewSmartphone.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -674,6 +717,7 @@
     <Compile Include="MediaServices\MobyPicture.cs" />
     <Compile Include="MediaServices\PicturePostObject.cs" />
     <Compile Include="MediaServices\PictureServiceFactory.cs" />
+    <Compile Include="Yedda\OAuthAuthorizer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CompactFramework.CSharp.targets" />
   <ProjectExtensions>

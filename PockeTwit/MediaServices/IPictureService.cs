@@ -6,6 +6,7 @@ using System.Web;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using Yedda;
 
 namespace PockeTwit.MediaServices
 {
@@ -147,21 +148,36 @@ namespace PockeTwit.MediaServices
         /// </summary>
         /// <param name="postData">Postdata</param>
         /// <returns>Returned URL from server</returns>
-        void PostPicture(PicturePostObject postData);
+        //void PostPicture(PicturePostObject postData);
 
+        /// <summary>
+        /// Send a picture to a twitter picture framework
+        /// </summary>
+        /// <param name="postData">Postdata</param>
+        /// <returns>Returned URL from server</returns>
+        void PostPicture(PicturePostObject postData, Twitter.Account account);
+
+        
         /// <summary>
         /// Send a picture to a twitter picture framework without the use of the finish event
         /// </summary>
         /// <param name="postData">Postdata</param>
         /// <returns>Returned URL from server</returns>
-        bool PostPictureMessage(PicturePostObject postData);
+        bool PostPictureMessage(PicturePostObject postData, Twitter.Account account);
 
         /// <summary>
         /// Retrieve a picture from a picture service. 
         /// </summary>
         /// <param name="pictureURL">pictureURL</param>
         /// <returns>Local path for downloaded picture.</returns>
-        void FetchPicture(string pictureURL);
+        //void FetchPicture(string pictureURL);
+
+        /// <summary>
+        /// Retrieve a picture from a picture service. 
+        /// </summary>
+        /// <param name="pictureURL">pictureURL</param>
+        /// <returns>Local path for downloaded picture.</returns>
+        void FetchPicture(string pictureURL, Twitter.Account account);
 
         /// <summary>
         /// Check for possibility of getting the picture with current service.

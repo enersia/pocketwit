@@ -41,6 +41,9 @@
             this.lblError = new System.Windows.Forms.Label();
             this.chkDefault = new System.Windows.Forms.CheckBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.LlTwitter = new System.Windows.Forms.LinkLabel();
+            this.TbPin = new System.Windows.Forms.TextBox();
+            this.lPin = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -126,9 +129,9 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblError.BackColor = System.Drawing.Color.Black;
             this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(83, 154);
+            this.lblError.Location = new System.Drawing.Point(5, 212);
             this.lblError.Name = "lblError";
-            this.lblError.Size = new System.Drawing.Size(152, 58);
+            this.lblError.Size = new System.Drawing.Size(232, 56);
             this.lblError.Text = "Unable to verify username and password";
             this.lblError.Visible = false;
             // 
@@ -152,6 +155,30 @@
             this.linkLabel1.Visible = false;
             this.linkLabel1.Click += new System.EventHandler(this.linkLabel1_Click);
             // 
+            // LlTwitter
+            // 
+            this.LlTwitter.Location = new System.Drawing.Point(5, 177);
+            this.LlTwitter.Name = "LlTwitter";
+            this.LlTwitter.Size = new System.Drawing.Size(131, 20);
+            this.LlTwitter.TabIndex = 8;
+            this.LlTwitter.Text = "Verify with Twitter";
+            this.LlTwitter.Click += new System.EventHandler(this.LlTwitter_Click);
+            // 
+            // TbPin
+            // 
+            this.TbPin.Location = new System.Drawing.Point(171, 177);
+            this.TbPin.Name = "TbPin";
+            this.TbPin.Size = new System.Drawing.Size(66, 21);
+            this.TbPin.TabIndex = 9;
+            // 
+            // lPin
+            // 
+            this.lPin.ForeColor = System.Drawing.Color.LightGray;
+            this.lPin.Location = new System.Drawing.Point(143, 177);
+            this.lPin.Name = "lPin";
+            this.lPin.Size = new System.Drawing.Size(32, 20);
+            this.lPin.Text = "Pin:";
+            // 
             // AccountInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -159,6 +186,9 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.lPin);
+            this.Controls.Add(this.TbPin);
+            this.Controls.Add(this.LlTwitter);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.chkDefault);
@@ -190,6 +220,9 @@
         private System.Windows.Forms.MenuItem PasteItem;
         private System.Windows.Forms.CheckBox chkDefault;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.LinkLabel LlTwitter;
+        private System.Windows.Forms.TextBox TbPin;
+        private System.Windows.Forms.Label lPin;
         
 
         

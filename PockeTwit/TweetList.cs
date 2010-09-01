@@ -1855,7 +1855,7 @@ namespace PockeTwit
                 {
                     Cursor.Current = Cursors.WaitCursor;
                     PockeTwit.MediaServices.IPictureService p = PockeTwit.MediaServices.PictureServiceFactory.Instance.LocateFetchService(TextClicked);
-                    p.FetchPicture(TextClicked);
+                    p.FetchPicture(TextClicked, CurrentlySelectedAccount);
                     p.DownloadFinish += new PockeTwit.MediaServices.DownloadFinishEventHandler(p_DownloadFinish);
                     p.ErrorOccured += new PockeTwit.MediaServices.ErrorOccuredEventHandler(p_ErrorOccured);
                     return;

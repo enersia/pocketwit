@@ -6,12 +6,18 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using OAuth;
+using System.Threading;
 
 namespace PockeTwit
 {
     public partial class AccountInfoForm : Form
     {
         private Yedda.Twitter.Account _AccountInfo = new Yedda.Twitter.Account();
+        private string RequestToken = string.Empty;
+        private string RequestTokenSecret = string.Empty;
+        private string urlToLaunch = string.Empty;
+
         public Yedda.Twitter.Account AccountInfo 
         {
             get
@@ -114,6 +120,33 @@ namespace PockeTwit
                 lblError.Visible = true;
                 return;
             }
+            if ((string)cmbServers.SelectedItem == "twitter")
+            {
+                OAuthAuthorizer authorizer = new OAuthAuthorizer();
+
+                if (string.IsNullOrEmpty(TbPin.Text))
+                {
+                    lblError.Text = "Please enter pin provided by twitter.";
+                    lblError.Visible = true;
+                    return;
+                }
+                
+                //access
+                authorizer.AuthorizationToken = RequestToken;
+                authorizer.AuthorizationVerifier = TbPin.Text;
+                authorizer.AcquireAccessToken();
+
+                _AccountInfo.OAuth_token = authorizer.AccessToken;
+                _AccountInfo.OAuth_token_secret = authorizer.AccessTokenSecret;
+                
+                if (string.IsNullOrEmpty(_AccountInfo.OAuth_token))
+                {
+                    lblError.Text = "Not yet verified with Twitter.";
+                    lblError.Visible = true;
+                    return;
+                }
+            }
+
             this.DialogResult = DialogResult.OK;
         }
 
@@ -131,7 +164,25 @@ namespace PockeTwit
                 {
                     txtUserName.ContextMenu = copyPasteMenu;
                 }
+                LlTwitter.Visible = false;
+                lPin.Visible = false;
+                TbPin.Visible = false;
+            }
+            else if (server == "twitter")
+            {
+                 LlTwitter.Visible = true;
+                 lPin.Visible = true;
+                 TbPin.Visible = true;
 
+                 txtPassword.Text = "";
+                 txtPassword.Visible = true;
+                 lblPassword.Visible = true;
+                 linkLabel1.Visible = false;
+                 lblUser.Text = "User";
+                 if (DetectDevice.DeviceType == DeviceType.Professional)
+                 {
+                     txtUserName.ContextMenu = null;
+                 }
             }
             else
             {
@@ -144,6 +195,9 @@ namespace PockeTwit
                 {
                     txtUserName.ContextMenu = null;
                 }
+                LlTwitter.Visible = false;
+                lPin.Visible = false;
+                TbPin.Visible = false;
             }
         }
         void PasteItem_Click(object sender, System.EventArgs e)
@@ -177,6 +231,36 @@ namespace PockeTwit
         private void chkDefault_CheckStateChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void LlTwitter_Click(object sender, EventArgs e)
+        {
+            OAuthAuthorizer authorizer = new OAuthAuthorizer();
+
+            //request
+            authorizer.AcquireRequestToken();
+            RequestToken = authorizer.RequestToken;
+            RequestTokenSecret = authorizer.RequestTokenSecret;
+
+            if (string.IsNullOrEmpty(RequestToken))
+            {
+                return; //don't try the rest...
+            }
+
+            //auth
+            Uri url = new Uri(OAuthConfig.AuthorizeUrl + "?oauth_token=" + RequestToken);
+            urlToLaunch = url.ToString();
+            Thread t = new Thread(new ThreadStart(LaunchBrowserLink));
+            t.Start();
+
+        }
+
+        private void LaunchBrowserLink()
+        {
+            System.Diagnostics.ProcessStartInfo pi = new System.Diagnostics.ProcessStartInfo();
+            pi.FileName = urlToLaunch;
+            pi.UseShellExecute = true;
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start(pi);
         }
     }
 }

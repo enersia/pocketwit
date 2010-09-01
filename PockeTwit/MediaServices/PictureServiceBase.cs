@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Text.RegularExpressions;
+using Yedda;
 
 namespace PockeTwit.MediaServices
 {
@@ -39,20 +40,20 @@ namespace PockeTwit.MediaServices
         /// PostPicture method that must be overridden.
         /// </summary>
         /// <param name="postData">Data to post</param>
-        public abstract void PostPicture(PicturePostObject postData);
+        public abstract void PostPicture(PicturePostObject postData, Twitter.Account account);
 
         /// <summary>
         /// FetchPicture method that must be overridden.
         /// </summary>
         /// <param name="pictureURL">URL to fetch</param>
-        public abstract void FetchPicture(string pictureURL);
+        public abstract void FetchPicture(string pictureURL, Twitter.Account account);
 
         /// <summary>
         /// Send a picture to a twitter picture framework without the use of the finish event
         /// </summary>
         /// <param name="postData">Postdata</param>
         /// <returns>Returned URL from server</returns>
-        public abstract bool PostPictureMessage(PicturePostObject postData);
+        public abstract bool PostPictureMessage(PicturePostObject postData, Twitter.Account account);
 
 
         #region getters and setters

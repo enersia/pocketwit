@@ -14,7 +14,6 @@
 // Got a question about this library? About programming? C#? .NET? About anything else?
 // Ask about it at Yedda (http://yedda.com) and get answers from real people.
 //
-using System;
 using System.IO;
 using System.Net;
 using System.Xml;
@@ -22,9 +21,15 @@ using System.Web;
 using System.Collections.Generic;
 using System.Text;
 using PockeTwit;
+using System.Collections.Specialized;
+using System.Globalization;
+using System;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Yedda
 {
+    
+    
     public static class Servers
     {
         public static Dictionary<string, Twitter.ServerURL> ServerList = new Dictionary<string, Twitter.ServerURL>();
@@ -66,6 +71,68 @@ namespace Yedda
 
     public class Twitter
     {
+        
+        public static readonly string DateFormat = "ddd MMM dd HH:mm:ss zzz yyyy";
+        //private static ApiCallOptions options;
+        //private static OAuthService serviceDefinition;
+        private static readonly object staticLock1= new object();
+        private static readonly object staticLock2 = new object();
+
+        public Twitter()
+        {
+            //BasicServiceLocator injector = new BasicServiceLocator();
+            
+            //injector.AddComponent<ISigningProvider, HmacSha1SigningProvider>("signing.provider:HMAC-SHA1", new HmacSha1SigningProvider());
+            //injector.AddComponent<INonceProvider, GuidNonceProvider>(typeof(INonceProvider).ToString(), new GuidNonceProvider());     
+            
+            //ServiceLocator.SetLocatorProvider(() => injector);
+        }
+
+        /// <summary>
+        /// The OAuth service definition for the Twitter client
+        /// </summary>
+        //public static OAuthService ServiceDefinition
+        //{
+        //    get
+        //    {
+        //        if (serviceDefinition == null)
+        //        {
+        //            lock (staticLock1)
+        //                if (serviceDefinition == null)
+        //                {
+        //                    serviceDefinition = OAuthService.Create(
+        //                        new OAuth.Net.Mobile.Consumer.EndPoint("http://api.twitter.com/oauth/request_token", "POST"),
+        //                        new System.Uri("http://api.twitter.com/oauth/authorize"),
+        //                        new OAuth.Net.Mobile.Consumer.EndPoint("http://api.twitter.com/oauth/access_token", "POST"),
+        //                        "HMAC-SHA1",
+        //                        new OAuthConsumer(
+        //                            "eejwjEguCY80lgPYhp1ag",
+        //                            "hhaFilap5NWXtdXeTVCnOl5H2lEzK8hyWqDQaVamc"));
+        //                }
+        //        }
+        //        return serviceDefinition;
+        //    }
+        //}
+
+        //public static ApiCallOptions Options
+        //{
+        //    get
+        //    {
+        //        if (options == null)
+        //        {
+        //            lock (staticLock2)
+        //                if (options == null)
+        //                {
+        //                    options = new ApiCallOptions
+        //                    {
+        //                        AuthorizationCallbackUri = new Uri(string.Empty)
+        //                    };
+        //                }
+        //        }
+        //        return options;
+        //    }
+        //}
+
         public static Dictionary<Twitter.Account, Dictionary<Twitter.ActionType, int>> Failures = new Dictionary<Account, Dictionary<ActionType, int>>();
         [Serializable]
         public class Account
@@ -102,6 +169,9 @@ namespace Yedda
             public string UserName { get; set; }
             [System.Xml.Serialization.XmlIgnore]
             public string Password { get; set; }
+
+            public string OAuth_token { get; set; }
+            public string OAuth_token_secret { get; set; }
 
             private Yedda.Twitter.TwitterServer _Server;
             public Yedda.Twitter.TwitterServer Server
@@ -194,6 +264,8 @@ namespace Yedda
                     return UserName + " (" + ServerURL.Name + ")";
                 }
             }
+
+            
         }
 
         public class ServerURL
@@ -649,7 +721,7 @@ namespace Yedda
 
                 if (!string.IsNullOrEmpty(Source))
                 {
-                    data += "&source=" + HttpUtility.UrlEncode(Source);
+                    data += "&source=" + System.Web.HttpUtility.UrlEncode(Source);
                 }
 
                 byte[] bytes = Encoding.UTF8.GetBytes(data);
@@ -1078,7 +1150,7 @@ namespace Yedda
             {
                 string url = "http://api.ping.fm/v1/user.post";
                 //string data = string.Format("user_app_key={0}&api_key={1}&post_method=microblog&body={2}", this.AccountInfo.UserName,this.AccountInfo.Password,HttpUtility.UrlEncode(status));
-                string data = string.Format("user_app_key={0}&api_key={1}&post_method=default&body={2}", this.AccountInfo.UserName, this.AccountInfo.Password, HttpUtility.UrlEncode(status));
+                string data = string.Format("user_app_key={0}&api_key={1}&post_method=default&body={2}", this.AccountInfo.UserName, this.AccountInfo.Password, System.Web.HttpUtility.UrlEncode(status));
                 
                 return ExecutePostCommand(url, data);
             }
@@ -1087,7 +1159,7 @@ namespace Yedda
                 if (this.PlaceID != null)
                 {
                     string url = string.Format("http://brightkite.com/places/{0}/notes", this.PlaceID);
-                    string data = string.Format("note[body]={0}", HttpUtility.UrlEncode(status));
+                    string data = string.Format("note[body]={0}", System.Web.HttpUtility.UrlEncode(status));
                     return ExecutePostCommand(url, data);
                 }
                 else
@@ -1103,7 +1175,7 @@ namespace Yedda
                 }
 
                 string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Update), GetFormatTypeString(format), AccountInfo.ServerURL.URL);
-                string data = string.Format("status={0}", HttpUtility.UrlEncode(status));
+                string data = string.Format("status={0}", System.Web.HttpUtility.UrlEncode(status));
                 if (!string.IsNullOrEmpty(in_reply_to_status_id))
                 {
                     data = data + "&in_reply_to_status_id=" + in_reply_to_status_id;
@@ -1368,11 +1440,133 @@ namespace Yedda
             }
             else
             {
-                url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Account), GetActionTypeString(ActionType.Verify_Credentials), GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
-                string Response = ExecuteGetCommand(url);
-                return (!string.IsNullOrEmpty(Response));
+                return true;
+
+                //url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Account), GetActionTypeString(ActionType.Verify_Credentials), GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
+                //string Response = ExecuteGetCommand(url);
+                //return (!string.IsNullOrEmpty(Response));
             }
         }
+
+        /// <summary>
+        /// Verifies the user credentials and fetches extended user information
+        /// for the current user.
+        /// </summary>
+        /// <param name="user">(Out) extended user information</param>
+        /// <param name="options">API options</param>
+        /// <returns>
+        /// <para>
+        /// Returns <c>true</c> and sets <paramref name="user"/> to a 
+        /// representation of the requesting user if authentication was 
+        /// successful.
+        /// </para>
+        /// <para>
+        /// Returns <c>false</c> and sets <paramref name="user"/> to null
+        /// if authentication was not successful.
+        /// </para>
+        /// </returns>
+        //public bool VerifyCredentials(out ExtendedUser user)
+        //{
+        //    OAuthResource resource = this.ExecuteRequest(
+        //        ServiceDefinition,
+        //        null,
+        //        "http://twitter.com/account/verify_credentials.xml", "GET");
+
+        //    if (resource.StatusCode == HttpStatusCode.Unauthorized)
+        //    {
+        //        user = null;
+        //        return false;
+        //    }
+        //    else if (resource.StatusCode == HttpStatusCode.OK)
+        //    {
+        //        user = ExtendedUser.Deserialize(resource.GetResponseStream());
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        throw new InvalidOperationException(
+        //            string.Format(
+        //                CultureInfo.InvariantCulture,
+        //                "Unexpected response from Twitter account/verify_credentials.xml: {0}",
+        //                resource.StatusCode));
+        //    }
+            
+        //}
+
+        /// <summary>
+        /// Executes an <see cref="OAuthRequest"/> for the specified resource 
+        /// and returns the resource.
+        /// </summary>
+        /// <param name="service">The OAuth service to use</param>
+        /// <param name="options">API options</param>
+        /// <param name="parameters">Additional parameters to send</param>
+        /// <param name="uriFormat">Resource URI (optionally with format
+        /// placeholders)</param>
+        /// <param name="httpMethod">HTTP Method of the resource request</param>
+        /// <param name="args">Arguments to format with</param>
+        /// <returns>
+        /// <see cref="OAuthResource"/> representing the response for the 
+        /// specified resource
+        /// </returns>
+        //private OAuthResource ExecuteRequest(
+        //    OAuthService service,
+        //    NameValueCollection parameters,
+        //    string uriFormat,
+        //    string httpMethod,
+        //    params string[] args)
+        //{
+        //    if (service == null)
+        //        throw new ArgumentNullException("service");
+
+        //    //if (Options.AuthorizationCallbackUri == null)
+        //    //    throw new ArgumentException("AuthorizationCallbackUri option must not be null", "options");
+
+        //    if (uriFormat == null)
+        //        throw new ArgumentNullException("uriFormat");
+
+        //    if (string.IsNullOrEmpty(uriFormat))
+        //        throw new ArgumentException("uriFormat must not be empty", "uriFormat");
+
+        //    var request = this.CreateRequest(service, uriFormat, httpMethod, args);
+
+        //    var response = request.GetResource(parameters);
+
+        //    return response.ProtectedResource;
+        //}
+
+        /// <summary>
+        /// Creates an <see cref="OAuthRequest"/> for the specified resource
+        /// </summary>
+        /// <param name="service">OAuth service</param>
+        /// <param name="uriFormat">Resource URI (optionally with format 
+        /// placeholders)</param>
+        /// <param name="args">Arguments to format with</param>
+        /// <returns>
+        /// <see cref="OAuthRequest"/> for the specified resource
+        /// </returns>
+        //private OAuthRequest CreateRequest(
+        //    OAuthService service,
+        //    string uriFormat,
+        //    string httpMethod,
+        //    params string[] args)
+        //{
+        //    if (service == null)
+        //        throw new ArgumentNullException("service");
+
+        //    if (uriFormat == null)
+        //        throw new ArgumentNullException("uriFormat");
+
+        //    if (string.IsNullOrEmpty(uriFormat))
+        //        throw new ArgumentException("uriFormat must not be empty", "uriFormat");
+
+        //    return OAuthRequest.Create(
+        //        new OAuth.Net.Mobile.Consumer.EndPoint(
+        //            string.Format(
+        //                CultureInfo.InvariantCulture,
+        //                uriFormat,
+        //                args), httpMethod),
+        //        service);
+        //}
 
         private bool PingValidate()
         {
@@ -1426,13 +1620,13 @@ namespace Yedda
             if (AccountInfo.ServerURL.ServerType == TwitterServer.twitter || AccountInfo.ServerURL.ServerType == TwitterServer.identica)
             {
                 string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Account), GetActionTypeString(ActionType.Update_Location), GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
-                string data = string.Format("location={0}", HttpUtility.UrlEncode(Location));
+                string data = string.Format("location={0}", System.Web.HttpUtility.UrlEncode(Location));
 
                 return ExecutePostCommand(url, data);
             }
             else
             {
-                string url = string.Format("http://brightkite.com/places/search.xml?q={0}", HttpUtility.UrlEncode(Location));
+                string url = string.Format("http://brightkite.com/places/search.xml?q={0}", System.Web.HttpUtility.UrlEncode(Location));
                 string placeRet = ExecuteGetCommand(url);
                 try
                 {
@@ -1486,7 +1680,7 @@ namespace Yedda
                 return null;
             }
             string url = string.Format(TwitterSimpleURLFormat, GetActionTypeString(ActionType.Report_Spam), AccountInfo.ServerURL.URL);
-            string data = string.Format("user_id={0}", HttpUtility.UrlEncode(SpammerID));
+            string data = string.Format("user_id={0}", System.Web.HttpUtility.UrlEncode(SpammerID));
             return ExecutePostCommand(url, data);
         }
         #endregion

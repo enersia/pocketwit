@@ -84,7 +84,7 @@ namespace PockeTwit.MediaServices
         /// Post a picture.
         /// </summary>
         /// <param name="postData"></param>
-        public override void PostPicture(PicturePostObject postData)
+        public override void PostPicture(PicturePostObject postData, Twitter.Account account)
         {
             #region Argument check
 
@@ -161,7 +161,7 @@ namespace PockeTwit.MediaServices
         /// Fetch a URL.
         /// </summary>
         /// <param name="pictureURL"></param>
-        public override void FetchPicture(string pictureURL)
+        public override void FetchPicture(string pictureURL, Twitter.Account account)
         {
             #region Argument check
 
@@ -195,7 +195,7 @@ namespace PockeTwit.MediaServices
             } 
         }
 
-        public override bool PostPictureMessage(PicturePostObject postData)
+        public override bool PostPictureMessage(PicturePostObject postData, Twitter.Account account)
         {
             #region Argument check
 

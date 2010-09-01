@@ -5,6 +5,7 @@ using System.Xml;
 using System.Web;
 using System.Collections.Generic;
 using System.Text;
+using Yedda;
 
 namespace PockeTwit.MediaServices
 {
@@ -81,7 +82,7 @@ namespace PockeTwit.MediaServices
         /// Post a picture
         /// </summary>
         /// <param name="postData"></param>
-        public override void PostPicture(PicturePostObject postData)
+        public override void PostPicture(PicturePostObject postData, Twitter.Account account)
         {
             #region Argument check
 
@@ -158,7 +159,7 @@ namespace PockeTwit.MediaServices
         /// Fetch a picture
         /// </summary>
         /// <param name="pictureURL"></param>
-        public override void FetchPicture(string pictureURL)
+        public override void FetchPicture(string pictureURL, Twitter.Account account)
         {
             #region Argument check
 
@@ -197,7 +198,7 @@ namespace PockeTwit.MediaServices
         /// </summary>
         /// <param name="postData"></param>
         /// <returns></returns>
-        public override bool PostPictureMessage(PicturePostObject postData)
+        public override bool PostPictureMessage(PicturePostObject postData, Twitter.Account account)
         {
             #region Argument check
 

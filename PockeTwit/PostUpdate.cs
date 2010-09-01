@@ -428,7 +428,8 @@ namespace PockeTwit
                 try
                 {
                     pictureService = GetMediaService();
-                    StartUpload(pictureService, filename);
+                    
+                    StartUpload(pictureService, filename, _AccountToSet);
                 }
                 catch
                 {
@@ -488,7 +489,7 @@ namespace PockeTwit
                 try
                 {
                     uploadedPictureOrigin = "file";
-                    StartUpload(pictureService, filename);
+                    StartUpload(pictureService, filename, _AccountToSet);
                 }
                 catch
                 {
@@ -530,7 +531,7 @@ namespace PockeTwit
             return filename;
         }
 
-        private void StartUpload(IPictureService mediaService, String fileName)
+        private void StartUpload(IPictureService mediaService, String fileName, Twitter.Account account)
         {
             if (mediaService.CanUploadMessage && ClientSettings.SendMessageToMediaService)
             {
@@ -550,7 +551,7 @@ namespace PockeTwit
                     ppo.Password = AccountToSet.Password;
                     ppo.UseAsync = false;
                     Cursor.Current = Cursors.WaitCursor;
-                    mediaService.PostPicture(ppo);
+                    mediaService.PostPicture(ppo, account);
                 }
             }
         }
@@ -794,7 +795,7 @@ namespace PockeTwit
                         catch { }
                     }
 
-                    return pictureService.PostPictureMessage(ppo);
+                    return pictureService.PostPictureMessage(ppo, _AccountToSet);
                 }
                 else
                 {

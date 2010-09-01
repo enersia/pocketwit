@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Collections.Specialized;
 
 namespace System.Web
 {
@@ -724,6 +725,105 @@ namespace System.Web
             return UrlEncodeSpaces(UrlEncodeNonAscii(str, Encoding.UTF8));
         }
 
+        public class HttpQSCollection : NameValueCollection
+        {
+            public override string ToString()
+            {
+                int count = Count;
+                if (count == 0)
+                    return "";
+                StringBuilder sb = new StringBuilder();
+                string[] keys = AllKeys;
+                for (int i = 0; i < count; i++)
+                {
+                    sb.AppendFormat(CultureInfo.CurrentCulture, "{0}={1}&", keys[i], this[keys[i]]);
+                }
+                if (sb.Length > 0)
+                    sb.Length--;
+                return sb.ToString();
+            }
+        }
+
+        public static NameValueCollection ParseQueryString(string query)
+        {
+            return ParseQueryString(query, Encoding.UTF8);
+        }
+
+        public static NameValueCollection ParseQueryString(string query, Encoding encoding)
+        {
+            if (query == null)
+                throw new ArgumentNullException("query");
+            if (encoding == null)
+                throw new ArgumentNullException("encoding");
+            if (query.Length == 0 || (query.Length == 1 && query[0] == '?'))
+                return new NameValueCollection();
+            if (query[0] == '?')
+                query = query.Substring(1);
+
+            NameValueCollection result = new HttpQSCollection();
+            ParseQueryString(query, encoding, result);
+            return result;
+        }
+
+        internal static void ParseQueryString(string query, Encoding encoding, NameValueCollection result)
+        {
+            if (query.Length == 0)
+                return;
+
+            string decoded = HtmlDecode(query);
+            int decodedLength = decoded.Length;
+            int namePos = 0;
+            bool first = true;
+            while (namePos <= decodedLength)
+            {
+                int valuePos = -1, valueEnd = -1;
+                for (int q = namePos; q < decodedLength; q++)
+                {
+                    if (valuePos == -1 && decoded[q] == '=')
+                    {
+                        valuePos = q + 1;
+                    }
+                    else if (decoded[q] == '&')
+                    {
+                        valueEnd = q;
+                        break;
+                    }
+                }
+
+                if (first)
+                {
+                    first = false;
+                    if (decoded[namePos] == '?')
+                        namePos++;
+                }
+
+                string name, value;
+                if (valuePos == -1)
+                {
+                    name = null;
+                    valuePos = namePos;
+                }
+                else
+                {
+                    name = UrlDecode(decoded.Substring(namePos, valuePos - namePos - 1), encoding);
+                }
+                if (valueEnd < 0)
+                {
+                    namePos = -1;
+                    valueEnd = decoded.Length;
+                }
+                else
+                {
+                    namePos = valueEnd + 1;
+                }
+                value = UrlDecode(decoded.Substring(valuePos, valueEnd - valuePos), encoding);
+
+                result.Add(name, value);
+                if (namePos == -1)
+                    break;
+            }
+        }
+
         private class UrlDecoder
         {
             private int _bufferSize;
@@ -779,6 +879,8 @@ namespace System.Web
                 }
                 return string.Empty;
             }
+
+            
         }
     }
 }
