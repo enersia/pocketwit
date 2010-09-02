@@ -25,6 +25,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System;
 using Microsoft.Practices.ServiceLocation;
+using OAuth;
 
 namespace Yedda
 {
@@ -596,6 +597,13 @@ namespace Yedda
             }
             client.PreAuthenticate = true;
 
+            client.Headers.Add(HttpRequestHeader.Authorization.ToString(),
+                OAuthAuthorizer.AuthorizeRequest(AccountInfo.OAuth_token,
+                                                 AccountInfo.OAuth_token_secret,
+                                                 "GET",
+                                                 new Uri(url),
+                                                 string.Empty));
+
             try
             {
                 using (HttpWebResponse httpResponse = (HttpWebResponse)client.GetResponse())
@@ -689,7 +697,7 @@ namespace Yedda
         /// <param name="password">The password to use with the request</param>
         /// <param name="data">The data to post</param> 
         /// <returns>The response of the request, or null if we got 404 or nothing.</returns>
-        protected string ExecutePostCommand(string url, string data)
+        protected string _ExecutePostCommand(string url, string data)
         {
             HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
             
@@ -735,6 +743,122 @@ namespace Yedda
                     }
                 }
                 catch(Exception ex)
+                {
+                    PockeTwit.GlobalEventHandler.LogCommError(ex);
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                }
+                try
+                {
+                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                    {
+                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                        {
+                            return reader.ReadToEnd();
+                        }
+                    }
+                }
+                catch (WebException ex)
+                {
+                    //
+                    // Handle HTTP 404 errors gracefully and return a null string to indicate there is no content.
+                    //
+                    if (ex.Response is HttpWebResponse)
+                    {
+                        PockeTwit.GlobalEventHandler.LogCommError(ex);
+                        if ((ex.Response as HttpWebResponse).StatusCode == HttpStatusCode.NotFound)
+                        {
+                            return null;
+                        }
+                        try
+                        {
+                            HttpWebResponse errorResponse = (HttpWebResponse)ex.Response;
+                            string ErrorText;
+                            using (Stream stream = errorResponse.GetResponseStream())
+                            {
+                                using (StreamReader reader = new StreamReader(stream))
+                                {
+                                    ErrorText = reader.ReadToEnd();
+                                    XmlDocument doc = new XmlDocument();
+                                    doc.LoadXml(ErrorText);
+
+                                    if (doc.SelectSingleNode("//error").InnerText.StartsWith("Rate limit exceeded"))
+                                    {
+                                        DateTime NewTime = GetTimeOutTime();
+                                        PockeTwit.GlobalEventHandler.CallShowErrorMessage("Timeout until " + NewTime.ToString());
+                                        throw new Exception("Timeout until " + NewTime.ToString());
+                                    }
+
+                                }
+                            }
+                        }
+                        catch { }
+                    }
+                }
+                catch { }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Executes an HTTP POST command and retrives the information.		
+        /// This function will automatically include a "source" parameter if the "Source" property is set.
+        /// </summary>
+        /// <param name="url">The URL to perform the POST operation</param>
+        /// <param name="userName">The username to use with the request</param>
+        /// <param name="password">The password to use with the request</param>
+        /// <param name="data">The data to post</param> 
+        /// <returns>The response of the request, or null if we got 404 or nothing.</returns>
+        protected string ExecutePostCommand(string url, string data)
+        {
+            HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
+
+            if (!string.IsNullOrEmpty(AccountInfo.OAuth_token) && !string.IsNullOrEmpty(AccountInfo.OAuth_token_secret))
+            {
+                request.Headers.Add(HttpRequestHeader.Authorization.ToString(),
+                OAuthAuthorizer.AuthorizeRequest(AccountInfo.OAuth_token,
+                                                 AccountInfo.OAuth_token_secret,
+                                                 "POST",
+                                                 new Uri(url),
+                                                 data));
+                
+                request.PreAuthenticate = true;
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.Method = "POST";
+                request.Timeout = 20000;
+
+                if (!string.IsNullOrEmpty(TwitterClient))
+                {
+                    request.Headers.Add("X-Twitter-Client", TwitterClient);
+                }
+
+                if (!string.IsNullOrEmpty(TwitterClientVersion))
+                {
+                    request.Headers.Add("X-Twitter-Version", TwitterClientVersion);
+                }
+
+                if (!string.IsNullOrEmpty(TwitterClientUrl))
+                {
+                    request.Headers.Add("X-Twitter-URL", TwitterClientUrl);
+                }
+
+
+                if (!string.IsNullOrEmpty(Source))
+                {
+                    data += "&source=" + System.Web.HttpUtility.UrlEncode(Source);
+                }
+
+                byte[] bytes = Encoding.UTF8.GetBytes(data);
+                request.ContentLength = bytes.Length;
+                try
+                {
+                    using (Stream requestStream = request.GetRequestStream())
+                    {
+                        requestStream.Write(bytes, 0, bytes.Length);
+                        requestStream.Flush();
+                    }
+                }
+                catch (Exception ex)
                 {
                     PockeTwit.GlobalEventHandler.LogCommError(ex);
                     System.Diagnostics.Debug.WriteLine(ex.Message);
