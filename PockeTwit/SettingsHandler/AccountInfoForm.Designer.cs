@@ -29,6 +29,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AccountInfoForm));
             this.mainMenu1 = new System.Windows.Forms.MainMenu();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
@@ -41,9 +43,11 @@
             this.lblError = new System.Windows.Forms.Label();
             this.chkDefault = new System.Windows.Forms.CheckBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.LlTwitter = new System.Windows.Forms.LinkLabel();
             this.TbPin = new System.Windows.Forms.TextBox();
             this.lPin = new System.Windows.Forms.Label();
+            this.inputPanel1 = new Microsoft.WindowsCE.Forms.InputPanel(this.components);
+            this.ImTwitter = new System.Windows.Forms.PictureBox();
+            this.Ll_Twitter = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -67,7 +71,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbServers.BackColor = System.Drawing.Color.White;
             this.cmbServers.ForeColor = System.Drawing.Color.Black;
-            this.cmbServers.Location = new System.Drawing.Point(5, 28);
+            this.cmbServers.Location = new System.Drawing.Point(5, 24);
             this.cmbServers.Name = "cmbServers";
             this.cmbServers.Size = new System.Drawing.Size(232, 22);
             this.cmbServers.TabIndex = 0;
@@ -88,7 +92,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPassword.BackColor = System.Drawing.Color.White;
             this.txtPassword.ForeColor = System.Drawing.Color.Black;
-            this.txtPassword.Location = new System.Drawing.Point(5, 126);
+            this.txtPassword.Location = new System.Drawing.Point(5, 122);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(232, 21);
@@ -109,7 +113,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.txtUserName.BackColor = System.Drawing.Color.White;
             this.txtUserName.ForeColor = System.Drawing.Color.Black;
-            this.txtUserName.Location = new System.Drawing.Point(5, 79);
+            this.txtUserName.Location = new System.Drawing.Point(5, 74);
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(232, 21);
             this.txtUserName.TabIndex = 1;
@@ -155,29 +159,41 @@
             this.linkLabel1.Visible = false;
             this.linkLabel1.Click += new System.EventHandler(this.linkLabel1_Click);
             // 
-            // LlTwitter
-            // 
-            this.LlTwitter.Location = new System.Drawing.Point(5, 177);
-            this.LlTwitter.Name = "LlTwitter";
-            this.LlTwitter.Size = new System.Drawing.Size(131, 20);
-            this.LlTwitter.TabIndex = 8;
-            this.LlTwitter.Text = "Verify with Twitter";
-            this.LlTwitter.Click += new System.EventHandler(this.LlTwitter_Click);
-            // 
             // TbPin
             // 
-            this.TbPin.Location = new System.Drawing.Point(171, 177);
+            this.TbPin.Location = new System.Drawing.Point(96, 128);
             this.TbPin.Name = "TbPin";
             this.TbPin.Size = new System.Drawing.Size(66, 21);
             this.TbPin.TabIndex = 9;
+            this.TbPin.GotFocus += new System.EventHandler(this.TbPin_GotFocus);
             // 
             // lPin
             // 
             this.lPin.ForeColor = System.Drawing.Color.LightGray;
-            this.lPin.Location = new System.Drawing.Point(143, 177);
+            this.lPin.Location = new System.Drawing.Point(67, 127);
             this.lPin.Name = "lPin";
-            this.lPin.Size = new System.Drawing.Size(32, 20);
+            this.lPin.Size = new System.Drawing.Size(28, 20);
             this.lPin.Text = "Pin:";
+            // 
+            // ImTwitter
+            // 
+            this.ImTwitter.BackColor = System.Drawing.Color.Transparent;
+            this.ImTwitter.Image = ((System.Drawing.Image)(resources.GetObject("ImTwitter.Image")));
+            this.ImTwitter.Location = new System.Drawing.Point(52, 99);
+            this.ImTwitter.Name = "ImTwitter";
+            this.ImTwitter.Size = new System.Drawing.Size(24, 24);
+            this.ImTwitter.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.ImTwitter.Visible = false;
+            this.ImTwitter.Click += new System.EventHandler(this.LlTwitter_Click);
+            // 
+            // Ll_Twitter
+            // 
+            this.Ll_Twitter.Location = new System.Drawing.Point(77, 104);
+            this.Ll_Twitter.Name = "Ll_Twitter";
+            this.Ll_Twitter.Size = new System.Drawing.Size(120, 18);
+            this.Ll_Twitter.TabIndex = 14;
+            this.Ll_Twitter.Text = "Verify with Twitter";
+            this.Ll_Twitter.Visible = false;
             // 
             // AccountInfoForm
             // 
@@ -186,9 +202,10 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.Ll_Twitter);
+            this.Controls.Add(this.ImTwitter);
             this.Controls.Add(this.lPin);
             this.Controls.Add(this.TbPin);
-            this.Controls.Add(this.LlTwitter);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.chkDefault);
@@ -220,9 +237,11 @@
         private System.Windows.Forms.MenuItem PasteItem;
         private System.Windows.Forms.CheckBox chkDefault;
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.LinkLabel LlTwitter;
         private System.Windows.Forms.TextBox TbPin;
         private System.Windows.Forms.Label lPin;
+        private Microsoft.WindowsCE.Forms.InputPanel inputPanel1;
+        private System.Windows.Forms.PictureBox ImTwitter;
+        private System.Windows.Forms.LinkLabel Ll_Twitter;
         
 
         

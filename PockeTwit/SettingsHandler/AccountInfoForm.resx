@@ -120,10 +120,26 @@
   <metadata name="mainMenu1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="$this.FormFactorShadowProperty" xml:space="preserve">
-    <value>Pocket_PC</value>
+  <metadata name="inputPanel1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>134, 17</value>
   </metadata>
-  <metadata name="$this.FormFactor" xml:space="preserve">
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ImTwitter.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABkAAAAYCAYAAAAPtVbGAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALEAAA
+        CxABrSO9dQAAABx0RVh0U29mdHdhcmUAQWRvYmUgRmlyZXdvcmtzIENTNAay06AAAAHCSURBVEhLvZZb
+        K0RhFIb9Fhd+ADnlmEMOF/7A+ANcKnLjhjtSJKVESmk0EtE4xsg04xSZhpEcQpNTzBga1K6XtXffwrY+
+        3GxTT7uZ1nqf1re+mSYl5f2V2twBJzEF1asRx6D8/5NU+cJwCp6kcikEp2BJxcIOJOqCEUSfkjAMw2Ts
+        9Eqs0/XT5ywpn92CRPQxifCDgbqIge5zS9QeOhFrdRksKfOuQ4JCSZAWsAjcG9i+iaFhbZ9xLe+IvSqP
+        JaVTQUiQxBX+KlFHp57x51e0bByI/ZTJkpIJPyTsEjWRemasG5i7NRB/fhH7KZMlxeMrkPhNQjKalOp0
+        GSwp8ixB4i8SdSF0GSwpdC9Cwi4ZjFrLV5wnrSkGQkdiP2WypGBkDhJ2CZ2/ffG+s0uxV+WxJH/YCwkK
+        bDr8uF01u9aiP09DNe69Y7GfMlmSNzQNiYPbezPQfqs+v287tqbTZbAkd3ASEvVevxlAy9WJ6MtKNboM
+        luT0j0NHq2/TDKGJ6OjoyipIQD87F/GEtp8l2X0e/ETjjB+R67tvSyf5RSyBWs+8tp8lWb2jcAqWZPaM
+        wClYktE1DKdgSXrnEJzClPzHX6I3cDtjaLHWirYAAAAASUVORK5CYII=
+</value>
+  </data>
+  <metadata name="$this.FormFactorShadowProperty" xml:space="preserve">
     <value>Pocket_PC</value>
   </metadata>
   <metadata name="$this.Skin" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

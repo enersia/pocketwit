@@ -100,7 +100,6 @@ namespace PockeTwit
             {
                 return;
             }
-            if (string.IsNullOrEmpty(txtUserName.Text)) { return; }
             Cursor.Current = Cursors.WaitCursor;
             Application.DoEvents();
             lblError.Visible = false;
@@ -112,13 +111,6 @@ namespace PockeTwit
             _AccountInfo.IsDefault = chkDefault.Checked;
             Yedda.Twitter T = Yedda.Servers.CreateConnection(_AccountInfo);
             Cursor.Current = Cursors.Default;
-            
-            if (!T.Verify())
-            {
-                lblError.Text = "Invalid credentials or network unavailable.";
-                lblError.Visible = true;
-                return;
-            }
             if ((string)cmbServers.SelectedItem == "twitter")
             {
                 OAuthAuthorizer authorizer = new OAuthAuthorizer();
@@ -129,7 +121,7 @@ namespace PockeTwit
                     lblError.Visible = true;
                     return;
                 }
-                
+
                 //access
                 authorizer.AuthorizationToken = RequestToken;
                 authorizer.AuthorizationVerifier = TbPin.Text;
@@ -137,10 +129,20 @@ namespace PockeTwit
 
                 _AccountInfo.OAuth_token = authorizer.AccessToken;
                 _AccountInfo.OAuth_token_secret = authorizer.AccessTokenSecret;
-                
+
                 if (string.IsNullOrEmpty(_AccountInfo.OAuth_token))
                 {
                     lblError.Text = "Not yet verified with Twitter.";
+                    lblError.Visible = true;
+                    return;
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(txtUserName.Text)) { return; }
+                if (!T.Verify())
+                {
+                    lblError.Text = "Invalid credentials or network unavailable.";
                     lblError.Visible = true;
                     return;
                 }
@@ -154,6 +156,7 @@ namespace PockeTwit
             string server = (string)cmbServers.SelectedItem;
             if (server == "ping.fm")
             {
+//                txtUserName.ReadOnly = false;
                 txtPassword.Visible = false;
                 lblPassword.Visible = false;
                 txtPassword.Text = ClientSettings.PingApi;
@@ -163,38 +166,43 @@ namespace PockeTwit
                 {
                     txtUserName.ContextMenu = copyPasteMenu;
                 }
-                LlTwitter.Visible = false;
+                Ll_Twitter.Visible = false;
                 lPin.Visible = false;
                 TbPin.Visible = false;
+                ImTwitter.Visible = false;
             }
             else if (server == "twitter")
             {
-                 LlTwitter.Visible = true;
+                 ImTwitter.Visible = true;
                  lPin.Visible = true;
                  TbPin.Visible = true;
-
+                 Ll_Twitter.Visible = true;
+                 //txtUserName.ReadOnly = true;
                  txtPassword.Text = "";
-                 txtPassword.Visible = true;
-                 lblPassword.Visible = true;
+                 txtPassword.Visible = false;
+                 lblPassword.Visible = false;
                  linkLabel1.Visible = false;
                  lblUser.Text = "User";
                  if (DetectDevice.DeviceType == DeviceType.Professional)
                  {
                      txtUserName.ContextMenu = null;
                  }
+
             }
             else
             {
+                //txtUserName.ReadOnly = false;
                 txtPassword.Text = "";
                 txtPassword.Visible = true;
                 lblPassword.Visible = true;
                 linkLabel1.Visible = false;
+                Ll_Twitter.Visible = false;
                 lblUser.Text = "User";
                 if (DetectDevice.DeviceType == DeviceType.Professional)
                 {
                     txtUserName.ContextMenu = null;
                 }
-                LlTwitter.Visible = false;
+                ImTwitter.Visible = false;
                 lPin.Visible = false;
                 TbPin.Visible = false;
             }
@@ -246,6 +254,8 @@ namespace PockeTwit
                 return; //don't try the rest...
             }
 
+            ImTwitter.Visible = false;
+
             //auth
             Uri url = new Uri(OAuthConfig.AuthorizeUrl + "?oauth_token=" + RequestToken);
             urlToLaunch = url.ToString();
@@ -260,6 +270,11 @@ namespace PockeTwit
             pi.FileName = urlToLaunch;
             pi.UseShellExecute = true;
             System.Diagnostics.Process p = System.Diagnostics.Process.Start(pi);
+        }
+
+        private void TbPin_GotFocus(object sender, EventArgs e)
+        {
+            inputPanel1.Enabled = true;
         }
     }
 }
