@@ -6,6 +6,7 @@ using System.Web;
 using System.Collections.Generic;
 using System.Text;
 using Yedda;
+using OAuth;
 
 namespace PockeTwit.MediaServices
 {
@@ -18,8 +19,8 @@ namespace PockeTwit.MediaServices
         private const string APPLICATION_NAME = "p0ck3tTTTTw";
         private const string API_URL = "http://api.mobypicture.com";
 
-        private const string API_UPLOAD = "http://api.mobypicture.com/";
-        private const string API_UPLOAD_POST = "http://api.mobypicture.com/";
+        private const string API_UPLOAD = "https://api.mobypicture.com/2.0/upload.txt";
+        private const string API_UPLOAD_POST = "https://api.mobypicture.com/2.0/upload.txt";
         private const string API_GET_THUMB = "http://api.mobypicture.com/?s=small&format=plain&k="+APPLICATION_NAME;  //The extra / for directly sticking the image-id on.
 
         private const string API_ERROR_UPLOAD = "Failed to upload picture to MobyPicture.";
@@ -29,7 +30,7 @@ namespace PockeTwit.MediaServices
         private Stream dataStream;
         private bool useAsyncCall = false;
 
-
+        private Twitter.Account account = null;
         #endregion
 
         #region private objects
@@ -124,8 +125,8 @@ namespace PockeTwit.MediaServices
             }
 
             //Check for empty credentials
-            if (string.IsNullOrEmpty(postData.Username) ||
-                string.IsNullOrEmpty(postData.Password))
+            if (string.IsNullOrEmpty(account.OAuth_token) ||
+                string.IsNullOrEmpty(account.OAuth_token_secret))
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
             }
@@ -147,6 +148,7 @@ namespace PockeTwit.MediaServices
 
                         if (workerThread == null)
                         {
+                            this.account = account;
                             workerThread = new System.Threading.Thread(new System.Threading.ThreadStart(ProcessUpload));
                             workerThread.Name = "PictureUpload";
                             workerThread.Start();
@@ -160,12 +162,16 @@ namespace PockeTwit.MediaServices
                     {
                         //use sync.
                         postData.PictureData = incoming;
-                        string uploadResult = UploadPicture(API_UPLOAD, postData);
+                        string uploadResult = UploadPicture(API_UPLOAD, postData, account);
 
                         if (!string.IsNullOrEmpty(uploadResult))
                         {
                             OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, uploadResult, string.Empty, postData.Filename));
                         }
+                        /*else
+                        {
+                            OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
+                        }*/
 
                     }
                 }
@@ -226,8 +232,8 @@ namespace PockeTwit.MediaServices
             }
 
             //Check for empty credentials
-            if (string.IsNullOrEmpty(postData.Username) ||
-                string.IsNullOrEmpty(postData.Password))
+            if (string.IsNullOrEmpty(account.OAuth_token) ||
+                string.IsNullOrEmpty(account.OAuth_token_secret))
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                 return false;
@@ -248,7 +254,7 @@ namespace PockeTwit.MediaServices
 
                     if (string.IsNullOrEmpty(uploadResult))
                     {
-                        //OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
+                        OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                         return false;
                     }
                     
@@ -314,7 +320,7 @@ namespace PockeTwit.MediaServices
         {
             try
             {
-                string uploadResult = UploadPicture(API_UPLOAD, workerPPO);
+                string uploadResult = UploadPicture(API_UPLOAD, workerPPO, account);
 
                 if (!string.IsNullOrEmpty( uploadResult) )
                 {
@@ -338,14 +344,14 @@ namespace PockeTwit.MediaServices
         /// <param name="url"></param>
         /// <param name="ppo"></param>
         /// <returns></returns>
-        private string UploadPicture(string url, PicturePostObject ppo)
+        private string UploadPicture(string url, PicturePostObject ppo, Twitter.Account account)
         {
             try
             {
                 HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
 
                 string boundary = System.Guid.NewGuid().ToString();
-                request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);
+                //request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);
                 request.Headers.Add("Accept-Language", "cs,en-us;q=0.7,en;q=0.3");
                 request.PreAuthenticate = true;
                 request.ContentType = string.Format("multipart/form-data;boundary={0}", boundary);
@@ -359,26 +365,26 @@ namespace PockeTwit.MediaServices
 
                 StringBuilder contents = new StringBuilder();
 
-                contents.Append(CreateContentPartString(header, "u", ppo.Username));
-                contents.Append(CreateContentPartString(header, "p", ppo.Password));
-                contents.Append(CreateContentPartString(header, "k", APPLICATION_NAME));
+                /*contents.Append(CreateContentPartString(header, "u", ppo.Username));
+                contents.Append(CreateContentPartString(header, "p", ppo.Password));*/
+                contents.Append(CreateContentPartString(header, "key", APPLICATION_NAME));
                 //Don't send the picture to twitter or any service just yet.
-                contents.Append(CreateContentPartString(header, "s", "none"));
+                //contents.Append(CreateContentPartString(header, "s", "none"));
 
                 string hashTags = FindHashTags(ppo.Message,",",32);
                 if (!string.IsNullOrEmpty(hashTags)) 
                 {
-                    contents.Append(CreateContentPartString(header, "ht", hashTags));
+                    contents.Append(CreateContentPartString(header, "tags", hashTags));
                 }
 
                 if (!string.IsNullOrEmpty(ppo.Message))
                 {
                     contents.Append(CreateContentPartString(header, "message", ppo.Message));
-                    contents.Append(CreateContentPartString(header, "action", "postMedia"));
+                    //contents.Append(CreateContentPartString(header, "action", "postMedia"));
                 }
                 else
                 {
-                    contents.Append(CreateContentPartString(header, "action", "postMediaUrl"));
+                    //contents.Append(CreateContentPartString(header, "action", "postMediaUrl"));
                 }
 
 
@@ -392,6 +398,9 @@ namespace PockeTwit.MediaServices
                 byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
                 byte[] footer = Encoding.UTF8.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
+
+                OAuthAuthorizer.AuthorizeTwitPic(request, account.OAuth_token, account.OAuth_token_secret);
+
                 using (Stream requestStream = request.GetRequestStream())
                 {
                     requestStream.Write(message, 0, message.Length);
@@ -412,12 +421,13 @@ namespace PockeTwit.MediaServices
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                 return string.Empty;
                 // JohnB2007 commented this out to avoid unreachable code warning.
                 // not sure if order should be flipped actually?
-                // OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
+                
             }
             //return string.Empty;
         }
@@ -435,7 +445,7 @@ namespace PockeTwit.MediaServices
                 HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
 
                 string boundary = System.Guid.NewGuid().ToString();
-                request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);
+                //request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);
                 request.Headers.Add("Accept-Language", "cs,en-us;q=0.7,en;q=0.3");
                 request.PreAuthenticate = true;
                 request.ContentType = string.Format("multipart/form-data;boundary={0}", boundary);
@@ -449,12 +459,12 @@ namespace PockeTwit.MediaServices
 
                 StringBuilder contents = new StringBuilder();
 
-                contents.Append(CreateContentPartString(header, "u", ppo.Username));
-                contents.Append(CreateContentPartString(header, "p", ppo.Password));
-                contents.Append(CreateContentPartString(header, "k", APPLICATION_NAME));
-                contents.Append(CreateContentPartString(header, "t", ppo.Message));
+/*                contents.Append(CreateContentPartString(header, "u", ppo.Username));
+                contents.Append(CreateContentPartString(header, "p", ppo.Password));*/
+                contents.Append(CreateContentPartString(header, "key", APPLICATION_NAME));
+/*                contents.Append(CreateContentPartString(header, "t", ppo.Message));
                 contents.Append(CreateContentPartString(header, "d", ppo.Message));
-                contents.Append(CreateContentPartString(header, "action", "postMedia"));
+                contents.Append(CreateContentPartString(header, "action", "postMedia"));*/
 
                 if (!string.IsNullOrEmpty(ppo.Lat) && !string.IsNullOrEmpty(ppo.Lon))
                 {
@@ -464,7 +474,7 @@ namespace PockeTwit.MediaServices
                 string hashTags = FindHashTags(ppo.Message, ",", 32);
                 if (!string.IsNullOrEmpty(hashTags))
                 {
-                    contents.Append(CreateContentPartString(header, "ht", hashTags));
+                    contents.Append(CreateContentPartString(header, "tags", hashTags));
                 }
 
 
@@ -477,6 +487,8 @@ namespace PockeTwit.MediaServices
                 byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
                 byte[] footer = Encoding.UTF8.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
+
+                OAuthAuthorizer.AuthorizeTwitPic(request, account.OAuth_token, account.OAuth_token_secret);
                 using (Stream requestStream = request.GetRequestStream())
                 {
                     requestStream.Write(message, 0, message.Length);
@@ -649,7 +661,7 @@ namespace PockeTwit.MediaServices
 
             contents.Append(header);
             contents.Append("\r\n");
-            contents.Append(string.Format("Content-Disposition:form-data; name=\"i\";filename=\"{0}\"\r\n",filename));
+            contents.Append(string.Format("Content-Disposition:form-data; name=\"media\";filename=\"{0}\"\r\n",filename));
             contents.Append("Content-Type: image/jpeg\r\n");
             contents.Append("\r\n");
 

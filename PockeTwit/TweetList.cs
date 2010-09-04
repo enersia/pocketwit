@@ -950,9 +950,9 @@ namespace PockeTwit
             if (selectedItem == null) { return; }
 
             StatusItem item = selectedItem as StatusItem;
-            Yedda.Twitter conn = GetMatchingConnection(item.Tweet.Account);
-            if (selectedItem != null)
+            if (item != null)
             {
+                Yedda.Twitter conn = GetMatchingConnection(item.Tweet.Account);
                 statList.SetRightMenuUser();
                 if (string.IsNullOrEmpty(item.Tweet.in_reply_to_status_id))
                 {

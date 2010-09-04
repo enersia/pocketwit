@@ -1928,7 +1928,7 @@ namespace Yedda
         }
         public override string StopFollowingUser(string IDofUserToFollow)
         {
-            string url = string.Format(TwitterNewSimpleUrlFormat, GetObjectTypeString(ObjectType.Friendships), GetActionTypeString(ActionType.Destroy), GetFormatTypeString(OutputFormatType.XML));
+            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Friendships), GetActionTypeString(ActionType.Destroy), GetFormatTypeString(OutputFormatType.XML));
             return ExecutePostCommand(url, "screen_name=" + IDofUserToFollow);
         }
         #endregion

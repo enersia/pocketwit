@@ -285,7 +285,6 @@
     <Compile Include="Yedda\HttpUtility.cs" />
     <Compile Include="OtherServices\TextShrinkers\ShortText.cs" />
     <Compile Include="OtherServices\Skweezer.cs" />
-    <Compile Include="MediaServices\TwitPic.cs" />
     <Compile Include="Yedda\Twitter.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -511,6 +510,10 @@
     </Compile>
     <Compile Include="FingerUI\SpellingCorrections\SpellChecker.cs" />
     <Compile Include="IProfileViewer.cs" />
+    <Compile Include="MediaServices\TwitPic.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MediaServices\TwitPicApiBase.cs" />
     <Compile Include="Mono\AsyncCompletedEventArgs.cs" />
     <Compile Include="Mono\AsyncCompletedEventHandler.cs" />
     <Compile Include="Mono\DecompressionMethods.cs" />
