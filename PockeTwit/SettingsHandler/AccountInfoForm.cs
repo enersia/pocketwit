@@ -110,8 +110,7 @@ namespace PockeTwit
             //_AccountInfo.Enabled = (_AccountInfo.ServerURL.ServerType != Yedda.Twitter.TwitterServer.pingfm && _AccountInfo.ServerURL.ServerType != Yedda.Twitter.TwitterServer.brightkite);
             _AccountInfo.Enabled = true;
             _AccountInfo.IsDefault = chkDefault.Checked;
-            Yedda.Twitter T = new Yedda.Twitter();
-            T.AccountInfo = _AccountInfo;
+            Yedda.Twitter T = Yedda.Servers.CreateConnection(_AccountInfo);
             Cursor.Current = Cursors.Default;
             
             if (!T.Verify())

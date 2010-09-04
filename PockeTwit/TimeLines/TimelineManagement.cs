@@ -411,16 +411,7 @@ namespace PockeTwit
 
         private Library.status[] GetRegularSavedSearchTimeLine(SavedSearchTimeLine searchLine, Yedda.Twitter.PagingMode pagingMode)
         {
-            var TwitterConn = new Twitter
-            {
-                AccountInfo =
-                {
-                    ServerURL = ClientSettings.DefaultAccount.ServerURL,
-                    UserName = ClientSettings.DefaultAccount.UserName,
-                    Password = ClientSettings.DefaultAccount.Password,
-                    Enabled = ClientSettings.DefaultAccount.Enabled
-                }
-            };
+            var TwitterConn = Servers.CreateConnection(ClientSettings.DefaultAccount);
             status[] items = SearchTwitter(TwitterConn, searchLine.SearchPhrase, pagingMode);
             
             return items;
@@ -659,16 +650,7 @@ namespace PockeTwit
             if(specialTimeLines.Length==0){ return; }
             if (GlobalEventHandler.SearchesUpdating) { return; }
 
-            var TwitterConn = new Twitter
-                                  {
-                                      AccountInfo =
-                                          {
-                                              ServerURL = ClientSettings.DefaultAccount.ServerURL,
-                                              UserName = ClientSettings.DefaultAccount.UserName,
-                                              Password = ClientSettings.DefaultAccount.Password,
-                                              Enabled = ClientSettings.DefaultAccount.Enabled
-                                          }
-                                  };
+            var TwitterConn = Servers.CreateConnection(ClientSettings.DefaultAccount);
 
             updateTimer.Enabled = false;
             GlobalEventHandler.NotifyTimeLineFetching(TimeLineType.Searches);

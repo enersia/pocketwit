@@ -52,8 +52,7 @@ namespace PockeTwit
             {
                 _AccountToSet = value;
                 cmbAccount.SelectedItem = _AccountToSet;
-                Yedda.Twitter t = new Yedda.Twitter();
-                t.AccountInfo = _AccountToSet;
+                Yedda.Twitter t = Servers.CreateConnection(_AccountToSet);
                 AllowTwitPic = t.AllowTwitPic;
             }
         }
@@ -801,9 +800,7 @@ namespace PockeTwit
                 {
 
 
-                    Yedda.Twitter TwitterConn = new Yedda.Twitter();
-                    TwitterConn.AccountInfo = AccountToSet;
-
+                    Yedda.Twitter TwitterConn = Yedda.Servers.CreateConnection(AccountToSet) ;
                     try
                     {
                         if (GPSLocation != null)

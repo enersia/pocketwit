@@ -29,10 +29,16 @@ using OAuth;
 
 namespace Yedda
 {
-    
-    
+   
     public static class Servers
     {
+        public static Twitter CreateConnection(Twitter.Account Account)
+        {
+            if (Account.Server == Twitter.TwitterServer.twitter)
+                return new TwitterOAuth { AccountInfo = Account};
+            else
+                return new Twitter { AccountInfo = Account };
+        }
         public static Dictionary<string, Twitter.ServerURL> ServerList = new Dictionary<string, Twitter.ServerURL>();
         static Servers()
         {
@@ -486,7 +492,6 @@ namespace Yedda
         protected const string TwitterFavoritesUrlFormat = "{3}/{0}/{1}/{2}.xml";
         protected const string TwitterSearchUrlFormat = "http://search.twitter.com/search.json?{0}";
         protected const string TwitterConversationUrlFormat = "http://search.twitter.com/search/thread/{0}";
-        protected const string TwitterNewBaseUrlFormat = "http://api.twitter.com/1/{0}/{1}.{2}";
 
         public string GetProfileURL(string User)
         {
@@ -586,7 +591,7 @@ namespace Yedda
             return null;
         }
 
-        protected string ExecuteGetCommand(string url)
+        protected virtual string ExecuteGetCommand(string url)
         {
             HttpWebRequest client = WebRequestFactory.CreateHttpRequest(url);
             client.Timeout = 20000;
@@ -596,7 +601,17 @@ namespace Yedda
                 client.Credentials = new NetworkCredential(AccountInfo.UserName, AccountInfo.Password);
             }
             client.PreAuthenticate = true;
-
+            string tok;
+            string tok_sec;
+            try
+            {
+                tok = AccountInfo.OAuth_token;
+                tok_sec = AccountInfo.OAuth_token_secret;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             client.Headers.Add(HttpRequestHeader.Authorization.ToString(),
                 OAuthAuthorizer.AuthorizeRequest(AccountInfo.OAuth_token,
                                                  AccountInfo.OAuth_token_secret,
@@ -697,7 +712,7 @@ namespace Yedda
         /// <param name="password">The password to use with the request</param>
         /// <param name="data">The data to post</param> 
         /// <returns>The response of the request, or null if we got 404 or nothing.</returns>
-        protected string _ExecutePostCommand(string url, string data)
+        protected virtual string ExecutePostCommand(string url, string data)
         {
             HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
             
@@ -800,125 +815,10 @@ namespace Yedda
             return null;
         }
 
-        /// <summary>
-        /// Executes an HTTP POST command and retrives the information.		
-        /// This function will automatically include a "source" parameter if the "Source" property is set.
-        /// </summary>
-        /// <param name="url">The URL to perform the POST operation</param>
-        /// <param name="userName">The username to use with the request</param>
-        /// <param name="password">The password to use with the request</param>
-        /// <param name="data">The data to post</param> 
-        /// <returns>The response of the request, or null if we got 404 or nothing.</returns>
-        protected string ExecutePostCommand(string url, string data)
-        {
-            HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
-
-            if (!string.IsNullOrEmpty(AccountInfo.OAuth_token) && !string.IsNullOrEmpty(AccountInfo.OAuth_token_secret))
-            {
-                request.Headers.Add(HttpRequestHeader.Authorization.ToString(),
-                OAuthAuthorizer.AuthorizeRequest(AccountInfo.OAuth_token,
-                                                 AccountInfo.OAuth_token_secret,
-                                                 "POST",
-                                                 new Uri(url),
-                                                 data));
-                
-                request.PreAuthenticate = true;
-                request.ContentType = "application/x-www-form-urlencoded";
-                request.Method = "POST";
-                request.Timeout = 20000;
-
-                if (!string.IsNullOrEmpty(TwitterClient))
-                {
-                    request.Headers.Add("X-Twitter-Client", TwitterClient);
-                }
-
-                if (!string.IsNullOrEmpty(TwitterClientVersion))
-                {
-                    request.Headers.Add("X-Twitter-Version", TwitterClientVersion);
-                }
-
-                if (!string.IsNullOrEmpty(TwitterClientUrl))
-                {
-                    request.Headers.Add("X-Twitter-URL", TwitterClientUrl);
-                }
-
-
-                if (!string.IsNullOrEmpty(Source))
-                {
-                    data += "&source=" + System.Web.HttpUtility.UrlEncode(Source);
-                }
-
-                byte[] bytes = Encoding.UTF8.GetBytes(data);
-                request.ContentLength = bytes.Length;
-                try
-                {
-                    using (Stream requestStream = request.GetRequestStream())
-                    {
-                        requestStream.Write(bytes, 0, bytes.Length);
-                        requestStream.Flush();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    PockeTwit.GlobalEventHandler.LogCommError(ex);
-                    System.Diagnostics.Debug.WriteLine(ex.Message);
-                }
-                try
-                {
-                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            return reader.ReadToEnd();
-                        }
-                    }
-                }
-                catch (WebException ex)
-                {
-                    //
-                    // Handle HTTP 404 errors gracefully and return a null string to indicate there is no content.
-                    //
-                    if (ex.Response is HttpWebResponse)
-                    {
-                        PockeTwit.GlobalEventHandler.LogCommError(ex);
-                        if ((ex.Response as HttpWebResponse).StatusCode == HttpStatusCode.NotFound)
-                        {
-                            return null;
-                        }
-                        try
-                        {
-                            HttpWebResponse errorResponse = (HttpWebResponse)ex.Response;
-                            string ErrorText;
-                            using (Stream stream = errorResponse.GetResponseStream())
-                            {
-                                using (StreamReader reader = new StreamReader(stream))
-                                {
-                                    ErrorText = reader.ReadToEnd();
-                                    XmlDocument doc = new XmlDocument();
-                                    doc.LoadXml(ErrorText);
-
-                                    if (doc.SelectSingleNode("//error").InnerText.StartsWith("Rate limit exceeded"))
-                                    {
-                                        DateTime NewTime = GetTimeOutTime();
-                                        PockeTwit.GlobalEventHandler.CallShowErrorMessage("Timeout until " + NewTime.ToString());
-                                        throw new Exception("Timeout until " + NewTime.ToString());
-                                    }
-
-                                }
-                            }
-                        }
-                        catch { }
-                    }
-                }
-                catch { }
-            }
-
-            return null;
-        }
 
         #region Public_Timeline
 
-        public string GetPublicTimeline(OutputFormatType format)
+        public virtual string GetPublicTimeline(OutputFormatType format)
         {
             string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Public_Timeline), GetFormatTypeString(format),AccountInfo.ServerURL.URL);
             return ExecuteGetCommand(url);
@@ -1053,51 +953,30 @@ namespace Yedda
         #endregion
 
         #region Direct_Messages
-        public string GetDirectTimeLineSince(string SinceID)
+        public virtual string GetDirectTimeLineSince(string SinceID)
         {
-            string url = string.Format(TwitterSimpleURLFormat, GetActionTypeString(ActionType.Direct_Messages),  AccountInfo.ServerURL.URL) + "?since_id=" + SinceID;
+            string url = string.Format(TwitterSimpleURLFormat, GetActionTypeString(ActionType.Direct_Messages), AccountInfo.ServerURL.URL) + "?since_id=" + SinceID;
             return ExecuteGetCommand(url);
         }
         #endregion
 
         #region Friends_Timeline
-        public string GetFriendsTimeLineMax(OutputFormatType format)
+        public virtual string GetFriendsTimeLineMax(OutputFormatType format)
         {
-            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.twitter)
-            {
-                string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format)) + "?count=" + MaxTweets;
-                return ExecuteGetCommand(url);
-            }
-            else
-            {
-                string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Friends_Timeline), GetFormatTypeString(format), AccountInfo.ServerURL.URL) + "?count=" + MaxTweets;
-                return ExecuteGetCommand(url);
-            }
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Friends_Timeline), GetFormatTypeString(format), AccountInfo.ServerURL.URL) + "?count=" + MaxTweets;
+            return ExecuteGetCommand(url);
         }
-        public string GetFriendsTimeLineSince(OutputFormatType format, string SinceID)
+        public virtual string GetFriendsTimeLineSince(OutputFormatType format, string SinceID)
         {
-            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.twitter)
-            {
-                string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format)) + "?since_id=" + SinceID + "&count=" + ClientSettings.MaxTweets;
-                return ExecuteGetCommand(url);
-            }
-            else
-            {
-                string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Friends_Timeline), GetFormatTypeString(format), AccountInfo.ServerURL.URL) + "?since_id=" + SinceID + "&count=" + ClientSettings.MaxTweets;
-                return ExecuteGetCommand(url);
-            }
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Friends_Timeline), GetFormatTypeString(format), AccountInfo.ServerURL.URL) + "?since_id=" + SinceID + "&count=" + ClientSettings.MaxTweets;
+            return ExecuteGetCommand(url);
         }
 
-        public string GetFriendsTimeline(OutputFormatType format)
+        public virtual string GetFriendsTimeline(OutputFormatType format)
         {
             if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
             {
                 string url = "http://brightkite.com/me/friendstream.xml";
-                return ExecuteGetCommand(url);
-            }
-            else if (this.AccountInfo.ServerURL.ServerType == TwitterServer.twitter)
-            {
-                string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format));
                 return ExecuteGetCommand(url);
             }
             else
@@ -1330,54 +1209,17 @@ namespace Yedda
         #endregion
 
         #region Retweet
-
-        public string Retweet_Status(string status_id, OutputFormatType format)
+        public virtual string Retweet_Status(string status_id, OutputFormatType format)
         {
-            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.pingfm)
-            {
-                return null;
-            }
-            else if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
-            {
-                return null;
-            }
-            else
-            {
-                if (format != OutputFormatType.JSON && format != OutputFormatType.XML)
-                {
-                    throw new ArgumentException("Retweet supports only XML and JSON output formats", "format");
-                }
-
-                string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Retweet) + "/{0}", GetFormatTypeString(format));
-                url = String.Format(url, status_id);
-                return ExecutePostCommand(url, null);
-            }
+            return null;
         }
-
         #endregion
 
         #region Retweeted_by_me
 
-        public string GetRetweetedByMe(OutputFormatType format)
+        public virtual string GetRetweetedByMe(OutputFormatType format)
         {
-            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.pingfm)
-            {
-                return null;
-            }
-            else if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
-            {
-                return null;
-            }
-            else
-            {
-                if (format != OutputFormatType.JSON && format != OutputFormatType.XML && format != OutputFormatType.Atom)
-                {
-                    throw new ArgumentException("Retweeted_by_me supports only XML,JSON, and Atom output formats", "format");
-                }
-
-                string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Retweeted_By_Me), GetFormatTypeString(format));
-                return ExecuteGetCommand(url);
-            }
+            return null;
         }
 
         #endregion
@@ -1465,13 +1307,13 @@ namespace Yedda
 
         #region Show
 
-        public string ShowSingleStatus(string statusID)
+        public virtual string ShowSingleStatus(string statusID)
         {
             string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Show) + "/" + statusID, GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
             return ExecuteAnonymousGetCommand(url);
         }
 
-        public string Show(string IDorScreenName, OutputFormatType format)
+        public virtual string Show(string IDorScreenName, OutputFormatType format)
         {
             if (format != OutputFormatType.JSON && format != OutputFormatType.XML)
             {
@@ -1510,22 +1352,22 @@ namespace Yedda
         #endregion
 
         #region Favorites
-        public string SetFavorite(string IDofMessage)
+        public virtual string SetFavorite(string IDofMessage)
         {
             string url = string.Format(TwitterFavoritesUrlFormat, GetActionTypeString(ActionType.Favorites), GetActionTypeString(ActionType.Create), IDofMessage, AccountInfo.ServerURL.URL);
             return ExecutePostCommand(url, "");
         }
-        public string DestroyFavorite(string IDofMessage)
+        public virtual string DestroyFavorite(string IDofMessage)
         {
             string url = string.Format(TwitterFavoritesUrlFormat, GetActionTypeString(ActionType.Favorites), GetActionTypeString(ActionType.Destroy), IDofMessage,AccountInfo.ServerURL.URL);
             return ExecutePostCommand(url, "");
         }
-        public string GetFavorites()
+        public virtual string GetFavorites()
         {
             string url = string.Format(TwitterSimpleURLFormat, GetActionTypeString(ActionType.Favorites), AccountInfo.ServerURL.URL);
             return ExecuteGetCommand(url);
         }
-        public string GetFavorites(string userID)
+        public virtual string GetFavorites(string userID)
         {
             string url = string.Format(TwitterBaseUrlFormat, GetActionTypeString(ActionType.Favorites), userID, GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
             return ExecuteGetCommand(url);
@@ -1533,12 +1375,12 @@ namespace Yedda
         #endregion
 
         #region Follow
-        public string FollowUser(string IDofUserToFollow)
+        public virtual string FollowUser(string IDofUserToFollow)
         {
             string url = string.Format(TwitterFavoritesUrlFormat, GetObjectTypeString(ObjectType.Friendships), GetActionTypeString(ActionType.Create), IDofUserToFollow,AccountInfo.ServerURL.URL);
             return ExecutePostCommand(url, "");
         }
-        public string StopFollowingUser(string IDofUserToFollow)
+        public virtual string StopFollowingUser(string IDofUserToFollow)
         {
             
             string url = string.Format(TwitterFavoritesUrlFormat, GetObjectTypeString(ObjectType.Friendships), GetActionTypeString(ActionType.Destroy), IDofUserToFollow,AccountInfo.ServerURL.URL);
@@ -1767,20 +1609,14 @@ namespace Yedda
         }
         #endregion
 
-        public string GetThread(string threadID)
+        public virtual string GetThread(string threadID)
         {
-            if (AccountInfo.ServerURL.ServerType != TwitterServer.twitter)
-            {
-                return null;
-            }
-            string url = string.Format(TwitterConversationUrlFormat, threadID);
-            return ExecuteGetCommand(url);
+            return null;
         }
 
-        public string GetFriendsIDs()
+        public virtual  string GetFriendsIDs()
         {
-            string url = "http://twitter.com/friends/ids.xml";
-            return ExecuteGetCommand(url);
+            return null;
         }
 
         #region Help
@@ -1829,5 +1665,334 @@ namespace Yedda
             return ExecuteAnonymousGetCommand(url);
         }
         #endregion
+    }
+
+    public class TwitterOAuth : Twitter
+    {
+        protected const string TwitterNewBaseUrlFormat = "https://api.twitter.com/1/{0}/{1}.{2}";
+        protected const string TwitterNewSimpleUrlFormat = "https://api.twitter.com/1/{0}.{1}";
+        protected const string TwitterNewFavoritesUrlFormat = "https://api.twitter.com/1/{0}/{1}/{2}.xml";
+
+        #region Friends
+        public virtual string GetFriendsTimeLineMax(OutputFormatType format)
+        {
+            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format)) + "?count=" + MaxTweets;
+            return ExecuteGetCommand(url);
+        }
+
+        public virtual string GetFriendsTimeLineSince(OutputFormatType format, string SinceID)
+        {
+            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format)) + "?since_id=" + SinceID + "&count=" + ClientSettings.MaxTweets;
+            return ExecuteGetCommand(url);
+        }
+
+        public virtual string GetFriendsTimeline(OutputFormatType format)
+        {
+            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format));
+            return ExecuteGetCommand(url);
+        }
+
+
+        #endregion
+
+        #region Direct_Messages
+        public override string GetDirectTimeLineSince(string SinceID)
+        {
+            string url = string.Format(TwitterNewSimpleUrlFormat, GetActionTypeString(ActionType.Direct_Messages), GetFormatTypeString(OutputFormatType.XML)) + "?since_id=" + SinceID;
+            return ExecuteGetCommand(url);
+        }
+        #endregion
+
+        #region Execute
+        protected override string ExecuteGetCommand(string url)
+        {
+            HttpWebRequest client = WebRequestFactory.CreateHttpRequest(url);
+            client.Timeout = 20000;
+            client.PreAuthenticate = true;
+            client.Headers.Add(HttpRequestHeader.Authorization.ToString(),
+                OAuthAuthorizer.AuthorizeRequest(AccountInfo.OAuth_token,
+                                                 AccountInfo.OAuth_token_secret,
+                                                 "GET",
+                                                 new Uri(url),
+                                                 string.Empty));
+
+            try
+            {
+                using (HttpWebResponse httpResponse = (HttpWebResponse)client.GetResponse())
+                {
+                    using (Stream stream = httpResponse.GetResponseStream())
+                    {
+                        using (StreamReader reader = new StreamReader(stream))
+                        {
+                            return reader.ReadToEnd();
+                        }
+                    }
+                }
+            }
+            catch (WebException ex)
+            {
+                PockeTwit.GlobalEventHandler.LogCommError(ex);
+                //
+                // Handle HTTP 404 errors gracefully and return a null string to indicate there is no content.
+                //
+                if (ex.Response is HttpWebResponse)
+                {
+                    try
+                    {
+                        if ((ex.Response as HttpWebResponse).StatusCode == HttpStatusCode.NotFound)
+                        {
+                            return null;
+                        }
+
+                        HttpWebResponse errorResponse = (HttpWebResponse)ex.Response;
+                        if (errorResponse.StatusCode == HttpStatusCode.Unauthorized)
+                        {
+                            //PockeTwit.GlobalEventHandler.CallShowErrorMessage("Login failed");
+                            return null;
+                        }
+                        string ErrorText;
+                        using (Stream stream = errorResponse.GetResponseStream())
+                        {
+                            using (StreamReader reader = new StreamReader(stream))
+                            {
+                                ErrorText = reader.ReadToEnd();
+                                XmlDocument doc = new XmlDocument();
+                                doc.LoadXml(ErrorText);
+
+                                if (doc.SelectSingleNode("//error").InnerText.StartsWith("Rate limit exceeded"))
+                                {
+                                    DateTime NewTime = GetTimeOutTime();
+                                    errorResponse.Close();
+                                    PockeTwit.GlobalEventHandler.CallShowErrorMessage("Timeout until " + NewTime.ToString());
+                                    throw new Exception("Timeout until " + NewTime.ToString());
+                                }
+                                else
+                                {
+                                    Exception TwitterError = new Exception(doc.SelectSingleNode("//error").InnerText);
+                                    PockeTwit.GlobalEventHandler.LogCommError(TwitterError);
+                                    PockeTwit.GlobalEventHandler.CallShowErrorMessage(TwitterError.Message);
+                                    throw TwitterError;
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+                        ex.Response.Close();
+
+                    }
+
+
+                }
+
+            }
+            return null;
+        }
+
+        protected override string ExecutePostCommand(string url, string data)
+        {
+            HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
+
+            if (!string.IsNullOrEmpty(AccountInfo.OAuth_token) && !string.IsNullOrEmpty(AccountInfo.OAuth_token_secret))
+            {
+                if (!string.IsNullOrEmpty(Source))
+                {
+                    if (!string.IsNullOrEmpty(data)) data += "&";
+                    data += "source=" + System.Web.HttpUtility.UrlEncode(Source);
+                }
+                
+                request.Headers.Add(HttpRequestHeader.Authorization.ToString(),
+                OAuthAuthorizer.AuthorizeRequest(AccountInfo.OAuth_token,
+                                                 AccountInfo.OAuth_token_secret,
+                                                 "POST",
+                                                 new Uri(url),
+                                                 data));
+                
+                request.PreAuthenticate = true;
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.Method = "POST";
+                request.Timeout = 20000;
+
+                if (!string.IsNullOrEmpty(TwitterClient))
+                {
+                    request.Headers.Add("X-Twitter-Client", TwitterClient);
+                }
+
+                if (!string.IsNullOrEmpty(TwitterClientVersion))
+                {
+                    request.Headers.Add("X-Twitter-Version", TwitterClientVersion);
+                }
+
+                if (!string.IsNullOrEmpty(TwitterClientUrl))
+                {
+                    request.Headers.Add("X-Twitter-URL", TwitterClientUrl);
+                }
+
+
+
+
+                byte[] bytes = Encoding.UTF8.GetBytes(data);
+                request.ContentLength = bytes.Length;
+                try
+                {
+                    using (Stream requestStream = request.GetRequestStream())
+                    {
+                        requestStream.Write(bytes, 0, bytes.Length);
+                        requestStream.Flush();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    PockeTwit.GlobalEventHandler.LogCommError(ex);
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                }
+                try
+                {
+                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                    {
+                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                        {
+                            return reader.ReadToEnd();
+                        }
+                    }
+                }
+                catch (WebException ex)
+                {
+                    //
+                    // Handle HTTP 404 errors gracefully and return a null string to indicate there is no content.
+                    //
+                    if (ex.Response is HttpWebResponse)
+                    {
+                        PockeTwit.GlobalEventHandler.LogCommError(ex);
+                        if ((ex.Response as HttpWebResponse).StatusCode == HttpStatusCode.NotFound)
+                        {
+                            return null;
+                        }
+                        try
+                        {
+                            HttpWebResponse errorResponse = (HttpWebResponse)ex.Response;
+                            string ErrorText;
+                            using (Stream stream = errorResponse.GetResponseStream())
+                            {
+                                using (StreamReader reader = new StreamReader(stream))
+                                {
+                                    ErrorText = reader.ReadToEnd();
+                                    XmlDocument doc = new XmlDocument();
+                                    doc.LoadXml(ErrorText);
+
+                                    if (doc.SelectSingleNode("//error").InnerText.StartsWith("Rate limit exceeded"))
+                                    {
+                                        DateTime NewTime = GetTimeOutTime();
+                                        PockeTwit.GlobalEventHandler.CallShowErrorMessage("Timeout until " + NewTime.ToString());
+                                        throw new Exception("Timeout until " + NewTime.ToString());
+                                    }
+
+                                }
+                            }
+                        }
+                        catch { }
+                    }
+                }
+                catch { }
+            }
+
+            return null;
+        }
+        #endregion
+
+        #region Retweet
+        public override string Retweet_Status(string status_id, OutputFormatType format)
+        {
+            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Retweet) + "/{0}", GetFormatTypeString(format));
+            url = String.Format(url, status_id);
+            return ExecutePostCommand(url, null);
+        }
+
+        public override string GetRetweetedByMe(OutputFormatType format)
+        {
+            if (format != OutputFormatType.JSON && format != OutputFormatType.XML && format != OutputFormatType.Atom)
+            {
+                throw new ArgumentException("Retweeted_by_me supports only XML,JSON, and Atom output formats", "format");
+            }
+
+            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Retweeted_By_Me), GetFormatTypeString(format));
+            return ExecuteGetCommand(url);
+        }
+        #endregion
+
+        #region Follow
+        public override string FollowUser(string IDofUserToFollow)
+        {
+            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Friendships), GetActionTypeString(ActionType.Create));
+            return ExecutePostCommand(url, "screen_name=" + IDofUserToFollow);
+        }
+        public override string StopFollowingUser(string IDofUserToFollow)
+        {
+            string url = string.Format(TwitterNewSimpleUrlFormat, GetObjectTypeString(ObjectType.Friendships), GetActionTypeString(ActionType.Destroy), GetFormatTypeString(OutputFormatType.XML));
+            return ExecutePostCommand(url, "screen_name=" + IDofUserToFollow);
+        }
+        #endregion
+
+        #region Favorites
+        public override string SetFavorite(string IDofMessage)
+        {
+            string url = string.Format(TwitterNewFavoritesUrlFormat, GetActionTypeString(ActionType.Favorites), GetActionTypeString(ActionType.Create), IDofMessage);
+            return ExecutePostCommand(url, "");
+        }
+        public override string DestroyFavorite(string IDofMessage)
+        {
+            string url = string.Format(TwitterNewFavoritesUrlFormat, GetActionTypeString(ActionType.Favorites), GetActionTypeString(ActionType.Destroy), IDofMessage);
+            return ExecutePostCommand(url, "");
+        }
+        public override string GetFavorites()
+        {
+            string url = string.Format(TwitterNewSimpleUrlFormat, GetActionTypeString(ActionType.Favorites), GetFormatTypeString(OutputFormatType.XML));
+            return ExecuteGetCommand(url);
+        }
+        public override string GetFavorites(string userID)
+        {
+            string url = string.Format(TwitterNewBaseUrlFormat, GetActionTypeString(ActionType.Favorites), userID, GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
+            return ExecuteGetCommand(url);
+        }
+        #endregion
+
+        #region Show
+        public override string ShowSingleStatus(string statusID)
+        {
+            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Show) + "/" + statusID, GetFormatTypeString(OutputFormatType.XML));
+            return ExecuteGetCommand(url);
+        }
+
+        public override string Show(string IDorScreenName, OutputFormatType format)
+        {
+            if (format != OutputFormatType.JSON && format != OutputFormatType.XML)
+            {
+                throw new ArgumentException("Show supports only XML and JSON output format", "format");
+            }
+
+            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Users), GetActionTypeString(ActionType.Show), GetFormatTypeString(format)) + "?screen_name=" + OAuth.OAuth.PercentEncode(IDorScreenName);
+            return ExecuteGetCommand(url);
+        }
+        #endregion
+
+        #region Public_Timeline
+        public override string GetPublicTimeline(OutputFormatType format)
+        {
+            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Public_Timeline), GetFormatTypeString(format), AccountInfo.ServerURL.URL);
+            return ExecuteGetCommand(url);
+        }
+        #endregion
+        public override string GetThread(string threadID)
+        {
+            string url = string.Format(TwitterConversationUrlFormat, threadID);
+            return ExecuteGetCommand(url);
+        }
+
+        public override string GetFriendsIDs()
+        {
+            string url = "http://twitter.com/friends/ids.xml";
+            return ExecuteGetCommand(url);
+        }
+
     }
 }

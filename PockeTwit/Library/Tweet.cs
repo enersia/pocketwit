@@ -26,8 +26,10 @@ namespace PockeTwit.Library
     [Serializable]
     public class status : IComparable
     {
+
+        private static XmlRootAttribute xRoot = new XmlRootAttribute("statuses");
         private static readonly IFormatProvider format = new CultureInfo(1033);
-        private static XmlSerializer statusSerializer = new XmlSerializer(typeof (status[]));
+        private static XmlSerializer statusSerializer = new XmlSerializer(typeof (status[]), xRoot);
         private static XmlSerializer singleSerializer = new XmlSerializer(typeof (status));
 
         public StatusTypes TypeofMessage = StatusTypes.Normal;
@@ -150,6 +152,7 @@ namespace PockeTwit.Library
         //public bool truncated { get; set; }
         //public string in_reply_to_status_id { get; set; }
         public string in_reply_to_user_id { get; set; }
+
         public bool isDirect { get; set; }
 
         public string location { get; set; }
@@ -171,7 +174,7 @@ namespace PockeTwit.Library
             }
         }
 
-        public User user { get; set; }
+        public Library.User user { get; set; }
 
         public string AccountSummary
         {
@@ -259,7 +262,7 @@ namespace PockeTwit.Library
                     {
                         using (var r = new StringReader(response))
                         {
-                            statuses = (status[]) statusSerializer.Deserialize(r);
+                            statuses = (status[])statusSerializer.Deserialize(r);
                         }
                     }
                     else if (Account.ServerURL.ServerType == Twitter.TwitterServer.brightkite)
@@ -282,7 +285,7 @@ namespace PockeTwit.Library
                         //}
                         //if (stat.type != null)
                         //{
-                            stat.TypeofMessage = stat.type;
+                        stat.TypeofMessage = stat.type;
                         //}
                         //else
                         //{
@@ -291,7 +294,10 @@ namespace PockeTwit.Library
                     }
                 }
             }
-            catch{}
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
             return statuses;
         }
 
@@ -448,11 +454,10 @@ namespace PockeTwit.Library
 
         public bool Delete()
         {
-            Yedda.Twitter Twitter = new Yedda.Twitter();
             Yedda.Twitter.Account account = ClientSettings.GetAcountForUser(user.screen_name);
             if (account == null)
                 return false;
-            Twitter.AccountInfo = account;
+            Yedda.Twitter Twitter = Yedda.Servers.CreateConnection(account);
 
             Cursor.Current = Cursors.WaitCursor;
             try
@@ -580,6 +585,7 @@ namespace PockeTwit.Library
     }
 
     [Serializable]
+    [XmlRoot("user")]
     public class User
     {
         #region Properties
@@ -676,7 +682,7 @@ namespace PockeTwit.Library
 
         public static User FromId(string ID, Twitter.Account Account)
         {
-            var t = new Twitter {AccountInfo = Account};
+            var t = Servers.CreateConnection(Account);
             string response = null;
             try
             {
@@ -703,7 +709,7 @@ namespace PockeTwit.Library
                     return result;
                 }
             }
-            catch
+            catch(Exception e)
             {
                 var toReturn = new User {screen_name = "PockeTwitUnknownUser"};
                 return toReturn;

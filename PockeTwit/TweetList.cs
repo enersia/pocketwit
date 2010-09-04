@@ -771,8 +771,8 @@ namespace PockeTwit
             RefreshMessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshMessagesTimeLine, "Refresh Messages", statList.LeftMenu, "Messages_TimeLine");
             PublicMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowPublicTimeLine, "Public Timeline", statList.LeftMenu);
             SearchMenuItem = new FingerUI.Menu.SideMenuItem(this.TwitterSearch, "Search/Local", statList.LeftMenu);
-            //ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "View Favorites", statList.LeftMenu);
-            ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowTrends, "View Favorites", statList.LeftMenu);
+            ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "View Favorites", statList.LeftMenu);
+            //ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowTrends, "View Favorites", statList.LeftMenu);
             FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "Follow User", statList.LeftMenu);
 
             OtherGlobalMenuItem = new FingerUI.Menu.SideMenuItem(null, "Other ...", statList.LeftMenu);
@@ -1111,11 +1111,16 @@ namespace PockeTwit
             TwitterConnections.Clear();
             foreach (Yedda.Twitter.Account a in ClientSettings.AccountsList)
             {
-                Yedda.Twitter TwitterConn = new Yedda.Twitter();
-                TwitterConn.AccountInfo.ServerURL = a.ServerURL;
-                TwitterConn.AccountInfo.UserName = a.UserName;
-                TwitterConn.AccountInfo.Password = a.Password;
-                TwitterConn.AccountInfo.Enabled = a.Enabled;
+                Twitter.Account AccountInfo = new Twitter.Account
+                {
+                    ServerURL = a.ServerURL,
+                    UserName = a.UserName,
+                    Password = a.Password,
+                    OAuth_token = a.OAuth_token,
+                    OAuth_token_secret = a.OAuth_token_secret,
+                    Enabled = a.Enabled
+                };
+                Twitter TwitterConn = Servers.CreateConnection(AccountInfo);
                 TwitterConnections.Add(TwitterConn);
                 Following f = new Following(TwitterConn);
                 FollowingDictionary.Add(TwitterConn, f);
@@ -1788,8 +1793,7 @@ namespace PockeTwit
 
             ChangeCursor(Cursors.WaitCursor);
             
-            Yedda.Twitter TwitterConn = new Yedda.Twitter();
-            TwitterConn.AccountInfo = selectedItem.Tweet.Account;
+            Yedda.Twitter TwitterConn = Servers.CreateConnection(selectedItem.Tweet.Account);
 
             string retValue = TwitterConn.Retweet_Status(selectedItem.Tweet.id, Yedda.Twitter.OutputFormatType.XML);
 

@@ -122,11 +122,16 @@ namespace FingerUI
                     {
                         if (a.Equals(Status.Account))
                         {
-                            Conn = new Yedda.Twitter();
-                            Conn.AccountInfo.ServerURL = a.ServerURL;
-                            Conn.AccountInfo.UserName = a.UserName;
-                            Conn.AccountInfo.Password = a.Password;
-                            Conn.AccountInfo.Enabled = a.Enabled;
+                            Yedda.Twitter.Account NewAccount = new Yedda.Twitter.Account
+                            {
+                                ServerURL = a.ServerURL,
+                                UserName = a.UserName,
+                                Password = a.Password,
+                                Enabled = a.Enabled,
+                                OAuth_token = a.OAuth_token,
+                                OAuth_token_secret = a.OAuth_token_secret
+                            };
+                            Conn = Yedda.Servers.CreateConnection(NewAccount);
 
                             //Get the tweet again from Twitter
                             stat = PockeTwit.Library.status.DeserializeSingle(Conn.ShowSingleStatus(stat.id), Conn.AccountInfo);

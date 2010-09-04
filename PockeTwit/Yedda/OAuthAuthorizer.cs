@@ -37,6 +37,7 @@ using System.Globalization;
 using System.Text;
 using System.Net;
 using System.Web;
+using System.Linq;
 using System.Security.Cryptography;
 using OpenNETCF.Security.Cryptography;
 using System.IO;
@@ -117,15 +118,20 @@ namespace OAuth
         static string MakeSignature(string method, string base_uri, Dictionary<string, string> headers)
         {
             //string.Join ("%26", items.ToArray ());
-
-            List<string> lijst = new List<string>();
-            foreach (string key in headers.Keys)
+            List<KeyValuePair<string, string>> KVP = new List<KeyValuePair<string, string>>(headers);
+            KVP.Sort((p1, p2) =>
             {
-                string value;
-                if (headers.TryGetValue(key, out value))
-                {
-                    lijst.Add(key + "%3D" + OAuth.PercentEncode(value));
-                }
+                int c = p1.Key.CompareTo(p2.Key);
+                if(c == 0)
+                    return p1.Value.CompareTo(p2.Value);
+                else
+                    return c;
+            }
+            );
+            List<string> lijst = new List<string>();
+            foreach (KeyValuePair<string, string> p in KVP)
+            {
+                lijst.Add(p.Key + "%3D" + OAuth.PercentEncode(p.Value));
             }
             return method + "&" + OAuth.PercentEncode(base_uri) + "&" + string.Join("%26", lijst.ToArray());
         }
@@ -214,10 +220,17 @@ namespace OAuth
 
 
                 StreamReader oReader = new StreamReader(resp, Encoding.ASCII);
-                StreamWriter oWriter = new StreamWriter("bfile.txt");
 
-                oWriter.Write(oReader.ReadToEnd());
+                string r = oReader.ReadToEnd();
 
+                var result = HttpUtility.ParseQueryString(r);
+
+                if (result["oauth_token"] != null)
+                {
+                    RequestToken = result["oauth_token"];
+                    RequestTokenSecret = result["oauth_token_secret"];
+                    return true;
+                }
             }
             catch (Exception e)
             {
@@ -242,7 +255,7 @@ namespace OAuth
             headers.Add("oauth_token", AuthorizationToken);
             headers.Add("oauth_verifier", AuthorizationVerifier);
 
-            string signature = MakeSignature("POST", OAuthConfig.AccessTokenUrl, headers);
+            string signature = MakeSignature("GET", OAuthConfig.AccessTokenUrl, headers);
             string compositeSigningKey = MakeSigningKey(OAuthConfig.ConsumerSecret, RequestTokenSecret);
             string oauth_signature = MakeOAuthSignature(compositeSigningKey, signature);
 
@@ -253,7 +266,7 @@ namespace OAuth
 
             try
             {
-                var result = HttpUtility.ParseQueryString(wc.UploadString(new Uri(OAuthConfig.AccessTokenUrl), content));
+                var result = HttpUtility.ParseQueryString(wc.DownloadString(new Uri(OAuthConfig.AccessTokenUrl)));
 
                 if (result["oauth_token"] != null)
                 {
@@ -321,15 +334,15 @@ namespace OAuth
         public static void AuthorizeTwitPic(HttpWebRequest wc, string oauthToken, string oauthTokenSecret)
         {
             var headers = new Dictionary<string, string>() {
-				{ "oauth_consumer_key", OAuthConfig.ConsumerKey },
+                //{ "realm", "http://api.twitter.com/" },
+                { "oauth_consumer_key", OAuthConfig.ConsumerKey },
 				{ "oauth_nonce", MakeNonce () },
 				{ "oauth_signature_method", "HMAC-SHA1" },
 				{ "oauth_timestamp", MakeTimestamp () },
 				{ "oauth_token", oauthToken },
-				{ "oauth_version", "1.0" },
-				//{ "realm", "http://api.twitter.com" }
+				{ "oauth_version", "1.0" }
 			};
-            string signurl = "http://api.twitter.com/1/account/verify_credentials.xml";
+            string signurl = "https://api.twitter.com/1/account/verify_credentials.json";
             // The signature is not done against the *actual* url, it is done against the verify_credentials.json one 
             string signature = MakeSignature("GET", signurl, headers);
             string compositeSigningKey = MakeSigningKey(OAuthConfig.ConsumerSecret, oauthTokenSecret);

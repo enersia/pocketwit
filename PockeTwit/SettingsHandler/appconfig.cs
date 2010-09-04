@@ -44,6 +44,13 @@ public class ConfigurationSettings
                     Yedda.Twitter.Account a = new Yedda.Twitter.Account();
                     a.UserName = oNode.Attributes["user"].Value;
                     a.Password = oNode.Attributes["password"].Value;
+                    try
+                    {
+                        a.OAuth_token = oNode.Attributes["oauth_token"].Value;
+                        a.OAuth_token_secret = oNode.Attributes["oauth_token_secret"].Value;
+                        string q = a.OAuth_token;
+                    }
+                    catch (Exception) { }
                     
                     if (oNode.Attributes["servername"] != null)
                     {
@@ -96,6 +103,12 @@ public class ConfigurationSettings
                 XmlAttribute passAtt = oXml.CreateAttribute("password");
                 passAtt.Value = Account.Password;
 
+                XmlAttribute oauthTokenAtt = oXml.CreateAttribute("oauth_token");
+                oauthTokenAtt.Value = Account.OAuth_token;
+
+                XmlAttribute oauthTokenSecretAtt = oXml.CreateAttribute("oauth_token_secret");
+                oauthTokenSecretAtt.Value = Account.OAuth_token_secret;
+                
                 XmlAttribute serverNameAtt = oXml.CreateAttribute("servername");
                 serverNameAtt.Value = Account.ServerURL.Name;
 
@@ -104,6 +117,8 @@ public class ConfigurationSettings
 
                 AccountNode.Attributes.Append(userAtt);
                 AccountNode.Attributes.Append(passAtt);
+                AccountNode.Attributes.Append(oauthTokenAtt);
+                AccountNode.Attributes.Append(oauthTokenSecretAtt);
                 AccountNode.Attributes.Append(serverNameAtt);
                 AccountNode.Attributes.Append(enabledAtt);
                 AccountsNode.AppendChild(AccountNode);
