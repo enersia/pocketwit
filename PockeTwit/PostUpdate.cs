@@ -9,6 +9,7 @@ using PockeTwit.Themes;
 using Yedda;
 using PockeTwit.MediaServices;
 using PockeTwit.OtherServices.GoogleSpell;
+using PockeTwit.Position;
 
 namespace PockeTwit
 {
@@ -19,7 +20,7 @@ namespace PockeTwit
         private System.Windows.Forms.MenuItem PasteItem;
         private System.Windows.Forms.MenuItem CopyItem;
 		
-        public string GPSLocation = null;
+        public GeoCoord GPSLocation = null;
         private LocationManager LocationFinder = new LocationManager();
         private bool _StandAlone;
         private delegate void delUpdateText(string text);
@@ -31,6 +32,7 @@ namespace PockeTwit
         private bool pictureUsed = true;
         private bool localPictureEventsSet = false;
         private string picturePath = string.Empty;
+        private List<Place> places = null;
 
         public delegate void delAddPicture(string ImageFile, PictureBox BoxToUpdate);
         public delegate void delUpdatePictureData(string pictureUrl, bool uploadingPicture);
@@ -188,50 +190,72 @@ namespace PockeTwit
         }
 
         
-        void l_LocationReady(string Location)
+        void l_LocationReady(GeoCoord Location)
+        {
+            // We're in a separate thread, probably - grab the places from Twitter
+            if (Location != null)
+            {
+
+                Twitter Conn = Servers.CreateConnection(AccountToSet);
+                if (Conn is PlaceAPI)
+                {
+                    PlaceAPI PlaceSearch = Conn as PlaceAPI;
+                    places = PlaceSearch.GetNearbyPlaces(Location);
+                }
+                DoLocationReady(Location);
+            }            
+        }
+
+        void DoLocationReady(GeoCoord Location)
         {
             try
             {
                 if (InvokeRequired)
                 {
-                    delUpdateText d = new delUpdateText(l_LocationReady);
+                    LocationManager.delLocationReady d = new LocationManager.delLocationReady(DoLocationReady);
                     BeginInvoke(d, Location);
                 }
                 else
                 {
-                    if (!string.IsNullOrEmpty(Location))
+                    //LocationFinder.StopGPS();
+                    // It might be from the cell location, so keep looking for GPS
+                    GPSLocation = Location;
+                    lblGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Location Found");
+                    if (DetectDevice.DeviceType == DeviceType.Standard)
                     {
-                        LocationFinder.StopGPS();
-                        GPSLocation = Location;
-                        lblGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Location Found");
-                        if (DetectDevice.DeviceType == DeviceType.Standard)
+                        // just enable the menuItem
+                        if (null != menuGPSInsert)
                         {
-                            // just enable the menuItem
-                            if (null != menuGPSInsert)
-                            {
-                                menuGPSInsert.Enabled = true;
-                            }
-                        }
-                        else
-                        {
-                            // hide the label, add a new button
-                            lblGPS.Visible = false;
-                            LinkLabel llGPS = new LinkLabel();
-                            llGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Ins. GPS Link");
-                            llGPS.ForeColor = Color.White;
-                            llGPS.Left = lblGPS.Left;
-                            llGPS.Top = lblGPS.Top;
-                            llGPS.Height = lblGPS.Height;
-                            llGPS.Width = lblGPS.Width;
-                            llGPS.Click += new EventHandler(llGPS_Click);
-                            Controls.Add(llGPS);
+                            menuGPSInsert.Enabled = true;
                         }
                     }
+                    else
+                    {
+                        // hide the label, add a new button
+                        lblGPS.Visible = false;
+                        LinkLabel llGPS = new LinkLabel();
+                        llGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Ins. GPS Link");
+                        llGPS.ForeColor = Color.White;
+                        llGPS.Left = lblGPS.Left;
+                        llGPS.Top = lblGPS.Top;
+                        llGPS.Height = lblGPS.Height;
+                        llGPS.Width = lblGPS.Width;
+                        llGPS.Click += new EventHandler(llGPS_Click);
+                        Controls.Add(llGPS);
+                    }
+                    cmbPlaces.Items.Clear();
+                    cmbPlaces.Visible = true;
+                    cmbPlaces.Items.Add(GPSLocation);
+                    cmbPlaces.SelectedIndex = 0;
+
+                    foreach (Place p in places)
+                        cmbPlaces.Items.Add(p);
                 }
             }
             catch (ObjectDisposedException)
             {
             }
+
         }
 
         void llGPS_Click(object sender, EventArgs e)
@@ -788,8 +812,8 @@ namespace PockeTwit
                     {
                         try
                         {
-                            ppo.Lat = GPSLocation.Split(',')[0];
-                            ppo.Lon = GPSLocation.Split(',')[1];
+                            ppo.Lat = GPSLocation.Lat.ToString();
+                            ppo.Lon = GPSLocation.Lon.ToString();
                         }
                         catch { }
                     }
@@ -805,13 +829,24 @@ namespace PockeTwit
                     {
                         if (GPSLocation != null)
                         {
-                            TwitterConn.SetLocation(GPSLocation);
+                            // don't do this now, we can use the GeoTagging API instead
+                            //TwitterConn.SetLocation(GPSLocation);
                         }
                     }
                     catch { }
 
+                    Place p = null;
+                    object o = cmbPlaces.SelectedItem;
 
-                    string retValue = TwitterConn.Update(updateText, in_reply_to_status_id, Yedda.Twitter.OutputFormatType.XML);
+                    if(o is Place)
+                        p = o as Place;
+
+                    string retValue = TwitterConn.Update(
+                            updateText, 
+                            in_reply_to_status_id, 
+                            new PockeTwit.Position.UserLocation {
+                                Position = GPSLocation, Location = p },
+                             Yedda.Twitter.OutputFormatType.XML);
 
                     uploadedPictureURL = string.Empty;
                     uploadingPicture = false;

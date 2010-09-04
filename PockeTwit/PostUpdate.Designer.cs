@@ -43,6 +43,7 @@ namespace PockeTwit
             this.pictureLocation = new System.Windows.Forms.PictureBox();
             this.lblGPS = new System.Windows.Forms.Label();
             this.picAddressBook = new System.Windows.Forms.PictureBox();
+            this.cmbPlaces = new System.Windows.Forms.ComboBox();
             this.userListControl1 = new PockeTwit.userListControl();
             this.SuspendLayout();
             // 
@@ -75,21 +76,21 @@ namespace PockeTwit
             // 
             // pictureURL
             // 
-            this.pictureURL.Location = new System.Drawing.Point(4, 40);
+            this.pictureURL.Location = new System.Drawing.Point(4, 29);
             this.pictureURL.Name = "pictureURL";
             this.pictureURL.Size = new System.Drawing.Size(25, 25);
             this.pictureURL.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             // 
             // pictureFromStorage
             // 
-            this.pictureFromStorage.Location = new System.Drawing.Point(35, 40);
+            this.pictureFromStorage.Location = new System.Drawing.Point(35, 29);
             this.pictureFromStorage.Name = "pictureFromStorage";
             this.pictureFromStorage.Size = new System.Drawing.Size(25, 25);
             this.pictureFromStorage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             // 
             // pictureFromCamers
             // 
-            this.pictureFromCamers.Location = new System.Drawing.Point(66, 40);
+            this.pictureFromCamers.Location = new System.Drawing.Point(66, 29);
             this.pictureFromCamers.Name = "pictureFromCamers";
             this.pictureFromCamers.Size = new System.Drawing.Size(25, 25);
             this.pictureFromCamers.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -99,31 +100,31 @@ namespace PockeTwit
             this.txtStatusUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtStatusUpdate.Location = new System.Drawing.Point(4, 72);
+            this.txtStatusUpdate.Location = new System.Drawing.Point(4, 60);
             this.txtStatusUpdate.Multiline = true;
             this.txtStatusUpdate.Name = "txtStatusUpdate";
-            this.txtStatusUpdate.Size = new System.Drawing.Size(232, 193);
+            this.txtStatusUpdate.Size = new System.Drawing.Size(232, 178);
             this.txtStatusUpdate.TabIndex = 7;
             this.txtStatusUpdate.TextChanged += new System.EventHandler(this.txtStatusUpdate_TextChanged);
             // 
             // lblCharsLeft
             // 
             this.lblCharsLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblCharsLeft.Location = new System.Drawing.Point(191, 45);
+            this.lblCharsLeft.Location = new System.Drawing.Point(191, 34);
             this.lblCharsLeft.Name = "lblCharsLeft";
             this.lblCharsLeft.Size = new System.Drawing.Size(45, 20);
             this.lblCharsLeft.Text = "label2";
             // 
             // pictureLocation
             // 
-            this.pictureLocation.Location = new System.Drawing.Point(128, 40);
+            this.pictureLocation.Location = new System.Drawing.Point(128, 29);
             this.pictureLocation.Name = "pictureLocation";
             this.pictureLocation.Size = new System.Drawing.Size(25, 25);
             this.pictureLocation.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             // 
             // lblGPS
             // 
-            this.lblGPS.Location = new System.Drawing.Point(128, 45);
+            this.lblGPS.Location = new System.Drawing.Point(128, 34);
             this.lblGPS.Name = "lblGPS";
             this.lblGPS.Size = new System.Drawing.Size(95, 20);
             this.lblGPS.Text = "Seeking GPS";
@@ -131,17 +132,27 @@ namespace PockeTwit
             // 
             // picAddressBook
             // 
-            this.picAddressBook.Location = new System.Drawing.Point(97, 40);
+            this.picAddressBook.Location = new System.Drawing.Point(97, 29);
             this.picAddressBook.Name = "picAddressBook";
             this.picAddressBook.Size = new System.Drawing.Size(25, 25);
             this.picAddressBook.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            // 
+            // cmbPlaces
+            // 
+            this.cmbPlaces.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbPlaces.Location = new System.Drawing.Point(5, 243);
+            this.cmbPlaces.Name = "cmbPlaces";
+            this.cmbPlaces.Size = new System.Drawing.Size(230, 22);
+            this.cmbPlaces.TabIndex = 20;
+            this.cmbPlaces.Visible = false;
             // 
             // userListControl1
             // 
             this.userListControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.userListControl1.Location = new System.Drawing.Point(42, 68);
+            this.userListControl1.Location = new System.Drawing.Point(42, 65);
             this.userListControl1.Name = "userListControl1";
             this.userListControl1.Size = new System.Drawing.Size(150, 22);
             this.userListControl1.TabIndex = 12;
@@ -153,6 +164,7 @@ namespace PockeTwit
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.cmbPlaces);
             this.Controls.Add(this.picAddressBook);
             this.Controls.Add(this.userListControl1);
             this.Controls.Add(this.lblGPS);
@@ -186,5 +198,6 @@ namespace PockeTwit
         private userListControl userListControl1;
         private Label lblGPS;
         private PictureBox picAddressBook;
+        private ComboBox cmbPlaces;
     }
 }

@@ -510,6 +510,8 @@
     </Compile>
     <Compile Include="FingerUI\SpellingCorrections\SpellChecker.cs" />
     <Compile Include="IProfileViewer.cs" />
+    <Compile Include="Position\UserLocation.cs" />
+    <Compile Include="Position\GeoCoord.cs" />
     <Compile Include="MediaServices\TwitPic.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -547,6 +549,10 @@
     <Compile Include="Mono\WebClient.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Position\IPositionProvider.cs" />
+    <Compile Include="Position\PositionEventArgs.cs" />
+    <Compile Include="Position\PositionProvider.cs" />
+    <Compile Include="Position\RILPositionProvider.cs" />
     <Compile Include="ProfileViewSmartphone.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -725,6 +731,9 @@
     <Compile Include="MediaServices\PicturePostObject.cs" />
     <Compile Include="MediaServices\PictureServiceFactory.cs" />
     <Compile Include="Yedda\OAuthAuthorizer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Location\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CompactFramework.CSharp.targets" />
   <ProjectExtensions>

@@ -151,7 +151,7 @@ namespace PockeTwit
                 {
                     Yedda.Twitter Twitter = Yedda.Servers.CreateConnection(s.AccountToSet);
                     Cursor.Current = Cursors.WaitCursor;
-                    Twitter.Update(UpdateText, Yedda.Twitter.OutputFormatType.XML);
+                    Twitter.Update(UpdateText, null, Yedda.Twitter.OutputFormatType.XML);
                     Cursor.Current = Cursors.Default;
                 }
                 this.Show();

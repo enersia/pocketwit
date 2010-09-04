@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using PockeTwit.OtherServices;
 using PockeTwit.SpecialTimelines;
+using PockeTwit.Position;
 
 namespace PockeTwit
 {
@@ -17,7 +18,7 @@ namespace PockeTwit
 
         public SpecialTimelines.SavedSearchTimeLine SavedSearch;
 
-        public string GPSLocation = null;
+        public GeoCoord GPSLocation = null;
         private LocationManager Locator = new LocationManager();
 
         private string _providedLocation;
@@ -64,12 +65,7 @@ namespace PockeTwit
                 this.WindowState = FormWindowState.Maximized;
             }
             this.DialogResult = DialogResult.Cancel;
-
-            if (ClientSettings.UseGPS)
-            {
-                Locator.StartGPS();
-
-            }
+            this.ResumeLayout(true);
             //cmbMeasurement.SelectedValue = ClientSettings.DistancePreference;
             if (!string.IsNullOrEmpty(ClientSettings.DistancePreference))
             {
@@ -83,12 +79,17 @@ namespace PockeTwit
             cmbDistance.Text = "15";
 
             txtSearch.Focus();
+
+            // Locator deals with the ClientSettings - we get info from cell id if not
+            Locator.StartGPS();
+       
         }
 
-        void Locator_LocationReady(string Location)
+
+        void Locator_LocationReady(GeoCoord Location)
         {
-            GPSLocked();
             GPSLocation = Location;
+            GPSLocked();
         }
 
         private delegate void delGPSLocked();
@@ -101,7 +102,7 @@ namespace PockeTwit
             }
             else
             {
-                if (!string.IsNullOrEmpty(this.GPSLocation))
+                if (this.GPSLocation != null)
                 {
                     cmbLocation.Items.Clear();
                     cmbLocation.Items.Add(PockeTwit.Localization.XmlBasedResourceManager.GetString("Anywhere"));
@@ -111,7 +112,7 @@ namespace PockeTwit
                         cmbLocation.SelectedItem = _providedLocation;
                     }
                     cmbLocation.Items.Add(PockeTwit.Localization.XmlBasedResourceManager.GetString("Current GPS Position"));
-                    cmbLocation.Items.Add(Geocode.GetAddress(this.GPSLocation).Replace("\r\n", ""));
+                    cmbLocation.Items.Add(Geocode.GetAddress(this.GPSLocation.ToString()).Replace("\r\n", ""));
                     Locator.StopGPS();
                 }
             }
@@ -178,15 +179,23 @@ namespace PockeTwit
             {
                 if (!string.IsNullOrEmpty(cmbLocation.Text))
                 {
-                    Coordinate c = Geocode.GetCoordinates(cmbLocation.Text);
-                    this.GPSLocation = System.Web.HttpUtility.UrlEncode(c.ToString());
+                    string sGPS = "";
+                    if (cmbLocation.Text == PockeTwit.Localization.XmlBasedResourceManager.GetString("Current GPS Position"))
+                    {
+                        sGPS = System.Web.HttpUtility.UrlEncode(GPSLocation.ToString());
+                    }
+                    else
+                    {
+                        Coordinate c = Geocode.GetCoordinates(cmbLocation.Text);
+                        sGPS = System.Web.HttpUtility.UrlEncode(c.ToString());
+                    }
                     if (!string.IsNullOrEmpty(cmbDistance.Text) && !string.IsNullOrEmpty(cmbMeasurement.Text))
                     {
                         if (b.Length > 0)
                         {
                             b.Append("&");
                         }
-                        b.Append("geocode=" + this.GPSLocation);
+                        b.Append("geocode=" + sGPS);
                         b.Append("," + cmbDistance.Text);
                         string miles = PockeTwit.Localization.XmlBasedResourceManager.GetString("Miles");
                         if (cmbMeasurement.Text == miles)

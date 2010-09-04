@@ -18,6 +18,7 @@ using System.IO;
 using System.Net;
 using System.Xml;
 using System.Web;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using PockeTwit;
@@ -26,7 +27,7 @@ using System.Globalization;
 using System;
 using Microsoft.Practices.ServiceLocation;
 using OAuth;
-
+using PockeTwit.Position;
 namespace Yedda
 {
    
@@ -74,6 +75,11 @@ namespace Yedda
 
             }
         }
+    }
+
+    public interface PlaceAPI
+    {
+        List<Place> GetNearbyPlaces(GeoCoord position);
     }
 
     public class Twitter
@@ -349,7 +355,8 @@ namespace Yedda
             Users,
             Notifications,
             Friendships,
-            Help
+            Help,
+            Geo
         }
 
         /// <summary>
@@ -601,7 +608,7 @@ namespace Yedda
                 client.Credentials = new NetworkCredential(AccountInfo.UserName, AccountInfo.Password);
             }
             client.PreAuthenticate = true;
-            string tok;
+            /*string tok;
             string tok_sec;
             try
             {
@@ -617,7 +624,7 @@ namespace Yedda
                                                  AccountInfo.OAuth_token_secret,
                                                  "GET",
                                                  new Uri(url),
-                                                 string.Empty));
+                                                 string.Empty));*/
 
             try
             {
@@ -1141,12 +1148,12 @@ namespace Yedda
 
         #region Update
 
-        public string Update(string status, OutputFormatType format)
+        public string Update(string status, UserLocation location,  OutputFormatType format)
         {
-            return Update(status, null, format);
+            return Update(status, null, location, format);
         }
 
-        public string Update(string status, string in_reply_to_status_id, OutputFormatType format)
+        public string Update(string status, string in_reply_to_status_id, UserLocation location, OutputFormatType format)
         {
             
             if (this.AccountInfo.ServerURL.ServerType == TwitterServer.pingfm)
@@ -1179,22 +1186,31 @@ namespace Yedda
 
                 string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Update), GetFormatTypeString(format), AccountInfo.ServerURL.URL);
                 string data = string.Format("status={0}", System.Web.HttpUtility.UrlEncode(status));
+                if (location != null)
+                {
+                    data += string.Format("&lat={0}&long={1}", location.Position.Lat, location.Position.Lon);
+                    if (location.Location is TwitterOAuth.TwitterPlace) {
+                        TwitterOAuth.TwitterPlace place = location.Location as TwitterOAuth.TwitterPlace;
+                        data += string.Format("&place_id={0}", place.TwitterPlaceID);
+                    }
+                }
                 if (!string.IsNullOrEmpty(in_reply_to_status_id))
                 {
                     data = data + "&in_reply_to_status_id=" + in_reply_to_status_id;
                 }
+                
                 return ExecutePostCommand(url, data);
             }
         }
 
-        public string UpdateAsJSON(string text)
+        public string UpdateAsJSON(string text, UserLocation location)
         {
-            return Update(text, OutputFormatType.JSON);
+            return Update(text, location, OutputFormatType.JSON);
         }
 
-        public XmlDocument UpdateAsXML(string text)
+        public XmlDocument UpdateAsXML(string text, UserLocation location)
         {
-            string output = Update(text, OutputFormatType.XML);
+            string output = Update(text, location, OutputFormatType.XML);
             if (!string.IsNullOrEmpty(output))
             {
                 XmlDocument xmlDocument = new XmlDocument();
@@ -1257,7 +1273,7 @@ namespace Yedda
 
         public XmlDocument Destroy_StatusAsXML(string statusId)
         {
-            string output = Update(statusId, OutputFormatType.XML);
+            string output = Destroy_Status(statusId, OutputFormatType.XML);
             if (!string.IsNullOrEmpty(output))
             {
                 XmlDocument xmlDocument = new XmlDocument();
@@ -1667,8 +1683,13 @@ namespace Yedda
         #endregion
     }
 
-    public class TwitterOAuth : Twitter
+    public class TwitterOAuth : Twitter, PlaceAPI
     {
+        public class TwitterPlace : Place
+        {
+            public string TwitterPlaceID { get; set; }
+
+        }
         protected const string TwitterNewBaseUrlFormat = "https://api.twitter.com/1/{0}/{1}.{2}";
         protected const string TwitterNewSimpleUrlFormat = "https://api.twitter.com/1/{0}.{1}";
         protected const string TwitterNewFavoritesUrlFormat = "https://api.twitter.com/1/{0}/{1}/{2}.xml";
@@ -1993,6 +2014,50 @@ namespace Yedda
             string url = "http://twitter.com/friends/ids.xml";
             return ExecuteGetCommand(url);
         }
+
+        #region PlaceAPI
+        public List<Place> GetNearbyPlaces(GeoCoord position)
+        {
+            List<Place> twitPlaces = new List<Place>();
+            Dictionary<string, PlaceType> placeTypes = new Dictionary<string,PlaceType>();
+            placeTypes.Add("poi", PlaceType.Poi);
+            placeTypes.Add("neighborhood", PlaceType.Neighbourhood);
+            placeTypes.Add("city", PlaceType.City);
+            placeTypes.Add("admin", PlaceType.Administrative);
+            placeTypes.Add("country", PlaceType.Country);
+
+            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Geo), GetActionTypeString(ActionType.Search),  GetFormatTypeString(OutputFormatType.JSON));
+            url += string.Format("?lat={0}&long={1}&granularity=poi", position.Lat, position.Lon);
+            string jsonresp = ExecuteGetCommand(url);
+
+            Hashtable jsonResponse = PockeTwit.JSON.JsonDecode(jsonresp) as Hashtable;
+            if (jsonResponse != null)
+            {
+                Hashtable result = jsonResponse["result"] as Hashtable;
+                if (result != null)
+                {
+                    ArrayList places = result["places"] as ArrayList;
+                    if (places != null)
+                    {
+                        foreach (Hashtable place in places)
+                        {
+                            twitPlaces.Add(
+                                new TwitterPlace
+                                {
+                                    TwitterPlaceID = place["id"].ToString(),
+                                    DisplayName = place["full_name"].ToString(),
+                                    Type = placeTypes[place["place_type"].ToString()],
+                                    Position = position // until we do bounding boxes
+                                }
+                            );
+                        }
+                    }
+                }
+            }
+            return twitPlaces;
+        }
+
+        #endregion
 
     }
 }
