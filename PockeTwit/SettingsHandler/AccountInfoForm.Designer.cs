@@ -165,6 +165,7 @@
             this.TbPin.Name = "TbPin";
             this.TbPin.Size = new System.Drawing.Size(66, 21);
             this.TbPin.TabIndex = 9;
+            this.TbPin.Visible = false;
             this.TbPin.GotFocus += new System.EventHandler(this.TbPin_GotFocus);
             // 
             // lPin
@@ -174,6 +175,7 @@
             this.lPin.Name = "lPin";
             this.lPin.Size = new System.Drawing.Size(28, 20);
             this.lPin.Text = "Pin:";
+            this.lPin.Visible = false;
             // 
             // ImTwitter
             // 

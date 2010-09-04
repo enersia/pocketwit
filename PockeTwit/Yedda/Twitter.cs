@@ -37,6 +37,8 @@ namespace Yedda
         {
             if (Account.Server == Twitter.TwitterServer.twitter)
                 return new TwitterOAuth { AccountInfo = Account};
+            else if (Account.Server == Twitter.TwitterServer.pingfm)
+                return new PingFM { AccountInfo = Account };
             else
                 return new Twitter { AccountInfo = Account };
         }
@@ -608,24 +610,6 @@ namespace Yedda
                 client.Credentials = new NetworkCredential(AccountInfo.UserName, AccountInfo.Password);
             }
             client.PreAuthenticate = true;
-            /*string tok;
-            string tok_sec;
-            try
-            {
-                tok = AccountInfo.OAuth_token;
-                tok_sec = AccountInfo.OAuth_token_secret;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-            client.Headers.Add(HttpRequestHeader.Authorization.ToString(),
-                OAuthAuthorizer.AuthorizeRequest(AccountInfo.OAuth_token,
-                                                 AccountInfo.OAuth_token_secret,
-                                                 "GET",
-                                                 new Uri(url),
-                                                 string.Empty));*/
-
             try
             {
                 using (HttpWebResponse httpResponse = (HttpWebResponse)client.GetResponse())
@@ -1153,18 +1137,9 @@ namespace Yedda
             return Update(status, null, location, format);
         }
 
-        public string Update(string status, string in_reply_to_status_id, UserLocation location, OutputFormatType format)
+        public virtual string Update(string status, string in_reply_to_status_id, UserLocation location, OutputFormatType format)
         {
-            
-            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.pingfm)
-            {
-                string url = "http://api.ping.fm/v1/user.post";
-                //string data = string.Format("user_app_key={0}&api_key={1}&post_method=microblog&body={2}", this.AccountInfo.UserName,this.AccountInfo.Password,HttpUtility.UrlEncode(status));
-                string data = string.Format("user_app_key={0}&api_key={1}&post_method=default&body={2}", this.AccountInfo.UserName, this.AccountInfo.Password, System.Web.HttpUtility.UrlEncode(status));
-                
-                return ExecutePostCommand(url, data);
-            }
-            else if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
+            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
             {
                 if (this.PlaceID != null)
                 {
@@ -1189,10 +1164,6 @@ namespace Yedda
                 if (location != null)
                 {
                     data += string.Format("&lat={0}&long={1}", location.Position.Lat, location.Position.Lon);
-                    if (location.Location is TwitterOAuth.TwitterPlace) {
-                        TwitterOAuth.TwitterPlace place = location.Location as TwitterOAuth.TwitterPlace;
-                        data += string.Format("&place_id={0}", place.TwitterPlaceID);
-                    }
                 }
                 if (!string.IsNullOrEmpty(in_reply_to_status_id))
                 {
@@ -1405,14 +1376,10 @@ namespace Yedda
         #endregion
 
         #region Verify
-        public bool Verify()
+        public virtual bool Verify()
         {
             string url;
-            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.pingfm)
-            {
-                return PingValidate();
-            }
-            else if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
+            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
             {
                 return true;
                 /*  For later development
@@ -1550,34 +1517,6 @@ namespace Yedda
         //        service);
         //}
 
-        private bool PingValidate()
-        {
-            //First, if mobile key use it to get real key
-            string url;
-            if (this.AccountInfo.UserName.Length < 6)
-            {
-                url = "http://api.ping.fm/v1/user.key";
-                try
-                {
-                    string KeyResponse = ExecutePostCommand(url, string.Format("mobile_key={0}&api_key={1}", this.AccountInfo.UserName, this.AccountInfo.Password));
-                    XmlDocument d = new XmlDocument();
-                    d.LoadXml(KeyResponse);
-                    this.AccountInfo.UserName = d.SelectSingleNode("//key").InnerText;
-                }
-                catch
-                {
-                    return false;
-                }
-            }
-
-            url = "http://api.ping.fm/v1/user.validate";
-            string Response = ExecutePostCommand(url, string.Format("user_app_key={0}&api_key={1}", this.AccountInfo.UserName, this.AccountInfo.Password));
-            if (!string.IsNullOrEmpty(Response))
-            {
-                return Response.IndexOf("<rsp status=\"OK\">") > 0;
-            }
-            return false;
-        }
         #endregion
 
         #region Search
@@ -1683,6 +1622,51 @@ namespace Yedda
         #endregion
     }
 
+    public class PingFM : Twitter
+    {
+        public override bool Verify()
+        {
+            //First, if mobile key use it to get real key
+            string url;
+            if (this.AccountInfo.UserName.Length < 6)
+            {
+                url = "http://api.ping.fm/v1/user.key";
+                try
+                {
+                    string KeyResponse = ExecutePostCommand(url, string.Format("mobile_key={0}&api_key={1}", this.AccountInfo.UserName, this.AccountInfo.Password));
+                    XmlDocument d = new XmlDocument();
+                    d.LoadXml(KeyResponse);
+                    this.AccountInfo.UserName = d.SelectSingleNode("//key").InnerText;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+
+            url = "http://api.ping.fm/v1/user.validate";
+            string Response = ExecutePostCommand(url, string.Format("user_app_key={0}&api_key={1}", this.AccountInfo.UserName, this.AccountInfo.Password));
+            if (!string.IsNullOrEmpty(Response))
+            {
+                return Response.IndexOf("<rsp status=\"OK\">") > 0;
+            }
+            return false;
+        }
+
+        public override string Update(string status, string in_reply_to_status_id, UserLocation location, OutputFormatType format)
+        {
+            string url = "http://api.ping.fm/v1/user.post";
+            //string data = string.Format("user_app_key={0}&api_key={1}&post_method=microblog&body={2}", this.AccountInfo.UserName,this.AccountInfo.Password,HttpUtility.UrlEncode(status));
+            string data = string.Format("user_app_key={0}&api_key={1}&post_method=default&body={2}", this.AccountInfo.UserName, this.AccountInfo.Password, System.Web.HttpUtility.UrlEncode(status));
+
+            if (location != null)
+            {
+                data += "&location=" + location.ToString();
+            }
+            return ExecutePostCommand(url, data);
+        }
+    }
+
     public class TwitterOAuth : Twitter, PlaceAPI
     {
         public class TwitterPlace : Place
@@ -1693,6 +1677,38 @@ namespace Yedda
         protected const string TwitterNewBaseUrlFormat = "https://api.twitter.com/1/{0}/{1}.{2}";
         protected const string TwitterNewSimpleUrlFormat = "https://api.twitter.com/1/{0}.{1}";
         protected const string TwitterNewFavoritesUrlFormat = "https://api.twitter.com/1/{0}/{1}/{2}.xml";
+
+        #region Update
+        public override string Update(string status, string in_reply_to_status_id, UserLocation location, OutputFormatType format)
+        {
+            if (format != OutputFormatType.JSON && format != OutputFormatType.XML)
+            {
+                throw new ArgumentException("Update support only XML and JSON output format", "format");
+            }
+
+            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Update), GetFormatTypeString(format));
+            string data = string.Format("status={0}", System.Web.HttpUtility.UrlEncode(status));
+            if (location != null)
+            {
+                if (location.Position != null)
+                {
+                    data += string.Format("&lat={0}&long={1}", location.Position.Lat, location.Position.Lon);
+                    if (location.Location is TwitterOAuth.TwitterPlace)
+                    {
+                        TwitterOAuth.TwitterPlace place = location.Location as TwitterOAuth.TwitterPlace;
+                        data += string.Format("&place_id={0}", place.TwitterPlaceID);
+                    }
+                }
+            }
+            if (!string.IsNullOrEmpty(in_reply_to_status_id))
+            {
+                data = data + "&in_reply_to_status_id=" + in_reply_to_status_id;
+            }
+
+            return ExecutePostCommand(url, data);
+        }
+
+        #endregion
 
         #region Friends
         public virtual string GetFriendsTimeLineMax(OutputFormatType format)
