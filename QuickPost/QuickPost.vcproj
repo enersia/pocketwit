@@ -241,7 +241,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions=" /subsystem:windowsce,5.01"
-				OutputFile="$(OutDir)/SendArgs.exe"
+				OutputFile="$(OutDir)/QuickPost.exe"
 				LinkIncremental="1"
 				DelayLoadDLLs="$(NOINHERIT)"
 				GenerateDebugInformation="true"
