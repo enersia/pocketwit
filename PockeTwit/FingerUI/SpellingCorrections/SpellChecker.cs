@@ -35,7 +35,7 @@ namespace PockeTwit.FingerUI.SpellingCorrections
 
         public void CheckSpelling()
         {
-            string textToCheck = _textBoxToCheck.Text;
+            /*string textToCheck = _textBoxToCheck.Text;
             _originalText = textToCheck;
             SpellRequest request = new SpellRequest(textToCheck, false, false, false);
             SpellResult result = SpellCheck.Check(request);
@@ -49,7 +49,8 @@ namespace PockeTwit.FingerUI.SpellingCorrections
             _corrections = new List<SpellCorrection>(result.Corrections);
             _originalText = _textBoxToCheck.Text;
 
-            CorrectNext();
+            CorrectNext();*/
+            Done();
             return;
         }
 

@@ -949,6 +949,7 @@ namespace PockeTwit
                 }
             }
             _checker.CheckSpelling();
+            
         }
 
         private void ContinuePost()
