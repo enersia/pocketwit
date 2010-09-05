@@ -156,7 +156,6 @@ namespace PockeTwit
             string server = (string)cmbServers.SelectedItem;
             if (server == "ping.fm")
             {
-//                txtUserName.ReadOnly = false;
                 txtPassword.Visible = false;
                 lblPassword.Visible = false;
                 txtPassword.Text = ClientSettings.PingApi;
@@ -173,28 +172,28 @@ namespace PockeTwit
             }
             else if (server == "twitter")
             {
-                 ImTwitter.Visible = true;
-                 lPin.Visible = true;
-                 TbPin.Visible = true;
-                 Ll_Twitter.Visible = true;
-                 //txtUserName.ReadOnly = true;
-                 txtPassword.Text = "";
-                 txtPassword.Visible = false;
-                 lblPassword.Visible = false;
-                 linkLabel1.Visible = false;
-                 lblUser.Text = "User";
-                 if (DetectDevice.DeviceType == DeviceType.Professional)
-                 {
+                ImTwitter.Visible = true;
+                lPin.Visible = true;
+                TbPin.Visible = true;
+                Ll_Twitter.Visible = true;
+                 
+                txtPassword.Text = "";
+                txtPassword.Visible = false;
+                lblPassword.Visible = false;
+                 
+                linkLabel1.Visible = false;
+                lblUser.Text = "User";
+                if (DetectDevice.DeviceType == DeviceType.Professional)
+                {
                      txtUserName.ContextMenu = null;
-                 }
-
+                }
             }
             else
             {
-                //txtUserName.ReadOnly = false;
                 txtPassword.Text = "";
                 txtPassword.Visible = true;
                 lblPassword.Visible = true;
+
                 linkLabel1.Visible = false;
                 Ll_Twitter.Visible = false;
                 lblUser.Text = "User";
@@ -207,6 +206,7 @@ namespace PockeTwit
                 TbPin.Visible = false;
             }
         }
+
         void PasteItem_Click(object sender, System.EventArgs e)
         {
             IDataObject iData = Clipboard.GetDataObject();
@@ -224,23 +224,21 @@ namespace PockeTwit
         private void LaunchSite(string URL)
         {
             System.Diagnostics.ProcessStartInfo pi = new System.Diagnostics.ProcessStartInfo();
-            /*
-            if (ClientSettings.UseSkweezer)
-            {
-                URL = Yedda.Skweezer.GetSkweezerURL(URL);
-            }
-             */
             pi.FileName = URL;
             pi.UseShellExecute = true;
             System.Diagnostics.Process p = System.Diagnostics.Process.Start(pi);
         }
 
-        private void chkDefault_CheckStateChanged(object sender, EventArgs e)
+      
+        private void LaunchBrowserLink()
         {
-
+            System.Diagnostics.ProcessStartInfo pi = new System.Diagnostics.ProcessStartInfo();
+            pi.FileName = urlToLaunch;
+            pi.UseShellExecute = true;
+            System.Diagnostics.Process p = System.Diagnostics.Process.Start(pi);
         }
 
-        private void LlTwitter_Click(object sender, EventArgs e)
+        private void Ll_Twitter_Click(object sender, EventArgs e)
         {
             OAuthAuthorizer authorizer = new OAuthAuthorizer();
 
@@ -251,8 +249,11 @@ namespace PockeTwit
 
             if (string.IsNullOrEmpty(RequestToken))
             {
+                Localization.LocalizedMessageBox.Show("Unable to retrieve token, try again later.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, null);
                 return; //don't try the rest...
             }
+
+            Localization.LocalizedMessageBox.Show("Your browser will be opened to authorise PockeTwit with Twitter. Please note te pincode on the webpage.", "Message", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, null);
 
             ImTwitter.Visible = false;
 
@@ -262,14 +263,6 @@ namespace PockeTwit
             Thread t = new Thread(new ThreadStart(LaunchBrowserLink));
             t.Start();
 
-        }
-
-        private void LaunchBrowserLink()
-        {
-            System.Diagnostics.ProcessStartInfo pi = new System.Diagnostics.ProcessStartInfo();
-            pi.FileName = urlToLaunch;
-            pi.UseShellExecute = true;
-            System.Diagnostics.Process p = System.Diagnostics.Process.Start(pi);
         }
 
         private void TbPin_GotFocus(object sender, EventArgs e)

@@ -4,6 +4,7 @@ using System.Net;
 using System.Xml;
 using System.Text;
 using Yedda;
+using OAuth;
 
 namespace PockeTwit.MediaServices
 {
@@ -23,6 +24,8 @@ namespace PockeTwit.MediaServices
         private const string API_ERROR_DOWNLOAD = "Unable to download from TweetPhoto";
 
         private const string API_KEY = "cd6fa2df805addb613d06a91f24bdf01";
+
+        private Twitter.Account _account = null;
 
         #endregion
 
@@ -103,6 +106,8 @@ namespace PockeTwit.MediaServices
             }
 
             #endregion
+
+            _account = account;
 
             using (var file = new FileStream(postData.Filename, FileMode.Open, FileAccess.Read))
             {
@@ -220,6 +225,8 @@ namespace PockeTwit.MediaServices
             }
 
             #endregion
+
+            _account = account;
 
             using (var file = new FileStream(postData.Filename, FileMode.Open, FileAccess.Read))
             {
@@ -433,12 +440,12 @@ namespace PockeTwit.MediaServices
             {
                 HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
                 request.ContentType = string.Format("application/x-www-form-urlencoded");
-                request.Headers.Add("Authorization", String.Format("Basic {0}",
-                    Convert.ToBase64String(
-                        Encoding.Default.GetBytes(
-                            String.Format("{0}:{1}", ppo.Username, ppo.Password)
-                            )
-                        )));
+                //request.Headers.Add("Authorization", String.Format("Basic {0}",
+                //    Convert.ToBase64String(
+                //        Encoding.Default.GetBytes(
+                //            String.Format("{0}:{1}", ppo.Username, ppo.Password)
+                //            )
+                //        )));
                 request.Method = "POST";
                 request.Headers.Add("TPUTF8", Boolean.TrueString);
                 if (!string.IsNullOrEmpty(ppo.Message))
@@ -459,6 +466,9 @@ namespace PockeTwit.MediaServices
                 //byte[] message = Encoding.UTF8.GetBytes(ppo.PictureData);
                 request.ContentLength = ppo.PictureData.Length;
                 request.Timeout = 1000 * 60 * 3;  //3 minute time out
+
+                //OAuthAuthorizer.AuthorizeTweetPhoto(request, _account.OAuth_token, _account.OAuth_token_secret);
+
                 using (Stream requestStream = request.GetRequestStream())
                 {
                     const int len = 1024 * 64;

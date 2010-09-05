@@ -6,6 +6,7 @@ using System.Xml;
 using System.IO;
 using System.Net;
 using Yedda;
+using OAuth;
 
 namespace PockeTwit.MediaServices
 {
@@ -25,6 +26,8 @@ namespace PockeTwit.MediaServices
         private const string API_ERROR_UPLOAD = "Failed to upload picture to PixIm.";
         private const string API_ERROR_NOTREADY = "A request is already running.";
         private const string API_ERROR_DOWNLOAD = "Unable to download picture, try again later.";
+
+        private Twitter.Account _account = null;
 
         #endregion
 
@@ -101,6 +104,8 @@ namespace PockeTwit.MediaServices
 
             #endregion
 
+            _account = account;
+
             using (FileStream file = new FileStream(postData.Filename, FileMode.Open, FileAccess.Read))
             {
                 try
@@ -169,6 +174,8 @@ namespace PockeTwit.MediaServices
 
             #endregion
 
+            _account = account;
+
             try
             {
                 workerPPO = new PicturePostObject();
@@ -226,6 +233,8 @@ namespace PockeTwit.MediaServices
             }
 
             #endregion
+
+            _account = account;
 
             using (FileStream file = new FileStream(postData.Filename, FileMode.Open, FileAccess.Read))
             {
@@ -427,6 +436,9 @@ namespace PockeTwit.MediaServices
                 byte[] message = Encoding.UTF7.GetBytes(contents.ToString());
                 byte[] footer = Encoding.UTF7.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
+
+                //OAuthAuthorizer.AuthorizePixIm(request, _account.OAuth_token, _account.OAuth_token_secret);
+
                 using (Stream requestStream = request.GetRequestStream())
                 {
                     requestStream.Write(message, 0, message.Length);
@@ -498,6 +510,9 @@ namespace PockeTwit.MediaServices
                 byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
                 byte[] footer = Encoding.UTF8.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
+
+                //OAuthAuthorizer.AuthorizePixIm(request, _account.OAuth_token, _account.OAuth_token_secret);
+
                 using (Stream requestStream = request.GetRequestStream())
                 {
                     requestStream.Write(message, 0, message.Length);

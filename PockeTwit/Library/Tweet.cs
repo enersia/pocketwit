@@ -58,7 +58,7 @@ namespace PockeTwit.Library
                 //    return StatusTypes.Reply;
                 //}
                 //else 
-                /if (text.StartsWith("RT ")) // retweeted_status just doesn't work yet
+                //if (text.StartsWith("RT ")) // retweeted_status just doesn't work yet
                 if (retweeted_status != null)
                 {
                     return StatusTypes.Retweet;

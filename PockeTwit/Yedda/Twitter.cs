@@ -25,7 +25,6 @@ using PockeTwit;
 using System.Collections.Specialized;
 using System.Globalization;
 using System;
-using Microsoft.Practices.ServiceLocation;
 using OAuth;
 using PockeTwit.Position;
 namespace Yedda
@@ -98,58 +97,8 @@ namespace Yedda
 
         public Twitter()
         {
-            //BasicServiceLocator injector = new BasicServiceLocator();
             
-            //injector.AddComponent<ISigningProvider, HmacSha1SigningProvider>("signing.provider:HMAC-SHA1", new HmacSha1SigningProvider());
-            //injector.AddComponent<INonceProvider, GuidNonceProvider>(typeof(INonceProvider).ToString(), new GuidNonceProvider());     
-            
-            //ServiceLocator.SetLocatorProvider(() => injector);
         }
-
-        /// <summary>
-        /// The OAuth service definition for the Twitter client
-        /// </summary>
-        //public static OAuthService ServiceDefinition
-        //{
-        //    get
-        //    {
-        //        if (serviceDefinition == null)
-        //        {
-        //            lock (staticLock1)
-        //                if (serviceDefinition == null)
-        //                {
-        //                    serviceDefinition = OAuthService.Create(
-        //                        new OAuth.Net.Mobile.Consumer.EndPoint("http://api.twitter.com/oauth/request_token", "POST"),
-        //                        new System.Uri("http://api.twitter.com/oauth/authorize"),
-        //                        new OAuth.Net.Mobile.Consumer.EndPoint("http://api.twitter.com/oauth/access_token", "POST"),
-        //                        "HMAC-SHA1",
-        //                        new OAuthConsumer(
-        //                            "eejwjEguCY80lgPYhp1ag",
-        //                            "hhaFilap5NWXtdXeTVCnOl5H2lEzK8hyWqDQaVamc"));
-        //                }
-        //        }
-        //        return serviceDefinition;
-        //    }
-        //}
-
-        //public static ApiCallOptions Options
-        //{
-        //    get
-        //    {
-        //        if (options == null)
-        //        {
-        //            lock (staticLock2)
-        //                if (options == null)
-        //                {
-        //                    options = new ApiCallOptions
-        //                    {
-        //                        AuthorizationCallbackUri = new Uri(string.Empty)
-        //                    };
-        //                }
-        //        }
-        //        return options;
-        //    }
-        //}
 
         public static Dictionary<Twitter.Account, Dictionary<Twitter.ActionType, int>> Failures = new Dictionary<Account, Dictionary<ActionType, int>>();
         [Serializable]

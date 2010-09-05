@@ -39,9 +39,6 @@ namespace PockeTwit
         public delegate void delUpdatePictureData(string pictureUrl, bool uploadingPicture);
 
         private String originalText;
-        private SpellChecker _checker;
-
-
 
         #region Properties
         private Yedda.Twitter.Account _AccountToSet = ClientSettings.DefaultAccount;
@@ -97,8 +94,6 @@ namespace PockeTwit
             _StandAlone = Standalone;
             
             InitializeComponent();
-            _checker = new SpellChecker(txtStatusUpdate);
-            _checker.Done += _checker_Done;
             SetImages();
             
             if (ClientSettings.AutoCompleteAddressBook)
@@ -131,13 +126,7 @@ namespace PockeTwit
             txtStatusUpdate.Focus();
             userListControl1.ItemChosen += new userListControl.delItemChose(userListControl1_ItemChosen);
         }
-
-        void _checker_Done()
-        {
-            ContinuePost();
-        }
-
-        
+  
         private void SetupTouchScreen()
         {
             mainMenu1.MenuItems.Add(menuSubmit);
@@ -578,8 +567,6 @@ namespace PockeTwit
                 using (PicturePostObject ppo = new PicturePostObject())
                 {
                     ppo.Filename = fileName;
-                    ppo.Username = AccountToSet.UserName;
-                    ppo.Password = AccountToSet.Password;
                     ppo.UseAsync = false;
 
                     if (pictureService.CanUploadGPS && GPSLocation != null)
@@ -1002,8 +989,7 @@ namespace PockeTwit
                     return;
                 }
             }
-            _checker.CheckSpelling();
-            
+            ContinuePost();
         }
 
         private void ContinuePost()

@@ -6,6 +6,7 @@ using Yedda;
 using System.Xml;
 using System.Net;
 using System.IO;
+using OAuth;
 
 namespace PockeTwit.MediaServices
 {
@@ -28,6 +29,8 @@ namespace PockeTwit.MediaServices
         private string AUTH_KEY = string.Empty;
         private const string API_ORIGIN_ID = "MjUx";
         private const string API_KEY = "fzC/xJKgGySRN82+UPYvDA";
+
+        private Twitter.Account _account;
 
         #endregion
 
@@ -102,6 +105,8 @@ namespace PockeTwit.MediaServices
 
             #endregion
 
+            _account = account;
+
             using (FileStream file = new FileStream(postData.Filename, FileMode.Open, FileAccess.Read))
             {
                 try
@@ -173,6 +178,8 @@ namespace PockeTwit.MediaServices
 
             #endregion
 
+            _account = account;
+
             try
             {
                 workerPPO = new PicturePostObject();
@@ -230,6 +237,8 @@ namespace PockeTwit.MediaServices
             }
 
             #endregion
+
+            _account = account;
 
             using (FileStream file = new FileStream(postData.Filename, FileMode.Open, FileAccess.Read))
             {
@@ -498,6 +507,9 @@ namespace PockeTwit.MediaServices
                 byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
                 byte[] footer = Encoding.UTF8.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
+
+                //OAuthAuthorizer.AuthorizePikChur(request, _account.OAuth_token, _account.OAuth_token_secret);
+
                 using (Stream requestStream = request.GetRequestStream())
                 {
                     requestStream.Write(message, 0, message.Length);
@@ -581,6 +593,9 @@ namespace PockeTwit.MediaServices
                 byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
                 byte[] footer = Encoding.UTF8.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
+
+                //OAuthAuthorizer.AuthorizePikChur(request, _account.OAuth_token, _account.OAuth_token_secret);
+
                 using (Stream requestStream = request.GetRequestStream())
                 {
                     requestStream.Write(message, 0, message.Length);

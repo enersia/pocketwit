@@ -24,7 +24,7 @@ namespace PockeTwit.MediaServices
         private const string API_ERROR_UPLOAD = "Unable to upload to Posterous";
         private const string API_ERROR_DOWNLOAD = "Unable to download from Posterous";
 
-        private Twitter.Account account = null;
+        private Twitter.Account _account = null;
         #endregion
 
         #region private objects
@@ -104,6 +104,8 @@ namespace PockeTwit.MediaServices
 
             #endregion
 
+            _account = account;
+
             using (System.IO.FileStream file = new FileStream(postData.Filename, FileMode.Open, FileAccess.Read))
             {
                 try
@@ -119,7 +121,7 @@ namespace PockeTwit.MediaServices
 
                         if (workerThread == null)
                         {
-                            this.account = account;
+                            this._account = account;
                             workerThread = new System.Threading.Thread(new System.Threading.ThreadStart(ProcessUpload));
                             workerThread.Name = "PictureUpload";
                             workerThread.Start();
@@ -133,7 +135,7 @@ namespace PockeTwit.MediaServices
                     {
                         //use sync.
                         postData.PictureData = incoming;
-                        XmlDocument uploadResult = UploadPicture(API_UPLOAD, postData, account);
+                        XmlDocument uploadResult = UploadPicture(API_UPLOAD, postData);
 
                         if (uploadResult == null)
                         {
@@ -223,6 +225,8 @@ namespace PockeTwit.MediaServices
 
             #endregion
 
+            _account = account;
+
             using (System.IO.FileStream file = new FileStream(postData.Filename, FileMode.Open, FileAccess.Read))
             {
                 try
@@ -232,7 +236,7 @@ namespace PockeTwit.MediaServices
                     file.Read(incoming, 0, incoming.Length);
 
                     postData.PictureData = incoming;
-                    XmlDocument uploadResult = UploadPictureMessage(API_UPLOAD_POST, postData, account);
+                    XmlDocument uploadResult = UploadPictureMessage(API_UPLOAD_POST, postData);
 
                     if (uploadResult == null)
                     {
@@ -299,7 +303,7 @@ namespace PockeTwit.MediaServices
         {
             try
             {
-                XmlDocument uploadResult = UploadPicture(API_UPLOAD, workerPPO, account);
+                XmlDocument uploadResult = UploadPicture(API_UPLOAD, workerPPO);
                 // returns HTTP error codes now
                 /*if (uploadResult.SelectSingleNode("rsp").Attributes["stat"].Value == "fail")
                 {
@@ -383,7 +387,7 @@ namespace PockeTwit.MediaServices
         /// <param name="url">URL to upload picture to</param>
         /// <param name="ppo">Postdata</param>
         /// <returns></returns>
-        private XmlDocument UploadPicture(string url, PicturePostObject ppo, Twitter.Account account)
+        private XmlDocument UploadPicture(string url, PicturePostObject ppo)
         {
             try
             {
@@ -417,7 +421,7 @@ namespace PockeTwit.MediaServices
                 byte[] footer = Encoding.UTF8.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
 
-                OAuthAuthorizer.AuthorizeTwitPic(request, account.OAuth_token, account.OAuth_token_secret);
+                OAuthAuthorizer.AuthorizeTwitPic(request, _account.OAuth_token, _account.OAuth_token_secret);
 
                 using (Stream requestStream = request.GetRequestStream())
                 {
@@ -456,7 +460,7 @@ namespace PockeTwit.MediaServices
         /// <param name="url">URL to upload picture to</param>
         /// <param name="ppo">Postdata</param>
         /// <returns></returns>
-        private XmlDocument UploadPictureMessage(string url, PicturePostObject ppo, Twitter.Account account)
+        private XmlDocument UploadPictureMessage(string url, PicturePostObject ppo)
         {
             try
             {
@@ -492,7 +496,7 @@ namespace PockeTwit.MediaServices
                 byte[] footer = Encoding.UTF8.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
 
-                OAuthAuthorizer.AuthorizeTwitPic(request, account.OAuth_token, account.OAuth_token_secret);
+                OAuthAuthorizer.AuthorizeTwitPic(request, _account.OAuth_token, _account.OAuth_token_secret);
                 using (Stream requestStream = request.GetRequestStream())
                 {
                     requestStream.Write(message, 0, message.Length);

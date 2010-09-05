@@ -140,12 +140,11 @@
             // chkDefault
             // 
             this.chkDefault.ForeColor = System.Drawing.Color.White;
-            this.chkDefault.Location = new System.Drawing.Point(5, 154);
+            this.chkDefault.Location = new System.Drawing.Point(3, 167);
             this.chkDefault.Name = "chkDefault";
             this.chkDefault.Size = new System.Drawing.Size(100, 20);
             this.chkDefault.TabIndex = 4;
             this.chkDefault.Text = "Default";
-            this.chkDefault.CheckStateChanged += new System.EventHandler(this.chkDefault_CheckStateChanged);
             // 
             // linkLabel1
             // 
@@ -159,7 +158,7 @@
             // 
             // TbPin
             // 
-            this.TbPin.Location = new System.Drawing.Point(96, 128);
+            this.TbPin.Location = new System.Drawing.Point(39, 140);
             this.TbPin.Name = "TbPin";
             this.TbPin.Size = new System.Drawing.Size(66, 21);
             this.TbPin.TabIndex = 9;
@@ -169,7 +168,7 @@
             // lPin
             // 
             this.lPin.ForeColor = System.Drawing.Color.LightGray;
-            this.lPin.Location = new System.Drawing.Point(67, 127);
+            this.lPin.Location = new System.Drawing.Point(5, 140);
             this.lPin.Name = "lPin";
             this.lPin.Size = new System.Drawing.Size(28, 20);
             this.lPin.Text = "Pin:";
@@ -179,21 +178,21 @@
             // 
             this.ImTwitter.BackColor = System.Drawing.Color.Transparent;
             this.ImTwitter.Image = ((System.Drawing.Image)(resources.GetObject("ImTwitter.Image")));
-            this.ImTwitter.Location = new System.Drawing.Point(52, 99);
+            this.ImTwitter.Location = new System.Drawing.Point(5, 103);
             this.ImTwitter.Name = "ImTwitter";
             this.ImTwitter.Size = new System.Drawing.Size(24, 24);
             this.ImTwitter.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.ImTwitter.Visible = false;
-            this.ImTwitter.Click += new System.EventHandler(this.LlTwitter_Click);
             // 
             // Ll_Twitter
             // 
-            this.Ll_Twitter.Location = new System.Drawing.Point(77, 104);
+            this.Ll_Twitter.Location = new System.Drawing.Point(35, 109);
             this.Ll_Twitter.Name = "Ll_Twitter";
             this.Ll_Twitter.Size = new System.Drawing.Size(120, 18);
             this.Ll_Twitter.TabIndex = 14;
             this.Ll_Twitter.Text = "Verify with Twitter";
             this.Ll_Twitter.Visible = false;
+            this.Ll_Twitter.Click += new System.EventHandler(this.Ll_Twitter_Click);
             // 
             // AccountInfoForm
             // 

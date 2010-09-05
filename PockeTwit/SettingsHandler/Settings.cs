@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using System.Drawing;
+using System.Net;
+using Yedda;
 public static class ClientSettings
 {
     [System.Runtime.InteropServices.DllImport("coredll.dll")]
@@ -122,6 +124,8 @@ public static class ClientSettings
 
     static ClientSettings()
     {
+        ServicePointManager.CertificatePolicy = new TrustOAuthCertificates();
+        
         LoadSettings();
         LoadColors();
     }
@@ -307,7 +311,8 @@ public static class ClientSettings
             }
             else
             {
-                SelectedMediaService = "TweetPhoto";
+                //default to the working one in this version.
+                SelectedMediaService = "TwitPic"; 
             }
 
 

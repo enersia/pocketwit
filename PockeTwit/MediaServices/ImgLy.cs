@@ -6,6 +6,7 @@ using System.Web;
 using System.Collections.Generic;
 using System.Text;
 using Yedda;
+using OAuth;
 
 namespace PockeTwit.MediaServices
 {
@@ -22,6 +23,8 @@ namespace PockeTwit.MediaServices
 
         private const string API_ERROR_UPLOAD = "Unable to upload to Img.Ly";
         private const string API_ERROR_DOWNLOAD = "Unable to download from Img.Ly";
+
+        private Twitter.Account _account = null;
 
         #endregion
 
@@ -416,6 +419,9 @@ namespace PockeTwit.MediaServices
                 byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
                 byte[] footer = Encoding.UTF8.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
+
+                //OAuthAuthorizer.AuthorizeImgLy(request, _account.OAuth_token, _account.OAuth_token_secret);
+
                 using (Stream requestStream = request.GetRequestStream())
                 {
                     requestStream.Write(message, 0, message.Length);
@@ -487,6 +493,9 @@ namespace PockeTwit.MediaServices
                 byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
                 byte[] footer = Encoding.UTF8.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
+
+                //OAuthAuthorizer.AuthorizeImgLy(request, _account.OAuth_token, _account.OAuth_token_secret);
+
                 using (Stream requestStream = request.GetRequestStream())
                 {
                     requestStream.Write(message, 0, message.Length);

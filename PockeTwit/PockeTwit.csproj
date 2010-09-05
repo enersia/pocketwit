@@ -66,10 +66,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CustomMarshalers" />
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libraries\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.WindowsCE.Forms" />
     <Reference Include="Microsoft.WindowsMobile, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="Microsoft.WindowsMobile.Forms, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
@@ -327,6 +323,9 @@
     <EmbeddedResource Include="Marker.png" />
     <Content Include="default_profile_bigger.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Localization\pocketwit_nl.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Localization\pocketwit_zh-CN.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -717,6 +716,7 @@
     </Compile>
     <Compile Include="MediaServices\ImgLy.cs" />
     <Compile Include="WebRequestFactory.cs" />
+    <Compile Include="Yedda\CertificatePolicy.cs" />
     <Compile Include="Yedda\JSON.cs" />
     <Compile Include="MediaServices\PictureServiceBase.cs" />
     <Compile Include="MediaServices\PikChur.cs" />
