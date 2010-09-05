@@ -23,6 +23,7 @@ namespace PockeTwit.Library
         Retweet = 0x10
     }
 
+   
     [Serializable]
     public class status : IComparable
     {
@@ -57,7 +58,7 @@ namespace PockeTwit.Library
                 //    return StatusTypes.Reply;
                 //}
                 //else 
-                //if (text.StartsWith("RT "))
+                /if (text.StartsWith("RT ")) // retweeted_status just doesn't work yet
                 if (retweeted_status != null)
                 {
                     return StatusTypes.Retweet;
@@ -175,7 +176,6 @@ namespace PockeTwit.Library
         }
 
         public Library.User user { get; set; }
-
         public string AccountSummary
         {
             get
@@ -204,8 +204,8 @@ namespace PockeTwit.Library
             }
             set { _Account = value; }
         }
-
-        public Library.status retweeted_status { get; set; }
+        public Library.status _rts;
+        public Library.status retweeted_status  { get; set; }
 
         #endregion Properties 
 
@@ -262,7 +262,11 @@ namespace PockeTwit.Library
                     {
                         using (var r = new StringReader(response))
                         {
-                            statuses = (status[])statusSerializer.Deserialize(r);
+                            XmlReader xmlr = XmlReader.Create(r);
+                            if (!statusSerializer.CanDeserialize(xmlr))
+                                statuses = new status[0];
+                            else
+                                statuses = (status[])statusSerializer.Deserialize(xmlr);
                         }
                     }
                     else if (Account.ServerURL.ServerType == Twitter.TwitterServer.brightkite)

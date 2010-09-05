@@ -1709,19 +1709,19 @@ namespace Yedda
         #endregion
 
         #region Friends
-        public virtual string GetFriendsTimeLineMax(OutputFormatType format)
+        public override string GetFriendsTimeLineMax(OutputFormatType format)
         {
-            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format)) + "?count=" + MaxTweets;
+            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format)) + "?count=" + MaxTweets + "&include_rts=t";
             return ExecuteGetCommand(url);
         }
 
-        public virtual string GetFriendsTimeLineSince(OutputFormatType format, string SinceID)
+        public override string GetFriendsTimeLineSince(OutputFormatType format, string SinceID)
         {
-            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format)) + "?since_id=" + SinceID + "&count=" + ClientSettings.MaxTweets;
+            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format)) + "?since_id=" + SinceID + "&count=" + ClientSettings.MaxTweets + "&include_rts=t";
             return ExecuteGetCommand(url);
         }
 
-        public virtual string GetFriendsTimeline(OutputFormatType format)
+        public override string GetFriendsTimeline(OutputFormatType format)
         {
             string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Home_Timeline), GetFormatTypeString(format));
             return ExecuteGetCommand(url);

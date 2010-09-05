@@ -274,7 +274,7 @@ namespace PockeTwit
 
         private void TbPin_GotFocus(object sender, EventArgs e)
         {
-            inputPanel1.Enabled = true;
+            //inputPanel1.Enabled = true;
         }
     }
 }

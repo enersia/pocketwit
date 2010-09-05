@@ -29,7 +29,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AccountInfoForm));
             this.mainMenu1 = new System.Windows.Forms.MainMenu();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
@@ -45,7 +44,6 @@
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.TbPin = new System.Windows.Forms.TextBox();
             this.lPin = new System.Windows.Forms.Label();
-            this.inputPanel1 = new Microsoft.WindowsCE.Forms.InputPanel(this.components);
             this.ImTwitter = new System.Windows.Forms.PictureBox();
             this.Ll_Twitter = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
@@ -241,7 +239,6 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.TextBox TbPin;
         private System.Windows.Forms.Label lPin;
-        private Microsoft.WindowsCE.Forms.InputPanel inputPanel1;
         private System.Windows.Forms.PictureBox ImTwitter;
         private System.Windows.Forms.LinkLabel Ll_Twitter;
         

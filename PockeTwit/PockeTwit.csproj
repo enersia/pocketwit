@@ -179,7 +179,8 @@
     <Compile Include="FingerUI\StatusItem.cs" />
     <Compile Include="Following.cs" />
     <Compile Include="is.gd.cs" />
-    <Compile Include="Library\Tweet.cs" />
+    <Compile Include="Library\Tweet.cs">
+    </Compile>
     <Compile Include="SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>

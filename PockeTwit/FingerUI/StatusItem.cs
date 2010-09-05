@@ -157,6 +157,9 @@ namespace PockeTwit.FingerUI
 
         public void RenderAvatarArea(Graphics g, Rectangle bounds)
         {
+            Library.status Tweet = this.Tweet;
+            if(Tweet.retweeted_status != null)
+                Tweet = Tweet.retweeted_status;
             var imageLocation = new Point(bounds.X + ClientSettings.Margin, bounds.Y + ClientSettings.Margin);
             if (ClientSettings.ShowAvatars)
             {

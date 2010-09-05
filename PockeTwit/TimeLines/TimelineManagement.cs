@@ -573,6 +573,8 @@ namespace PockeTwit
                                 }
                                 catch
                                 {
+                                    // This is just that the response doesn't conform to "statuses" type
+                                    // most likely nilclasses, which means there's nothing new
                                     NoData(t.AccountInfo, Yedda.Twitter.ActionType.Friends_Timeline);
                                     GlobalEventHandler.CallShowErrorMessage("Communications Error");
                                 }
