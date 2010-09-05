@@ -39,7 +39,8 @@ namespace PockeTwit
             lblVersion.Text = "PockeTwit v" + UpgradeChecker.currentVersion.ToString();
             if (UpgradeChecker.devBuild)
             {
-                lblVersion.Text = "PockeTwit v" + UpgradeChecker.currentVersion.ToString() + " d" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision;
+                System.Reflection.AssemblyName n = System.Reflection.Assembly.GetExecutingAssembly().GetName();
+                lblVersion.Text = "PockeTwit v" + UpgradeChecker.currentVersion.ToString() + " d" + n.Version.Revision.ToString();
                 menuUpdate.Text = Localization.XmlBasedResourceManager.GetString("Upgrade");
             }
             if(UpgradeChecker.isBeta)

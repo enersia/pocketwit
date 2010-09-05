@@ -10,6 +10,7 @@ using Yedda;
 using PockeTwit.MediaServices;
 using PockeTwit.OtherServices.GoogleSpell;
 using PockeTwit.Position;
+using System.Globalization;
 
 namespace PockeTwit
 {
@@ -54,6 +55,11 @@ namespace PockeTwit
             {
                 _AccountToSet = value;
                 cmbAccount.SelectedItem = _AccountToSet;
+                cmbPlaces.Items.Clear();
+                if(GPSLocation != null) {
+                    cmbPlaces.Items.Add(GPSLocation);
+                    cmbPlaces.SelectedIndex = 0;
+                }
                 Yedda.Twitter t = Servers.CreateConnection(_AccountToSet);
                 AllowTwitPic = t.AllowTwitPic;
             }
@@ -247,9 +253,11 @@ namespace PockeTwit
                     cmbPlaces.Visible = true;
                     cmbPlaces.Items.Add(GPSLocation);
                     cmbPlaces.SelectedIndex = 0;
-
-                    foreach (Place p in places)
-                        cmbPlaces.Items.Add(p);
+                    if (places != null)
+                    {
+                        foreach (Place p in places)
+                            cmbPlaces.Items.Add(p);
+                    }
                 }
             }
             catch (ObjectDisposedException)
@@ -573,6 +581,17 @@ namespace PockeTwit
                     ppo.Username = AccountToSet.UserName;
                     ppo.Password = AccountToSet.Password;
                     ppo.UseAsync = false;
+
+                    if (pictureService.CanUploadGPS && GPSLocation != null)
+                    {
+                        try
+                        {
+                            ppo.Lat = GPSLocation.Lat.ToString(CultureInfo.InvariantCulture);
+                            ppo.Lon = GPSLocation.Lon.ToString(CultureInfo.InvariantCulture);
+                        }
+                        catch { }
+                    }
+
                     Cursor.Current = Cursors.WaitCursor;
                     mediaService.PostPicture(ppo, account);
                 }
@@ -812,8 +831,8 @@ namespace PockeTwit
                     {
                         try
                         {
-                            ppo.Lat = GPSLocation.Lat.ToString();
-                            ppo.Lon = GPSLocation.Lon.ToString();
+                            ppo.Lat = GPSLocation.Lat.ToString(CultureInfo.InvariantCulture);
+                            ppo.Lon = GPSLocation.Lon.ToString(CultureInfo.InvariantCulture);
                         }
                         catch { }
                     }

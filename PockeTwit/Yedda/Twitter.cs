@@ -39,9 +39,12 @@ namespace Yedda
                 return new TwitterOAuth { AccountInfo = Account};
             else if (Account.Server == Twitter.TwitterServer.pingfm)
                 return new PingFM { AccountInfo = Account };
+            else if (Account.Server == Twitter.TwitterServer.brightkite)
+                return new BrightKite { AccountInfo = Account };
             else
                 return new Twitter { AccountInfo = Account };
         }
+
         public static Dictionary<string, Twitter.ServerURL> ServerList = new Dictionary<string, Twitter.ServerURL>();
         static Servers()
         {
@@ -965,16 +968,8 @@ namespace Yedda
 
         public virtual string GetFriendsTimeline(OutputFormatType format)
         {
-            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
-            {
-                string url = "http://brightkite.com/me/friendstream.xml";
-                return ExecuteGetCommand(url);
-            }
-            else
-            {
-                string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Friends_Timeline), GetFormatTypeString(format), AccountInfo.ServerURL.URL);
-                return ExecuteGetCommand(url);
-            }
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Friends_Timeline), GetFormatTypeString(format), AccountInfo.ServerURL.URL);
+            return ExecuteGetCommand(url);
         }
 
         public string GetFriendsTimelineAsJSON()
@@ -1139,39 +1134,26 @@ namespace Yedda
 
         public virtual string Update(string status, string in_reply_to_status_id, UserLocation location, OutputFormatType format)
         {
-            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
+            if (format != OutputFormatType.JSON && format != OutputFormatType.XML)
             {
-                if (this.PlaceID != null)
-                {
-                    string url = string.Format("http://brightkite.com/places/{0}/notes", this.PlaceID);
-                    string data = string.Format("note[body]={0}", System.Web.HttpUtility.UrlEncode(status));
-                    return ExecutePostCommand(url, data);
-                }
-                else
-                {
-                    return null;
-                }
+                throw new ArgumentException("Update support only XML and JSON output format", "format");
             }
-            else
-            {
-                if (format != OutputFormatType.JSON && format != OutputFormatType.XML)
-                {
-                    throw new ArgumentException("Update support only XML and JSON output format", "format");
-                }
 
-                string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Update), GetFormatTypeString(format), AccountInfo.ServerURL.URL);
-                string data = string.Format("status={0}", System.Web.HttpUtility.UrlEncode(status));
-                if (location != null)
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Update), GetFormatTypeString(format), AccountInfo.ServerURL.URL);
+            string data = string.Format("status={0}", System.Web.HttpUtility.UrlEncode(status));
+            if (location != null)
+            {
+                if (location.Position != null)
                 {
-                    data += string.Format("&lat={0}&long={1}", location.Position.Lat, location.Position.Lon);
+                    data += string.Format("&lat={0}&long={1}", location.Position.Lat.ToString(CultureInfo.InvariantCulture), location.Position.Lon.ToString(CultureInfo.InvariantCulture));
                 }
-                if (!string.IsNullOrEmpty(in_reply_to_status_id))
-                {
-                    data = data + "&in_reply_to_status_id=" + in_reply_to_status_id;
-                }
-                
-                return ExecutePostCommand(url, data);
             }
+            if (!string.IsNullOrEmpty(in_reply_to_status_id))
+            {
+                data = data + "&in_reply_to_status_id=" + in_reply_to_status_id;
+            }
+            
+            return ExecutePostCommand(url, data);
         }
 
         public string UpdateAsJSON(string text, UserLocation location)
@@ -1215,26 +1197,14 @@ namespace Yedda
 
         public string Destroy_Status(string status_id, OutputFormatType format)
         {
+            if (format != OutputFormatType.JSON && format != OutputFormatType.XML)
+            {
+                throw new ArgumentException("Update support only XML and JSON output format", "format");
+            }
 
-            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.pingfm)
-            {
-                return null;
-            }
-            else if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
-            {
-                return null;
-            }
-            else
-            {
-                if (format != OutputFormatType.JSON && format != OutputFormatType.XML)
-                {
-                    throw new ArgumentException("Update support only XML and JSON output format", "format");
-                }
-
-                string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Destroy)+"/{0}", GetFormatTypeString(format), AccountInfo.ServerURL.URL);
-                url = String.Format(url,status_id);
-                return ExecutePostCommand(url, null);
-            }
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Destroy)+"/{0}", GetFormatTypeString(format), AccountInfo.ServerURL.URL);
+            url = String.Format(url,status_id);
+            return ExecutePostCommand(url, null);
         }
 
         public string Destroy_StatusAsJSON(string statusId)
@@ -1535,7 +1505,7 @@ namespace Yedda
         }
         #endregion
 
-        #region Location
+/*        #region Location
         public string SetLocation(string Location)
         {
             if (AccountInfo.ServerURL.ServerType == TwitterServer.twitter || AccountInfo.ServerURL.ServerType == TwitterServer.identica)
@@ -1562,7 +1532,7 @@ namespace Yedda
             }
             return "";
         }
-        #endregion
+        #endregion*/
 
         public virtual string GetThread(string threadID)
         {
@@ -1666,6 +1636,34 @@ namespace Yedda
             return ExecutePostCommand(url, data);
         }
     }
+    public class BrightKite : Twitter /*, PlaceAPI*/
+    {
+        public override string GetFriendsTimeline(OutputFormatType format)
+        {
+            string url = "http://brightkite.com/me/friendstream.xml";
+            return ExecuteGetCommand(url);
+        }
+
+        public override string Update(string status, string in_reply_to_status_id, UserLocation location, OutputFormatType format)
+        {
+            return null;
+//            if (this.PlaceID != null)
+
+                /*string url = string.Format("http://brightkite.com/places/{0}/notes", this.PlaceID);
+                string data = string.Format("note[body]={0}", System.Web.HttpUtility.UrlEncode(status));
+                return ExecutePostCommand(url, data);*/
+        }
+
+        public override bool Verify()
+        {
+            return true;
+            /*  For later development
+            url = "http://brightkite.com/me";
+            return !string.IsNullOrEmpty(ExecutePostCommand(url, ""));
+             */
+        }
+
+    }
 
     public class TwitterOAuth : Twitter, PlaceAPI
     {
@@ -1692,7 +1690,7 @@ namespace Yedda
             {
                 if (location.Position != null)
                 {
-                    data += string.Format("&lat={0}&long={1}", location.Position.Lat, location.Position.Lon);
+                    data += string.Format("&lat={0}&long={1}", location.Position.Lat.ToString(CultureInfo.InvariantCulture), location.Position.Lon.ToString(CultureInfo.InvariantCulture));
                     if (location.Location is TwitterOAuth.TwitterPlace)
                     {
                         TwitterOAuth.TwitterPlace place = location.Location as TwitterOAuth.TwitterPlace;
@@ -1960,7 +1958,7 @@ namespace Yedda
         #region Follow
         public override string FollowUser(string IDofUserToFollow)
         {
-            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Friendships), GetActionTypeString(ActionType.Create));
+            string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Friendships), GetActionTypeString(ActionType.Create), GetFormatTypeString(OutputFormatType.XML));
             return ExecutePostCommand(url, "screen_name=" + IDofUserToFollow);
         }
         public override string StopFollowingUser(string IDofUserToFollow)
@@ -2043,7 +2041,7 @@ namespace Yedda
             placeTypes.Add("country", PlaceType.Country);
 
             string url = string.Format(TwitterNewBaseUrlFormat, GetObjectTypeString(ObjectType.Geo), GetActionTypeString(ActionType.Search),  GetFormatTypeString(OutputFormatType.JSON));
-            url += string.Format("?lat={0}&long={1}&granularity=poi", position.Lat, position.Lon);
+            url += string.Format("?lat={0}&long={1}&granularity=poi", position.Lat.ToString(CultureInfo.InvariantCulture), position.Lon.ToString(CultureInfo.InvariantCulture));
             string jsonresp = ExecuteGetCommand(url);
 
             Hashtable jsonResponse = PockeTwit.JSON.JsonDecode(jsonresp) as Hashtable;
