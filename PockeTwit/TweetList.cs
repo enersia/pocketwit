@@ -328,6 +328,7 @@ namespace PockeTwit
                         if (currentSpecialTimeLine != null)
                         {
                             constraints = currentSpecialTimeLine.GetConstraints();
+                            t = (currentSpecialTimeLine.Timelinetype == SpecialTimelines.SpecialTimeLinesRepository.TimeLineType.UserGroup) ? TimelineManagement.TimeLineType.Friends : TimelineManagement.TimeLineType.Searches;
                         }
                         newItems = LocalStorage.DataBaseUtility.CountItemsNewerThan(t, (selectedItem as StatusItem).Tweet.id, constraints);
                     }

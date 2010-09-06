@@ -157,7 +157,8 @@ namespace PockeTwit.NotificationsCode
                                                   Name = "PockeTwit: " + line.name,
                                                   Group = line,
                                                   GUID = line.name,
-                                                  Type = TimelineManagement.TimeLineType.Friends
+                                                  // Need to make sure we're checking searches if this is a saved search timeline
+                                                  Type = (line.Timelinetype == SpecialTimelines.SpecialTimeLinesRepository.TimeLineType.UserGroup) ? TimelineManagement.TimeLineType.Friends : TimelineManagement.TimeLineType.Searches
                                               };
                 _notifications.Add(c.GUID, c);
                 LoadAllRegistries();
