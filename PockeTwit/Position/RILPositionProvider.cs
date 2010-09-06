@@ -28,8 +28,11 @@ namespace PockeTwit.Position
 
         protected override void Disable()
         {
-            watcherThread.Abort();
-            watcherThread = null;
+            if (watcherThread != null)
+            {
+                watcherThread.Abort();
+                watcherThread = null;
+            }
         }
 
 

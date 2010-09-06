@@ -95,6 +95,7 @@
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(232, 21);
             this.txtPassword.TabIndex = 3;
+            this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
             // 
             // lblPassword
             // 
@@ -143,7 +144,7 @@
             this.chkDefault.Location = new System.Drawing.Point(3, 167);
             this.chkDefault.Name = "chkDefault";
             this.chkDefault.Size = new System.Drawing.Size(100, 20);
-            this.chkDefault.TabIndex = 4;
+            this.chkDefault.TabIndex = 99;
             this.chkDefault.Text = "Default";
             // 
             // linkLabel1
@@ -161,7 +162,7 @@
             this.TbPin.Location = new System.Drawing.Point(39, 140);
             this.TbPin.Name = "TbPin";
             this.TbPin.Size = new System.Drawing.Size(66, 21);
-            this.TbPin.TabIndex = 9;
+            this.TbPin.TabIndex = 41;
             this.TbPin.Visible = false;
             this.TbPin.GotFocus += new System.EventHandler(this.TbPin_GotFocus);
             // 
@@ -189,7 +190,7 @@
             this.Ll_Twitter.Location = new System.Drawing.Point(35, 109);
             this.Ll_Twitter.Name = "Ll_Twitter";
             this.Ll_Twitter.Size = new System.Drawing.Size(120, 18);
-            this.Ll_Twitter.TabIndex = 14;
+            this.Ll_Twitter.TabIndex = 40;
             this.Ll_Twitter.Text = "Verify with Twitter";
             this.Ll_Twitter.Visible = false;
             this.Ll_Twitter.Click += new System.EventHandler(this.Ll_Twitter_Click);

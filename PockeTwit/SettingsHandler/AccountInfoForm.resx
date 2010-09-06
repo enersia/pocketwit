@@ -124,22 +124,19 @@
   <data name="ImTwitter.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABkAAAAYCAYAAAAPtVbGAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDgAA
-        Cw4BQL7hQQAAAcRJREFUSEu9llsrRFEUx/kqHnwAcss1l1wefAG+AI+KvHjhjRRJKZFSopGIxjVGJvfI
-        NIzkktHkFsalQZ36s85pLxxr42U79WvPTGv9f62990wTH/f+JNS3gFZjDwnKlkLGsAf4N0mpLwhT8CQl
-        8wGYgiXFs9uQqFoJIfIUg2VZNsMnF2Kdrp8+Z0nR1CYkIo8xBO8tVIUstIcdUXPgWKzVZbCk0LsGCQol
-        QeKyw/Ktha2rO9Ss7jEVC9tir8pjScH4CiRIUhH8KlFbp9bo8ysa1vfFfspkSf6oHxJuiZpIrclrFqav
-        LUSfX8R+ymRJ3sgiJH6TkIwmpTpdBktyPfOQ+ItEXQhdBktyBucg4Zb0RpzDV4RjzhQ9gUOxnzJZkj0w
-        DQm3hPbfffC+03OxV+WxJKvfCwkKrDv4uF3lO85Bf56GagZ3j8R+ymRJZt8EJPavb+1A9636/L7pyJlO
-        l8GSjN4xSFR7/XYAHa5ORF9WqtFlsCS9ewQ6Gn0bdghNRFtHV1ZBAvrZOYs+aPtZktblwU/UTvoRurz5
-        dugkP7t7QKVnRtvPktTOIZiCJSkdAzAFS5Lb+mEKliS19sEU/E+IXpjkDcjEMi3oE7PzAAAAAElFTkSu
-        QmCC
+        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALDAAA
+        CwwBP0AiyAAAAcJJREFUSEu9llsrRGEUhv0WF34AOeWYQw4X/sD4A1wqcuOGO1IkpURKaTQS0TjGyDTj
+        FJmGkRxCk1PMGBrUrpe1d9/Ctj7cbFNPu5nWep/Wt76ZJiXl/ZXa3AEnMQXVqxHHoPz/k1T5wnAKnqRy
+        KQSnYEnFwg4k6oIRRJ+SMAzDZOz0SqzT9dPnLCmf3YJE9DGJ8IOBuoiB7nNL1B46EWt1GSwp865DgkJJ
+        kBawCNwb2L6JoWFtn3Et74i9Ko8lpVNBSJDEFf4qUUennvHnV7RsHIj9lMmSkgk/JOwSNZF6ZqwbmLs1
+        EH9+EfspkyXF4yuQ+E1CMpqU6nQZLCnyLEHiLxJ1IXQZLCl0L0LCLhmMWstXnCetKQZCR2I/ZbKkYGQO
+        EnYJnb998b6zS7FX5bEkf9gLCQpsOvy4XTW71qI/T0M17r1jsZ8yWZI3NA2Jg9t7M9B+qz6/bzu2ptNl
+        sCR3cBIS9V6/GUDL1Ynoy0o1ugyW5PSPQ0erb9MMoYno6OjKKkhAPzsX8YS2nyXZfR78ROOMH5Hru29L
+        J/lFLIFaz7y2nyVZvaNwCpZk9ozAKViS0TUMp2BJeucQnMKU/MdfojdwO2NosdaKtgAAAABJRU5ErkJg
+        gg==
 </value>
   </data>
   <metadata name="$this.FormFactorShadowProperty" xml:space="preserve">
-    <value>Pocket_PC</value>
-  </metadata>
-  <metadata name="$this.FormFactor" xml:space="preserve">
     <value>Pocket_PC</value>
   </metadata>
   <metadata name="$this.Skin" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

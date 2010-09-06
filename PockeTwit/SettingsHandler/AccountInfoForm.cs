@@ -253,9 +253,7 @@ namespace PockeTwit
                 return; //don't try the rest...
             }
 
-            Localization.LocalizedMessageBox.Show("Your browser will be opened to authorise PockeTwit with Twitter. Please note te pincode on the webpage.", "Message", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, null);
-
-            ImTwitter.Visible = false;
+            Localization.LocalizedMessageBox.Show("Your browser will be opened to authorise PockeTwit with Twitter. Please note the pincode on the webpage.", "Message", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, null);
 
             //auth
             Uri url = new Uri(OAuthConfig.AuthorizeUrl + "?oauth_token=" + RequestToken);
@@ -268,6 +266,11 @@ namespace PockeTwit
         private void TbPin_GotFocus(object sender, EventArgs e)
         {
             //inputPanel1.Enabled = true;
+        }
+
+        private void txtPassword_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
