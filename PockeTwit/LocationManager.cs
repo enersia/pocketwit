@@ -17,8 +17,20 @@ namespace PockeTwit
         private GPS.GpsPosition position = null;
         private GPS.Gps gps = new PockeTwit.GPS.Gps();
 
-        private RILPositionProvider ril = new RILPositionProvider();
-        
+        private IPositionProvider ril = null;
+
+        public LocationManager()
+        {
+            try
+            {
+                // Try to load the RILPositionProvider - will fail if no RIL.dll
+                ril = System.Reflection.Assembly.GetExecutingAssembly().CreateInstance("PockeTwit.Position.RILPositionProvider") as IPositionProvider;
+            }
+            catch (Exception ex) {
+                Console.WriteLine(ex);
+            }
+
+        }
 
         public void GetGPS()
         {
@@ -39,18 +51,24 @@ namespace PockeTwit
                     gps.Open();
                 }
             }
-            ril.PositionChanged += new EventHandler<PositionEventArgs>(RILPositionChanged);
-            ril.Enabled = true;
+            if (ril != null)
+            {
+                ril.PositionChanged += new EventHandler<PositionEventArgs>(RILPositionChanged);
+                ril.Enabled = true;
+            }
         }
         public void StopGPS()
         {
             gps.LocationChanged -= new PockeTwit.GPS.LocationChangedEventHandler(gps_LocationChanged);
-            ril.PositionChanged -= new EventHandler<PositionEventArgs>(RILPositionChanged);
             if (gps.Opened)
             {
                 gps.Close();
             }
-            ril.Enabled = false;
+            if (ril != null)
+            {
+                ril.PositionChanged -= new EventHandler<PositionEventArgs>(RILPositionChanged);
+                ril.Enabled = false;
+            }
         }
 
         private void RILPositionChanged(object sender, PositionEventArgs pe)
@@ -61,7 +79,7 @@ namespace PockeTwit
                 if (pe.status == PositionEventArgs.PositionStatus.Valid)
                 {
                     LocationReady(pe.position);
-                    if (sender == ril) ril.Enabled = false; // if we've got a fix from RIL, stop it
+                    if (sender == ril && ril != null) ril.Enabled = false; // if we've got a fix from RIL, stop it
                 }
             }
         }

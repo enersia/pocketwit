@@ -186,7 +186,7 @@ namespace PockeTwit.Position
         /*
          * Uses RIL to get CellID from the phone.
          */
-        public static string GetCellTowerInfo()
+        public static void GetCellTowerInfo()
         {
             // initialise handles
             IntPtr hRil = IntPtr.Zero;
@@ -196,31 +196,37 @@ namespace PockeTwit.Position
             celltowerinfo = "";
 
             // initialise RIL
-            hRes = RIL_Initialize(1,                                        // RIL port 1
-                                  new RILRESULTCALLBACK(rilResultCallback), // function to call with result
-                                  null,                                     // function to call with notify
-                                  0,                                        // classes of notification to enable
-                                  0,                                        // RIL parameters
-                                  out hRil);                                // RIL handle returned
-
-            if (hRes != IntPtr.Zero)
+            try
             {
-                return "Failed to initialize RIL";
+                hRes = RIL_Initialize(1,                                        // RIL port 1
+                                      new RILRESULTCALLBACK(rilResultCallback), // function to call with result
+                                      null,                                     // function to call with notify
+                                      0,                                        // classes of notification to enable
+                                      0,                                        // RIL parameters
+                                      out hRil);                                // RIL handle returned
+
+                if (hRes != IntPtr.Zero)
+                {
+                    return; //"Failed to initialize RIL";
+                }
+
+                // initialised successfully
+
+                // use RIL to get cell tower info with the RIL handle just created
+                hRes = RIL_GetCellTowerInfo(hRil);
+
+                // wait for cell tower info to be returned
+                waithandle.WaitOne();
+
+                // finished - release the RIL handle
+                RIL_Deinitialize(hRil);
             }
-
-            // initialised successfully
-
-            // use RIL to get cell tower info with the RIL handle just created
-            hRes = RIL_GetCellTowerInfo(hRil);
-
-            // wait for cell tower info to be returned
-            waithandle.WaitOne();
-
-            // finished - release the RIL handle
-            RIL_Deinitialize(hRil);
-
+            catch(MissingMethodException mme)
+            {
+                // RIL DLL not available
+            }
             // return the result from GetCellTowerInfo
-            return celltowerinfo;
+            //return celltowerinfo;
         }
 
 
