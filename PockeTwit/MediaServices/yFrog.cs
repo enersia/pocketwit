@@ -6,6 +6,7 @@ using System.Web;
 using System.Collections.Generic;
 using System.Text;
 using Yedda;
+using OAuth;
 
 namespace PockeTwit.MediaServices
 {
@@ -16,8 +17,8 @@ namespace PockeTwit.MediaServices
         private static volatile yFrog _instance;
         private static object syncRoot = new Object();
         
-        private const string API_UPLOAD = "http://yFrog.com/api/upload";
-        private const string API_UPLOAD_POST = "http://yFrog.com/api/uploadAndPost";
+        private const string API_UPLOAD = "http://yFrog.com/api/xauth_upload";
+        private const string API_UPLOAD_POST = "http://yFrog.com/api/xauth_upload";
         private const string API_SHOW_THUMB = "http://yFrog.com/";  //The extra / for directly sticking the image-id on.
 
         private const string API_ERROR_UPLOAD = "Failed to upload picture to yFrog.";
@@ -31,6 +32,8 @@ namespace PockeTwit.MediaServices
         private System.Threading.Thread workerThread;
         private PicturePostObject workerPPO;
 
+        private Twitter.Account account = null;
+
         #endregion
 
         #region constructor
@@ -42,7 +45,7 @@ namespace PockeTwit.MediaServices
             API_SAVE_TO_PATH = "\\ArtCache\\www.yFrog.com\\";
             API_SERVICE_NAME = "yFrog";
             API_CAN_UPLOAD_GPS = true;
-            API_CAN_UPLOAD_MESSAGE = true;
+            API_CAN_UPLOAD_MESSAGE = false;
             API_CAN_UPLOAD_MOREMEDIA = true;
             API_URLLENGTH = 29;
 
@@ -105,8 +108,8 @@ namespace PockeTwit.MediaServices
             }
 
             //Check for empty credentials
-            if (string.IsNullOrEmpty(postData.Username) ||
-                string.IsNullOrEmpty(postData.Password) )
+            if (string.IsNullOrEmpty(account.OAuth_token) ||
+                string.IsNullOrEmpty(account.OAuth_token_secret) )
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, "Failed to upload picture to yFrog.", ""));
             }
@@ -125,7 +128,7 @@ namespace PockeTwit.MediaServices
                     {
                         workerPPO = (PicturePostObject) postData.Clone();
                         workerPPO.PictureData = incoming;
-
+                        this.account = account;
                         if (workerThread == null)
                         {
                             workerThread = new System.Threading.Thread(new System.Threading.ThreadStart(ProcessUpload));
@@ -141,7 +144,7 @@ namespace PockeTwit.MediaServices
                     {
                         //use sync.
                         postData.PictureData = incoming;
-                        XmlDocument uploadResult = UploadPicture(API_UPLOAD, postData);
+                        XmlDocument uploadResult = UploadPicture(API_UPLOAD, postData, account);
 
                         if (uploadResult == null)
                         {
@@ -222,11 +225,10 @@ namespace PockeTwit.MediaServices
             }
 
             //Check for empty credentials
-            if (string.IsNullOrEmpty(postData.Username) ||
-                string.IsNullOrEmpty(postData.Password))
+            if (string.IsNullOrEmpty(account.OAuth_token) ||
+                string.IsNullOrEmpty(account.OAuth_token_secret))
             {
-                OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
-                return false;
+                OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, "Failed to upload picture to yFrog.", ""));
             }
 
             #endregion
@@ -240,7 +242,7 @@ namespace PockeTwit.MediaServices
                     file.Read(incoming, 0, incoming.Length);
 
                     postData.PictureData = incoming;
-                    XmlDocument uploadResult = UploadPictureMessage(API_UPLOAD_POST, postData);
+                    XmlDocument uploadResult = UploadPictureMessage(API_UPLOAD_POST, postData, account);
 
                     if (uploadResult==null)
                     {
@@ -307,7 +309,7 @@ namespace PockeTwit.MediaServices
         {
             try
             {
-                XmlDocument uploadResult = UploadPicture(API_UPLOAD, workerPPO);
+                XmlDocument uploadResult = UploadPicture(API_UPLOAD, workerPPO, this.account);
                 if (uploadResult == null)
                 {
                     workerThread = null;
@@ -398,7 +400,7 @@ namespace PockeTwit.MediaServices
         /// <param name="url"></param>
         /// <param name="ppo"></param>
         /// <returns></returns>
-        private XmlDocument UploadPicture(string url, PicturePostObject ppo)
+        private XmlDocument UploadPicture(string url, PicturePostObject ppo, Twitter.Account account)
         {
             try
             {
@@ -418,10 +420,17 @@ namespace PockeTwit.MediaServices
 
                 StringBuilder contents = new StringBuilder();
 
-                contents.Append(CreateContentPartString(header, "username", ppo.Username));
-                contents.Append(CreateContentPartString(header, "password", ppo.Password));
+/*                contents.Append(CreateContentPartString(header, "username", ppo.Username));
+                contents.Append(CreateContentPartString(header, "password", ppo.Password));*/
                 contents.Append(CreateContentPartString(header, "source", "pocketwit"));
 
+                if (!string.IsNullOrEmpty(ppo.Lat) && !string.IsNullOrEmpty(ppo.Lon))
+                {
+                    //string geotag = string.Format("geotagged,geo:lat={0},geo:lon={1}", ppo.Lat, ppo.Lon);
+                    string geotag = string.Format("geotagged,geo:lat={0},geo:lon={1}", ppo.Lat, ppo.Lon);
+                    contents.Append(CreateContentPartString(header, "tags", geotag));
+                }
+                
                 if (!string.IsNullOrEmpty(ppo.Message))
                 {
                     contents.Append(CreateContentPartString(header, "message", ppo.Message));
@@ -436,6 +445,8 @@ namespace PockeTwit.MediaServices
                 byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
                 byte[] footer = Encoding.UTF8.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
+
+                OAuthAuthorizer.AuthorizeTwitPic(request, account.OAuth_token, account.OAuth_token_secret, Twitter.OutputFormatType.XML);
                 using (Stream requestStream = request.GetRequestStream())
                 {
                     requestStream.Write(message, 0, message.Length);
@@ -470,14 +481,14 @@ namespace PockeTwit.MediaServices
         /// <param name="url"></param>
         /// <param name="ppo"></param>
         /// <returns></returns>
-        private XmlDocument UploadPictureMessage(string url, PicturePostObject ppo)
+        private XmlDocument UploadPictureMessage(string url, PicturePostObject ppo, Twitter.Account account)
         {
             try
             {
                 HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
 
                 string boundary = System.Guid.NewGuid().ToString();
-                request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);
+                //request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);
                 request.Headers.Add("Accept-Language", "cs,en-us;q=0.7,en;q=0.3");
                 request.PreAuthenticate = true;
                 request.ContentType = string.Format("multipart/form-data;boundary={0}", boundary);
@@ -495,6 +506,7 @@ namespace PockeTwit.MediaServices
                 contents.Append(CreateContentPartString(header, "message", ppo.Message));
                 contents.Append(CreateContentPartString(header, "source", "PockeTwit"));
 
+               
                 if (!string.IsNullOrEmpty(ppo.Lat) && !string.IsNullOrEmpty(ppo.Lon))
                 {
                     //string geotag = string.Format("geotagged,geo:lat={0},geo:lon={1}", ppo.Lat, ppo.Lon);
@@ -515,6 +527,8 @@ namespace PockeTwit.MediaServices
                 byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
                 byte[] footer = Encoding.UTF8.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
+
+                OAuthAuthorizer.AuthorizeTwitPic(request, account.OAuth_token, account.OAuth_token_secret);                
                 using (Stream requestStream = request.GetRequestStream())
                 {
                     requestStream.Write(message, 0, message.Length);

@@ -1487,7 +1487,7 @@
         {
             "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_5DDFBF589C1E4B8D846F74D4A5E728CE"
             {
-            "SourcePath" = "8:..\\AutoRunInstall\\Pocket PC 2003 (ARMV4)\\Debug\\AutoRunInstall.dll"
+            "SourcePath" = "8:..\\AutoRunInstall\\Pocket PC 2003 (ARMV4)\\Release\\AutoRunInstall.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"
@@ -1513,7 +1513,7 @@
             }
             "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_77A1BFE2950B4A29949F074710EA1F6C"
             {
-            "SourcePath" = "8:..\\QuickPost\\bin\\Debug\\Debug\\QuickPost.exe"
+            "SourcePath" = "8:..\\QuickPost\\bin\\Release\\Release\\QuickPost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"
@@ -1539,7 +1539,7 @@
             }
             "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_CCAD80857091443DBD4217B0BFDADB7C"
             {
-            "SourcePath" = "8:..\\PockeTwit\\obj\\DevBuild\\PockeTwit.exe"
+            "SourcePath" = "8:..\\PockeTwit\\obj\\Release\\PockeTwit.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"

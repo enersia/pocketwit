@@ -465,17 +465,17 @@ namespace Yedda
             
         }
 
-        protected string GetObjectTypeString(ObjectType objectType)
+        protected static string GetObjectTypeString(ObjectType objectType)
         {
             return objectType.ToString().ToLower();
         }
 
-        protected string GetActionTypeString(ActionType actionType)
+        protected static string GetActionTypeString(ActionType actionType)
         {
             return actionType.ToString().ToLower();
         }
 
-        protected string GetFormatTypeString(OutputFormatType format)
+        public static string GetFormatTypeString(OutputFormatType format)
         {
             return format.ToString().ToLower();
         }

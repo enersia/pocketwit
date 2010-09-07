@@ -333,6 +333,10 @@ namespace OAuth
         //
         public static void AuthorizeTwitPic(HttpWebRequest wc, string oauthToken, string oauthTokenSecret)
         {
+            AuthorizeTwitPic(wc, oauthToken, oauthTokenSecret, Yedda.Twitter.OutputFormatType.JSON);
+        }
+        public static void AuthorizeTwitPic(HttpWebRequest wc, string oauthToken, string oauthTokenSecret, Yedda.Twitter.OutputFormatType OutputFormatType)
+        {
             var headers = new Dictionary<string, string>() {
                 //{ "realm", "http://api.twitter.com/" },
                 { "oauth_consumer_key", OAuthConfig.ConsumerKey },
@@ -342,7 +346,7 @@ namespace OAuth
 				{ "oauth_token", oauthToken },
 				{ "oauth_version", "1.0" }
 			};
-            string signurl = "https://api.twitter.com/1/account/verify_credentials.json";
+            string signurl = String.Format("https://api.twitter.com/1/account/verify_credentials.{0}", Yedda.Twitter.GetFormatTypeString(OutputFormatType));
             // The signature is not done against the *actual* url, it is done against the verify_credentials.json one 
             string signature = MakeSignature("GET", signurl, headers);
             string compositeSigningKey = MakeSigningKey(OAuthConfig.ConsumerSecret, oauthTokenSecret);
