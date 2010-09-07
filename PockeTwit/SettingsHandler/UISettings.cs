@@ -48,7 +48,7 @@ namespace PockeTwit
             try
             {
                 MaxTweets = int.Parse(txtMaxTweets.Text);
-                if (MaxTweets > 200 || MaxTweets < 10)
+                if (MaxTweets > 500 || MaxTweets < 10)
                 {
                     lblTweets.ForeColor = ClientSettings.ErrorColor;
                     Cursor.Current = Cursors.Default;
