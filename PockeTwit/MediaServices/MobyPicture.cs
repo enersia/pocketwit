@@ -462,8 +462,8 @@ namespace PockeTwit.MediaServices
                 byte[] footer = Encoding.UTF8.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
 
-                //OAuthAuthorizer.AuthorizeMobyPicture(request, _account.OAuth_token, _account.OAuth_token_secret, "POST");
-
+                OAuthAuthorizer.AuthorizeEcho(request, _account.OAuth_token, _account.OAuth_token_secret, Twitter.OutputFormatType.XML);
+                
                 using (Stream requestStream = request.GetRequestStream())
                 {
                     requestStream.Write(message, 0, message.Length);
@@ -554,8 +554,8 @@ namespace PockeTwit.MediaServices
                 byte[] footer = Encoding.UTF8.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
 
-                //OAuthAuthorizer.AuthorizeMobyPicture(request, _account.OAuth_token, _account.OAuth_token_secret, "GET");
-
+                OAuthAuthorizer.AuthorizeEcho(request, _account.OAuth_token, _account.OAuth_token_secret, Twitter.OutputFormatType.XML);
+                
 
                 using (Stream requestStream = request.GetRequestStream())
                 {

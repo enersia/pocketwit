@@ -331,11 +331,11 @@ namespace OAuth
         //
         // Used to authorize an HTTP request going to TwitPic
         //
-        public static void AuthorizeTwitPic(HttpWebRequest wc, string oauthToken, string oauthTokenSecret)
+        public static void AuthorizeEcho(HttpWebRequest wc, string oauthToken, string oauthTokenSecret)
         {
-            AuthorizeTwitPic(wc, oauthToken, oauthTokenSecret, Yedda.Twitter.OutputFormatType.JSON);
+            AuthorizeEcho(wc, oauthToken, oauthTokenSecret, Yedda.Twitter.OutputFormatType.JSON);
         }
-        public static void AuthorizeTwitPic(HttpWebRequest wc, string oauthToken, string oauthTokenSecret, Yedda.Twitter.OutputFormatType OutputFormatType)
+        public static void AuthorizeEcho(HttpWebRequest wc, string oauthToken, string oauthTokenSecret, Yedda.Twitter.OutputFormatType OutputFormatType)
         {
             var headers = new Dictionary<string, string>() {
                 //{ "realm", "http://api.twitter.com/" },

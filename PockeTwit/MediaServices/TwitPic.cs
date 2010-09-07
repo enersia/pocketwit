@@ -299,7 +299,7 @@ namespace PockeTwit.MediaServices
             try
             {
                 HttpWebRequest myRequest = WebRequestFactory.CreateHttpRequest(API_SHOW_THUMB + imageId);
-                OAuthAuthorizer.AuthorizeTwitPic(myRequest, account.OAuth_token, account.OAuth_token_secret);
+                OAuthAuthorizer.AuthorizeEcho(myRequest, account.OAuth_token, account.OAuth_token_secret);
 
                 myRequest.Method = "GET";
                 String pictureFileName = String.Empty;
@@ -390,7 +390,7 @@ namespace PockeTwit.MediaServices
                 byte[] footer = Encoding.UTF8.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
 
-                OAuthAuthorizer.AuthorizeTwitPic(request, account.OAuth_token, account.OAuth_token_secret);
+                OAuthAuthorizer.AuthorizeEcho(request, account.OAuth_token, account.OAuth_token_secret);
                 
                 using (Stream requestStream = request.GetRequestStream())
                 {
@@ -434,7 +434,7 @@ namespace PockeTwit.MediaServices
             try
             {
                 HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
-                OAuthAuthorizer.AuthorizeTwitPic(request, account.OAuth_token, account.OAuth_token_secret);
+                OAuthAuthorizer.AuthorizeEcho(request, account.OAuth_token, account.OAuth_token_secret);
 
                 string boundary = System.Guid.NewGuid().ToString();
                 //request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);
