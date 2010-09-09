@@ -89,6 +89,7 @@ namespace PockeTwit
         FingerUI.Menu.SideMenuItem ResponsesMenuItem;
 
         FingerUI.Menu.SideMenuItem ReplyMenuItem;
+        FingerUI.Menu.SideMenuItem ReplyAllMenuItem;
         FingerUI.Menu.SideMenuItem DirectMenuItem;
 
         FingerUI.Menu.SideMenuItem EmailMenuItem;
@@ -705,11 +706,12 @@ namespace PockeTwit
             SetStatus("d " + User, selectedItem.Tweet.id);
         }
 
-        private void SendReply()
+        private void SendReplyAll()
         {
             if (statList.SelectedItem == null) { return; }
             StatusItem selectedItem = (StatusItem)statList.SelectedItem;
             string User = selectedItem.Tweet.user.screen_name;
+            string currentUser = "@" + selectedItem.Tweet.Account.UserName;
             if (selectedItem.Tweet.isDirect)
             {
                 if (PockeTwit.Localization.LocalizedMessageBox.Show("Are you sure you want to reply to a Direct Message?", "Reply?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.No)
@@ -743,7 +745,7 @@ namespace PockeTwit
                         return 0 ==
                             string.Compare(u, s, StringComparison.OrdinalIgnoreCase);
                     });
-                    if (found < 0)
+                    if (found < 0 && String.Compare(u, currentUser, true) != 0)
                     {
                         usersToReplyTo.Add(u);
                     }
@@ -757,6 +759,23 @@ namespace PockeTwit
             {
                 SetStatus("@" + User, selectedItem.Tweet.id);
             }
+        }
+
+        private void SendReply()
+        {
+            if (statList.SelectedItem == null) { return; }
+            StatusItem selectedItem = (StatusItem)statList.SelectedItem;
+            string User = selectedItem.Tweet.user.screen_name;
+            if (selectedItem.Tweet.isDirect)
+            {
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Are you sure you want to reply to a Direct Message?", "Reply?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2) == DialogResult.No)
+                {
+                    SendDirectMessage();
+                    return;
+                }
+            }
+
+            SetStatus("@" + User, selectedItem.Tweet.id);
         }
 
         private void CreateLeftMenu()
@@ -885,9 +904,11 @@ namespace PockeTwit
             ResponsesMenuItem.CanHide = true;
 
             ReplyMenuItem = new FingerUI.Menu.SideMenuItem(SendReply, "Reply @User", statList.RightMenu);
+            ReplyAllMenuItem = new FingerUI.Menu.SideMenuItem(SendReplyAll, "Reply All", statList.RightMenu);
             DirectMenuItem = new FingerUI.Menu.SideMenuItem(SendDirectMessage, "Direct @User", statList.RightMenu);
 
             ResponsesMenuItem.SubMenuItems.Add(ReplyMenuItem);
+            ResponsesMenuItem.SubMenuItems.Add(ReplyAllMenuItem);
             ResponsesMenuItem.SubMenuItems.Add(DirectMenuItem);
 
             EmailMenuItem = new FingerUI.Menu.SideMenuItem(EmailThisItem, "Email Status", statList.RightMenu);
