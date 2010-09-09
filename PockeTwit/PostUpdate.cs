@@ -737,7 +737,7 @@ namespace PockeTwit
                     //}
 
                     uploadedPictureURL = pictureURL;
-                    //uploadingPicture = uploadingPicture;
+                    this.uploadingPicture = uploadingPicture;
                 }
                 catch (OutOfMemoryException)
                 {

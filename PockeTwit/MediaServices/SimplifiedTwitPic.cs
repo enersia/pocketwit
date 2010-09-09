@@ -42,7 +42,7 @@ namespace PockeTwit.MediaServices
         private SimplifiedTwitPic()
         {
             API_SAVE_TO_PATH = "\\ArtCache\\www.twitpic.com\\";
-            API_SERVICE_NAME = "TwitPic (New Upload Method)";
+            API_SERVICE_NAME = "TwitPic";
             API_CAN_UPLOAD_GPS = false;
             API_CAN_UPLOAD_MESSAGE = false;
             API_URLLENGTH = 25;

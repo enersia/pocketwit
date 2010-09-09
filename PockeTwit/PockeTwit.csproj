@@ -510,45 +510,15 @@
     </Compile>
     <Compile Include="FingerUI\SpellingCorrections\SpellChecker.cs" />
     <Compile Include="IProfileViewer.cs" />
+    <Compile Include="MediaServices\Multipart.cs" />
+    <Compile Include="MediaServices\SimplifiedTwitPic.cs" />
+    <Compile Include="Mono\HttpRequestHeader.cs" />
     <Compile Include="Position\UserLocation.cs" />
     <Compile Include="Position\GeoCoord.cs" />
     <Compile Include="MediaServices\TwitPic.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MediaServices\TwitPicApiBase.cs" />
-    <Compile Include="Mono\AsyncCompletedEventArgs.cs" />
-    <Compile Include="Mono\AsyncCompletedEventHandler.cs" />
-    <Compile Include="Mono\DecompressionMethods.cs" />
-    <Compile Include="Mono\DownloadDataCompletedEventArgs.cs" />
-    <Compile Include="Mono\DownloadDataCompletedEventHandler.cs" />
-    <Compile Include="Mono\DownloadProgressChangedEventArgs.cs" />
-    <Compile Include="Mono\DownloadProgressChangedEventHandler.cs" />
-    <Compile Include="Mono\DownloadStringCompletedEventArgs.cs" />
-    <Compile Include="Mono\DownloadStringCompletedEventHandler.cs" />
-    <Compile Include="Mono\HttpRequestHeader.cs" />
-    <Compile Include="Mono\NameValueCollection.cs" />
-    <Compile Include="Mono\OpenReadCompletedEventArgs.cs" />
-    <Compile Include="Mono\OpenReadCompletedEventHandler.cs" />
-    <Compile Include="Mono\OpenWriteCompletedEventArgs.cs" />
-    <Compile Include="Mono\OpenWriteCompletedEventHandler.cs" />
-    <Compile Include="Mono\ProgressChangedEventArgs.cs" />
-    <Compile Include="Mono\RequestCacheLevel.cs" />
-    <Compile Include="Mono\RequestCachePolicy.cs" />
-    <Compile Include="Mono\ThreadInterruptedException.cs" />
-    <Compile Include="Mono\UploadDataCompletedEventArgs.cs" />
-    <Compile Include="Mono\UploadDataCompletedEventHandler.cs" />
-    <Compile Include="Mono\UploadFileCompletedEventArgs.cs" />
-    <Compile Include="Mono\UploadFileCompletedEventHandler.cs" />
-    <Compile Include="Mono\UploadProgressChangedEventArgs.cs" />
-    <Compile Include="Mono\UploadProgressChangedEventHandler.cs" />
-    <Compile Include="Mono\UploadStringCompletedEventArgs.cs" />
-    <Compile Include="Mono\UploadStringCompletedEventHandler.cs" />
-    <Compile Include="Mono\UploadValuesCompletedEventArgs.cs" />
-    <Compile Include="Mono\UploadValuesCompletedEventHandler.cs" />
-    <Compile Include="Mono\UriBuilder.cs" />
-    <Compile Include="Mono\WebClient.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Position\IPositionProvider.cs" />
     <Compile Include="Position\PositionEventArgs.cs" />
     <Compile Include="Position\PositionProvider.cs" />

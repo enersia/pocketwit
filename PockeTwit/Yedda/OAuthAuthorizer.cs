@@ -122,7 +122,7 @@ namespace OAuth
             KVP.Sort((p1, p2) =>
             {
                 int c = p1.Key.CompareTo(p2.Key);
-                if(c == 0)
+                if (c == 0)
                     return p1.Value.CompareTo(p2.Value);
                 else
                     return c;
@@ -399,4 +399,5 @@ namespace OAuth
         }
     }
 }
+
 
