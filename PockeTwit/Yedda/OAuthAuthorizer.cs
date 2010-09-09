@@ -212,6 +212,7 @@ namespace OAuth
             headers.Add("oauth_signature", OAuth.PercentEncode(oauth_signature));
             request.Method = "POST";
             request.Headers.Add(HttpRequestHeader.Authorization.ToString(), HeadersToOAuth(headers));
+            request.Timeout = 30000;
 
             try
             {
@@ -259,14 +260,24 @@ namespace OAuth
             string compositeSigningKey = MakeSigningKey(OAuthConfig.ConsumerSecret, RequestTokenSecret);
             string oauth_signature = MakeOAuthSignature(compositeSigningKey, signature);
 
-            var wc = new WebClient();
-            headers.Add("oauth_signature", OAuth.PercentEncode(oauth_signature));
 
-            wc.Headers[HttpRequestHeader.Authorization.ToString()] = HeadersToOAuth(headers);
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(OAuthConfig.AccessTokenUrl);
+            headers.Add("oauth_signature", OAuth.PercentEncode(oauth_signature));
+            request.Method = "POST";
+            request.Headers.Add(HttpRequestHeader.Authorization.ToString(), HeadersToOAuth(headers));
+            request.Timeout = 30000;
 
             try
             {
-                var result = HttpUtility.ParseQueryString(wc.DownloadString(new Uri(OAuthConfig.AccessTokenUrl)));
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream resp = response.GetResponseStream();
+
+
+                StreamReader oReader = new StreamReader(resp, Encoding.ASCII);
+
+                string r = oReader.ReadToEnd();
+
+                var result = HttpUtility.ParseQueryString(r);
 
                 if (result["oauth_token"] != null)
                 {
@@ -283,6 +294,7 @@ namespace OAuth
                 Console.WriteLine(e);
                 // fallthrough for errors
             }
+
             return false;
         }
 
