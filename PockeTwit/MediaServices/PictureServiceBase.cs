@@ -8,6 +8,7 @@ using Yedda;
 
 namespace PockeTwit.MediaServices
 {
+
     public abstract class PictureServiceBase: IPictureService
     {
         #region private variables
@@ -354,6 +355,7 @@ namespace PockeTwit.MediaServices
         public event ErrorOccuredEventHandler ErrorOccured;
         public event MessageReadyEventHandler MessageReady;
         public event DownloadPartEventHandler DownloadPart;
+        public event DownloadPartEventHandler UploadPart;
 
         protected virtual void OnDownloadFinish(PictureServiceEventArgs e)
         {
@@ -430,6 +432,20 @@ namespace PockeTwit.MediaServices
             }
         }
 
+        protected virtual void OnUploadPart(PictureServiceEventArgs e)
+        {
+            if (UploadPart != null)
+            {
+                try
+                {
+                    UploadPart(this, e);
+                }
+                catch (Exception)
+                {
+                    //Always continue after a missed event
+                }
+            }
+        }
 
         #endregion
 

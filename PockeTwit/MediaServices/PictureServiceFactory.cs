@@ -59,6 +59,7 @@ namespace PockeTwit.MediaServices
             serviceList = new ArrayList();
             //Adding services hardcoded, maybe something like reflection could be used?
             serviceList.Add(TwitPic.Instance);
+            serviceList.Add(SimplifiedTwitPic.Instance);
             serviceList.Add(MobyPicture.Instance);
             serviceList.Add(yFrog.Instance);
             //serviceList.Add(PikChur.Instance);

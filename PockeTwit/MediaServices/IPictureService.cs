@@ -130,6 +130,7 @@ namespace PockeTwit.MediaServices
     public delegate void ErrorOccuredEventHandler(object sender, PictureServiceEventArgs eventArgs);
     public delegate void MessageReadyEventHandler(object sender, PictureServiceEventArgs eventArgs);
     public delegate void DownloadPartEventHandler(object sender, PictureServiceEventArgs eventArgs);
+    public delegate void UploadPartEventHandler(object sender, PictureServiceEventArgs eventArgs);
     #endregion
 
     /// <summary>
@@ -142,6 +143,7 @@ namespace PockeTwit.MediaServices
         event ErrorOccuredEventHandler ErrorOccured;
         event MessageReadyEventHandler MessageReady;
         event DownloadPartEventHandler DownloadPart;
+        event DownloadPartEventHandler UploadPart;
 
         /// <summary>
         /// Send a picture to a twitter picture framework

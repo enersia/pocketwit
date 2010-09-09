@@ -16,6 +16,7 @@ namespace PockeTwit.MediaServices
         private string _lat = string.Empty;
         private string _lon = string.Empty;
         private byte[] _pictureData = null;
+        private System.IO.Stream _pictureStream = null;
         private bool _useAsync = true;
 
         #endregion
@@ -46,7 +47,29 @@ namespace PockeTwit.MediaServices
         #region getters and setters
 
         /// <summary>
-        /// Byte data from a picture
+        /// Stream object to use to read data - will this improve performance?
+        /// </summary>
+        public System.IO.Stream PictureStream
+        {
+            get
+            {
+                if (_pictureStream != null)
+                    return _pictureStream;
+                else if (_pictureData != null)
+                {
+                    return new System.IO.MemoryStream(_pictureData);
+                }
+                else
+                    return null;
+            }
+            set
+            {
+                _pictureStream = value;
+            }
+        }
+
+        /// <summary>
+        /// Byte data from a picture - may be null
         /// </summary>
         public byte[] PictureData
         {
