@@ -132,7 +132,7 @@ namespace PockeTwit
 
                 if (string.IsNullOrEmpty(_AccountInfo.OAuth_token))
                 {
-                    lblError.Text = "Not yet verified with Twitter.";
+                    lblError.Text = "Unable to get access token from Twitter.";
                     lblError.Visible = true;
                     return;
                 }
@@ -240,6 +240,8 @@ namespace PockeTwit
 
         private void Ll_Twitter_Click(object sender, EventArgs e)
         {
+            lblError.Visible = false;
+            
             OAuthAuthorizer authorizer = new OAuthAuthorizer();
 
             //request
