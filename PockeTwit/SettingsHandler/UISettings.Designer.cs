@@ -111,7 +111,7 @@ namespace PockeTwit
             this.lblTweets.Location = new System.Drawing.Point(160, 4);
             this.lblTweets.Name = "lblTweets";
             this.lblTweets.Size = new System.Drawing.Size(58, 20);
-            this.lblTweets.Text = "(10-200)";
+            this.lblTweets.Text = "(10-500)";
             // 
             // chkTimestamps
             // 
@@ -187,15 +187,14 @@ namespace PockeTwit
             this.txtFontSize.TabIndex = 8;
             this.txtFontSize.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFontSize_KeyPress);
             // 
-            // chkAutoScrroll
+            // chkAutoScroll
             // 
             this.chkAutoScroll.ForeColor = System.Drawing.Color.LightGray;
             this.chkAutoScroll.Location = new System.Drawing.Point(2, 104);
-            this.chkAutoScroll.Name = "chkAutoScrroll";
+            this.chkAutoScroll.Name = "chkAutoScroll";
             this.chkAutoScroll.Size = new System.Drawing.Size(216, 20);
             this.chkAutoScroll.TabIndex = 5;
             this.chkAutoScroll.Text = "Auto-Scroll To Top";
-            this.chkAutoScroll.CheckStateChanged += new System.EventHandler(this.chkAutoScrroll_CheckStateChanged);
             // 
             // label3
             // 
@@ -222,7 +221,6 @@ namespace PockeTwit
             this.cbPopUpKeyboard.Size = new System.Drawing.Size(216, 20);
             this.cbPopUpKeyboard.TabIndex = 22;
             this.cbPopUpKeyboard.Text = "Auto-Popup keyboard";
-            this.cbPopUpKeyboard.CheckStateChanged += new System.EventHandler(this.cbPopUpKeyboard_CheckStateChanged);
             // 
             // UISettings
             // 

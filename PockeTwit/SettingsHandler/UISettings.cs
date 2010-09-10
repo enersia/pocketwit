@@ -185,17 +185,6 @@ namespace PockeTwit
                 e.Handled = true;
             }
         }
-
-        private void cbPopUpKeyboard_CheckStateChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void chkAutoScrroll_CheckStateChanged(object sender, EventArgs e)
-        {
-
-        }
-
         
     }
 }
