@@ -1053,8 +1053,10 @@ namespace PockeTwit
 
         private void txtStatusUpdate_GotFocus(object sender, EventArgs e)
         {
-            if (inputPanel != null && !Microsoft.WindowsMobile.Status.SystemState.KeyboardPresent)
+            if (inputPanel != null && ClientSettings.PopUpKeyboard)
+            {
                 inputPanel.Enabled = true;
+            }
         }
 
         private void txtStatusUpdate_LostFocus(object sender, EventArgs e)

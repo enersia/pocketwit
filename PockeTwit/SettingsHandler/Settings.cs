@@ -430,7 +430,7 @@ public static class ClientSettings
             }
             else
             {
-                PopUpKeyboard = true;
+                PopUpKeyboard = !Microsoft.WindowsMobile.Status.SystemState.KeyboardPresent;
             }
 
             if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["IsMaximized"]))
