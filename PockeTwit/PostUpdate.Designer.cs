@@ -33,18 +33,28 @@ namespace PockeTwit
             this.mainMenu1 = new System.Windows.Forms.MainMenu();
             this.menuCancel = new System.Windows.Forms.MenuItem();
             this.menuSubmit = new System.Windows.Forms.MenuItem();
-            this.cmbAccount = new System.Windows.Forms.ComboBox();
-            this.lblFromAccount = new System.Windows.Forms.Label();
-            this.pictureURL = new System.Windows.Forms.PictureBox();
-            this.pictureFromStorage = new System.Windows.Forms.PictureBox();
-            this.pictureFromCamers = new System.Windows.Forms.PictureBox();
-            this.txtStatusUpdate = new System.Windows.Forms.TextBox();
+            this.pnlSipSize = new System.Windows.Forms.Panel();
+            this.pnlStatus = new System.Windows.Forms.Panel();
+            this.cmbPlaces = new System.Windows.Forms.ComboBox();
+            this.lblGPS = new System.Windows.Forms.Label();
             this.lblCharsLeft = new System.Windows.Forms.Label();
             this.pictureLocation = new System.Windows.Forms.PictureBox();
-            this.lblGPS = new System.Windows.Forms.Label();
+            this.pnlToolbar = new System.Windows.Forms.Panel();
             this.picAddressBook = new System.Windows.Forms.PictureBox();
-            this.cmbPlaces = new System.Windows.Forms.ComboBox();
+            this.pictureFromCamers = new System.Windows.Forms.PictureBox();
+            this.pictureFromStorage = new System.Windows.Forms.PictureBox();
+            this.pictureURL = new System.Windows.Forms.PictureBox();
+            this.pnlAccounts = new System.Windows.Forms.Panel();
+            this.lblFromAccount = new System.Windows.Forms.Label();
+            this.cmbAccount = new System.Windows.Forms.ComboBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.txtStatusUpdate = new System.Windows.Forms.TextBox();
             this.userListControl1 = new PockeTwit.userListControl();
+            this.pnlSipSize.SuspendLayout();
+            this.pnlStatus.SuspendLayout();
+            this.pnlToolbar.SuspendLayout();
+            this.pnlAccounts.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuCancel
@@ -57,106 +67,165 @@ namespace PockeTwit
             this.menuSubmit.Text = "Submit";
             this.menuSubmit.Click += new System.EventHandler(this.menuSubmit_Click);
             // 
-            // cmbAccount
+            // pnlSipSize
             // 
-            this.cmbAccount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.pnlSipSize.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbAccount.Location = new System.Drawing.Point(104, 3);
-            this.cmbAccount.Name = "cmbAccount";
-            this.cmbAccount.Size = new System.Drawing.Size(133, 22);
-            this.cmbAccount.TabIndex = 0;
-            this.cmbAccount.SelectedIndexChanged += new System.EventHandler(this.cmbAccount_SelectedIndexChanged);
+            this.pnlSipSize.Controls.Add(this.panel1);
+            this.pnlSipSize.Controls.Add(this.pnlStatus);
+            this.pnlSipSize.Controls.Add(this.pnlToolbar);
+            this.pnlSipSize.Controls.Add(this.pnlAccounts);
+            this.pnlSipSize.Location = new System.Drawing.Point(0, 0);
+            this.pnlSipSize.Name = "pnlSipSize";
+            this.pnlSipSize.Size = new System.Drawing.Size(240, 268);
             // 
-            // lblFromAccount
+            // pnlStatus
             // 
-            this.lblFromAccount.Location = new System.Drawing.Point(4, 4);
-            this.lblFromAccount.Name = "lblFromAccount";
-            this.lblFromAccount.Size = new System.Drawing.Size(94, 20);
-            this.lblFromAccount.Text = "From Account:";
+            this.pnlStatus.Controls.Add(this.cmbPlaces);
+            this.pnlStatus.Controls.Add(this.lblGPS);
+            this.pnlStatus.Controls.Add(this.lblCharsLeft);
+            this.pnlStatus.Controls.Add(this.pictureLocation);
+            this.pnlStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.pnlStatus.Location = new System.Drawing.Point(0, 232);
+            this.pnlStatus.Name = "pnlStatus";
+            this.pnlStatus.Size = new System.Drawing.Size(240, 36);
             // 
-            // pictureURL
+            // cmbPlaces
             // 
-            this.pictureURL.Location = new System.Drawing.Point(4, 29);
-            this.pictureURL.Name = "pictureURL";
-            this.pictureURL.Size = new System.Drawing.Size(25, 25);
-            this.pictureURL.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.cmbPlaces.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbPlaces.Location = new System.Drawing.Point(7, 8);
+            this.cmbPlaces.Name = "cmbPlaces";
+            this.cmbPlaces.Size = new System.Drawing.Size(175, 22);
+            this.cmbPlaces.TabIndex = 2;
+            this.cmbPlaces.Visible = false;
+            // 
+            // lblGPS
+            // 
+            this.lblGPS.Location = new System.Drawing.Point(10, 10);
+            this.lblGPS.Name = "lblGPS";
+            this.lblGPS.Size = new System.Drawing.Size(171, 20);
+            this.lblGPS.Text = "Seeking GPS";
+            this.lblGPS.Visible = false;
+            // 
+            // lblCharsLeft
+            // 
+            this.lblCharsLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblCharsLeft.Location = new System.Drawing.Point(204, 10);
+            this.lblCharsLeft.Name = "lblCharsLeft";
+            this.lblCharsLeft.Size = new System.Drawing.Size(30, 22);
+            this.lblCharsLeft.Text = "140";
+            this.lblCharsLeft.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // pictureLocation
+            // 
+            this.pictureLocation.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pictureLocation.Location = new System.Drawing.Point(6, 6);
+            this.pictureLocation.Name = "pictureLocation";
+            this.pictureLocation.Size = new System.Drawing.Size(25, 25);
+            this.pictureLocation.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            // 
+            // pnlToolbar
+            // 
+            this.pnlToolbar.Controls.Add(this.picAddressBook);
+            this.pnlToolbar.Controls.Add(this.pictureFromCamers);
+            this.pnlToolbar.Controls.Add(this.pictureFromStorage);
+            this.pnlToolbar.Controls.Add(this.pictureURL);
+            this.pnlToolbar.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlToolbar.Location = new System.Drawing.Point(0, 30);
+            this.pnlToolbar.Name = "pnlToolbar";
+            this.pnlToolbar.Size = new System.Drawing.Size(240, 36);
+            this.pnlToolbar.Visible = false;
+            // 
+            // picAddressBook
+            // 
+            this.picAddressBook.Location = new System.Drawing.Point(99, 5);
+            this.picAddressBook.Name = "picAddressBook";
+            this.picAddressBook.Size = new System.Drawing.Size(25, 25);
+            this.picAddressBook.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            // 
+            // pictureFromCamers
+            // 
+            this.pictureFromCamers.Location = new System.Drawing.Point(68, 5);
+            this.pictureFromCamers.Name = "pictureFromCamers";
+            this.pictureFromCamers.Size = new System.Drawing.Size(25, 25);
+            this.pictureFromCamers.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             // 
             // pictureFromStorage
             // 
-            this.pictureFromStorage.Location = new System.Drawing.Point(35, 29);
+            this.pictureFromStorage.Location = new System.Drawing.Point(37, 5);
             this.pictureFromStorage.Name = "pictureFromStorage";
             this.pictureFromStorage.Size = new System.Drawing.Size(25, 25);
             this.pictureFromStorage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             // 
-            // pictureFromCamers
+            // pictureURL
             // 
-            this.pictureFromCamers.Location = new System.Drawing.Point(66, 29);
-            this.pictureFromCamers.Name = "pictureFromCamers";
-            this.pictureFromCamers.Size = new System.Drawing.Size(25, 25);
-            this.pictureFromCamers.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureURL.Location = new System.Drawing.Point(6, 5);
+            this.pictureURL.Name = "pictureURL";
+            this.pictureURL.Size = new System.Drawing.Size(25, 25);
+            this.pictureURL.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            // 
+            // pnlAccounts
+            // 
+            this.pnlAccounts.Controls.Add(this.lblFromAccount);
+            this.pnlAccounts.Controls.Add(this.cmbAccount);
+            this.pnlAccounts.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlAccounts.Location = new System.Drawing.Point(0, 0);
+            this.pnlAccounts.Name = "pnlAccounts";
+            this.pnlAccounts.Size = new System.Drawing.Size(240, 30);
+            this.pnlAccounts.Visible = false;
+            // 
+            // lblFromAccount
+            // 
+            this.lblFromAccount.Location = new System.Drawing.Point(4, 6);
+            this.lblFromAccount.Name = "lblFromAccount";
+            this.lblFromAccount.Size = new System.Drawing.Size(94, 20);
+            this.lblFromAccount.Text = "From Account:";
+            // 
+            // cmbAccount
+            // 
+            this.cmbAccount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbAccount.Location = new System.Drawing.Point(104, 4);
+            this.cmbAccount.Name = "cmbAccount";
+            this.cmbAccount.Size = new System.Drawing.Size(133, 22);
+            this.cmbAccount.TabIndex = 3;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.userListControl1);
+            this.panel1.Controls.Add(this.txtStatusUpdate);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 66);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(240, 166);
             // 
             // txtStatusUpdate
             // 
             this.txtStatusUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtStatusUpdate.Location = new System.Drawing.Point(4, 60);
+            this.txtStatusUpdate.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtStatusUpdate.Location = new System.Drawing.Point(4, 0);
             this.txtStatusUpdate.Multiline = true;
             this.txtStatusUpdate.Name = "txtStatusUpdate";
-            this.txtStatusUpdate.Size = new System.Drawing.Size(232, 178);
-            this.txtStatusUpdate.TabIndex = 7;
+            this.txtStatusUpdate.Size = new System.Drawing.Size(232, 166);
+            this.txtStatusUpdate.TabIndex = 2;
             this.txtStatusUpdate.TextChanged += new System.EventHandler(this.txtStatusUpdate_TextChanged);
-            // 
-            // lblCharsLeft
-            // 
-            this.lblCharsLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblCharsLeft.Location = new System.Drawing.Point(191, 34);
-            this.lblCharsLeft.Name = "lblCharsLeft";
-            this.lblCharsLeft.Size = new System.Drawing.Size(45, 20);
-            this.lblCharsLeft.Text = "label2";
-            // 
-            // pictureLocation
-            // 
-            this.pictureLocation.Location = new System.Drawing.Point(128, 29);
-            this.pictureLocation.Name = "pictureLocation";
-            this.pictureLocation.Size = new System.Drawing.Size(25, 25);
-            this.pictureLocation.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            // 
-            // lblGPS
-            // 
-            this.lblGPS.Location = new System.Drawing.Point(128, 34);
-            this.lblGPS.Name = "lblGPS";
-            this.lblGPS.Size = new System.Drawing.Size(95, 20);
-            this.lblGPS.Text = "Seeking GPS";
-            this.lblGPS.Visible = false;
-            // 
-            // picAddressBook
-            // 
-            this.picAddressBook.Location = new System.Drawing.Point(97, 29);
-            this.picAddressBook.Name = "picAddressBook";
-            this.picAddressBook.Size = new System.Drawing.Size(25, 25);
-            this.picAddressBook.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            // 
-            // cmbPlaces
-            // 
-            this.cmbPlaces.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbPlaces.Location = new System.Drawing.Point(5, 243);
-            this.cmbPlaces.Name = "cmbPlaces";
-            this.cmbPlaces.Size = new System.Drawing.Size(230, 22);
-            this.cmbPlaces.TabIndex = 20;
-            this.cmbPlaces.Visible = false;
+            this.txtStatusUpdate.GotFocus += new System.EventHandler(this.txtStatusUpdate_GotFocus);
             // 
             // userListControl1
             // 
             this.userListControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.userListControl1.Location = new System.Drawing.Point(42, 65);
+            this.userListControl1.Location = new System.Drawing.Point(33, 6);
             this.userListControl1.Name = "userListControl1";
-            this.userListControl1.Size = new System.Drawing.Size(150, 22);
-            this.userListControl1.TabIndex = 12;
+            this.userListControl1.Size = new System.Drawing.Size(175, 154);
+            this.userListControl1.TabIndex = 32;
             this.userListControl1.Visible = false;
+            this.userListControl1.GotFocus += new System.EventHandler(this.txtStatusUpdate_GotFocus);
             // 
             // PostUpdate
             // 
@@ -164,40 +233,40 @@ namespace PockeTwit
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 268);
-            this.Controls.Add(this.cmbPlaces);
-            this.Controls.Add(this.picAddressBook);
-            this.Controls.Add(this.userListControl1);
-            this.Controls.Add(this.lblGPS);
-            this.Controls.Add(this.lblCharsLeft);
-            this.Controls.Add(this.pictureLocation);
-            this.Controls.Add(this.txtStatusUpdate);
-            this.Controls.Add(this.pictureFromCamers);
-            this.Controls.Add(this.pictureFromStorage);
-            this.Controls.Add(this.pictureURL);
-            this.Controls.Add(this.lblFromAccount);
-            this.Controls.Add(this.cmbAccount);
+            this.Controls.Add(this.pnlSipSize);
             this.Menu = this.mainMenu1;
             this.Name = "PostUpdate";
             this.Text = "Post Update";
+            this.Closed += new System.EventHandler(this.PostUpdate_Closed);
+            this.pnlSipSize.ResumeLayout(false);
+            this.pnlStatus.ResumeLayout(false);
+            this.pnlToolbar.ResumeLayout(false);
+            this.pnlAccounts.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ComboBox cmbAccount;
-        private System.Windows.Forms.Label lblFromAccount;
-        private System.Windows.Forms.PictureBox pictureURL;
-        private System.Windows.Forms.PictureBox pictureFromStorage;
-        private System.Windows.Forms.PictureBox pictureFromCamers;
-        private System.Windows.Forms.TextBox txtStatusUpdate;
         private System.Windows.Forms.MenuItem menuSubmit;
         private System.Windows.Forms.MenuItem menuCancel;
-        private System.Windows.Forms.Label lblCharsLeft;
-        private System.Windows.Forms.PictureBox pictureLocation;
-        private userListControl userListControl1;
-        private Label lblGPS;
+        private Panel pnlSipSize;
+        private Panel pnlToolbar;
         private PictureBox picAddressBook;
+        private PictureBox pictureFromCamers;
+        private PictureBox pictureFromStorage;
+        private PictureBox pictureURL;
+        private Panel pnlAccounts;
+        private Label lblFromAccount;
+        private ComboBox cmbAccount;
+        private Panel pnlStatus;
         private ComboBox cmbPlaces;
+        private Label lblGPS;
+        private Label lblCharsLeft;
+        private PictureBox pictureLocation;
+        private Panel panel1;
+        private userListControl userListControl1;
+        private TextBox txtStatusUpdate;
     }
 }

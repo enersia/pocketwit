@@ -39,6 +39,7 @@ namespace PockeTwit
         public delegate void delUpdatePictureData(string pictureUrl, bool uploadingPicture);
 
         private String originalText;
+        private Microsoft.WindowsCE.Forms.InputPanel inputPanel = null;
 
         #region Properties
         private Yedda.Twitter.Account _AccountToSet = ClientSettings.DefaultAccount;
@@ -61,6 +62,8 @@ namespace PockeTwit
                 AllowTwitPic = t.AllowTwitPic;
             }
         }
+
+
 
         public bool AllowTwitPic
         {
@@ -151,6 +154,12 @@ namespace PockeTwit
 
             CopyItem.Click += new EventHandler(CopyItem_Click);
             PasteItem.Click += new EventHandler(PasteItem_Click);
+
+            inputPanel = new Microsoft.WindowsCE.Forms.InputPanel();
+
+            inputPanel.EnabledChanged += new EventHandler(inputPanel_EnabledChanged);
+
+            pnlToolbar.Visible = true;
         }
 
         void picAddressBook_Click(object sender, EventArgs e)
@@ -279,6 +288,8 @@ namespace PockeTwit
         private System.Windows.Forms.MenuItem menuItem1;
         private void SmartPhoneMenu()
         {
+            pnlToolbar.Visible = false;
+
             lblGPS.Left = 5;
             pictureFromCamers.Visible = false;
             pictureFromStorage.Visible = false;
@@ -393,6 +404,7 @@ namespace PockeTwit
             {
                 cmbAccount.Items.Add(Account);
             }
+            pnlAccounts.Visible = cmbAccount.Items.Count > 1;
         }
 
         #region Methods
@@ -947,7 +959,6 @@ namespace PockeTwit
                     }
                 }
             }
-            
         }
         void pictureFromCamers_Click(object sender, EventArgs e)
         {
@@ -1027,5 +1038,35 @@ namespace PockeTwit
             base.OnClosed(e);
         }
 
+        private void inputPanel_EnabledChanged(object sender, EventArgs e)
+        {
+            // on touchscreen phones, the panel has been shown/hidden
+            if (inputPanel.Enabled)
+            {
+               pnlSipSize.Height = inputPanel.VisibleDesktop.Height + inputPanel.VisibleDesktop.Y - this.Top;
+            }
+            else
+            {
+                pnlSipSize.Height = this.Height;
+            }
+        }
+
+        private void txtStatusUpdate_GotFocus(object sender, EventArgs e)
+        {
+            if (inputPanel != null && !Microsoft.WindowsMobile.Status.SystemState.KeyboardPresent)
+                inputPanel.Enabled = true;
+        }
+
+        private void txtStatusUpdate_LostFocus(object sender, EventArgs e)
+        {
+            if (inputPanel != null)
+                inputPanel.Enabled = false;
+        }
+
+        private void PostUpdate_Closed(object sender, EventArgs e)
+        {
+            if(inputPanel != null)
+                inputPanel.EnabledChanged -= inputPanel_EnabledChanged;
+        }
     }
 }
