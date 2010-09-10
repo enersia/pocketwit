@@ -129,12 +129,20 @@ namespace PockeTwit
 
                 _AccountInfo.OAuth_token = authorizer.AccessToken;
                 _AccountInfo.OAuth_token_secret = authorizer.AccessTokenSecret;
+                _AccountInfo.UserName = authorizer.AccessScreenname;
 
                 if (string.IsNullOrEmpty(_AccountInfo.OAuth_token))
                 {
-                    lblError.Text = "Unable to get access token from Twitter.";
-                    lblError.Visible = true;
-                    return;
+                    //I know, not very nice, but it reduces errors a bit.
+                    Thread.Sleep(1000);
+                    authorizer.AcquireAccessToken();
+
+                    if (string.IsNullOrEmpty(_AccountInfo.OAuth_token))
+                    {
+                        lblError.Text = "Unable to get access token from Twitter.";
+                        lblError.Visible = true;
+                        return;
+                    }
                 }
             }
             else

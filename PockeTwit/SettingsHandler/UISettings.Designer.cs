@@ -62,9 +62,10 @@ namespace PockeTwit
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
             this.txtFontSize = new System.Windows.Forms.TextBox();
-            this.chkAutoScrroll = new System.Windows.Forms.CheckBox();
+            this.chkAutoScroll = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.cmbLanguage = new System.Windows.Forms.ComboBox();
+            this.cbPopUpKeyboard = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -115,7 +116,7 @@ namespace PockeTwit
             // chkTimestamps
             // 
             this.chkTimestamps.ForeColor = System.Drawing.Color.LightGray;
-            this.chkTimestamps.Location = new System.Drawing.Point(2, 30);
+            this.chkTimestamps.Location = new System.Drawing.Point(2, 29);
             this.chkTimestamps.Name = "chkTimestamps";
             this.chkTimestamps.Size = new System.Drawing.Size(216, 20);
             this.chkTimestamps.TabIndex = 1;
@@ -124,7 +125,7 @@ namespace PockeTwit
             // chkClickables
             // 
             this.chkClickables.ForeColor = System.Drawing.Color.LightGray;
-            this.chkClickables.Location = new System.Drawing.Point(2, 56);
+            this.chkClickables.Location = new System.Drawing.Point(2, 54);
             this.chkClickables.Name = "chkClickables";
             this.chkClickables.Size = new System.Drawing.Size(216, 20);
             this.chkClickables.TabIndex = 2;
@@ -133,7 +134,7 @@ namespace PockeTwit
             // chkScreenName
             // 
             this.chkScreenName.ForeColor = System.Drawing.Color.LightGray;
-            this.chkScreenName.Location = new System.Drawing.Point(2, 82);
+            this.chkScreenName.Location = new System.Drawing.Point(2, 79);
             this.chkScreenName.Name = "chkScreenName";
             this.chkScreenName.Size = new System.Drawing.Size(216, 20);
             this.chkScreenName.TabIndex = 3;
@@ -143,7 +144,7 @@ namespace PockeTwit
             // 
             this.cmbTheme.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbTheme.Location = new System.Drawing.Point(81, 134);
+            this.cmbTheme.Location = new System.Drawing.Point(81, 154);
             this.cmbTheme.Name = "cmbTheme";
             this.cmbTheme.Size = new System.Drawing.Size(102, 22);
             this.cmbTheme.TabIndex = 6;
@@ -153,7 +154,7 @@ namespace PockeTwit
             // 
             this.label1.BackColor = System.Drawing.Color.Black;
             this.label1.ForeColor = System.Drawing.Color.LightGray;
-            this.label1.Location = new System.Drawing.Point(4, 136);
+            this.label1.Location = new System.Drawing.Point(4, 156);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(50, 20);
             this.label1.Text = "Theme:";
@@ -161,7 +162,7 @@ namespace PockeTwit
             // linkLabel1
             // 
             this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkLabel1.Location = new System.Drawing.Point(189, 136);
+            this.linkLabel1.Location = new System.Drawing.Point(189, 156);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(36, 20);
             this.linkLabel1.TabIndex = 7;
@@ -171,7 +172,7 @@ namespace PockeTwit
             // label2
             // 
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(4, 164);
+            this.label2.Location = new System.Drawing.Point(4, 183);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(66, 20);
             this.label2.Text = "Font Size:";
@@ -180,7 +181,7 @@ namespace PockeTwit
             // 
             this.txtFontSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFontSize.Location = new System.Drawing.Point(81, 162);
+            this.txtFontSize.Location = new System.Drawing.Point(81, 181);
             this.txtFontSize.Name = "txtFontSize";
             this.txtFontSize.Size = new System.Drawing.Size(102, 21);
             this.txtFontSize.TabIndex = 8;
@@ -188,17 +189,18 @@ namespace PockeTwit
             // 
             // chkAutoScrroll
             // 
-            this.chkAutoScrroll.ForeColor = System.Drawing.Color.LightGray;
-            this.chkAutoScrroll.Location = new System.Drawing.Point(2, 108);
-            this.chkAutoScrroll.Name = "chkAutoScrroll";
-            this.chkAutoScrroll.Size = new System.Drawing.Size(216, 20);
-            this.chkAutoScrroll.TabIndex = 5;
-            this.chkAutoScrroll.Text = "Auto-Scroll To Top";
+            this.chkAutoScroll.ForeColor = System.Drawing.Color.LightGray;
+            this.chkAutoScroll.Location = new System.Drawing.Point(2, 104);
+            this.chkAutoScroll.Name = "chkAutoScrroll";
+            this.chkAutoScroll.Size = new System.Drawing.Size(216, 20);
+            this.chkAutoScroll.TabIndex = 5;
+            this.chkAutoScroll.Text = "Auto-Scroll To Top";
+            this.chkAutoScroll.CheckStateChanged += new System.EventHandler(this.chkAutoScrroll_CheckStateChanged);
             // 
             // label3
             // 
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(4, 191);
+            this.label3.Location = new System.Drawing.Point(4, 209);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(66, 20);
             this.label3.Text = "Language:";
@@ -207,10 +209,20 @@ namespace PockeTwit
             // 
             this.cmbLanguage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbLanguage.Location = new System.Drawing.Point(81, 189);
+            this.cmbLanguage.Location = new System.Drawing.Point(81, 207);
             this.cmbLanguage.Name = "cmbLanguage";
             this.cmbLanguage.Size = new System.Drawing.Size(102, 22);
             this.cmbLanguage.TabIndex = 16;
+            // 
+            // cbPopUpKeyboard
+            // 
+            this.cbPopUpKeyboard.ForeColor = System.Drawing.Color.LightGray;
+            this.cbPopUpKeyboard.Location = new System.Drawing.Point(2, 128);
+            this.cbPopUpKeyboard.Name = "cbPopUpKeyboard";
+            this.cbPopUpKeyboard.Size = new System.Drawing.Size(216, 20);
+            this.cbPopUpKeyboard.TabIndex = 22;
+            this.cbPopUpKeyboard.Text = "Auto-Popup keyboard";
+            this.cbPopUpKeyboard.CheckStateChanged += new System.EventHandler(this.cbPopUpKeyboard_CheckStateChanged);
             // 
             // UISettings
             // 
@@ -219,9 +231,10 @@ namespace PockeTwit
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.cbPopUpKeyboard);
             this.Controls.Add(this.cmbLanguage);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.chkAutoScrroll);
+            this.Controls.Add(this.chkAutoScroll);
             this.Controls.Add(this.txtFontSize);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.linkLabel1);
@@ -250,9 +263,10 @@ namespace PockeTwit
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtFontSize;
-        private System.Windows.Forms.CheckBox chkAutoScrroll;
+        private System.Windows.Forms.CheckBox chkAutoScroll;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cmbLanguage;
+        private System.Windows.Forms.CheckBox cbPopUpKeyboard;
 
     }
 }

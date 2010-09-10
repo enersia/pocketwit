@@ -180,6 +180,7 @@ public static class ClientSettings
         }
     }
     public static bool UseDIB { get; set; }
+    public static bool PopUpKeyboard { get; set; }
     private static string _CacheDir;
     public static string CacheDir
     {
@@ -421,6 +422,15 @@ public static class ClientSettings
             else
             {
                 UseGPS = true;
+            }
+
+            if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["PopUpKeyboard"]))
+            {
+                PopUpKeyboard = bool.Parse(ConfigurationSettings.AppSettings["PopUpKeyboard"]);
+            }
+            else
+            {
+                PopUpKeyboard = true;
             }
 
             if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["IsMaximized"]))

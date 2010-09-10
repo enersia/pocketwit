@@ -69,7 +69,8 @@ namespace PockeTwit
             ClientSettings.UseClickables = chkClickables.Checked;
             ClientSettings.ShowExtra = chkTimestamps.Checked;
             ClientSettings.IncludeUserName = chkScreenName.Checked;
-            ClientSettings.AutoScrollToTop = chkAutoScrroll.Checked;
+            ClientSettings.AutoScrollToTop = chkAutoScroll.Checked;
+            ClientSettings.PopUpKeyboard = cbPopUpKeyboard.Checked;
 
             int newSize = int.Parse(this.txtFontSize.Text);
             if(ClientSettings.FontSize != newSize && newSize < 13 && newSize > 6)
@@ -115,7 +116,7 @@ namespace PockeTwit
             chkTimestamps.Checked = ClientSettings.ShowExtra;
             chkClickables.Checked = ClientSettings.UseClickables;
             chkScreenName.Checked = ClientSettings.IncludeUserName;
-            chkAutoScrroll.Checked = ClientSettings.AutoScrollToTop;
+            chkAutoScroll.Checked = ClientSettings.AutoScrollToTop;
             txtFontSize.Text = ClientSettings.FontSize.ToString();
             
             ListThemes();
@@ -183,6 +184,16 @@ namespace PockeTwit
             {
                 e.Handled = true;
             }
+        }
+
+        private void cbPopUpKeyboard_CheckStateChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chkAutoScrroll_CheckStateChanged(object sender, EventArgs e)
+        {
+
         }
 
         
