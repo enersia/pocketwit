@@ -7,42 +7,45 @@ namespace PockeTwit.Themes
 {
     class FormColors
     {
-        public static System.Drawing.Bitmap GetThemeIcon(string iconName)
+        public static System.Drawing.Bitmap GetThemeIcon(string iconName, int size)
         {
             try
             {
-                if (!System.IO.File.Exists(ClientSettings.IconsFolder() + iconName))
-                {
-                    if (!System.IO.Directory.Exists(ClientSettings.IconsFolder())) {
-                        System.IO.Directory.CreateDirectory(ClientSettings.IconsFolder()); }
-                    System.IO.File.Copy(ClientSettings.AppPath + "\\Themes\\Original\\" + iconName, ClientSettings.IconsFolder() + iconName);
-                }
-
-                return new System.Drawing.Bitmap(ClientSettings.IconsFolder() + iconName);
+                return new System.Drawing.Bitmap(GetThemeIconPath(iconName, size));
             }
             catch (System.IO.IOException)
             {
                 return new System.Drawing.Bitmap(1,1);
             }
         }
-        public static string GetThemeIconPath(string iconName)
+        public static string GetThemeIconPath(string iconName, int size)
         {
+            string format = "{0}{1}-{2}.png";
+            string original = ClientSettings.AppPath + "\\Themes\\Original\\";
+            int fixedSize = (size <= 32 ? 32 : 64);
+            string[] searchPaths = {
+                string.Format(format, ClientSettings.IconsFolder(), iconName, size ),
+                string.Format(format, ClientSettings.IconsFolder(), iconName, fixedSize ),
+                string.Format(format, ClientSettings.IconsFolder(), iconName, 32 ),
+                string.Format(format, original, iconName, size ),
+                string.Format(format, original, iconName, fixedSize ),
+                string.Format(format, original, iconName, 32 )
+            };
             try
             {
-                if (!System.IO.File.Exists(ClientSettings.IconsFolder() + iconName))
+                string search = "";
+                for(int i = 0; i < searchPaths.Length; i++)
                 {
-                    if (!System.IO.Directory.Exists(ClientSettings.IconsFolder()))
-                    {
-                        System.IO.Directory.CreateDirectory(ClientSettings.IconsFolder());
-                    }
-                    System.IO.File.Copy(ClientSettings.AppPath + "\\Themes\\Original\\" + iconName, ClientSettings.IconsFolder() + iconName);
+                    search = searchPaths[i];
+                    if(System.IO.File.Exists(search))
+                        break;
                 }
 
-                return ClientSettings.IconsFolder() + iconName;
+                return search;
             }
             catch (System.IO.IOException)
             {
-                return ClientSettings.AppPath + "\\Themes\\Original\\" + iconName;
+                return "";
             }
         }
         public static void SetColors(Control f)

@@ -28,7 +28,7 @@ namespace PockeTwit.Position
             set {
                     if(!FEnabled && value) { Enable(); }
                     else if(FEnabled && !value) { Disable(); }
-                    FEnabled = !FEnabled;
+                    FEnabled = value;
             }
         }
         private bool FEnabled;

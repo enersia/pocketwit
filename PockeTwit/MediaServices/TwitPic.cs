@@ -196,25 +196,17 @@ namespace PockeTwit.MediaServices
                     postData.PictureData = incoming;
                     XmlDocument uploadResult = UploadPicture(API_UPLOAD, postData, account);
 
-                    if (uploadResult == null)
-                    {
+                    if (uploadResult == null) // it will already have sent an error
                         return false;
-                    }
-                    /* No longer needed - returns an HTTP error code in the case of an error */
-                    /*if (uploadResult.SelectSingleNode("rsp").Attributes["stat"].Value == "fail")
-                    {
-                        string ErrorText = uploadResult.SelectSingleNode("//err").Attributes["msg"].Value;
-                        OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed,string.Empty , ErrorText));
-                    }
-                    else*/
                     if(successEvent)
                     {
                         string URL = uploadResult.SelectSingleNode("//url").InnerText;
                         OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, URL, string.Empty, postData.Filename));
                     }
                 }
-                catch (Exception ex)
+                catch (Exception /*ex*/)
                 {
+                    // should catch specific exceptions
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                     return false;
                 }
@@ -413,7 +405,7 @@ namespace PockeTwit.MediaServices
                 }
                
             }
-            catch (Exception e)
+            catch (Exception /*e*/)
             {
                 //Socket exception 10054 could occur when sending large files.
 
