@@ -61,7 +61,8 @@ namespace PockeTwit
 
         void GlobalEventHandler_PauseConnections()
         {
-            updateTimer.Enabled = false;
+            if (updateTimer.Enabled) 
+                updateTimer.Enabled = false;
         }
 
         void s_Changed(object sender, Microsoft.WindowsMobile.Status.ChangeEventArgs args)
@@ -71,7 +72,8 @@ namespace PockeTwit
             {
                 if (level <= BatteryLevel.VeryLow)
                 {
-                    updateTimer.Enabled = false;
+                    if (updateTimer.Enabled) 
+                        updateTimer.Enabled = false;
                     PockeTwit.Localization.LocalizedMessageBox.Show("Battery low - disabling auto-updates.\n{0}", "PockeTwit", level.ToString());
                 }
                 else
@@ -80,7 +82,7 @@ namespace PockeTwit
                     {
                         if (level >= BatteryLevel.Low)
                         {
-                            updateTimer.Enabled = false;
+                            updateTimer.Enabled = true;
                             PockeTwit.Localization.LocalizedMessageBox.Show("Battery charged - re-enabling auto-updates.\n{0}", "PockeTwit", level.ToString());
                         }
                     }
@@ -127,7 +129,7 @@ namespace PockeTwit
         {
             if (updateTimer != null)
             {
-                updateTimer.Enabled = false;
+                if (updateTimer.Enabled) updateTimer.Enabled = false;
                 updateTimer = null;
             }
         }
@@ -136,14 +138,14 @@ namespace PockeTwit
         {
             if (updateTimer != null)
             {
-                updateTimer.Enabled = false;
+                if (updateTimer.Enabled) updateTimer.Enabled = false;
             }
         }
         public void Start()
         {
             if (updateTimer != null)
             {
-                updateTimer.Enabled = true;
+                if(!updateTimer.Enabled) updateTimer.Enabled = true;
             }
         }
 
@@ -411,7 +413,8 @@ namespace PockeTwit
 
         private Library.status[] GetRegularSavedSearchTimeLine(SavedSearchTimeLine searchLine, Yedda.Twitter.PagingMode pagingMode)
         {
-            var TwitterConn = Servers.CreateConnection(ClientSettings.DefaultAccount);
+            // should be a "get matching connection"
+            var TwitterConn = Servers.CreateConnection(ClientSettings.DefaultAccount); 
             status[] items = SearchTwitter(TwitterConn, searchLine.SearchPhrase, pagingMode);
             
             return items;
@@ -431,7 +434,8 @@ namespace PockeTwit
             {
                 try
                 {
-                    updateTimer.Enabled = false;
+                    if (updateTimer.Enabled)
+                        updateTimer.Enabled = false;
                     GlobalEventHandler.NotifyTimeLineFetching(TimeLineType.Messages);
                     List<Library.status> TempLine = new List<PockeTwit.Library.status>();
                     GetMessagesList(TempLine);
@@ -553,7 +557,8 @@ namespace PockeTwit
                 {
                     if (updateTimer != null)
                     {
-                        updateTimer.Enabled = false;
+                        if (updateTimer.Enabled) 
+                            updateTimer.Enabled = false;
                     }
                     GlobalEventHandler.NotifyTimeLineFetching(TimeLineType.Friends);
                     List<Library.status> TempLine = new List<PockeTwit.Library.status>();
@@ -653,8 +658,8 @@ namespace PockeTwit
             if (GlobalEventHandler.SearchesUpdating) { return; }
 
             var TwitterConn = Servers.CreateConnection(ClientSettings.DefaultAccount);
-
-            updateTimer.Enabled = false;
+            if (updateTimer.Enabled) 
+                updateTimer.Enabled = false;
             GlobalEventHandler.NotifyTimeLineFetching(TimeLineType.Searches);
             var tempLine = new List<Library.status>();
 
