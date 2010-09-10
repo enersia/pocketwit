@@ -96,11 +96,13 @@ namespace PockeTwit
 
         private void menuItem2_Click(object sender, EventArgs e)
         {
+            lblError.Visible = false;
+
             if (cmbServers.SelectedItem == null)
             {
                 return;
             }
-            Cursor.Current = Cursors.WaitCursor;
+            Cursor.Current = Cursors.WaitCursor; //doesn't appear to be shown.
             Application.DoEvents();
             lblError.Visible = false;
             _AccountInfo.UserName = txtUserName.Text;
@@ -266,7 +268,7 @@ namespace PockeTwit
             Localization.LocalizedMessageBox.Show("Your browser will be opened to authorise PockeTwit with Twitter. Please note the pincode on the webpage.", "Message", MessageBoxButtons.OK, MessageBoxIcon.Asterisk, MessageBoxDefaultButton.Button1, null);
 
             //auth
-            Uri url = new Uri(OAuthConfig.AuthorizeUrl + "?oauth_token=" + RequestToken);
+            Uri url = new Uri(authorizer.CurrentConfig.AuthorizeUrl + "?oauth_token=" + RequestToken);
             urlToLaunch = url.ToString();
             Thread t = new Thread(new ThreadStart(LaunchBrowserLink));
             t.Start();

@@ -48,10 +48,30 @@ public class ConfigurationSettings
                     {
                         a.OAuth_token = oNode.Attributes["oauth_token"].Value;
                         a.OAuth_token_secret = oNode.Attributes["oauth_token_secret"].Value;
-                        string q = a.OAuth_token;
                     }
                     catch (Exception) { }
-                    
+
+                    try
+                    {
+                        a.OAuth_token_secure = oNode.Attributes["oauth_token_secure"].Value;
+                        a.OAuth_token_secret_secure = oNode.Attributes["oauth_token_secret_secure"].Value;
+                    }
+                    catch (Exception) { }
+
+                    //if tokens are not saved secure yet, create them
+                    if (string.IsNullOrEmpty(a.OAuth_token_secure))
+                    {
+                        a.OAuth_token_secure = ICSettings.Encryption.Encrypt(a.OAuth_token);
+                        a.OAuth_token_secret_secure = ICSettings.Encryption.Encrypt(a.OAuth_token_secret);
+                    }
+                    //if tokens aren't read from config (which is good), create tokens from secrets.
+                    if (string.IsNullOrEmpty(a.OAuth_token))
+                    {
+                        a.OAuth_token = ICSettings.Encryption.Decrypt(a.OAuth_token_secure);
+                        a.OAuth_token_secret = ICSettings.Encryption.Decrypt(a.OAuth_token_secret_secure);
+                    }
+
+
                     if (oNode.Attributes["servername"] != null)
                     {
                         string ServerName = oNode.Attributes["servername"].Value;
@@ -104,11 +124,17 @@ public class ConfigurationSettings
                 passAtt.Value = Account.Password;
 
                 XmlAttribute oauthTokenAtt = oXml.CreateAttribute("oauth_token");
-                oauthTokenAtt.Value = Account.OAuth_token;
+                oauthTokenAtt.Value = string.Empty;
 
                 XmlAttribute oauthTokenSecretAtt = oXml.CreateAttribute("oauth_token_secret");
-                oauthTokenSecretAtt.Value = Account.OAuth_token_secret;
-                
+                oauthTokenSecretAtt.Value = string.Empty;
+
+                XmlAttribute oauthTokenSecureAtt = oXml.CreateAttribute("oauth_token_secure");
+                oauthTokenSecureAtt.Value = ICSettings.Encryption.Encrypt(Account.OAuth_token);
+
+                XmlAttribute oauthTokenSecretSecureAtt = oXml.CreateAttribute("oauth_token_secret_secure");
+                oauthTokenSecretSecureAtt.Value = ICSettings.Encryption.Encrypt(Account.OAuth_token_secret);
+
                 XmlAttribute serverNameAtt = oXml.CreateAttribute("servername");
                 serverNameAtt.Value = Account.ServerURL.Name;
 
@@ -119,6 +145,8 @@ public class ConfigurationSettings
                 AccountNode.Attributes.Append(passAtt);
                 AccountNode.Attributes.Append(oauthTokenAtt);
                 AccountNode.Attributes.Append(oauthTokenSecretAtt);
+                AccountNode.Attributes.Append(oauthTokenSecureAtt);
+                AccountNode.Attributes.Append(oauthTokenSecretSecureAtt);
                 AccountNode.Attributes.Append(serverNameAtt);
                 AccountNode.Attributes.Append(enabledAtt);
                 AccountsNode.AppendChild(AccountNode);

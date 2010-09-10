@@ -140,6 +140,9 @@ namespace Yedda
             public string OAuth_token { get; set; }
             public string OAuth_token_secret { get; set; }
 
+            public string OAuth_token_secure { get; set; }
+            public string OAuth_token_secret_secure { get; set; }
+
             private Yedda.Twitter.TwitterServer _Server;
             public Yedda.Twitter.TwitterServer Server
             {

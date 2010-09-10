@@ -41,33 +41,29 @@ using System.Linq;
 using System.Security.Cryptography;
 using OpenNETCF.Security.Cryptography;
 using System.IO;
-
+using ICSettings;
 
 namespace OAuth
 {
     //
     // Configuration information for an OAuth client
     //
-    public static class OAuthConfig
-    {
-        // keys, callbacks
-        public static string ConsumerKey = "eejwjEguCY80lgPYhp1ag";
-        public static string Callback = string.Empty; //oob?
-        public static string ConsumerSecret = "hhaFilap5NWXtdXeTVCnOl5H2lEzK8hyWqDQaVamc";
-        public static string TwitPicKey = "5b976ad6e50575acef064fe98ae67bcc";
-        public static string BitlyKey = string.Empty;
-        public static string MobyPictureKey = "p0ck3tTTTTw";
+    //public static class OAuthConfig
+    //{
+    //    // keys, callbacks
+    //    public static string ConsumerKey = "eejwjEguCY80lgPYhp1ag";
+    //    public static string Callback = string.Empty; //oob?
+    //    public static string ConsumerSecret = "hhaFilap5NWXtdXeTVCnOl5H2lEzK8hyWqDQaVamc";
+    //    public static string TwitPicKey = "5b976ad6e50575acef064fe98ae67bcc";
+    //    public static string BitlyKey = string.Empty;
+    //    public static string MobyPictureKey = "p0ck3tTTTTw";
 
-        // Urls
-        public static string RequestTokenUrl = "http://api.twitter.com/oauth/request_token";
-        public static string AccessTokenUrl = "http://api.twitter.com/oauth/access_token";
-        public static string AuthorizeUrl = "http://api.twitter.com/oauth/authorize";
-        public static string VerifyUrl = "http://api.twitter.com/1/account/verify_credentials.json";
-
-        public static string PosterousUrl = "https://posterous.com/api2/upload.format";
-        public static string TwitPicUrl = "http://api.twitpic.com/2/upload.format";
-        public static string MobyPictureUrl = "https://api.mobypicture.com/2.0/upload.format";
-    }
+    //    // Urls
+    //    public static string RequestTokenUrl = "http://api.twitter.com/oauth/request_token";
+    //    public static string AccessTokenUrl = "http://api.twitter.com/oauth/access_token";
+    //    public static string AuthorizeUrl = "http://api.twitter.com/oauth/authorize";
+    //    public static string VerifyUrl = "http://api.twitter.com/1/account/verify_credentials.json";
+    //}
 
     //
     // These static methods only require the access token:
@@ -76,6 +72,7 @@ namespace OAuth
     //
     public class OAuthAuthorizer
     {
+        private static DataContract.Authorisation.OAuth _config = ICSettings.OAuthSettings.GetSettings("Twitter");
 
         public string RequestToken;
         public string RequestTokenSecret;
@@ -88,7 +85,15 @@ namespace OAuth
 
         public OAuthAuthorizer()
         {
-            //using static config.
+
+        }
+
+        public DataContract.Authorisation.OAuth CurrentConfig
+        {
+            get
+            {
+                return _config;
+            }
         }
 
         static Random random = new Random();
@@ -177,15 +182,15 @@ namespace OAuth
         public bool AcquireRequestToken()
         {
             var headers = new Dictionary<string, string>() {
-				{ "oauth_callback", OAuth.PercentEncode (OAuthConfig.Callback) },
-				{ "oauth_consumer_key", OAuthConfig.ConsumerKey },
+				{ "oauth_callback", OAuth.PercentEncode (_config.Callback) },
+				{ "oauth_consumer_key", _config.ConsumerKey },
 				{ "oauth_nonce", MakeNonce () },
 				{ "oauth_signature_method", "HMAC-SHA1" },
 				{ "oauth_timestamp", MakeTimestamp () },
 				{ "oauth_version", "1.0" }};
 
-            string signature = MakeSignature("POST", OAuthConfig.RequestTokenUrl, headers);
-            string compositeSigningKey = MakeSigningKey(OAuthConfig.ConsumerSecret, null);
+            string signature = MakeSignature("POST", _config.RequestTokenUrl, headers);
+            string compositeSigningKey = MakeSigningKey(_config.ConsumerSecret, null);
             string oauth_signature = MakeOAuthSignature(compositeSigningKey, signature);
 
             //Original code giving the same error as the code below the quoted code.
@@ -195,7 +200,7 @@ namespace OAuth
             //wc.Headers [HttpRequestHeader.Authorization.ToString()] = HeadersToOAuth (headers);
 
             //try {
-            //    var result = HttpUtility.ParseQueryString(wc.UploadString(new Uri(OAuthConfig.RequestTokenUrl), ""));
+            //    var result = HttpUtility.ParseQueryString(wc.UploadString(new Uri(_config.RequestTokenUrl), ""));
 
             //    if (result ["oauth_callback_confirmed"] != null){
             //        RequestToken = result ["oauth_token"];
@@ -208,7 +213,7 @@ namespace OAuth
             //    // fallthrough for errors
             //}
 
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(OAuthConfig.RequestTokenUrl);
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(_config.RequestTokenUrl);
             headers.Add("oauth_signature", OAuth.PercentEncode(oauth_signature));
             request.Method = "POST";
             request.Headers.Add(HttpRequestHeader.Authorization.ToString(), HeadersToOAuth(headers));
@@ -246,7 +251,7 @@ namespace OAuth
         public bool AcquireAccessToken()
         {
             var headers = new Dictionary<string, string>() {
-				{ "oauth_consumer_key", OAuthConfig.ConsumerKey },
+				{ "oauth_consumer_key", _config.ConsumerKey },
 				{ "oauth_nonce", MakeNonce () },
 				{ "oauth_signature_method", "HMAC-SHA1" },
 				{ "oauth_timestamp", MakeTimestamp () },
@@ -256,12 +261,12 @@ namespace OAuth
             headers.Add("oauth_token", AuthorizationToken);
             headers.Add("oauth_verifier", AuthorizationVerifier);
 
-            string signature = MakeSignature("GET", OAuthConfig.AccessTokenUrl, headers);
-            string compositeSigningKey = MakeSigningKey(OAuthConfig.ConsumerSecret, RequestTokenSecret);
+            string signature = MakeSignature("GET", _config.AccessTokenUrl, headers);
+            string compositeSigningKey = MakeSigningKey(_config.ConsumerSecret, RequestTokenSecret);
             string oauth_signature = MakeOAuthSignature(compositeSigningKey, signature);
 
 
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(OAuthConfig.AccessTokenUrl);
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(_config.AccessTokenUrl);
             headers.Add("oauth_signature", OAuth.PercentEncode(oauth_signature));
             request.Method = "POST";
             request.Headers.Add(HttpRequestHeader.Authorization.ToString(), HeadersToOAuth(headers));
@@ -305,7 +310,7 @@ namespace OAuth
         public static string AuthorizeRequest(string oauthToken, string oauthTokenSecret, string method, Uri uri, string data)
         {
             var headers = new Dictionary<string, string>() {
-				{ "oauth_consumer_key", OAuthConfig.ConsumerKey },
+				{ "oauth_consumer_key", _config.ConsumerKey },
 				{ "oauth_nonce", MakeNonce () },
 				{ "oauth_signature_method", "HMAC-SHA1" },
 				{ "oauth_timestamp", MakeTimestamp () },
@@ -331,7 +336,7 @@ namespace OAuth
             }
 
             string signature = MakeSignature(method, uri.GetLeftPart(UriPartial.Path), signatureHeaders);
-            string compositeSigningKey = MakeSigningKey(OAuthConfig.ConsumerSecret, oauthTokenSecret);
+            string compositeSigningKey = MakeSigningKey(_config.ConsumerSecret, oauthTokenSecret);
             string oauth_signature = MakeOAuthSignature(compositeSigningKey, signature);
 
             headers.Add("oauth_signature", OAuth.PercentEncode(oauth_signature));
@@ -351,7 +356,7 @@ namespace OAuth
         {
             var headers = new Dictionary<string, string>() {
                 //{ "realm", "http://api.twitter.com/" },
-                { "oauth_consumer_key", OAuthConfig.ConsumerKey },
+                { "oauth_consumer_key", _config.ConsumerKey },
 				{ "oauth_nonce", MakeNonce () },
 				{ "oauth_signature_method", "HMAC-SHA1" },
 				{ "oauth_timestamp", MakeTimestamp () },
@@ -361,12 +366,11 @@ namespace OAuth
             string signurl = String.Format("https://api.twitter.com/1/account/verify_credentials.{0}", Yedda.Twitter.GetFormatTypeString(OutputFormatType));
             // The signature is not done against the *actual* url, it is done against the verify_credentials.json one 
             string signature = MakeSignature("GET", signurl, headers);
-            string compositeSigningKey = MakeSigningKey(OAuthConfig.ConsumerSecret, oauthTokenSecret);
+            string compositeSigningKey = MakeSigningKey(_config.ConsumerSecret, oauthTokenSecret);
             string oauth_signature = MakeOAuthSignature(compositeSigningKey, signature);
 
             headers.Add("oauth_signature", OAuth.PercentEncode(oauth_signature));
 
-            //Util.Log ("Headers: " + HeadersToOAuth (headers));
             wc.Headers.Add("X-Verify-Credentials-Authorization", HeadersToOAuth(headers));
             wc.Headers.Add("X-Auth-Service-Provider", signurl);
         }
