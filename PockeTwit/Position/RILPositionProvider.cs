@@ -119,6 +119,7 @@ namespace PockeTwit.Position
                 // note that .Close() must be called on the stream
                 System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream());
                 string jsonresp = reader.ReadToEnd();
+                reader.Close();
                 response.Close();
                 Hashtable jsonResponse = (Hashtable)((Hashtable)PockeTwit.JSON.JsonDecode(jsonresp))["location"];
                 if (jsonResponse != null)
@@ -148,9 +149,10 @@ namespace PockeTwit.Position
                 }
                 return null;
             }
-            catch (System.Net.Sockets.SocketException sockex)
+            catch (System.Net.Sockets.SocketException /*sockex*/)
             {
                 // probably a read error or some such problem
+                // we don't really care
                 return null;
             }
 
@@ -177,7 +179,7 @@ namespace PockeTwit.Position
 
                 }
             }
-            catch (ThreadAbortException tae)
+            catch (ThreadAbortException /*tae*/)
             {
                 // thread aborted
             }
@@ -224,9 +226,9 @@ namespace PockeTwit.Position
                 // finished - release the RIL handle
                 RIL_Deinitialize(hRil);
             }
-            catch(MissingMethodException mme)
+            catch(MissingMethodException /*mme*/)
             {
-                // RIL DLL not available
+                // RIL DLL not available, just ignore it for now
             }
             // return the result from GetCellTowerInfo
             //return celltowerinfo;
@@ -296,25 +298,25 @@ namespace PockeTwit.Position
          */
         public class RILCELLTOWERINFO
         {
-            public uint cbSize;
-            public uint dwParams;
-            public uint dwMobileCountryCode;
-            public uint dwMobileNetworkCode;
-            public uint dwLocationAreaCode;
-            public uint dwCellID;
-            public uint dwBaseStationID;
-            public uint dwBroadcastControlChannel;
-            public uint dwRxLevel;
-            public uint dwRxLevelFull;
-            public uint dwRxLevelSub;
-            public uint dwRxQuality;
-            public uint dwRxQualityFull;
-            public uint dwRxQualitySub;
-            public uint dwIdleTimeSlot;
-            public uint dwTimingAdvance;
-            public uint dwGPRSCellID;
-            public uint dwGPRSBaseStationID;
-            public uint dwNumBCCH;
+            public uint cbSize = 0;
+            public uint dwParams = 0;
+            public uint dwMobileCountryCode = 0;
+            public uint dwMobileNetworkCode = 0;
+            public uint dwLocationAreaCode = 0;
+            public uint dwCellID = 0;
+            public uint dwBaseStationID = 0;
+            public uint dwBroadcastControlChannel = 0;
+            public uint dwRxLevel = 0;
+            public uint dwRxLevelFull = 0;
+            public uint dwRxLevelSub = 0;
+            public uint dwRxQuality = 0;
+            public uint dwRxQualityFull = 0;
+            public uint dwRxQualitySub = 0;
+            public uint dwIdleTimeSlot = 0;
+            public uint dwTimingAdvance = 0;
+            public uint dwGPRSCellID = 0;
+            public uint dwGPRSBaseStationID = 0;
+            public uint dwNumBCCH = 0;
         }
 
 
