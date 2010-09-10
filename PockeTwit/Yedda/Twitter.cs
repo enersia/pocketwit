@@ -349,8 +349,6 @@ namespace Yedda
             Home_Timeline
         }
 
-
-        private string PlaceID = null;
         private string source = "pocketwit";
 
         private string twitterClient = "pocketwit";
@@ -1297,23 +1295,7 @@ namespace Yedda
         #region Verify
         public virtual bool Verify()
         {
-            string url;
-            if (this.AccountInfo.ServerURL.ServerType == TwitterServer.brightkite)
-            {
-                return true;
-                /*  For later development
-                url = "http://brightkite.com/me";
-                return !string.IsNullOrEmpty(ExecutePostCommand(url, ""));
-                 */
-            }
-            else
-            {
-                return true;
-
-                //url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Account), GetActionTypeString(ActionType.Verify_Credentials), GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
-                //string Response = ExecuteGetCommand(url);
-                //return (!string.IsNullOrEmpty(Response));
-            }
+            return true; // overloaded by subclasses, need to add identi.ca support
         }
 
         /// <summary>
@@ -1708,7 +1690,10 @@ namespace Yedda
                     {
                         using (StreamReader reader = new StreamReader(stream))
                         {
-                            return reader.ReadToEnd();
+                            string read = reader.ReadToEnd();
+                            reader.Close();
+                            httpResponse.Close();
+                            return read;
                         }
                     }
                 }
@@ -1762,11 +1747,8 @@ namespace Yedda
                     }
                     catch
                     {
-                        ex.Response.Close();
-
                     }
-
-
+                    ex.Response.Close();
                 }
 
             }
@@ -1836,7 +1818,10 @@ namespace Yedda
                     {
                         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                         {
-                            return reader.ReadToEnd();
+                            string read = reader.ReadToEnd();
+                            reader.Close();
+                            response.Close();
+                            return read;
                         }
                     }
                 }
