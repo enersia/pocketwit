@@ -447,7 +447,9 @@ namespace PockeTwit.MediaServices
                                 XmlNode authKeyNode = responseXML.SelectSingleNode("pikchur/auth_key");
                                 AUTH_KEY = authKeyNode.InnerText;
                             }
+                            reader.Close();
                         }
+                        response.Close();
                     }
                 }
             }
@@ -524,6 +526,8 @@ namespace PockeTwit.MediaServices
                         {
                             XmlDocument responseXML = new XmlDocument();
                             string responseFromService = reader.ReadToEnd();
+                            reader.Close();
+                            response.Close();
                             responseXML.LoadXml(responseFromService);
                             return responseXML;
                         }
@@ -610,6 +614,8 @@ namespace PockeTwit.MediaServices
                         {
                             XmlDocument responseXML = new XmlDocument();
                             string responseFromService = reader.ReadToEnd();
+                            reader.Close();
+                            response.Close();
                             responseXML.LoadXml(responseFromService);
                             return responseXML;
                         }

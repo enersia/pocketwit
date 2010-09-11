@@ -492,6 +492,8 @@ namespace PockeTwit.MediaServices
                             var responseXML = new XmlDocument();
                             string rsp = reader.ReadToEnd();
                             responseXML.LoadXml(rsp);
+                            reader.Close();
+                            response.Close();
                             return responseXML;
                         }
                     }

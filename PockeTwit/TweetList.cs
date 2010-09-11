@@ -198,7 +198,9 @@ namespace PockeTwit
             if(!string.IsNullOrEmpty(ClientSettings.PreviousMediaService))
             {
                 var switcher = new SwitchToTweetPhoto();
+                switcher.Owner = this;
                 switcher.ShowDialog();
+                switcher.Dispose();
             }
         }
 
@@ -406,10 +408,12 @@ namespace PockeTwit
         {
             this.statList.Visible = false;
             IsLoaded = false;
+            f.Owner = this;
             if(f.ShowDialog()==DialogResult.Cancel)
             {
                 this.statList.Visible = true;
                 IsLoaded = true;
+                f.Dispose();
                 return;
             }
             if(f.NeedsReRender)
@@ -432,7 +436,6 @@ namespace PockeTwit
             }
             this.statList.Visible = true;
             statList.Redraw();
-            f.Close();
             f.Dispose();
         }
 
@@ -498,6 +501,7 @@ namespace PockeTwit
 
             using (DefineGroup d = new DefineGroup())
             {
+                d.Owner = this;
                 if (d.ShowDialog() == DialogResult.OK)
                 {
                     UserGroupTimeLine t = new UserGroupTimeLine();
@@ -519,6 +523,7 @@ namespace PockeTwit
                         }
                     }
                 }
+                d.Dispose();
             }
         }
        
@@ -1056,7 +1061,9 @@ namespace PockeTwit
             {
                 using (CrashReport errorForm = new CrashReport())
                 {
+                    //errorForm.Owner = this;
                     errorForm.ShowDialog();
+                    errorForm.Dispose();
                 }
             }
             if (!StartBackground)
@@ -1110,6 +1117,7 @@ namespace PockeTwit
             ClientSettings.AccountsList.Clear();
             using (AccountsForm f = new AccountsForm())
             {
+                f.Owner = this;
                 f.ShowDialog();
                 if (ClientSettings.AccountsList.Count == 0)
                 {
@@ -1119,6 +1127,7 @@ namespace PockeTwit
                     }
                     this.Close();
                 }
+                f.Dispose();
             }
         }
 
@@ -1335,6 +1344,7 @@ namespace PockeTwit
         {
             using (PostUpdate StatusForm = new PostUpdate(false))
             {
+                StatusForm.Owner = this;
                 if (!string.IsNullOrEmpty(Text))
                 {
                     StatusForm.AccountToSet = CurrentlySelectedAccount;
@@ -1354,14 +1364,12 @@ namespace PockeTwit
                 if (StatusForm.ShowDialog() == DialogResult.OK)
                 {
                     this.statList.Visible = true;
-                    StatusForm.Hide();
                     IsLoaded = false;
                     //Manager.RefreshFriendsTimeLine();
                 }
                 else
                 {
                     this.statList.Visible = true;
-                    StatusForm.Hide();
                     IsLoaded = false;
                 }
                 Manager.Start();
@@ -1369,7 +1377,7 @@ namespace PockeTwit
                 IsLoaded = true;
                 this.statList.Redraw();
                 this.statList.Visible = true;
-                StatusForm.Close();
+                StatusForm.Dispose();
             }
         }
 
@@ -1387,6 +1395,7 @@ namespace PockeTwit
             {
                 IsLoaded = false;
                 statList.Visible = false;
+                a.Owner = this;
                 a.ShowDialog();
 
                 this.Visible = true;
@@ -1394,7 +1403,7 @@ namespace PockeTwit
                 statList.Visible = true;
                 IsLoaded = true;
                 string ReqedUser = a.AskedToSeeUser;
-                a.Close();
+                a.Dispose();
 
                 if (!string.IsNullOrEmpty(ReqedUser))
                 {
@@ -1419,8 +1428,9 @@ namespace PockeTwit
             {
                 using (EmailStatusForm f = new EmailStatusForm(selectedItem.Tweet.text))
                 {
+                    f.Owner = this;
                     f.ShowDialog();
-                    f.Close();
+                    f.Dispose();
                 }
                 return;
             }
@@ -1449,6 +1459,7 @@ namespace PockeTwit
             IsLoaded = false;
             statList.Visible = false;
 
+            ((Form)view).Owner = this;
             ((Form)view).ShowDialog();
 
             this.Visible = true;
@@ -1939,7 +1950,9 @@ namespace PockeTwit
 
                 using (ImagePreview ip = new ImagePreview(eventArgs.ReturnMessage, eventArgs.PictureFileName))
                 {
+                    ip.Owner = this;
                     ip.ShowDialog();
+                    ip.Dispose();
                 }
             }
         }
@@ -2019,9 +2032,11 @@ namespace PockeTwit
         {
             using (FollowUserForm f = new FollowUserForm())
             {
+                f.Owner = this;
                 if (f.ShowDialog() == DialogResult.Cancel)
                 {
-                    f.Close();
+                    
+                    f.Dispose();
                     return;
                 }
                 ChangeCursor(Cursors.WaitCursor);
@@ -2057,11 +2072,12 @@ namespace PockeTwit
                 this.statList.Visible = false;
                 IsLoaded = false;
                 SavedSearchTimeLine SavedSearch;
+                f.Owner = this;
                 if (f.ShowDialog() == DialogResult.Cancel)
                 {
                     IsLoaded = true;
                     this.statList.Visible = true;
-                    f.Close();
+                    f.Dispose();
                     return;
                 }
 
@@ -2074,7 +2090,7 @@ namespace PockeTwit
                 {
                     AddGroupSelectMenuItem(SavedSearch);
                 }
-                f.Close();
+                f.Dispose();
 
                 statList.Visible = true;
 
@@ -2132,8 +2148,10 @@ namespace PockeTwit
         {
             using (UpgradeForm uf = new UpgradeForm())
             {
+                uf.Owner = this;
                 uf.NewVersion = Info;
                 uf.ShowDialog();
+                uf.Dispose();
             }
         }
 

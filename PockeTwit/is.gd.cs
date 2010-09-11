@@ -24,7 +24,10 @@ namespace PockeTwit
                 {
                     using (System.IO.StreamReader reader = new System.IO.StreamReader(response.GetResponseStream()))
                     {
-                        return reader.ReadToEnd();
+                        string res = reader.ReadToEnd();
+                        reader.Close();
+                        response.Close();
+                        return res;
                     }
                 }
             }

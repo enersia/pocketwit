@@ -89,6 +89,8 @@ namespace PockeTwit
                     using (StreamReader reader = new StreamReader(stream))
                     {
                         XMLResponse = reader.ReadToEnd();
+                        reader.Close();
+                        httpResponse.Close();
                     }
                 }
             }

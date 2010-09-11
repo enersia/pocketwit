@@ -34,11 +34,11 @@ namespace PockeTwit
         private bool localPictureEventsSet = false;
         private string picturePath = string.Empty;
         private List<Place> places = null;
+        private bool oldInputPanelState = false;
 
         public delegate void delAddPicture(string ImageFile, PictureBox BoxToUpdate);
         public delegate void delUpdatePictureData(string pictureUrl, bool uploadingPicture);
 
-        private String originalText;
         private Microsoft.WindowsCE.Forms.InputPanel inputPanel = null;
 
         #region Properties
@@ -137,6 +137,7 @@ namespace PockeTwit
             pictureFromStorage.Click += new EventHandler(pictureFromStorage_Click);
             pictureURL.Click += new EventHandler(pictureURL_Click);
             pictureLocation.Click += new EventHandler(pictureLocation_Click);
+            picInsertGPSLink.Click += new EventHandler(llGPS_Click);
 
             picAddressBook.Click += new EventHandler(picAddressBook_Click);
 
@@ -156,6 +157,7 @@ namespace PockeTwit
             PasteItem.Click += new EventHandler(PasteItem_Click);
 
             inputPanel = new Microsoft.WindowsCE.Forms.InputPanel();
+            oldInputPanelState = inputPanel.Enabled;
 
             inputPanel.EnabledChanged += new EventHandler(inputPanel_EnabledChanged);
 
@@ -235,17 +237,7 @@ namespace PockeTwit
                     }
                     else
                     {
-                        // hide the label, add a new button
-                        lblGPS.Visible = false;
-                        LinkLabel llGPS = new LinkLabel();
-                        llGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Ins. GPS Link");
-                        llGPS.ForeColor = Color.White;
-                        llGPS.Left = lblGPS.Left;
-                        llGPS.Top = lblGPS.Top;
-                        llGPS.Height = lblGPS.Height;
-                        llGPS.Width = lblGPS.Width;
-                        llGPS.Click += new EventHandler(llGPS_Click);
-                        Controls.Add(llGPS);
+                        picInsertGPSLink.Visible = true;
                     }
                     cmbPlaces.Items.Clear();
                     cmbPlaces.Visible = true;
@@ -272,9 +264,12 @@ namespace PockeTwit
         private void StartLocating()
         {   
             //StartAnimation
+            cmbPlaces.Visible = false;
+            LocationFinder.StopGPS(); // in case it's running
             LocationFinder.StartGPS();
-            pictureLocation.Visible = false;
-            lblGPS.Visible = true;
+            lblGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Seeking GPS");
+            //pictureLocation.Visible = false;
+            //lblGPS.Visible = true;
         }
 
         
@@ -290,10 +285,14 @@ namespace PockeTwit
         {
             pnlToolbar.Visible = false;
 
+            lblGPS.Width = lblGPS.Width + (lblGPS.Left - 5);
             lblGPS.Left = 5;
+            pictureLocation.Visible = false;
+
+
             pictureFromCamers.Visible = false;
             pictureFromStorage.Visible = false;
-            pictureLocation.Visible = false;
+            //pictureLocation.Visible = false;
             pictureURL.Visible = false;
             picAddressBook.Visible = false;
             menuExist = new MenuItem();
@@ -391,11 +390,12 @@ namespace PockeTwit
 
         private void SetImages()
         {
-            pictureFromCamers.Image = PockeTwit.Themes.FormColors.GetThemeIcon("takepicture.png");
-            pictureFromStorage.Image = PockeTwit.Themes.FormColors.GetThemeIcon("existingimage.png");
-            pictureURL.Image = PockeTwit.Themes.FormColors.GetThemeIcon("url.png");
-            pictureLocation.Image = PockeTwit.Themes.FormColors.GetThemeIcon("map.png");
-            picAddressBook.Image = PockeTwit.Themes.FormColors.GetThemeIcon("address.png");
+            pictureFromCamers.Image = PockeTwit.Themes.FormColors.GetThemeIcon("takepicture", pictureFromCamers.Height);
+            pictureFromStorage.Image = PockeTwit.Themes.FormColors.GetThemeIcon("existingimage", pictureFromStorage.Height);
+            pictureURL.Image = PockeTwit.Themes.FormColors.GetThemeIcon("url", pictureURL.Height);
+            pictureLocation.Image = PockeTwit.Themes.FormColors.GetThemeIcon("map", pictureLocation.Height);
+            picAddressBook.Image = PockeTwit.Themes.FormColors.GetThemeIcon("address", picAddressBook.Height);
+            picInsertGPSLink.Image = PockeTwit.Themes.FormColors.GetThemeIcon("insertgpslink", picInsertGPSLink.Height);
         }
 
         private void PopulateAccountList()
@@ -412,12 +412,12 @@ namespace PockeTwit
         {
             using (URLForm f = new URLForm())
             {
+                f.Owner = this;
                 if (f.ShowDialog() == DialogResult.OK)
                 {
                     txtStatusUpdate.Text = txtStatusUpdate.Text + " " + f.URL;
                 }
-                Show();
-                f.Close();
+                f.Dispose();
             }
         }
 
@@ -431,10 +431,11 @@ namespace PockeTwit
                 {
                     using (Microsoft.WindowsMobile.Forms.CameraCaptureDialog c = new Microsoft.WindowsMobile.Forms.CameraCaptureDialog())
                     {
+                        c.Owner = this;
                         if (c.ShowDialog() == DialogResult.OK)
                         {
                             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PostUpdate));
-                            pictureFromStorage.Image = PockeTwit.Themes.FormColors.GetThemeIcon("existingimage.png");
+                            pictureFromStorage.Image = PockeTwit.Themes.FormColors.GetThemeIcon("existingimage", pictureFromStorage.Height);
                             if (DetectDevice.DeviceType == DeviceType.Standard)
                             {
                                 pictureFromStorage.Visible = false;
@@ -446,6 +447,7 @@ namespace PockeTwit
                         {
                             pictureUsed = true;
                         }
+                        c.Dispose();
                     }
                 }
                 catch
@@ -503,7 +505,7 @@ namespace PockeTwit
                     //}
 
                     ComponentResourceManager resources = new ComponentResourceManager(typeof(PostUpdate));
-                    pictureFromCamers.Image = FormColors.GetThemeIcon("takepicture.png");
+                    pictureFromCamers.Image = FormColors.GetThemeIcon("takepicture", pictureFromCamers.Height);
                     if (DetectDevice.DeviceType == DeviceType.Standard)
                     {
                         pictureFromCamers.Visible = false;
@@ -542,7 +544,9 @@ namespace PockeTwit
                 fileDialog.Filter = fileFilter;
                 if (fileDialog.ShowDialog() == DialogResult.OK)
                 {
+                    fileDialog.Owner = this;
                     filename = fileDialog.FileName;
+                    fileDialog.Dispose();
                 }
             }
             return filename;
@@ -554,9 +558,9 @@ namespace PockeTwit
             using (System.Windows.Forms.OpenFileDialog fileDialog = new OpenFileDialog())
             {
                 fileDialog.Filter = fileFilter;
-
                 if (fileDialog.ShowDialog() == DialogResult.OK)
                 {
+                    
                     filename = fileDialog.FileName;
                 }
             }
@@ -575,7 +579,7 @@ namespace PockeTwit
             else
             {
                 uploadingPicture = true;
-                AddPictureToForm(FormColors.GetThemeIconPath("wait.png"), pictureFromStorage);
+//                AddPictureToForm(FormColors.GetThemeIconPath("wait.png"), pictureFromStorage);
                 using (PicturePostObject ppo = new PicturePostObject())
                 {
                     ppo.Filename = fileName;
@@ -635,11 +639,11 @@ namespace PockeTwit
             
             if (uploadedPictureOrigin == "file")
             {
-                AddPictureToForm(FormColors.GetThemeIconPath("existingimage.png"), pictureFromStorage);
+                AddPictureToForm(FormColors.GetThemeIconPath("existingimage", pictureFromStorage.Height), pictureFromStorage);
             }
             else //camera
             {
-                AddPictureToForm(FormColors.GetThemeIconPath("takepicture.png"), pictureFromCamers);
+                AddPictureToForm(FormColors.GetThemeIconPath("takepicture", pictureFromCamers.Height), pictureFromCamers);
             }
             MessageBox.Show(eventArgs.ErrorMessage);
         }
@@ -651,11 +655,11 @@ namespace PockeTwit
 
             if (uploadedPictureOrigin == "file")
             {
-                AddPictureToForm(FormColors.GetThemeIconPath("existingimage.png"), pictureFromStorage);
+                AddPictureToForm(FormColors.GetThemeIconPath("existingimage", pictureFromStorage.Height), pictureFromStorage);
             }
             else //camera
             {
-                AddPictureToForm(FormColors.GetThemeIconPath("takepicture.png"), pictureFromCamers);
+                AddPictureToForm(FormColors.GetThemeIconPath("takepicture", pictureFromCamers.Height), pictureFromCamers);
             }
             UpdatePictureData(string.Empty, false);
 
@@ -716,7 +720,7 @@ namespace PockeTwit
                 }
                 catch (OutOfMemoryException)
                 {
-                    BoxToUpdate.Image = PockeTwit.Themes.FormColors.GetThemeIcon("insertlink.png");
+                    BoxToUpdate.Image = PockeTwit.Themes.FormColors.GetThemeIcon("insertlink", BoxToUpdate.Height);
                 }
             }
         }
@@ -1059,16 +1063,13 @@ namespace PockeTwit
             }
         }
 
-        private void txtStatusUpdate_LostFocus(object sender, EventArgs e)
-        {
-            if (inputPanel != null)
-                inputPanel.Enabled = false;
-        }
-
         private void PostUpdate_Closed(object sender, EventArgs e)
         {
-            if(inputPanel != null)
+            if (inputPanel != null)
+            {
                 inputPanel.EnabledChanged -= inputPanel_EnabledChanged;
+                inputPanel.Enabled = oldInputPanelState; // probably going back to the main screen
+            }
         }
     }
 }

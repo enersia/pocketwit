@@ -68,7 +68,6 @@ namespace PockeTwit
 
                     LinkLabel nameLabel = new LinkLabel();
                     nameLabel.Text = s.Name;
-                    nameLabel.ForeColor = ClientSettings.LinkColor;
 
                     if (s.Name.StartsWith("@"))
                     {
@@ -85,7 +84,6 @@ namespace PockeTwit
                     typeLabel.Left = nameLabel.Right;
                     typeLabel.Width = labelWidth;
                     typeLabel.Height = ClientSettings.TextSize + 5;
-                    typeLabel.ForeColor = ClientSettings.FieldForeColor;
                     panel1.Controls.Add(typeLabel);
 
                     
@@ -94,13 +92,14 @@ namespace PockeTwit
                 }
                 LinkLabel YouToo = new LinkLabel();
                 YouToo.Text = Localization.XmlBasedResourceManager.GetString("Your name can be here!");
-                YouToo.ForeColor = ClientSettings.LinkColor;
                 YouToo.Width = panel1.Width - 2;
                 YouToo.Height = ClientSettings.TextSize+5;
                 YouToo.Click += new EventHandler(YouToo_Click);
                 YouToo.Top = topOfLabel;
                 panel1.Controls.Add(YouToo);
+                PockeTwit.Themes.FormColors.SetColors(panel1);
                 panel1.ResumeLayout();
+
             }
         }
 
@@ -135,8 +134,10 @@ namespace PockeTwit
         {
             using (UpgradeForm uf = new UpgradeForm())
             {
+                uf.Owner = this;
                 uf.NewVersion = Info;
                 uf.ShowDialog();
+                uf.Dispose();
             }
         }
 
@@ -144,6 +145,7 @@ namespace PockeTwit
         {
             using (PostUpdate s = new PostUpdate(false))
             {
+                s.Owner = this;
                 s.StatusText = "@PockeTwitDev ";
                 s.ShowDialog();
                 s.Hide();
@@ -155,8 +157,7 @@ namespace PockeTwit
                     Twitter.Update(UpdateText, null, Yedda.Twitter.OutputFormatType.XML);
                     Cursor.Current = Cursors.Default;
                 }
-                this.Show();
-                s.Close();
+                s.Dispose();
             }
         }
 
@@ -171,7 +172,9 @@ namespace PockeTwit
             {
                 using (UpgradeForm f = new UpgradeForm())
                 {
+                    f.Owner = this;
                     f.ShowDialog();
+                    f.Dispose();
                 }
             }
             else

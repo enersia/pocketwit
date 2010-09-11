@@ -159,8 +159,10 @@ namespace PockeTwit
         {
             using (ProfileMap m = new ProfileMap())
             {
+                m.Owner = this;
                 m.Users = new List<PockeTwit.Library.User>(new Library.User[] { _User });
                 m.ShowDialog();
+                m.Dispose();
             }
         }
 

@@ -38,13 +38,15 @@ namespace PockeTwit
             PasteItem.Text = "Paste";
             copyPasteMenu.MenuItems.Add(PasteItem);
             PasteItem.Click += new System.EventHandler(PasteItem_Click);
+
         }
         private void SetupStandard()
         {
             Microsoft.WindowsCE.Forms.InputModeEditor.SetInputMode(txtUserName, Microsoft.WindowsCE.Forms.InputMode.AlphaCurrent);
             Microsoft.WindowsCE.Forms.InputModeEditor.SetInputMode(txtPassword, Microsoft.WindowsCE.Forms.InputMode.AlphaCurrent);
-
+            Microsoft.WindowsCE.Forms.InputModeEditor.SetInputMode(TbPin, Microsoft.WindowsCE.Forms.InputMode.Numeric);
         }
+
         public AccountInfoForm()
         {
             InitializeComponent();

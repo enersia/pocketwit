@@ -304,26 +304,28 @@ namespace PockeTwit
             {
                 using (AdvancedSearchSmartphoneForm f = new AdvancedSearchSmartphoneForm())
                 {
+                    f.Owner = this;
                     if (f.ShowDialog() == DialogResult.Cancel)
                     {
-                        f.Close();
+                        f.Dispose();
                         return;
                     }
                     txtSearch.Text = f.Query;
-                    f.Close();
+                    f.Dispose();
                 }
             }
             else
             {
                 using (AdvancedSearchForm f = new AdvancedSearchForm())
                 {
+                    f.Owner = this;
                     if (f.ShowDialog() == DialogResult.Cancel)
                     {
-                        f.Close();
+                        f.Dispose();
                         return;
                     }
                     txtSearch.Text = f.Query;
-                    f.Close();
+                    f.Dispose();
                 }
             }
         }

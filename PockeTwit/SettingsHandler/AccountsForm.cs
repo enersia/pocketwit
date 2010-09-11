@@ -65,18 +65,20 @@ namespace PockeTwit
         {
             using (AccountInfoForm ai = new AccountInfoForm())
             {
-                ai.Hide();
+                ai.Owner = this;
                 if (ai.ShowDialog() == DialogResult.OK)
                 {
                     LocalList.Add(ai.AccountInfo);
                     NeedsReset = true;
                     ListAccounts();
-                    ai.Close();
+                    ai.Dispose();
+                    //Show();
                     return true;
                 }
                 else
                 {
-                    ai.Close();
+                    ai.Dispose();
+                    //Show();
                     return false;
                 }
             }
@@ -124,6 +126,8 @@ namespace PockeTwit
                 Yedda.Twitter.Account toEdit = (Yedda.Twitter.Account)cmbAccounts.SelectedItem;
                 using (AccountInfoForm ai = new AccountInfoForm(toEdit))
                 {
+                    ai.Owner = this;
+
                     if (ai.ShowDialog() == DialogResult.OK)
                     {
                         LocalList.Remove(toEdit);
@@ -131,7 +135,8 @@ namespace PockeTwit
                         ListAccounts();
                         NeedsReset = true;
                     }
-                    ai.Close();
+                    ai.Dispose();
+//                    Show();
                 }
             }
         }

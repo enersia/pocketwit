@@ -162,6 +162,8 @@ namespace PockeTwit.Blog
                         {
                             XmlDocument responseXML = new XmlDocument();
                             responseXML.LoadXml(reader.ReadToEnd());
+                            reader.Close();
+                            response.Close();
                             return responseXML;
                         }
                     }

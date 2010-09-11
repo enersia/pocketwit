@@ -44,6 +44,8 @@ namespace PockeTwit
                             s.Contribution = split[1];
                             ContributorsList.Add(s);
                         }
+                        reader.Close();
+                        httpResponse.Close();
                     }
                 }
                 ContributorsReady();

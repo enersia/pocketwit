@@ -495,7 +495,10 @@ namespace Yedda
                     {
                         using (StreamReader reader = new StreamReader(stream))
                         {
-                            return reader.ReadToEnd();
+                            string res = reader.ReadToEnd();
+                            reader.Close();
+                            httpResponse.Close();
+                            return res;
                         }
                     }
                 }
@@ -532,6 +535,7 @@ namespace Yedda
                                 if (doc.SelectSingleNode("//error").InnerText.StartsWith("Rate limit exceeded"))
                                 {
                                     DateTime NewTime = GetTimeOutTime();
+                                    reader.Close();
                                     errorResponse.Close();
                                     PockeTwit.GlobalEventHandler.CallShowErrorMessage("Timeout until " + NewTime.ToString());
                                     throw new Exception("Timeout until " + NewTime.ToString());
@@ -571,7 +575,10 @@ namespace Yedda
                     {
                         using (StreamReader reader = new StreamReader(stream))
                         {
-                            return reader.ReadToEnd();
+                            string res = reader.ReadToEnd();
+                            reader.Close();
+                            httpResponse.Close();
+                            return res;
                         }
                     }
                 }
@@ -712,7 +719,10 @@ namespace Yedda
                     {
                         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                         {
-                            return reader.ReadToEnd();
+                            string s=  reader.ReadToEnd();
+                            reader.Close();
+                            response.Close();
+                            return s;
                         }
                     }
                 }

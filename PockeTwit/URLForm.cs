@@ -123,7 +123,6 @@ namespace PockeTwit
                     return;
                 }
                 this.DialogResult = DialogResult.OK;
-                this.Hide();
             }
             catch 
             {
@@ -135,8 +134,7 @@ namespace PockeTwit
         private void menuCancel_Click(object sender, EventArgs e)
         {
             this.DialogResult = DialogResult.Cancel;
-            this.Hide();
-            
+            //this.Hide();
         }
 
 

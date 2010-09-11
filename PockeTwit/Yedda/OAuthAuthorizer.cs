@@ -218,17 +218,17 @@ namespace OAuth
             request.Method = "POST";
             request.Headers.Add(HttpRequestHeader.Authorization.ToString(), HeadersToOAuth(headers));
             request.Timeout = 30000;
-
+            HttpWebResponse response = null;
             try
             {
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                response = (HttpWebResponse)request.GetResponse();
                 Stream resp = response.GetResponseStream();
-
 
                 StreamReader oReader = new StreamReader(resp, Encoding.ASCII);
 
                 string r = oReader.ReadToEnd();
-
+                oReader.Close();
+                response.Close();
                 var result = HttpUtility.ParseQueryString(r);
 
                 if (result["oauth_token"] != null)
@@ -242,6 +242,8 @@ namespace OAuth
             {
                 Console.WriteLine(e);
                 // fallthrough for errors
+                if (response != null)
+                    response.Close();
             }
 
             return false;
@@ -256,7 +258,6 @@ namespace OAuth
 				{ "oauth_signature_method", "HMAC-SHA1" },
 				{ "oauth_timestamp", MakeTimestamp () },
 				{ "oauth_version", "1.0" }};
-            var content = "";
 
             headers.Add("oauth_token", AuthorizationToken);
             headers.Add("oauth_verifier", AuthorizationVerifier);
@@ -271,17 +272,18 @@ namespace OAuth
             request.Method = "POST";
             request.Headers.Add(HttpRequestHeader.Authorization.ToString(), HeadersToOAuth(headers));
             request.Timeout = 30000;
-
+            HttpWebResponse response = null;
             try
             {
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                response = (HttpWebResponse)request.GetResponse();
                 Stream resp = response.GetResponseStream();
 
 
                 StreamReader oReader = new StreamReader(resp, Encoding.ASCII);
 
                 string r = oReader.ReadToEnd();
-
+                oReader.Close();
+                response.Close();
                 var result = HttpUtility.ParseQueryString(r);
 
                 if (result["oauth_token"] != null)
@@ -298,6 +300,8 @@ namespace OAuth
             {
                 Console.WriteLine(e);
                 // fallthrough for errors
+                if(response != null)
+                    response.Close();
             }
 
             return false;
