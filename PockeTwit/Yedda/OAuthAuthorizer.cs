@@ -45,31 +45,9 @@ using ICSettings;
 
 namespace OAuth
 {
-    //
-    // Configuration information for an OAuth client
-    //
-    //public static class OAuthConfig
-    //{
-    //    // keys, callbacks
-    //    public static string ConsumerKey = "eejwjEguCY80lgPYhp1ag";
-    //    public static string Callback = string.Empty; //oob?
-    //    public static string ConsumerSecret = "hhaFilap5NWXtdXeTVCnOl5H2lEzK8hyWqDQaVamc";
-    //    public static string TwitPicKey = "5b976ad6e50575acef064fe98ae67bcc";
-    //    public static string BitlyKey = string.Empty;
-    //    public static string MobyPictureKey = "p0ck3tTTTTw";
-
-    //    // Urls
-    //    public static string RequestTokenUrl = "http://api.twitter.com/oauth/request_token";
-    //    public static string AccessTokenUrl = "http://api.twitter.com/oauth/access_token";
-    //    public static string AuthorizeUrl = "http://api.twitter.com/oauth/authorize";
-    //    public static string VerifyUrl = "http://api.twitter.com/1/account/verify_credentials.json";
-    //}
-
-    //
-    // These static methods only require the access token:
-    //    AuthorizeRequest
-    //    AuthorizeTwitPic
-    //
+    /// <summary>
+    /// OAuth authorising methods.
+    /// </summary>
     public class OAuthAuthorizer
     {
         private static DataContract.Authorisation.OAuth _config = ICSettings.OAuthSettings.GetSettings("Twitter");
