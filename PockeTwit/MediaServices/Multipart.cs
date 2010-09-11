@@ -51,13 +51,24 @@ namespace PockeTwit.MediaServices
             Upload(request);
             using (WebResponse response = request.GetResponse())
             {
-                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                try
                 {
-                    XmlDocument responseXML = new XmlDocument();
-                    string resp = reader.ReadToEnd();
-                    responseXML.LoadXml(resp);
-                    return responseXML;
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        XmlDocument responseXML = new XmlDocument();
+                        string resp = reader.ReadToEnd();
+                        reader.Close();
+                        response.Close();
+                        responseXML.LoadXml(resp);
+                        return responseXML;
+                    }                        
                 }
+                catch (Exception e)
+                {
+                    response.Close();
+                    throw e; // re-throw it
+                }
+
             }
         }
         
@@ -100,7 +111,7 @@ namespace PockeTwit.MediaServices
                 ContentLength += message.Length + footer.Length + FileHeaderLength;
                 request.ContentLength = ContentLength;
             }
-            catch(NotSupportedException nse)
+            catch(NotSupportedException /*nse*/)
             {
                 request.SendChunked = true;
             }
@@ -112,7 +123,6 @@ namespace PockeTwit.MediaServices
                 // now send each file
                 byte[] buffer = new byte[2048];
                 int read;
-                int FileNum = 0;
                 List<string>.Enumerator fchEnum = FileContentHeaders.GetEnumerator();
                 foreach(KeyValuePair<string, MultipartFile> kvp in Files)
                 {

@@ -441,15 +441,17 @@ namespace PockeTwit.MediaServices
                 contents.Add("key", APPLICATION_NAME);
 
                 if (!string.IsNullOrEmpty(ppo.Message))
+                {
                     contents.Add("message", ppo.Message);
+                    string hashTags = FindHashTags(ppo.Message, ",", 32);
+                    if (!string.IsNullOrEmpty(hashTags))
+                    {
+                        contents.Add("tags", hashTags);
+                    }
+                }
                 else
                     contents.Add("message", "");
 
-                string hashTags = FindHashTags(ppo.Message, ",", 32);
-                if (!string.IsNullOrEmpty(hashTags))
-                {
-                    contents.Add("tags", hashTags);
-                }
 
                 if (!string.IsNullOrEmpty(ppo.Lat) && !string.IsNullOrEmpty(ppo.Lon))
                 {
