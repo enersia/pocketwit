@@ -167,7 +167,7 @@ namespace OAuth
 				{ "oauth_timestamp", MakeTimestamp () },
 				{ "oauth_version", "1.0" }};
 
-            string signature = MakeSignature("POST", _config.RequestTokenUrl, headers);
+            string signature = MakeSignature("GET", _config.RequestTokenUrl, headers);
             string compositeSigningKey = MakeSigningKey(_config.ConsumerSecret, null);
             string oauth_signature = MakeOAuthSignature(compositeSigningKey, signature);
 
@@ -193,7 +193,7 @@ namespace OAuth
 
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(_config.RequestTokenUrl);
             headers.Add("oauth_signature", OAuth.PercentEncode(oauth_signature));
-            request.Method = "POST";
+            request.Method = "GET";
             request.Headers.Add(HttpRequestHeader.Authorization.ToString(), HeadersToOAuth(headers));
             request.Timeout = 30000;
             HttpWebResponse response = null;
@@ -247,7 +247,7 @@ namespace OAuth
 
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(_config.AccessTokenUrl);
             headers.Add("oauth_signature", OAuth.PercentEncode(oauth_signature));
-            request.Method = "POST";
+            request.Method = "GET";
             request.Headers.Add(HttpRequestHeader.Authorization.ToString(), HeadersToOAuth(headers));
             request.Timeout = 30000;
             HttpWebResponse response = null;

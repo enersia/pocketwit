@@ -416,6 +416,8 @@ namespace PockeTwit
                 if (f.ShowDialog() == DialogResult.OK)
                 {
                     txtStatusUpdate.Text = txtStatusUpdate.Text + " " + f.URL;
+                    txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
+                    txtStatusUpdate.SelectionLength = 0;
                 }
                 f.Dispose();
             }
@@ -432,6 +434,7 @@ namespace PockeTwit
                     using (Microsoft.WindowsMobile.Forms.CameraCaptureDialog c = new Microsoft.WindowsMobile.Forms.CameraCaptureDialog())
                     {
                         c.Owner = this;
+                        this.WindowState = FormWindowState.Normal;
                         if (c.ShowDialog() == DialogResult.OK)
                         {
                             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PostUpdate));
@@ -447,6 +450,8 @@ namespace PockeTwit
                         {
                             pictureUsed = true;
                         }
+                        if(ClientSettings.IsMaximized)
+                            this.WindowState = FormWindowState.Maximized;
                         c.Dispose();
                     }
                 }
@@ -542,12 +547,15 @@ namespace PockeTwit
             using (Microsoft.WindowsMobile.Forms.SelectPictureDialog fileDialog = new Microsoft.WindowsMobile.Forms.SelectPictureDialog())
             {
                 fileDialog.Filter = fileFilter;
+                fileDialog.Owner = this;
+                this.WindowState = FormWindowState.Normal;
                 if (fileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    fileDialog.Owner = this;
                     filename = fileDialog.FileName;
                     fileDialog.Dispose();
                 }
+                if (ClientSettings.IsMaximized)
+                    this.WindowState = FormWindowState.Maximized;
             }
             return filename;
         }
@@ -557,19 +565,23 @@ namespace PockeTwit
             string filename = string.Empty;
             using (System.Windows.Forms.OpenFileDialog fileDialog = new OpenFileDialog())
             {
+                this.WindowState = FormWindowState.Normal;
                 fileDialog.Filter = fileFilter;
                 if (fileDialog.ShowDialog() == DialogResult.OK)
                 {
                     
                     filename = fileDialog.FileName;
                 }
+                if (ClientSettings.IsMaximized)
+                    this.WindowState = FormWindowState.Maximized;
             }
             return filename;
         }
 
         private void StartUpload(IPictureService mediaService, String fileName, Twitter.Account account)
         {
-            if (mediaService.CanUploadMessage && ClientSettings.SendMessageToMediaService)
+            // disabled temporarily
+            if (false /*mediaService.CanUploadMessage && ClientSettings.SendMessageToMediaService*/)
             {
                 AddPictureToForm(fileName, pictureFromStorage);
                 picturePath = fileName;
@@ -593,6 +605,9 @@ namespace PockeTwit
                             ppo.Lon = GPSLocation.Lon.ToString(CultureInfo.InvariantCulture);
                         }
                         catch { }
+                        // temporarily include the message typed so far
+                        if(!string.IsNullOrEmpty(txtStatusUpdate.Text))
+                            ppo.Message = txtStatusUpdate.Text;
                     }
 
                     Cursor.Current = Cursors.WaitCursor;
@@ -761,20 +776,20 @@ namespace PockeTwit
             }
         }
 
-        private string TrimTo140(string Original)
+        private string TrimTo140(string Original, int charMax)
         {
             try
             {
-                if (Original.Length > 140)
+                if (Original.Length > charMax)
                 {
-                    Original = TryToShrinkWith140It(Original);
+                    Original = TryToShrinkWith140It(Original, charMax);
                     txtStatusUpdate.Text = Original;
                 }
             }
             catch{}
             try
             {
-                if (Original.Length > 140)
+                if (Original.Length > charMax)
                 {
                     Original = TryToUseShortText(Original);
                     txtStatusUpdate.Text = Original;
@@ -784,12 +799,12 @@ namespace PockeTwit
             return Original;
         }
 
-        private static string TryToShrinkWith140It(string original)
+        private static string TryToShrinkWith140It(string original, int charMax)
         {
             if(PockeTwit.Localization.LocalizedMessageBox.Show("The text is too long.  Would you like to use abbreviations to shorten it?", "Long Text", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1)== System.Windows.Forms.DialogResult.Yes)
             {
                 var shrinker = new _140it();
-                return shrinker.GetShortenedText(original);
+                return shrinker.GetShortenedText(original, charMax);
             }
             return original;
         }
@@ -812,7 +827,7 @@ namespace PockeTwit
             if (!string.IsNullOrEmpty(StatusText))
             {
                 Cursor.Current = Cursors.WaitCursor;
-                var updateText = TrimTo140(StatusText);
+                var updateText = TrimTo140(StatusText, 140);
 
                 if(updateText.Length>140)
                 {
@@ -839,10 +854,17 @@ namespace PockeTwit
                         }
                         catch { }
                     }
+                    // Upload the picture
+                    if(pictureService.PostPictureMessage(ppo, _AccountToSet))
+                    {
+                        UpdatePictureData(string.Empty, false); // we've done it!
+                        // upload successful
+                        updateText += ' ' + ppo.URL;
 
-                    return pictureService.PostPictureMessage(ppo, _AccountToSet);
+                    }
+                    else
+                        return false;
                 }
-                else
                 {
 
 
@@ -901,9 +923,14 @@ namespace PockeTwit
         private void txtStatusUpdate_TextChanged(object sender, EventArgs e)
         {
             int charsAvail = 140;
-            
             int lengthLeft = charsAvail - txtStatusUpdate.Text.Length;
+            /*if (pictureUsed && pictureService != null)
+                lengthLeft -= pictureService.UrlLength;*/
             lblCharsLeft.Text = lengthLeft.ToString();
+            if (lengthLeft < 0)
+                lblCharsLeft.ForeColor = ClientSettings.ErrorColor;
+            else
+                lblCharsLeft.ForeColor = ClientSettings.ForeColor;
         }
         private void menuCancel_Click(object sender, EventArgs e)
         {
@@ -1044,14 +1071,40 @@ namespace PockeTwit
 
         private void inputPanel_EnabledChanged(object sender, EventArgs e)
         {
+            Panel[] panels = {
+                                pnlStatus,
+                                pnlAccounts,
+                                pnlToolbar
+                            };
+            bool[] conditions = {
+                                        true,
+                                        cmbAccount.Items.Count > 1,
+                                        DetectDevice.DeviceType == DeviceType.Professional
+                }; 
             // on touchscreen phones, the panel has been shown/hidden
             if (inputPanel.Enabled)
             {
-               pnlSipSize.Height = inputPanel.VisibleDesktop.Height + inputPanel.VisibleDesktop.Y - this.Top;
+                int availHeight = inputPanel.VisibleDesktop.Height + inputPanel.VisibleDesktop.Y - this.Top;
+                int safeHeight = (pnlStatus.Height * 3) / 2; // recommended height of text box
+
+                for(int i =  0; i < panels.Length; i++)
+                {
+                    if (conditions[0])
+                    {
+                        if (safeHeight + panels[i].Height > availHeight)
+                            panels[i].Visible = false;
+                        else
+                            safeHeight += panels[i].Height;
+                    }
+                }
+
+                pnlSipSize.Height = availHeight;
             }
             else
             {
                 pnlSipSize.Height = this.Height;
+                for (int i = 0; i < panels.Length; i++)
+                    panels[i].Visible = conditions[i];
             }
         }
 
@@ -1070,6 +1123,16 @@ namespace PockeTwit
                 inputPanel.EnabledChanged -= inputPanel_EnabledChanged;
                 inputPanel.Enabled = oldInputPanelState; // probably going back to the main screen
             }
+        }
+
+        private void PostUpdate_Resize(object sender, EventArgs e)
+        {
+/*            if (ClientSettings.IsMaximized)
+                this.WindowState = FormWindowState.Maximized;
+            else
+                this.WindowState = FormWindowState.Normal;*/
+//            this.BringToFront();
+
         }
     }
 }

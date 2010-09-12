@@ -15,6 +15,8 @@ namespace PockeTwit
         const string _pocketPcTypeString = "PocketPC";
         const string _smartphoneTypeString = "SmartPhone";
         const uint SPI_GETPLATFORMTYPE=257;
+        const uint SPI_GETOEMINFO= 258;
+        
 
 		#endregion Fields 
 
@@ -45,6 +47,14 @@ namespace PockeTwit
 		#endregion Properties 
 
 		#region Methods (2) 
+
+        public static string GetOEMName()
+        {
+            StringBuilder oemName = new StringBuilder(256);
+            SystemParametersInfo(SPI_GETOEMINFO, 256, oemName, 0);
+            return oemName.ToString();
+        }
+
 
 
 		// Private Methods (2) 

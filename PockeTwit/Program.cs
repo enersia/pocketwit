@@ -68,6 +68,8 @@ namespace PockeTwit
             }
             System.Text.StringBuilder b = new System.Text.StringBuilder();
             b.Append("From v" + UpgradeChecker.currentVersion.ToString());
+            if(UpgradeChecker.devBuild)
+                b.Append(" dev build " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision);
             b.Append("\r\n");
             b.Append(ex.Message);
             b.Append("\r\n");
@@ -88,6 +90,21 @@ namespace PockeTwit
                 b.Append(ex.InnerException.StackTrace);
                 b.Append("\r\n");
             }
+            b.Append("_________________");
+            b.Append("\r\n");
+            try
+            {
+                b.Append(string.Format("OEM Device Name: {0}\r\n", DetectDevice.GetOEMName()));
+                b.Append(string.Format("OS Version: {0} ({1})\r\n", Environment.OSVersion.ToString(), Microsoft.WindowsCE.Forms.SystemSettings.Platform.ToString()));
+                b.Append(string.Format(".NET CLR Version: {0}\r\n", Environment.Version.ToString()));
+            }
+            catch (Exception)
+            {
+                b.Append("Exception loading device information.");
+            }
+            b.Append("\r\n");
+            b.Append("_________________");
+
             using (System.IO.StreamWriter w = new System.IO.StreamWriter(ErrorPath + "\\crash.txt"))
             {
                 w.Write(b.ToString());

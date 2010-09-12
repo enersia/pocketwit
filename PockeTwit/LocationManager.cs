@@ -14,7 +14,7 @@ namespace PockeTwit
 
         public delegate void delLocationReady(GeoCoord Location);
         public event delLocationReady LocationReady;
-        private GPS.GpsPosition position = null;
+        private PockeTwit.Position.GeoCoord position = null;
         private GPS.Gps gps = new PockeTwit.GPS.Gps();
 
         private IPositionProvider ril = null;
@@ -78,7 +78,8 @@ namespace PockeTwit
             {
                 if (pe.status == PositionEventArgs.PositionStatus.Valid)
                 {
-                    LocationReady(pe.position);
+                    position = pe.position;
+                    LocationReady(position);
                     if (sender == ril && ril != null) ril.Enabled = false; // if we've got a fix from RIL, stop it
                 }
             }

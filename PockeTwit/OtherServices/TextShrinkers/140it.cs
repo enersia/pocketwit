@@ -7,15 +7,20 @@ namespace PockeTwit.OtherServices.TextShrinkers
 {
     class _140it : ITextShrinker
     {
-        private const string API = "http://140it.com/api/shrink?char_max=140&text={0}";
+        private const string API = "http://140it.com/api/shrink?char_max={1}&text={0}";
         public string GetShortenedText(string originalText)
         {
-            if(originalText.Length<141)
+            return GetShortenedText(originalText, 140);
+        }
+
+        public string GetShortenedText(string originalText, int charMax)
+        {
+            if(originalText.Length <= charMax)
             {
                 return originalText;
             }
             var encodedText = System.Web.HttpUtility.UrlEncode(originalText);
-            var urlToCall = string.Format(API, encodedText);
+            var urlToCall = string.Format(API, encodedText, charMax);
             var response = ExecuteGetCommand(urlToCall);
             if (!string.IsNullOrEmpty(response))
             {

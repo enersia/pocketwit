@@ -25,6 +25,7 @@ namespace PockeTwit
         public AboutForm()
         {
             InitializeComponent();
+            lnkSystem.Visible = true/*UpgradeChecker.devBuild*/;
             PockeTwit.Themes.FormColors.SetColors(this);
             PockeTwit.Localization.XmlBasedResourceManager.LocalizeForm(this);
             lblWait.ForeColor = ClientSettings.FieldForeColor;
@@ -62,7 +63,7 @@ namespace PockeTwit
                 panel1.SuspendLayout();
                 panel1.Controls.Remove(lblWait);
                 int topOfLabel = 0;
-                int labelWidth = panel1.Width / 2;
+                int labelWidth = (panel1.ClientSize.Width * 9) / 20; 
                 foreach (Contributors.Contributor s in ContributorChecker.ContributorsList)
                 {
 
@@ -92,7 +93,7 @@ namespace PockeTwit
                 }
                 LinkLabel YouToo = new LinkLabel();
                 YouToo.Text = Localization.XmlBasedResourceManager.GetString("Your name can be here!");
-                YouToo.Width = panel1.Width - 2;
+                YouToo.Width = panel1.ClientSize.Width - 2;
                 YouToo.Height = ClientSettings.TextSize+5;
                 YouToo.Click += new EventHandler(YouToo_Click);
                 YouToo.Top = topOfLabel;
@@ -214,6 +215,29 @@ namespace PockeTwit
                 PockeTwit.Localization.LocalizedMessageBox.Show("There is no default web browser defined for the OS.");
             }
         }
+
+        private void panel1_GotFocus(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lnkSystem_Click(object sender, EventArgs e)
+        {
+            txtSys.Visible = !txtSys.Visible;
+            if (txtSys.Visible)
+            {
+                StringBuilder b = new StringBuilder();
+                b.Append("v" + UpgradeChecker.currentVersion.ToString());
+                if (UpgradeChecker.devBuild)
+                    b.Append(" dev build " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Revision);
+                b.Append("\r\n\r\n");
+                b.Append(string.Format("OEM Device Name:\r\n    {0}\r\n", DetectDevice.GetOEMName()));
+                b.Append(string.Format("OS Version:\r\n    {0} ({1})\r\n", Environment.OSVersion.ToString(), Microsoft.WindowsCE.Forms.SystemSettings.Platform.ToString()));
+                b.Append(string.Format(".NET CLR Version:\r\n    {0}\r\n", Environment.Version.ToString()));
+                txtSys.Text = b.ToString();
+            }
+        }
+
 
     }
 }

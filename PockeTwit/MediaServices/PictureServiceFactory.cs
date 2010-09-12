@@ -70,6 +70,9 @@ namespace PockeTwit.MediaServices
             serviceList.Add(TweetPhoto.Instance);
             //serviceList.Add(ImgLy.Instance);
 
+            // new service which contacted us - need API key if we want to use it
+            //serviceList.Add(TwitrPix.Instance);
+
             //setup every service the same way
             foreach (IPictureService service in serviceList)
             {

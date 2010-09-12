@@ -520,6 +520,7 @@
     </Compile>
     <Compile Include="FingerUI\SpellingCorrections\SpellChecker.cs" />
     <Compile Include="IProfileViewer.cs" />
+    <Compile Include="MediaServices\TwitrPix.cs" />
     <Compile Include="MediaServices\Multipart.cs" />
     <Compile Include="MediaServices\SimplifiedTwitPic.cs" />
     <Compile Include="Mono\HttpRequestHeader.cs" />
