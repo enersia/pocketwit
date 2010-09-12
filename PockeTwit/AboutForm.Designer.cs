@@ -55,9 +55,9 @@ namespace PockeTwit
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtSys = new System.Windows.Forms.TextBox();
             this.lblWait = new System.Windows.Forms.Label();
             this.lnkContributors = new System.Windows.Forms.LinkLabel();
-            this.txtSys = new System.Windows.Forms.TextBox();
             this.lnkSystem = new System.Windows.Forms.LinkLabel();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -83,7 +83,7 @@ namespace PockeTwit
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblVersion.Font = new System.Drawing.Font("Tahoma", 11F, System.Drawing.FontStyle.Bold);
             this.lblVersion.ForeColor = System.Drawing.Color.LightGray;
-            this.lblVersion.Location = new System.Drawing.Point(8, 6);
+            this.lblVersion.Location = new System.Drawing.Point(7, 5);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(162, 20);
             this.lblVersion.Text = "v0.0";
@@ -122,6 +122,17 @@ namespace PockeTwit
             this.panel1.Size = new System.Drawing.Size(232, 172);
             this.panel1.GotFocus += new System.EventHandler(this.panel1_GotFocus);
             // 
+            // txtSys
+            // 
+            this.txtSys.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtSys.Location = new System.Drawing.Point(0, 0);
+            this.txtSys.Multiline = true;
+            this.txtSys.Name = "txtSys";
+            this.txtSys.ReadOnly = true;
+            this.txtSys.Size = new System.Drawing.Size(232, 172);
+            this.txtSys.TabIndex = 5;
+            this.txtSys.Visible = false;
+            // 
             // lblWait
             // 
             this.lblWait.Location = new System.Drawing.Point(4, 4);
@@ -139,19 +150,6 @@ namespace PockeTwit
             this.lnkContributors.TabIndex = 2;
             this.lnkContributors.Text = "Contributors: (How can you help?)";
             this.lnkContributors.Click += new System.EventHandler(this.lnkContributors_Click);
-            // 
-            // txtSys
-            // 
-            this.txtSys.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSys.Location = new System.Drawing.Point(0, 0);
-            this.txtSys.Multiline = true;
-            this.txtSys.Name = "txtSys";
-            this.txtSys.ReadOnly = true;
-            this.txtSys.Size = new System.Drawing.Size(232, 172);
-            this.txtSys.TabIndex = 5;
-            this.txtSys.Visible = false;
             // 
             // lnkSystem
             // 
