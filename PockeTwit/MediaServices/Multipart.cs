@@ -5,6 +5,7 @@ using System.Xml;
 using System.Web;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Forms;
 
 namespace PockeTwit.MediaServices
 {
@@ -141,7 +142,6 @@ namespace PockeTwit.MediaServices
 
                 buffer = null; // free the buffer
             }
-           
 
         }
 

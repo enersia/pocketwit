@@ -25,8 +25,8 @@ namespace PockeTwit.MediaServices
         private const string API_UPLOAD_POST_v2 = "https://api.mobypicture.com/2.0/upload.xml";
         private const string API_GET_THUMB = "http://api.mobypicture.com/?s=medium&format=plain&k=" + APPLICATION_NAME;  //The extra / for directly sticking the image-id on.
 
-        private const string API_ERROR_UPLOAD = "Failed to upload picture to MobyPicture.";
-        private const string API_ERROR_DOWNLOAD = "Failed to download picture from MobyPicture.";
+        private const string API_ERROR_UPLOAD = "Unable to upload picture to MobyPicture.";
+        private const string API_ERROR_DOWNLOAD = "Unable to download picture from MobyPicture.";
 
         private byte[] readBuffer;
         private Stream dataStream;
@@ -177,7 +177,9 @@ namespace PockeTwit.MediaServices
                     XmlDocument uploadResult = UploadPicture(API_UPLOAD, postData);
 
                     if (uploadResult == null) // occurs in the event of an error
+                    {
                         return false;
+                    }
                     if (successEvent)
                     {
                         string URL = uploadResult.SelectSingleNode("//url").InnerText;
@@ -436,9 +438,11 @@ namespace PockeTwit.MediaServices
                 request.Timeout = 20000;
                 request.AllowWriteStreamBuffering = false; // don't want to buffer 3MB files, thanks
                 request.AllowAutoRedirect = false;
+                request.Headers.Add("Action", "upload");
 
                 Multipart contents = new Multipart();
                 contents.Add("key", APPLICATION_NAME);
+                contents.Add("k", APPLICATION_NAME);
 
                 if (!string.IsNullOrEmpty(ppo.Message))
                 {
@@ -450,8 +454,9 @@ namespace PockeTwit.MediaServices
                     }
                 }
                 else
+                {
                     contents.Add("message", "");
-
+                }
 
                 if (!string.IsNullOrEmpty(ppo.Lat) && !string.IsNullOrEmpty(ppo.Lon))
                 {
@@ -499,6 +504,8 @@ namespace PockeTwit.MediaServices
         {
             try
             {
+                MessageBox.Show("start upload", "UploadPicture");
+
                 HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
                 string boundary = System.Guid.NewGuid().ToString();
           

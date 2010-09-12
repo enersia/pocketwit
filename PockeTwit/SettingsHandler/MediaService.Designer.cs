@@ -60,6 +60,7 @@
             // 
             // cbPreUpload
             // 
+            this.cbPreUpload.ThreeState = true;
             this.cbPreUpload.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.cbPreUpload.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -68,6 +69,7 @@
             this.cbPreUpload.Size = new System.Drawing.Size(234, 20);
             this.cbPreUpload.TabIndex = 14;
             this.cbPreUpload.Text = "Pre-Upload pictures";
+            this.cbPreUpload.Visible = false;
             // 
             // cmbMediaService
             // 
@@ -136,7 +138,9 @@
             this.lblPreLoadText.Location = new System.Drawing.Point(24, 136);
             this.lblPreLoadText.Name = "lblPreLoadText";
             this.lblPreLoadText.Size = new System.Drawing.Size(195, 114);
-            this.lblPreLoadText.Text = "Turning this ON will upload pictures instantly to the service without a message. A URL to the picture is placed in the message field.";
+            this.lblPreLoadText.Text = "Turning this ON will upload pictures instantly to the service without a message. " +
+                "A URL to the picture is placed in the message field.";
+            this.lblPreLoadText.Visible = false;
             // 
             // MediaService
             // 

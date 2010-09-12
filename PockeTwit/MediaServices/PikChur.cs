@@ -49,7 +49,7 @@ namespace PockeTwit.MediaServices
         {
             API_SAVE_TO_PATH = "\\ArtCache\\www.PikChur.com\\";
             API_SERVICE_NAME = "PikChur";
-            API_CAN_UPLOAD_MESSAGE = true;
+            API_CAN_UPLOAD_MESSAGE = false;
             API_CAN_UPLOAD_GPS = true;
             API_URLLENGTH = 23;
 

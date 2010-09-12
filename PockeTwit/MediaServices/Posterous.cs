@@ -43,7 +43,7 @@ namespace PockeTwit.MediaServices
             API_SAVE_TO_PATH = "\\ArtCache\\www.posterous.com\\";
             API_SERVICE_NAME = "Posterous";
             API_CAN_UPLOAD_GPS = false;
-            API_CAN_UPLOAD_MESSAGE = true;
+            API_CAN_UPLOAD_MESSAGE = false;
             API_CAN_UPLOAD = true;
             API_URLLENGTH = 28;
 

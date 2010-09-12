@@ -44,7 +44,7 @@ namespace PockeTwit.MediaServices
             API_SAVE_TO_PATH = "\\ArtCache\\www.twitgoo.com\\";
             API_SERVICE_NAME = "TwitGoo";
             API_CAN_UPLOAD_GPS = false;
-            API_CAN_UPLOAD_MESSAGE = true;
+            API_CAN_UPLOAD_MESSAGE = false;
             API_URLLENGTH = 30;
 
             API_FILETYPES.Add(new MediaType("jpg", "image/jpg", MediaTypeGroup.PICTURE));

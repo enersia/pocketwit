@@ -44,7 +44,7 @@ namespace PockeTwit.MediaServices
             API_SAVE_TO_PATH = "\\ArtCache\\www.img.ly\\";
             API_SERVICE_NAME = "ImgLy";
             API_CAN_UPLOAD_GPS = false;
-            API_CAN_UPLOAD_MESSAGE = true;
+            API_CAN_UPLOAD_MESSAGE = false;
             API_URLLENGTH = 25;
 
             API_FILETYPES.Add(new MediaType("jpg", "image/jpeg", MediaTypeGroup.PICTURE));
