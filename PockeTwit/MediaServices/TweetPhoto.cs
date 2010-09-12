@@ -425,7 +425,7 @@ namespace PockeTwit.MediaServices
 
                 //Create the form message to send in bytes
                 //byte[] message = Encoding.UTF8.GetBytes(ppo.PictureData);
-                request.ContentLength = ppo.PictureData.Length;
+                request.ContentLength = ppo.PictureStream.Length;
                 request.Timeout = 1000 * 60 * 3;  //3 minute time out
 
                 OAuthAuthorizer.AuthorizeEcho(request, _account.OAuth_token, _account.OAuth_token_secret);
