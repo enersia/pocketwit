@@ -13,9 +13,11 @@ namespace CheckDotNet
         [MTAThread]
         static void Main()
         {
-            if(Environment.Version.Major < 3 || Environment.Version.Major == 3 && Environment.Version.Minor < 5)
-                Application.Run(new CheckUpgradeForm());
-            //System.Diagnostics.Process.Start("PockeTwit.exe", "");
+
+
+            
+
+            Application.Run(new CheckUpgradeForm());
         }
     }
 }

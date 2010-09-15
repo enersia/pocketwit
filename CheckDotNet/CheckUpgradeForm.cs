@@ -8,10 +8,32 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using System.Net;
+
+using System.Runtime.InteropServices;
+
 namespace CheckDotNet
 {
     public partial class CheckUpgradeForm : Form
     {
+
+        [DllImport("coredll.dll")]
+        private static extern IntPtr GetDesktopWindow();
+
+        [DllImport("coredll.dll")]
+        private static extern IntPtr GetWindow(IntPtr hWnd, uint uCmd);
+
+        [DllImport("coredll.dll")]
+        private static extern int GetClassName(IntPtr hWnd,
+        StringBuilder lpClassName, int nMaxCount);
+
+        [DllImport("coredll.dll")]
+        private static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, out IntPtr ProcessId);
+
+        private const uint GW_HWNDLAST = 1;
+        private const uint GW_HWNDPREV = 3;
+        private const string szWceLoadClass = "MSWCELOAD";
+
+
 
         private HttpWebRequest request;
         private HttpWebResponse response;
@@ -180,6 +202,37 @@ namespace CheckDotNet
             p.StartInfo.UseShellExecute = true;
             p.Start();
             Application.Exit();
+        }
+
+        private void CabLoader_Exited(object sender, EventArgs e)
+        {
+            Show();
+        }
+        private void CheckUpgradeForm_Load(object sender, EventArgs e)
+        {
+            //System.Diagnostics.Process.Start("PockeTwit.exe", "");
+            IntPtr hwnd = GetWindow(GetDesktopWindow(), GW_HWNDLAST);
+            StringBuilder className = new StringBuilder(50);
+            IntPtr processID;
+            do
+            {
+                // Look for the loader and if it is running wait for it to finish 
+                GetClassName(hwnd, className, 50);
+                if (className.ToString() == szWceLoadClass)
+                {
+                    GetWindowThreadProcessId(hwnd, out processID);
+                    System.Diagnostics.Process p = System.Diagnostics.Process.GetProcessById(processID.ToInt32());
+                    p.Kill();
+                    //Hide();
+                    //p.EnableRaisingEvents = true;
+                    //p.Exited += CabLoader_Exited;
+                    p.WaitForExit();
+                    
+                }
+
+                hwnd = GetWindow(hwnd, GW_HWNDPREV);
+            } while (hwnd != IntPtr.Zero);
+
         }
 
     }

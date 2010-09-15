@@ -30,9 +30,9 @@
         private void InitializeComponent()
         {
             this.mainMenu1 = new System.Windows.Forms.MainMenu();
-            this.label1 = new System.Windows.Forms.Label();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.label1 = new System.Windows.Forms.Label();
             this.progressDownload = new System.Windows.Forms.ProgressBar();
             this.lblDownloading = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -41,14 +41,6 @@
             // 
             this.mainMenu1.MenuItems.Add(this.menuItem1);
             this.mainMenu1.MenuItems.Add(this.menuItem2);
-            // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(12, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(209, 70);
-            this.label1.Text = "PockeTwit requires version 3.5 of the .NET Compact Framework. Would you like to d" +
-                "ownload and run the upgrade now?";
             // 
             // menuItem1
             // 
@@ -59,6 +51,14 @@
             // 
             this.menuItem2.Text = "No";
             this.menuItem2.Click += new System.EventHandler(this.menuItem2_Click);
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(12, 14);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(209, 70);
+            this.label1.Text = "PockeTwit requires version 3.5 of the .NET Compact Framework. Would you like to d" +
+                "ownload and run the upgrade now?";
             // 
             // progressDownload
             // 
@@ -92,6 +92,7 @@
             this.Menu = this.mainMenu1;
             this.Name = "CheckUpgradeForm";
             this.Text = ".NET Upgrader";
+            this.Load += new System.EventHandler(this.CheckUpgradeForm_Load);
             this.ResumeLayout(false);
 
         }
