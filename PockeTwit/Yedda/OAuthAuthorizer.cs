@@ -154,7 +154,7 @@ namespace OAuth
                     lijst.Add(String.Format("{0}=\"{1}\"", key, value));
                 }
             }
-            return "OAuth " + String.Join(",", lijst.ToArray());
+            return "OAuth realm=\"http://api.twitter.com/\", " + String.Join(",", lijst.ToArray());
         }
 
         public bool AcquireRequestToken()

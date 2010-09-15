@@ -168,28 +168,6 @@ namespace PockeTwit.MediaServices
             {
                 try
                 {
-                    #region async
-                    //if (postData.UseAsync)
-                    //{
-                    //    workerPPO = (PicturePostObject) postData.Clone();
-                    //    workerPPO.PictureData = incoming;
-
-                    //    if (workerThread == null)
-                    //    {
-                    //        workerThread = new System.Threading.Thread(new System.Threading.ThreadStart(ProcessUpload));
-                    //        workerThread.Name = "PictureUpload";
-                    //        workerThread.Start();
-                    //    }
-                    //    else
-                    //    {
-                    //        OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.NotReady, string.Empty, "A request is already running."));
-                    //    }
-                    //}
-                    //else
-                    //{
-                    #endregion
-                    //use sync.
-
                     postData.PictureStream = file;
                     XmlDocument uploadResult = UploadPicture(API_UPLOAD, postData, account);
 
@@ -246,30 +224,6 @@ namespace PockeTwit.MediaServices
             catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_DOWNLOAD));
-            }
-            workerThread = null;
-        }
-
-        private void ProcessUpload()
-        {
-            try
-            {
-                XmlDocument uploadResult = UploadPicture(API_UPLOAD, workerPPO, account);
-
-                if (uploadResult.SelectSingleNode("rsp").Attributes["stat"].Value == "fail")
-                {
-                    string ErrorText = uploadResult.SelectSingleNode("//err").Attributes["msg"].Value;
-                    OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, ErrorText));
-                }
-                else
-                {
-                    string URL = uploadResult.SelectSingleNode("//mediaurl").InnerText;
-                    OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, URL, string.Empty, workerPPO.Filename));
-                }
-            }
-            catch (Exception)
-            {
-                OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
             }
             workerThread = null;
         }

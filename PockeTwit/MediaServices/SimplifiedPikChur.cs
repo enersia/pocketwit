@@ -10,20 +10,19 @@ using Yedda;
 
 namespace PockeTwit.MediaServices
 {
-    public class TwitrPix : PictureServiceBase
+    public class SimplifiedPikChur : PictureServiceBase
     {
         #region private properties
-        private static string TwitrPixKey = "9c6ed76cd01d4fa8f08fc4c054f04da6";
-
-        private static volatile TwitrPix _instance;
+        private static volatile SimplifiedPikChur _instance;
         private static object syncRoot = new Object();
 
-        private const string API_UPLOAD = "http://api.twitrpix.com/2/upload.xml";
-        private const string API_UPLOAD_POST = "http://api.twitrpix.com/2/upload.xml";
-        private const string API_SHOW_THUMB = "http://twitrpix.com/thumb/";  //The extra / for directly sticking the image-id on.
+        private const string API_UPLOAD = "http://api.pikchur.com/simple/upload";
+        //private const string API_SHOW_THUMB = "http://img.ly/show/large/";  //The extra / for directly sticking the image-id on.
 
-        private const string API_ERROR_UPLOAD = "Unable to upload to TwitrPix";
-        private const string API_ERROR_DOWNLOAD = "Unable to download from TwitrPix";
+        private const string API_ERROR_UPLOAD = "Unable to upload to Pikchur";
+        private const string API_ERROR_DOWNLOAD = "Unable to download from Pikchur";
+        private const string API_KEY = "fzC/xJKgGySRN82+UPYvDA";
+        private const string API_ORIGIN_ID = "MjUx";
 
         private Twitter.Account account = null;
         #endregion
@@ -39,11 +38,11 @@ namespace PockeTwit.MediaServices
         /// <summary>
         /// Private constructor for usage in singleton.
         /// </summary>
-        private TwitrPix()
+        private SimplifiedPikChur()
         {
-            API_SAVE_TO_PATH = "\\ArtCache\\www.twitrpix.com\\";
-            API_SERVICE_NAME = "TwitrPix";
-            API_CAN_UPLOAD_GPS = true;
+            API_SAVE_TO_PATH = "\\ArtCache\\pikchur.com\\";
+            API_SERVICE_NAME = "Pikchur";
+            API_CAN_UPLOAD_GPS = false;
             API_CAN_UPLOAD_MESSAGE = false;
             API_URLLENGTH = 25;
 
@@ -57,23 +56,23 @@ namespace PockeTwit.MediaServices
         /// Singleton constructor
         /// </summary>
         /// <returns></returns>
-        public static TwitrPix Instance
+        public static SimplifiedPikChur Instance
         {
-           get
-           {
-               if (_instance == null)
-               {
-                   lock (syncRoot)
-                   {
-                       if (_instance == null)
-                       {
-                           _instance = new TwitrPix();
-                           _instance.HasEventHandlersSet = false;
-                       }
-                   }
-               }
-               return _instance;
-           }
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (syncRoot)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new SimplifiedPikChur();
+                            _instance.HasEventHandlersSet = false;
+                        }
+                    }
+                }
+                return _instance;
+            }
         }
 
 
@@ -103,7 +102,7 @@ namespace PockeTwit.MediaServices
             try
             {
                 workerPPO = new PicturePostObject();
-                workerPPO.URL = pictureURL;
+                workerPPO.Message = pictureURL;
 
                 if (workerThread == null)
                 {
@@ -122,7 +121,7 @@ namespace PockeTwit.MediaServices
             }
         }
 
-        
+
         /// <summary>
         /// Post a picture
         /// </summary>
@@ -168,15 +167,18 @@ namespace PockeTwit.MediaServices
             {
                 try
                 {
+                    //use sync.
+
                     postData.PictureStream = file;
                     XmlDocument uploadResult = UploadPicture(API_UPLOAD, postData, account);
 
                     if (uploadResult == null) // occurs in the event of an error
                         return false;
-                    string URL = uploadResult.SelectSingleNode("//url").InnerText;
-                    postData.URL = URL;
-                    if(successEvent)
+                    if (successEvent)
+                    {
+                        string URL = uploadResult.SelectSingleNode("//mediaurl").InnerText;
                         OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, URL, string.Empty, postData.Filename));
+                    }
                 }
                 catch (Exception /*ex*/)
                 {
@@ -195,10 +197,16 @@ namespace PockeTwit.MediaServices
         /// <returns></returns>
         public override bool CanFetchUrl(string URL)
         {
-            const string siteMarker = "twitrpix";
+            string[] siteMarkers = {
+                "pikchur", "pk.gd", "mp.gd"
+            };
             string url = URL.ToLower();
-
-            return (url.IndexOf(siteMarker) >= 0);
+            foreach (string siteMarker in siteMarkers)
+            {
+                if(url.IndexOf(siteMarker) >= 0)
+                    return true;
+            }
+            return false;
         }
 
         #endregion
@@ -209,11 +217,28 @@ namespace PockeTwit.MediaServices
         {
             try
             {
-                string pictureURL = workerPPO.URL;
-                int imageIdStartIndex = pictureURL.LastIndexOf('/') + 1;
-                string imageID = pictureURL.Substring(imageIdStartIndex, pictureURL.Length - imageIdStartIndex);
+                string pictureURL = workerPPO.Message;
+                Uri url = new Uri(pictureURL);
+                string resultFileName = "";
+                if (url.Host.Equals("mp.gd", StringComparison.InvariantCultureIgnoreCase) || url.AbsolutePath.StartsWith("/v/", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    // video
+                    int imageIdStartIndex = pictureURL.LastIndexOf('/') + 1;
+                    string imageID = pictureURL.Substring(imageIdStartIndex, pictureURL.Length - imageIdStartIndex);
+                    resultFileName = RetrievePicture(imageID, MediaTypeGroup.VIDEO);
+                }
+                else
+                {
+                    int imageIdStartIndex = pictureURL.LastIndexOf('/') + 1;
+                    string imageID = pictureURL.Substring(imageIdStartIndex, pictureURL.Length - imageIdStartIndex);
+                    resultFileName = RetrievePicture(imageID, MediaTypeGroup.PICTURE);
+                    // picture
+                }
 
-                string resultFileName = RetrievePicture(imageID, account);
+
+
+
+                 
 
                 if (!string.IsNullOrEmpty(resultFileName))
                 {
@@ -236,13 +261,21 @@ namespace PockeTwit.MediaServices
         /// </summary>
         /// <param name="imageId">Id for the image</param>
         /// <returns></returns>
-        private string RetrievePicture(string imageId, Twitter.Account account)
+        private string RetrievePicture(string imageId, MediaTypeGroup type)
         {
             try
             {
-                HttpWebRequest myRequest = WebRequestFactory.CreateHttpRequest(API_SHOW_THUMB + imageId);
-                OAuthAuthorizer.AuthorizeEcho(myRequest, account.OAuth_token, account.OAuth_token_secret);
+                string url = "";
+                if (type == MediaTypeGroup.VIDEO)
+                {
+                    url = string.Format("http://vid.pikchur.com/vid_{0}_l.jpg", imageId);
+                }
+                else
+                {
+                    url = string.Format("http://img.pikchur.com/pic_{0}_l.jpg", imageId);
+                }
 
+                HttpWebRequest myRequest = WebRequestFactory.CreateHttpRequest(url);
                 myRequest.Method = "GET";
                 String pictureFileName = String.Empty;
 
@@ -282,8 +315,8 @@ namespace PockeTwit.MediaServices
             }
             catch (Exception)
             {
-                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_DOWNLOAD));
-                 return string.Empty;
+                OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_DOWNLOAD));
+                return string.Empty;
             }
         }
 
@@ -304,32 +337,28 @@ namespace PockeTwit.MediaServices
                 request.AllowAutoRedirect = false;
 
                 Multipart contents = new Multipart();
-                contents.Add("api_key", TwitrPixKey);
-
+                contents.Add("api_key", API_KEY);
+                contents.Add("source", API_ORIGIN_ID);
                 if (!string.IsNullOrEmpty(ppo.Message))
                     contents.Add("message", ppo.Message);
                 else
                     contents.Add("message", "");
 
-                contents.Add("media", ppo.PictureStream, Path.GetFileName(ppo.Filename));
-
-                if (!string.IsNullOrEmpty(ppo.Lat) && !string.IsNullOrEmpty(ppo.Lon))
+                string contentType = "";
+                foreach (MediaType ft in this.API_FILETYPES)
                 {
-                    contents.Add("latitude", ppo.Lat);
-                    contents.Add("longitude", ppo.Lat);
+                    if (ft.Extension.Equals(Path.GetExtension(ppo.Filename).Substring(1), StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        contentType = ft.ContentType;
+                        break;
+                    }
                 }
+
+                contents.Add("media", ppo.PictureStream, Path.GetFileName(ppo.Filename), contentType);
 
                 OAuthAuthorizer.AuthorizeEcho(request, account.OAuth_token, account.OAuth_token_secret);
 
                 return contents.UploadXML(request);
-            }
-            catch (WebException we)
-            {
-                StreamReader sr = new StreamReader(we.Response.GetResponseStream());
-                string resp = sr.ReadToEnd();
-                Console.WriteLine(resp);
-                OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));                
-                return null;
             }
             catch (Exception e)
             {

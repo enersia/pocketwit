@@ -8,6 +8,7 @@ using System.Text;
 using Yedda;
 using OAuth;
 using System.Windows.Forms;
+using System.Security.Cryptography.X509Certificates;
 
 namespace PockeTwit.MediaServices
 {
@@ -21,8 +22,8 @@ namespace PockeTwit.MediaServices
         private const string API_URL = "http://api.mobypicture.com";
 
         private const string API_UPLOAD = "http://api.mobypicture.com/";
-        private const string API_UPLOAD_V2 = "https://api.mobypicture.com/2.0/upload.xml";
-        private const string API_UPLOAD_POST_v2 = "https://api.mobypicture.com/2.0/upload.xml";
+        private const string API_UPLOAD_V2 = "http://api.mobypicture.com/2.0/upload.xml"; // https gives a read failure for some reason
+//        private const string API_UPLOAD_POST_v2 = "https://api.mobypicture.com/2.0/upload.xml";
         private const string API_GET_THUMB = "http://api.mobypicture.com/?s=medium&format=plain&k=" + APPLICATION_NAME;  //The extra / for directly sticking the image-id on.
 
         private const string API_ERROR_UPLOAD = "Unable to upload picture to MobyPicture.";
@@ -174,7 +175,7 @@ namespace PockeTwit.MediaServices
                     //use sync.
 
                     postData.PictureStream = file;
-                    XmlDocument uploadResult = UploadPicture(API_UPLOAD, postData);
+                    XmlDocument uploadResult = UploadPicture(API_UPLOAD_V2, postData);
 
                     if (uploadResult == null) // occurs in the event of an error
                     {
@@ -182,7 +183,7 @@ namespace PockeTwit.MediaServices
                     }
                     if (successEvent)
                     {
-                        string URL = uploadResult.SelectSingleNode("//url").InnerText;
+                        string URL = uploadResult.SelectSingleNode("//mediaurl").InnerText;
                         OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, URL, string.Empty, postData.Filename));
                     }
                 }
@@ -263,108 +264,6 @@ namespace PockeTwit.MediaServices
             return (url.IndexOf(siteMarker) >= 0);
         }
 
-        public void CheckCredentials()
-        {
-            
-
-            try
-            {
-
-
-
-                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(API_UPLOAD);
-                
-                request.PreAuthenticate = true;
-                request.AllowWriteStreamBuffering = true;
-                request.Headers.Add("action", "checkCredentials");
-                
-                string boundary = System.Guid.NewGuid().ToString();       
-                request.ContentType = string.Format("multipart/form-data; boundary={0}", boundary);
-                request.Method = "POST";
-                request.Timeout = 20000;
-
-                string header = string.Format("--{0}", boundary);
-                string ender = "\r\n" + header + "\r\n";
-
-                StringBuilder contents = new StringBuilder();
-                contents.Append(CreateContentPartString(header, "k", APPLICATION_NAME));
-                contents.Append(CreateContentPartString(header, "format", "xml"));
-
-                //Create the form message to send in bytes
-
-                byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
-                byte[] footer = Encoding.UTF8.GetBytes(ender);
-                request.ContentLength = message.Length + footer.Length;
-
-                OAuthAuthorizer.AuthorizeEcho(request, _account.OAuth_token, _account.OAuth_token_secret, Yedda.Twitter.OutputFormatType.XML);
-
-                using (Stream requestStream = request.GetRequestStream())
-                {
-                    requestStream.Write(message, 0, message.Length);
-                    requestStream.Write(footer, 0, footer.Length);
-                    requestStream.Flush();
-                    requestStream.Close();
-
-                    using (WebResponse response = request.GetResponse())
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            String receiverResponse = reader.ReadToEnd();
-                            //should be 0 with a following URL for the picture.
-
-                            MessageBox.Show(receiverResponse);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString() + " " + ex.InnerException);
-                
-            }
-           
-        }
-
-        public void CheckCredentialsGet()
-        {
-            try
-            {
-                Dictionary<string, string> headers = new Dictionary<string,string>();
-
-                headers.Add("action", "checkCredentials");
-                headers.Add("k", APPLICATION_NAME);
-                headers.Add("format", "xml");
-
-                string q = OAuthAuthorizer.AuthorizeRequest(_account.OAuth_token, _account.OAuth_token_secret,"GET" ,new Uri(API_UPLOAD), HeadersToString(headers));
-
-                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(q);
-                request.Method = "GET";
-                request.Timeout = 20000;
-
-                using (Stream requestStream = request.GetRequestStream())
-                {
-                    
-                    using (WebResponse response = request.GetResponse())
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            String receiverResponse = reader.ReadToEnd();
-                            //should be 0 with a following URL for the picture.
-
-                            MessageBox.Show(receiverResponse);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString() + " " + ex.InnerException);
-                
-            }
-           
-        }
-
-
         #endregion
 
         #region thread implementation
@@ -423,7 +322,6 @@ namespace PockeTwit.MediaServices
         #endregion
 
         #region private methods
-
         /// <summary>
         /// Upload a picture
         /// </summary>
@@ -442,7 +340,6 @@ namespace PockeTwit.MediaServices
 
                 Multipart contents = new Multipart();
                 contents.Add("key", APPLICATION_NAME);
-                contents.Add("k", APPLICATION_NAME);
 
                 if (!string.IsNullOrEmpty(ppo.Message))
                 {
@@ -468,6 +365,11 @@ namespace PockeTwit.MediaServices
                 OAuthAuthorizer.AuthorizeEcho(request, _account.OAuth_token, _account.OAuth_token_secret);
 
                 return contents.UploadXML(request);
+            }
+            catch (WebException ex)
+            {
+                OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, API_ERROR_UPLOAD, String.Format("Received response {0} from server ({1})", ex.Status, ex.Message)));
+                return null;
             }
             catch (Exception e)
             {

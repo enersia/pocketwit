@@ -96,8 +96,8 @@ namespace PockeTwit.MediaServices
             }
 
             //Check for empty credentials
-            if (string.IsNullOrEmpty(postData.Username) ||
-                string.IsNullOrEmpty(postData.Password))
+            if (string.IsNullOrEmpty(account.OAuth_token) ||
+                string.IsNullOrEmpty(account.OAuth_token_secret))
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
             }
@@ -114,7 +114,7 @@ namespace PockeTwit.MediaServices
                     byte[] incoming = new byte[file.Length];
                     file.Read(incoming, 0, incoming.Length);
 
-                    if (postData.UseAsync)
+                    /*if (postData.UseAsync)
                     {
                         workerPPO = (PicturePostObject)postData.Clone();
                         workerPPO.PictureData = incoming;
@@ -130,11 +130,11 @@ namespace PockeTwit.MediaServices
                             OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.NotReady, string.Empty, API_ERROR_NOTREADY));
                         }
                     }
-                    else
+                    else*/
                     {
                         //use sync.
                         postData.PictureData = incoming;
-                        XmlDocument uploadResult = UploadPicture(postData);
+                        XmlDocument uploadResult = UploadPicture(postData, account);
 
                         if (uploadResult == null)
                         {
@@ -225,8 +225,8 @@ namespace PockeTwit.MediaServices
             }
 
             //Check for empty credentials
-            if (string.IsNullOrEmpty(postData.Username) ||
-                string.IsNullOrEmpty(postData.Password))
+            if (string.IsNullOrEmpty(account.OAuth_token) ||
+                string.IsNullOrEmpty(account.OAuth_token_secret))
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                 return false;
@@ -246,7 +246,7 @@ namespace PockeTwit.MediaServices
 
                     //use sync.
                     postData.PictureData = incoming;
-                    XmlDocument uploadResult = UploadPictureAndPost(postData);
+                    XmlDocument uploadResult = UploadPictureAndPost(postData, account);
                     if (uploadResult == null)
                     {
                         //event allready thrown in upload
@@ -297,38 +297,6 @@ namespace PockeTwit.MediaServices
             catch (Exception)
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_DOWNLOAD));
-            }
-            workerThread = null;
-        }
-
-        private void ProcessUpload()
-        {
-            try
-            {
-                XmlDocument uploadResult = UploadPicture(workerPPO);
-
-                if (uploadResult == null)
-                {
-                    workerThread = null;
-                    return;
-                }
-
-                if (uploadResult.SelectSingleNode("rsp").Attributes["status"].Value != "fail")
-                {
-                    XmlNode UrlKeyNode = uploadResult.SelectSingleNode("rsp/mediaurl");
-                    string URL = UrlKeyNode.InnerText;
-                    URL = URL.Replace("\n", "");
-
-                    OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, URL, string.Empty, workerPPO.Filename));
-                }
-                else
-                {
-                    OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
-                }
-            }
-            catch (Exception)
-            {
-                OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
             }
             workerThread = null;
         }
@@ -399,7 +367,7 @@ namespace PockeTwit.MediaServices
         /// </summary>
         /// <param name="ppo"></param>
         /// <returns></returns>
-        private XmlDocument UploadPicture(PicturePostObject ppo)
+        private XmlDocument UploadPicture(PicturePostObject ppo, Twitter.Account account)
         {
            
             try
@@ -408,8 +376,6 @@ namespace PockeTwit.MediaServices
 
                 string boundary = Guid.NewGuid().ToString();
                 request.AllowWriteStreamBuffering = true;
-                request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);
-                request.Headers.Add("Accept-Language", "cs,en-us;q=0.7,en;q=0.3");
                 request.PreAuthenticate = true;
                 request.ContentType = string.Format("multipart/form-data;boundary={0}", boundary);
                 request.Headers.Add("Action", "upload");
@@ -436,7 +402,7 @@ namespace PockeTwit.MediaServices
                 byte[] message = Encoding.UTF7.GetBytes(contents.ToString());
                 byte[] footer = Encoding.UTF7.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
-
+                OAuthAuthorizer.AuthorizeEcho(request, account.OAuth_token, account.OAuth_token_secret);
                 //OAuthAuthorizer.AuthorizePixIm(request, _account.OAuth_token, _account.OAuth_token_secret);
 
                 using (Stream requestStream = request.GetRequestStream())
@@ -459,7 +425,7 @@ namespace PockeTwit.MediaServices
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //Socket exception 10054 could occur when sending large files.
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
@@ -472,7 +438,7 @@ namespace PockeTwit.MediaServices
         /// </summary>
         /// <param name="ppo"></param>
         /// <returns></returns>
-        private XmlDocument UploadPictureAndPost(PicturePostObject ppo)
+        private XmlDocument UploadPictureAndPost(PicturePostObject ppo, Twitter.Account account)
         {
             try
             {
@@ -480,9 +446,6 @@ namespace PockeTwit.MediaServices
 
                 string boundary = Guid.NewGuid().ToString();
                 request.AllowWriteStreamBuffering = true;
-                //request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);
-                //request.Headers.Add("Accept-Language", "cs,en-us;q=0.7,en;q=0.3");
-                //request.PreAuthenticate = true;
                 request.ContentType = string.Format("multipart/form-data; charset=iso-8859-1; boundary={0}", boundary);
                 request.TransferEncoding = "binary";
                 
@@ -511,7 +474,7 @@ namespace PockeTwit.MediaServices
                 byte[] footer = Encoding.UTF8.GetBytes(ender);
                 request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
 
-                //OAuthAuthorizer.AuthorizePixIm(request, _account.OAuth_token, _account.OAuth_token_secret);
+                OAuthAuthorizer.AuthorizeEcho(request, account.OAuth_token, account.OAuth_token_secret);
 
                 using (Stream requestStream = request.GetRequestStream())
                 {

@@ -129,11 +129,6 @@ namespace PockeTwit.MediaServices
             {
                 try
                 {
-                    //Load the picture data
-                    //var incoming = new byte[file.Length];
-                    //file.Read(incoming, 0, incoming.Length);
-
-
                     if (postData.UseAsync)
                     {
                         _workerPpo = (PicturePostObject)postData.Clone();
@@ -153,9 +148,8 @@ namespace PockeTwit.MediaServices
                     else
                     {
                         //use sync.
-                        //postData.PictureData = incoming;
                         postData.PictureStream = file;
-                        XmlDocument uploadResult = UploadPictureMessage(API_UPLOAD, postData);
+                        XmlDocument uploadResult = UploadPictureMessage(API_UPLOAD, postData, account);
 
                         if (uploadResult == null)
                         {
@@ -280,7 +274,7 @@ namespace PockeTwit.MediaServices
         {
             try
             {
-                XmlDocument uploadResult = UploadPictureMessage(API_UPLOAD, _workerPpo);
+                XmlDocument uploadResult = UploadPictureMessage(API_UPLOAD, _workerPpo, _account);
 
                 var nm = new XmlNamespaceManager(uploadResult.NameTable);
                 nm.AddNamespace("tweetPhoto", "http://tweetphotoapi.com");
@@ -395,7 +389,7 @@ namespace PockeTwit.MediaServices
         /// <param name="url">URL to upload picture to</param>
         /// <param name="ppo">Postdata</param>
         /// <returns></returns>
-        private XmlDocument UploadPictureMessage(string url, PicturePostObject ppo)
+        private XmlDocument UploadPictureMessage(string url, PicturePostObject ppo, Twitter.Account account)
         {
             try
             {
@@ -424,11 +418,10 @@ namespace PockeTwit.MediaServices
                 }
 
                 //Create the form message to send in bytes
-                //byte[] message = Encoding.UTF8.GetBytes(ppo.PictureData);
                 request.ContentLength = ppo.PictureStream.Length;
                 request.Timeout = 1000 * 60 * 3;  //3 minute time out
 
-                OAuthAuthorizer.AuthorizeEcho(request, _account.OAuth_token, _account.OAuth_token_secret);
+                OAuthAuthorizer.AuthorizeEcho(request, account.OAuth_token, account.OAuth_token_secret);
 
                 using (Stream requestStream = request.GetRequestStream())
                 {

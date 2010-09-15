@@ -58,20 +58,23 @@ namespace PockeTwit.MediaServices
         {
             serviceList = new ArrayList();
             //Adding services hardcoded, maybe something like reflection could be used?
-            //serviceList.Add(TwitPic.Instance);
-            serviceList.Add(SimplifiedTwitPic.Instance);
-            serviceList.Add(MobyPicture.Instance);
-            serviceList.Add(yFrog.Instance);
-            //serviceList.Add(PikChur.Instance);
+            serviceList.Add(SimplifiedTwitPic.Instance); /* Confirmed upload and download*/
+            serviceList.Add(MobyPicture.Instance); /* Confirmed upload and download*/
+            serviceList.Add(yFrog.Instance); /* Confirmed upload and download*/
+            serviceList.Add(SimplifiedPikChur.Instance); /* Confirmed upload and download*/
             //Apparantly it still doesn't work...
-            //serviceList.Add(PixIm.Instance);
-            //serviceList.Add(TwitGoo.Instance);
-            serviceList.Add(Posterous.Instance);
-            serviceList.Add(TweetPhoto.Instance);
-            //serviceList.Add(ImgLy.Instance);
+            serviceList.Add(TwitGoo.Instance); /* Confirmed upload and download*/
+            serviceList.Add(Posterous.Instance); /* Confirmed upload - no download support atm*/
 
             // new service which contacted us - need API key if we want to use it
-            //serviceList.Add(TwitrPix.Instance);
+            serviceList.Add(TwitrPix.Instance); /* Confirmed upload and download*/
+
+            if (UpgradeChecker.devBuild)
+            {
+                serviceList.Add(TweetPhoto.Instance); // returning a 500 error response
+                serviceList.Add(ImgLy.Instance); // returning a 500 error response
+                serviceList.Add(PixIm.Instance); // <==== seems to be dead?
+            }
 
             //setup every service the same way
             foreach (IPictureService service in serviceList)
