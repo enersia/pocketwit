@@ -27,7 +27,7 @@ namespace CheckDotNet
         StringBuilder lpClassName, int nMaxCount);
 
         [DllImport("coredll.dll")]
-        private static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, out IntPtr ProcessId);
+        private static extern IntPtr GetWindowThreadProcessId(IntPtr hWnd, ref int ProcessId);
 
         private const uint GW_HWNDLAST = 1;
         private const uint GW_HWNDPREV = 3;
@@ -213,27 +213,39 @@ namespace CheckDotNet
             //System.Diagnostics.Process.Start("PockeTwit.exe", "");
             IntPtr hwnd = GetWindow(GetDesktopWindow(), GW_HWNDLAST);
             StringBuilder className = new StringBuilder(50);
-            IntPtr processID;
+            int processID = 0;
             do
             {
                 // Look for the loader and if it is running wait for it to finish 
                 GetClassName(hwnd, className, 50);
                 if (className.ToString() == szWceLoadClass)
                 {
-                    GetWindowThreadProcessId(hwnd, out processID);
-                    System.Diagnostics.Process p = System.Diagnostics.Process.GetProcessById(processID.ToInt32());
-                    p.Kill();
-                    //Hide();
-                    //p.EnableRaisingEvents = true;
-                    //p.Exited += CabLoader_Exited;
-                    p.WaitForExit();
-                    
+                    try
+                    {
+                        GetWindowThreadProcessId(hwnd, ref processID);
+                        System.Diagnostics.Process p = System.Diagnostics.Process.GetProcessById(processID);
+                        p.Kill();
+                        //Hide();
+                        //p.EnableRaisingEvents = true;
+                        //p.Exited += CabLoader_Exited;
+                        p.WaitForExit();
+                    }
+                    catch (Exception ex) // it closed before we got to it?
+                    {
+                        Close(); // can't do it
+                    }
                 }
 
                 hwnd = GetWindow(hwnd, GW_HWNDPREV);
             } while (hwnd != IntPtr.Zero);
 
         }
+
+        private void label1_ParentChanged(object sender, EventArgs e)
+        {
+
+        }
+
 
     }
 }

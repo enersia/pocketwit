@@ -32,9 +32,9 @@
             this.mainMenu1 = new System.Windows.Forms.MainMenu();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
-            this.label1 = new System.Windows.Forms.Label();
             this.progressDownload = new System.Windows.Forms.ProgressBar();
             this.lblDownloading = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -52,21 +52,13 @@
             this.menuItem2.Text = "No";
             this.menuItem2.Click += new System.EventHandler(this.menuItem2_Click);
             // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(12, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(209, 70);
-            this.label1.Text = "PockeTwit requires version 3.5 of the .NET Compact Framework. Would you like to d" +
-                "ownload and run the upgrade now?";
-            // 
             // progressDownload
             // 
             this.progressDownload.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.progressDownload.Location = new System.Drawing.Point(4, 110);
+            this.progressDownload.Location = new System.Drawing.Point(4, 120);
             this.progressDownload.Name = "progressDownload";
-            this.progressDownload.Size = new System.Drawing.Size(233, 20);
+            this.progressDownload.Size = new System.Drawing.Size(231, 20);
             this.progressDownload.Visible = false;
             // 
             // lblDownloading
@@ -74,11 +66,21 @@
             this.lblDownloading.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblDownloading.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.lblDownloading.Location = new System.Drawing.Point(4, 86);
+            this.lblDownloading.Location = new System.Drawing.Point(4, 98);
             this.lblDownloading.Name = "lblDownloading";
-            this.lblDownloading.Size = new System.Drawing.Size(233, 20);
+            this.lblDownloading.Size = new System.Drawing.Size(206, 20);
             this.lblDownloading.Text = "Downloading...";
             this.lblDownloading.Visible = false;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label1.Location = new System.Drawing.Point(6, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(229, 84);
+            this.label1.Text = "PockeTwit requires version 3.5 of the .NET Compact Framework. Would you like to d" +
+                "ownload and run the upgrade now?";
             // 
             // CheckUpgradeForm
             // 
@@ -99,11 +101,11 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.MenuItem menuItem1;
         private System.Windows.Forms.MenuItem menuItem2;
         private System.Windows.Forms.ProgressBar progressDownload;
         private System.Windows.Forms.Label lblDownloading;
+        private System.Windows.Forms.Label label1;
     }
 }
 
