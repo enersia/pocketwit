@@ -132,9 +132,9 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblError.BackColor = System.Drawing.Color.Black;
             this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(5, 212);
+            this.lblError.Location = new System.Drawing.Point(5, 193);
             this.lblError.Name = "lblError";
-            this.lblError.Size = new System.Drawing.Size(232, 56);
+            this.lblError.Size = new System.Drawing.Size(232, 39);
             this.lblError.Text = "Unable to verify username and password";
             this.lblError.Visible = false;
             // 
@@ -159,7 +159,7 @@
             // 
             // TbPin
             // 
-            this.TbPin.Location = new System.Drawing.Point(39, 140);
+            this.TbPin.Location = new System.Drawing.Point(43, 100);
             this.TbPin.Name = "TbPin";
             this.TbPin.Size = new System.Drawing.Size(66, 21);
             this.TbPin.TabIndex = 41;
@@ -169,7 +169,7 @@
             // lPin
             // 
             this.lPin.ForeColor = System.Drawing.Color.LightGray;
-            this.lPin.Location = new System.Drawing.Point(5, 140);
+            this.lPin.Location = new System.Drawing.Point(9, 100);
             this.lPin.Name = "lPin";
             this.lPin.Size = new System.Drawing.Size(28, 20);
             this.lPin.Text = "Pin:";
@@ -179,7 +179,7 @@
             // 
             this.ImTwitter.BackColor = System.Drawing.Color.Transparent;
             this.ImTwitter.Image = ((System.Drawing.Image)(resources.GetObject("ImTwitter.Image")));
-            this.ImTwitter.Location = new System.Drawing.Point(5, 103);
+            this.ImTwitter.Location = new System.Drawing.Point(6, 63);
             this.ImTwitter.Name = "ImTwitter";
             this.ImTwitter.Size = new System.Drawing.Size(24, 24);
             this.ImTwitter.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -187,7 +187,7 @@
             // 
             // Ll_Twitter
             // 
-            this.Ll_Twitter.Location = new System.Drawing.Point(35, 109);
+            this.Ll_Twitter.Location = new System.Drawing.Point(36, 69);
             this.Ll_Twitter.Name = "Ll_Twitter";
             this.Ll_Twitter.Size = new System.Drawing.Size(120, 18);
             this.Ll_Twitter.TabIndex = 40;

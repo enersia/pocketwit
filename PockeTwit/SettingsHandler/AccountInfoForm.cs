@@ -171,6 +171,10 @@ namespace PockeTwit
                 txtPassword.Visible = false;
                 lblPassword.Visible = false;
                 txtPassword.Text = ClientSettings.PingApi;
+
+                txtUserName.Visible = true;
+                lblUser.Visible = true;
+              
                 lblUser.Text = "Ping.FM Key";
                 linkLabel1.Visible = true;
                 if (DetectDevice.DeviceType == DeviceType.Professional)
@@ -192,6 +196,9 @@ namespace PockeTwit
                 txtPassword.Text = "";
                 txtPassword.Visible = false;
                 lblPassword.Visible = false;
+
+                txtUserName.Visible = false;
+                lblUser.Visible = false;
                  
                 linkLabel1.Visible = false;
                 lblUser.Text = "User";
@@ -202,9 +209,13 @@ namespace PockeTwit
             }
             else
             {
+
                 txtPassword.Text = "";
                 txtPassword.Visible = true;
                 lblPassword.Visible = true;
+
+                txtUserName.Visible = true;
+                lblUser.Visible = true;
 
                 linkLabel1.Visible = false;
                 Ll_Twitter.Visible = false;
