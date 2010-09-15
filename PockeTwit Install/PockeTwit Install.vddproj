@@ -45,7 +45,7 @@
         "Entry"
         {
         "MsmKey" = "8:_02DA0C6FB14D3F636A9EE654B84EFB65"
-        "OwnerKey" = "8:_3620C1D44B3EA5A83ACDE456F5122E50"
+        "OwnerKey" = "8:_03F4EC7A1986056B150693B3C2298F00"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -106,6 +106,18 @@
         {
         "MsmKey" = "8:_02DA0C6FB14D3F636A9EE654B84EFB65"
         "OwnerKey" = "8:_5339B6AB137646602F5835FAFB4549C1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_03F4EC7A1986056B150693B3C2298F00"
+        "OwnerKey" = "8:_40E71D37BA55489FBE0B2DC740587735"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_03F4EC7A1986056B150693B3C2298F00"
+        "OwnerKey" = "8:_9DB647ECAD2FD70AA1EB10E2A932B020"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -177,6 +189,12 @@
         "Entry"
         {
         "MsmKey" = "8:_255BF6B6FA3A91AB283AACA7E719D28F"
+        "OwnerKey" = "8:_5CBB29B70AB54882573FEA3534DF481E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_255BF6B6FA3A91AB283AACA7E719D28F"
         "OwnerKey" = "8:_8194857C320346A397B93F05E25A89E1"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -212,14 +230,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_3620C1D44B3EA5A83ACDE456F5122E50"
-        "OwnerKey" = "8:_40E71D37BA55489FBE0B2DC740587735"
+        "MsmKey" = "8:_324D863B1AA21738148ED3BD5481A4B7"
+        "OwnerKey" = "8:_5CBB29B70AB54882573FEA3534DF481E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_3620C1D44B3EA5A83ACDE456F5122E50"
-        "OwnerKey" = "8:_9DB647ECAD2FD70AA1EB10E2A932B020"
+        "MsmKey" = "8:_324D863B1AA21738148ED3BD5481A4B7"
+        "OwnerKey" = "8:_44E4C3276203FF210BC6B539B24A8E91"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -280,6 +298,30 @@
         {
         "MsmKey" = "8:_5B76AAC387257875B43B1F8CE66F7D32"
         "OwnerKey" = "8:_8194857C320346A397B93F05E25A89E1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5B76AAC387257875B43B1F8CE66F7D32"
+        "OwnerKey" = "8:_6767427E025BEFDF3FE765FC1151AEF2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5B76AAC387257875B43B1F8CE66F7D32"
+        "OwnerKey" = "8:_5CBB29B70AB54882573FEA3534DF481E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5B76AAC387257875B43B1F8CE66F7D32"
+        "OwnerKey" = "8:_51BC00A2907EA64350FF9DD704DB3F0E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5B76AAC387257875B43B1F8CE66F7D32"
+        "OwnerKey" = "8:_44E4C3276203FF210BC6B539B24A8E91"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -350,6 +392,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_6A774A77F9F30763AF4283887B2187EB"
+        "OwnerKey" = "8:_51BC00A2907EA64350FF9DD704DB3F0E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6BE297CC44A191F2F412BAAA2C9E1A0C"
         "OwnerKey" = "8:_40E71D37BA55489FBE0B2DC740587735"
         "MsmSig" = "8:_UNDEFINED"
@@ -382,6 +430,30 @@
         {
         "MsmKey" = "8:_A5BEC62F022195F9327047851A24F816"
         "OwnerKey" = "8:_6A774A77F9F30763AF4283887B2187EB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A5BEC62F022195F9327047851A24F816"
+        "OwnerKey" = "8:_6767427E025BEFDF3FE765FC1151AEF2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A5BEC62F022195F9327047851A24F816"
+        "OwnerKey" = "8:_5CBB29B70AB54882573FEA3534DF481E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A5BEC62F022195F9327047851A24F816"
+        "OwnerKey" = "8:_51BC00A2907EA64350FF9DD704DB3F0E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A5BEC62F022195F9327047851A24F816"
+        "OwnerKey" = "8:_44E4C3276203FF210BC6B539B24A8E91"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -770,6 +842,34 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{E4F2F62A-3940-4BF5-A031-F7FA98CAAFFA}:_03F4EC7A1986056B150693B3C2298F00"
+            {
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DataContract, Version=1.0.3906.30225, Culture=neutral, PublicKeyToken=346a4ff7224986ad"
+                "ScatterAssemblies"
+                {
+                    "_03F4EC7A1986056B150693B3C2298F00"
+                    {
+                    "Name" = "8:DataContract.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DataContract.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"
+            "Condition" = "8:"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "Register" = "3:0"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{E4F2F62A-3940-4BF5-A031-F7FA98CAAFFA}:_0CC7379446C1E8E316538F98AA883B12"
             {
             "AssemblyIsInGAC" = "11:FALSE"
@@ -1055,34 +1155,6 @@
             "SharedLegacy" = "11:FALSE"
             "Register" = "3:0"
             "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{E4F2F62A-3940-4BF5-A031-F7FA98CAAFFA}:_3620C1D44B3EA5A83ACDE456F5122E50"
-            {
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:DataContract, Version=1.0.3906.30225, Culture=neutral, PublicKeyToken=346a4ff7224986ad"
-                "ScatterAssemblies"
-                {
-                    "_3620C1D44B3EA5A83ACDE456F5122E50"
-                    {
-                    "Name" = "8:DataContract.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:DataContract.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"
-            "Condition" = "8:"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "Register" = "3:0"
-            "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -1879,7 +1951,7 @@
         {
             "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_40E71D37BA55489FBE0B2DC740587735"
             {
-            "SourcePath" = "8:..\\PockeTwit\\obj\\DevBuild\\PockeTwit.exe"
+            "SourcePath" = "8:..\\PockeTwit\\obj\\Release\\PockeTwit.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"
@@ -1907,7 +1979,7 @@
             }
             "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_47D1F07DBAA548958E1F36C71E760EF5"
             {
-            "SourcePath" = "8:..\\AutoRunInstall\\Pocket PC 2003 (ARMV4)\\Debug\\AutoRunInstall.dll"
+            "SourcePath" = "8:..\\AutoRunInstall\\Pocket PC 2003 (ARMV4)\\Release\\AutoRunInstall.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"
@@ -1933,7 +2005,7 @@
             }
             "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_8194857C320346A397B93F05E25A89E1"
             {
-            "SourcePath" = "8:..\\CheckDotNet\\obj\\Debug\\CheckDotNet.exe"
+            "SourcePath" = "8:..\\CheckDotNet\\obj\\Release\\CheckDotNet.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"
@@ -1959,7 +2031,7 @@
             }
             "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_A449DB30D6934B66A486B4BEE0ED7C4A"
             {
-            "SourcePath" = "8:..\\QuickPost\\bin\\Debug\\Debug\\QuickPost.exe"
+            "SourcePath" = "8:..\\QuickPost\\bin\\Release\\Release\\QuickPost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"
@@ -1985,7 +2057,7 @@
             }
             "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_CCBE87BED0C749C2910A51AFB4AE3C44"
             {
-            "SourcePath" = "8:..\\PockeTwitTodayPlugin\\Windows Mobile 5.0 Pocket PC SDK (ARMV4I)\\Debug\\PockeTwitTodayPlugin.dll"
+            "SourcePath" = "8:..\\PockeTwitTodayPlugin\\Windows Mobile 5.0 Pocket PC SDK (ARMV4I)\\Release\\PockeTwitTodayPlugin.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_A3791BF54CC441AE87C9343C26F02D8A"

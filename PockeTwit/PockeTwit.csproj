@@ -348,9 +348,7 @@
     <Content Include="SQLite.Interop.065.DLL">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestCode\Desert.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <None Include="TestCode\Desert.jpg" />
     <Content Include="Themes\DeepPurple\DeepPurple.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
