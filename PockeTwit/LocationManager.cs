@@ -12,7 +12,13 @@ namespace PockeTwit
         //http://maps.google.com/staticmap?center=37.393891,-122.066517&markers=37.400465,-122.073003,red&path=rgba:0x0000FF80,weight:5|37.40489,-122.05261&zoom=13&size=500x300&key=ABQIAAAA-6_yG-9k0X8KgfnjWXnHpBRtiFeQlxP7WphYAvKAZsrpIYWXFxQBOiC3o3mV0Wc7L8i2JnuMvxLdRQ
         //private const GoogleAPIKey = "ABQIAAAA-6_yG-9k0X8KgfnjWXnHpBRtiFeQlxP7WphYAvKAZsrpIYWXFxQBOiC3o3mV0Wc7L8i2JnuMvxLdRQ";
 
-        public delegate void delLocationReady(GeoCoord Location);
+        public enum LocationSource
+        {
+            RIL,
+            GPS
+        };
+
+        public delegate void delLocationReady(GeoCoord Location, LocationSource Source);
         public event delLocationReady LocationReady;
         private PockeTwit.Position.GeoCoord position = null;
         private GPS.Gps gps = new PockeTwit.GPS.Gps();
@@ -43,6 +49,7 @@ namespace PockeTwit
 
         public void StartGPS()
         {
+            position = null;
             if (ClientSettings.UseGPS)
             {
                 gps.LocationChanged += new PockeTwit.GPS.LocationChangedEventHandler(gps_LocationChanged);
@@ -73,14 +80,18 @@ namespace PockeTwit
 
         private void RILPositionChanged(object sender, PositionEventArgs pe)
         {
-            IFormatProvider format = new System.Globalization.CultureInfo(1033);
+            PositionChanged(sender, pe);
+            ril.Enabled = false; // got a location through RIL, stop before we loop again
+        }
+
+        private void PositionChanged(object sender, PositionEventArgs pe)
+        {
             if (LocationReady != null)
             {
                 if (pe.status == PositionEventArgs.PositionStatus.Valid)
                 {
                     position = pe.position;
-                    LocationReady(position);
-                    if (sender == ril && ril != null) ril.Enabled = false; // if we've got a fix from RIL, stop it
+                    LocationReady(position, sender== ril ? LocationSource.RIL : LocationSource.GPS);
                 }
             }
         }
@@ -89,8 +100,8 @@ namespace PockeTwit
         {
             PositionEventArgs.PositionStatus stat = PositionEventArgs.PositionStatus.Invalid;
             PockeTwit.Position.GeoCoord le = new PockeTwit.Position.GeoCoord(0, 0);
-            
-            
+
+           
             if (gps.Opened)
             {
                 try
@@ -111,11 +122,12 @@ namespace PockeTwit
                 }
 
             }
-            RILPositionChanged(sender, new PositionEventArgs(stat, le, DateTime.Now));
             // once we know where we are precisely, stop looking
-            if(stat == PositionEventArgs.PositionStatus.Valid)
-                StopGPS();
-
+            if (stat == PositionEventArgs.PositionStatus.Valid && ril != null)
+                ril.Enabled = false; // turn RIL off immediately
+            PositionChanged(sender, new PositionEventArgs(stat, le, DateTime.Now));
+            if (stat == PositionEventArgs.PositionStatus.Valid)
+                StopGPS(); // and stop GPS
         }
     }
 }

@@ -196,37 +196,37 @@ namespace PockeTwit
         }
 
         
-        void l_LocationReady(GeoCoord Location)
+        void l_LocationReady(GeoCoord Location, LocationManager.LocationSource Source)
         {
             // We're in a separate thread, probably - grab the places from Twitter
             if (Location != null)
             {
-
+                if (GPSLocation != null && Source == LocationManager.LocationSource.RIL)
+                    return; // if we've got a location and RIL gives another one, ignore it
                 Twitter Conn = Servers.CreateConnection(AccountToSet);
                 if (Conn is PlaceAPI)
                 {
                     PlaceAPI PlaceSearch = Conn as PlaceAPI;
                     places = PlaceSearch.GetNearbyPlaces(Location);
                 }
-                DoLocationReady(Location);
+                DoLocationReady(Location, Source);
             }            
         }
 
-        void DoLocationReady(GeoCoord Location)
+        void DoLocationReady(GeoCoord Location, LocationManager.LocationSource Source)
         {
             try
             {
                 if (InvokeRequired)
                 {
                     LocationManager.delLocationReady d = new LocationManager.delLocationReady(DoLocationReady);
-                    BeginInvoke(d, Location);
+                    BeginInvoke(d, Location, Source);
                 }
                 else
                 {
-                    //LocationFinder.StopGPS();
-                    // It might be from the cell location, so keep looking for GPS
                     GPSLocation = Location;
                     lblGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Location Found");
+                    lblGPS.Text += " (" + Source.ToString() + ")";
                     if (DetectDevice.DeviceType == DeviceType.Standard)
                     {
                         // just enable the menuItem
@@ -239,6 +239,11 @@ namespace PockeTwit
                     {
                         picInsertGPSLink.Visible = true;
                     }
+                    Place selP = null; // currently selected place, if any
+                    if (cmbPlaces.SelectedItem is Place)
+                    {
+                        selP = cmbPlaces.SelectedItem as Place;
+                    }
                     cmbPlaces.Items.Clear();
                     cmbPlaces.Visible = true;
                     cmbPlaces.Items.Add(GPSLocation);
@@ -247,6 +252,23 @@ namespace PockeTwit
                     {
                         foreach (Place p in places)
                             cmbPlaces.Items.Add(p);
+                    }
+                    foreach (object item in cmbPlaces.Items)
+                    {
+                        if (item is Place)
+                        {
+                            Place p = item as Place;
+                            if (p.Equals(selP))
+                            {
+                                cmbPlaces.SelectedItem = p;
+                                break;
+                            }
+                        }
+                    }
+                    if (cmbPlaces.SelectedItem is GeoCoord && selP != null) // not selected a place
+                    {
+                        cmbPlaces.Items.Add(selP);
+                        cmbPlaces.SelectedItem = selP;
                     }
                 }
             }
@@ -268,6 +290,7 @@ namespace PockeTwit
             LocationFinder.StopGPS(); // in case it's running
             LocationFinder.StartGPS();
             lblGPS.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Seeking GPS");
+            GPSLocation = null;
             //pictureLocation.Visible = false;
             //lblGPS.Visible = true;
         }

@@ -86,7 +86,7 @@ namespace PockeTwit
         }
 
 
-        void Locator_LocationReady(GeoCoord Location)
+        void Locator_LocationReady(GeoCoord Location, LocationManager.LocationSource Source)
         {
             GPSLocation = Location;
             GPSLocked();
