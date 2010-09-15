@@ -21,6 +21,8 @@
     <ApplicationIcon>PockeTwit.ico</ApplicationIcon>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>PockeTwitKey.snk</AssemblyOriginatorKeyFile>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -520,6 +522,7 @@
     </Compile>
     <Compile Include="FingerUI\SpellingCorrections\SpellChecker.cs" />
     <Compile Include="IProfileViewer.cs" />
+    <Compile Include="MediaServices\SimplifiedPikChur.cs" />
     <Compile Include="MediaServices\TwitrPix.cs" />
     <Compile Include="MediaServices\Multipart.cs" />
     <Compile Include="MediaServices\SimplifiedTwitPic.cs" />
