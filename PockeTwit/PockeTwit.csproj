@@ -68,6 +68,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CustomMarshalers" />
+    <Reference Include="DataContract, Version=1.0.3911.33191, Culture=neutral, PublicKeyToken=346a4ff7224986ad, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\DataContract.dll</HintPath>
+    </Reference>
     <Reference Include="ICSettings, Version=1.0.3905.29643, Culture=neutral, PublicKeyToken=346a4ff7224986ad, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libraries\ICSettings.dll</HintPath>
@@ -714,12 +718,6 @@
     <Compile Include="MediaServices\PicturePostObject.cs" />
     <Compile Include="MediaServices\PictureServiceFactory.cs" />
     <Compile Include="Yedda\OAuthAuthorizer.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DataContract\DataContract.csproj">
-      <Project>{58E973CD-461A-46C0-9CFE-25A44C78FC75}</Project>
-      <Name>DataContract</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CompactFramework.CSharp.targets" />
   <ProjectExtensions>

@@ -23,3 +23,8 @@ C:\Project\pocketwit35\pocketwit\CustomInstallLib\bin\Debug\CustomInstallLib.pdb
 C:\Project\pocketwit35\pocketwit\CustomInstallLib\obj\Debug\ResolveAssemblyReference.cache
 C:\Project\pocketwit35\pocketwit\CustomInstallLib\obj\Debug\CustomInstallLib.dll
 C:\Project\pocketwit35\pocketwit\CustomInstallLib\obj\Debug\CustomInstallLib.pdb
+C:\Project\pocketwit35\CustomInstallLib\bin\Debug\CustomInstallLib.dll
+C:\Project\pocketwit35\CustomInstallLib\bin\Debug\CustomInstallLib.pdb
+C:\Project\pocketwit35\CustomInstallLib\obj\Debug\ResolveAssemblyReference.cache
+C:\Project\pocketwit35\CustomInstallLib\obj\Debug\CustomInstallLib.dll
+C:\Project\pocketwit35\CustomInstallLib\obj\Debug\CustomInstallLib.pdb

@@ -661,8 +661,11 @@ namespace PockeTwit.FingerUI
 
         public void HookKey()
         {
-            this.Parent.KeyDown += new KeyEventHandler(OnKeyDown);
-            this.Parent.KeyPress += new KeyPressEventHandler(OnKeyPress);
+            if (!this.IsDisposed)
+            {
+                this.Parent.KeyDown += new KeyEventHandler(OnKeyDown);
+                this.Parent.KeyPress += new KeyPressEventHandler(OnKeyPress);
+            }
         }
         
         public void JumpToItem(object Value)
