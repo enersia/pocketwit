@@ -727,7 +727,7 @@ namespace PockeTwit
             }
             
             //if the tweet contains a username, check for all users mentioned and reply to all 
-            if (selectedItem.Tweet.text.IndexOf("@") > 0)
+            if (selectedItem.Tweet.text.IndexOf("@") >= 0)
             {
                 char[] IgnoredAtChars = new[] { ':', ',', '-', '.', '!', '?', '~', '=', '&', '*', '>', ')', '(' };
                 System.Text.RegularExpressions.Regex GetClickables =
