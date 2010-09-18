@@ -64,7 +64,20 @@ namespace PockeTwit
             if (MaxTweets != ClientSettings.MaxTweets) { NeedsReset = true; }
             if (chkTimestamps.Checked != ClientSettings.ShowExtra) { this.NeedsReRender = true; }
             if (chkScreenName.Checked != ClientSettings.IncludeUserName) { this.NeedsReRender = true; }
-            
+
+            int newSize = int.Parse(cmbFontSize.Text);
+            if(ClientSettings.FontSize != newSize)
+            {
+                ClientSettings.FontSize = newSize;
+                NeedsReset = true;
+            }
+/*            int newSize = int.Parse(this.txtFontSize.Text);
+            if (ClientSettings.FontSize != newSize && newSize < 13 && newSize > 6)
+            {
+                ClientSettings.FontSize = int.Parse(txtFontSize.Text);
+                NeedsReset = true;
+            }*/
+
             ClientSettings.MaxTweets = MaxTweets;
             ClientSettings.UseClickables = chkClickables.Checked;
             ClientSettings.ShowExtra = chkTimestamps.Checked;
@@ -72,12 +85,6 @@ namespace PockeTwit
             ClientSettings.AutoScrollToTop = chkAutoScroll.Checked;
             ClientSettings.PopUpKeyboard = cbPopUpKeyboard.Checked;
 
-            int newSize = int.Parse(this.txtFontSize.Text);
-            if(ClientSettings.FontSize != newSize && newSize < 13 && newSize > 6)
-            {
-                ClientSettings.FontSize = int.Parse(txtFontSize.Text);
-                NeedsReset = true;
-            }
             
             CultureInfo selectedCuture = (CultureInfo)cmbLanguage.SelectedItem;
             if (PockeTwit.Localization.XmlBasedResourceManager.CultureInfo != selectedCuture)
@@ -117,7 +124,8 @@ namespace PockeTwit
             chkClickables.Checked = ClientSettings.UseClickables;
             chkScreenName.Checked = ClientSettings.IncludeUserName;
             chkAutoScroll.Checked = ClientSettings.AutoScrollToTop;
-            txtFontSize.Text = ClientSettings.FontSize.ToString();
+            //txtFontSize.Text = ClientSettings.FontSize.ToString();
+            cmbFontSize.SelectedIndex = ClientSettings.FontSize - int.Parse(cmbFontSize.Items[0].ToString());
             
             ListThemes();
             ListLanguages();

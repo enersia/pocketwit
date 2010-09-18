@@ -61,11 +61,11 @@ namespace PockeTwit
             this.label1 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
-            this.txtFontSize = new System.Windows.Forms.TextBox();
             this.chkAutoScroll = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.cmbLanguage = new System.Windows.Forms.ComboBox();
             this.cbPopUpKeyboard = new System.Windows.Forms.CheckBox();
+            this.cmbFontSize = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -177,16 +177,6 @@ namespace PockeTwit
             this.label2.Size = new System.Drawing.Size(66, 20);
             this.label2.Text = "Font Size:";
             // 
-            // txtFontSize
-            // 
-            this.txtFontSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFontSize.Location = new System.Drawing.Point(81, 181);
-            this.txtFontSize.Name = "txtFontSize";
-            this.txtFontSize.Size = new System.Drawing.Size(102, 21);
-            this.txtFontSize.TabIndex = 8;
-            this.txtFontSize.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtFontSize_KeyPress);
-            // 
             // chkAutoScroll
             // 
             this.chkAutoScroll.ForeColor = System.Drawing.Color.LightGray;
@@ -222,6 +212,21 @@ namespace PockeTwit
             this.cbPopUpKeyboard.TabIndex = 22;
             this.cbPopUpKeyboard.Text = "Auto-Popup keyboard";
             // 
+            // cmbFontSize
+            // 
+            this.cmbFontSize.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbFontSize.Items.Add("7");
+            this.cmbFontSize.Items.Add("8");
+            this.cmbFontSize.Items.Add("9");
+            this.cmbFontSize.Items.Add("10");
+            this.cmbFontSize.Items.Add("11");
+            this.cmbFontSize.Items.Add("12");
+            this.cmbFontSize.Location = new System.Drawing.Point(81, 180);
+            this.cmbFontSize.Name = "cmbFontSize";
+            this.cmbFontSize.Size = new System.Drawing.Size(102, 22);
+            this.cmbFontSize.TabIndex = 28;
+            // 
             // UISettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -229,11 +234,11 @@ namespace PockeTwit
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.cmbFontSize);
             this.Controls.Add(this.cbPopUpKeyboard);
             this.Controls.Add(this.cmbLanguage);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.chkAutoScroll);
-            this.Controls.Add(this.txtFontSize);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label1);
@@ -260,11 +265,11 @@ namespace PockeTwit
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtFontSize;
         private System.Windows.Forms.CheckBox chkAutoScroll;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ComboBox cmbLanguage;
         private System.Windows.Forms.CheckBox cbPopUpKeyboard;
+        private System.Windows.Forms.ComboBox cmbFontSize;
 
     }
 }

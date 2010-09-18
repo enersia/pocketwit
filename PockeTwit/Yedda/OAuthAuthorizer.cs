@@ -106,7 +106,15 @@ namespace OAuth
             {
                 int c = p1.Key.CompareTo(p2.Key);
                 if (c == 0)
-                    return p1.Value.CompareTo(p2.Value);
+                {
+                    string p1v = p1.Value;
+                    string p2v = p2.Value;
+                    if (p1v == null)
+                        p1v = "";
+                    if (p2v == null)
+                        p2v = "";
+                    return p1v.CompareTo(p2v);
+                }
                 else
                     return c;
             }

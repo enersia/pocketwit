@@ -267,6 +267,7 @@ namespace PockeTwit.FingerUI
         {
             if (InvokeRequired)
             {
+                // CAUSES UNHANDLED OBJECT DISPOSED EXCEPTION
                 delClearMe d = new delClearMe(this.Invalidate);
                 this.BeginInvoke(d);
             }

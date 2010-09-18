@@ -63,7 +63,7 @@ namespace PockeTwit
                 panel1.SuspendLayout();
                 panel1.Controls.Remove(lblWait);
                 int topOfLabel = 0;
-                int labelWidth = (panel1.ClientSize.Width * 9) / 20; 
+                int labelWidth = (panel1.ClientSize.Width * 4) / 10; 
                 foreach (Contributors.Contributor s in ContributorChecker.ContributorsList)
                 {
 

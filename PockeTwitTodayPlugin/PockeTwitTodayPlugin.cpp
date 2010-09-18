@@ -918,7 +918,7 @@ void StartPockeTwit()
 		TCHAR fullAppPath[256] = {0};
 		DWORD lpcbData = sizeof(szInstallDir);
 		LPCWSTR path;
-
+		LONG success = -1;
 		if (startDebugBuild == TRUE)
 		{
 			path = _T("Software\\Apps\\JustForFun PockeTwit Dev Build");
@@ -927,8 +927,22 @@ void StartPockeTwit()
 		{
 			path = _T("Software\\Apps\\JustForFun PockeTwit");
 		}
-
-		if (RegOpenKeyEx(HKEY_LOCAL_MACHINE,path,0,0,&key) == ERROR_SUCCESS)
+		
+		// try "JustForFun"
+		if ((success = RegOpenKeyEx(HKEY_LOCAL_MACHINE,path,0,0,&key)) != ERROR_SUCCESS)
+		{
+			// nope, so try "PockeTwit PockeTwit"
+			if (startDebugBuild == TRUE)
+			{
+				path = _T("Software\\Apps\\PockeTwit PockeTwit Dev Build");
+			}
+			else
+			{
+				path = _T("Software\\Apps\\PockeTwit PockeTwit");
+			}
+			success = RegOpenKeyEx(HKEY_LOCAL_MACHINE,path,0,0,&key);
+		}
+		if(success == ERROR_SUCCESS)
 		{
 			if (RegQueryValueEx(key,_T("InstallDir"),0,0,(LPBYTE)&szInstallDir, &lpcbData) == ERROR_SUCCESS)
 			{

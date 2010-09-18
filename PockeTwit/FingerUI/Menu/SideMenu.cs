@@ -373,15 +373,23 @@ namespace PockeTwit.FingerUI.Menu
             {
                 itemsToUse = ExpandedItem.SubMenuItems;
             }
-            int prevSelected = itemsToUse.IndexOf(SelectedItem);
             lock (itemsToUse)
             {
-                _selectedItem = prevSelected < itemsToUse.Count - 1 ? itemsToUse[prevSelected + 1] : itemsToUse[0];
+                int prevSelected = itemsToUse.IndexOf(SelectedItem);
+                int nextSelected = prevSelected;
+                do
+                {
+                    nextSelected = (nextSelected + 1) % itemsToUse.Count;
+                    _selectedItem = itemsToUse[nextSelected];
+                    if (nextSelected == prevSelected)
+                        break;
+                }
+                while (!_selectedItem.Visible);
             }
-            if (!_selectedItem.Visible)
+            /*if (!_selectedItem.Visible)
             {
                 SelectDown();
-            }
+            }*/
             IsDirty=true;
         }
         public void SelectUp()
@@ -394,12 +402,21 @@ namespace PockeTwit.FingerUI.Menu
             lock (itemsToUse)
             {
                 int prevSelected = itemsToUse.IndexOf(SelectedItem);
-                _selectedItem = prevSelected > 0 ? itemsToUse[prevSelected - 1] : itemsToUse[itemsToUse.Count - 1];
+                int nextSelected = prevSelected;
+                do 
+                {
+                    nextSelected = (nextSelected - 1) % itemsToUse.Count;
+                    _selectedItem = nextSelected >= 0 ? itemsToUse[nextSelected] : itemsToUse[itemsToUse.Count - 1];
+                    if (nextSelected == prevSelected) // we've gone all the way round without one that's visible
+                        break;
+                }
+                while(!_selectedItem.Visible);
             }
-            if (!_selectedItem.Visible)
+            // stack overflow in some cases!
+            /*if (!_selectedItem.Visible)
             {
                 SelectUp();
-            }
+            }*/
             IsDirty=true;
         }
 

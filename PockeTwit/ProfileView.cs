@@ -157,13 +157,17 @@ namespace PockeTwit
 
         private void lblPosition_Click(object sender, EventArgs e)
         {
-            using (ProfileMap m = new ProfileMap())
+            //Disabling this for now, because it doesn't work....
+            // I have a scrolling map which works with OpenStreetMap but needs work
+            // ^AW
+            /*using (ProfileMap m = new ProfileMap())
             {
                 m.Owner = this;
                 m.Users = new List<PockeTwit.Library.User>(new Library.User[] { _User });
                 m.ShowDialog();
                 m.Dispose();
-            }
+            }*/
+            
         }
 
         private void lblURL_Click(object sender, EventArgs e)
