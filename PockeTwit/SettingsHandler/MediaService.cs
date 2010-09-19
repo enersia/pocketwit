@@ -40,6 +40,7 @@ namespace PockeTwit
                 ClientSettings.SelectedMediaService = cmbMediaService.Items[cmbMediaService.SelectedIndex].ToString();
             }
             ClientSettings.SendMessageToMediaService = !cbPreUpload.Checked;
+            ClientSettings.DisableAllPreview = cbDisablePreview.Checked;
 
             ClientSettings.SaveSettings();
 

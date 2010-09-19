@@ -40,6 +40,7 @@
             this.chkGPS = new System.Windows.Forms.CheckBox();
             this.chkMessage = new System.Windows.Forms.CheckBox();
             this.lblPreLoadText = new System.Windows.Forms.Label();
+            this.cbDisablePreview = new System.Windows.Forms.CheckBox();
             this.pnlCapabilites.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,7 +65,7 @@
             this.cbPreUpload.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.cbPreUpload.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.cbPreUpload.Location = new System.Drawing.Point(3, 113);
+            this.cbPreUpload.Location = new System.Drawing.Point(3, 148);
             this.cbPreUpload.Name = "cbPreUpload";
             this.cbPreUpload.Size = new System.Drawing.Size(234, 20);
             this.cbPreUpload.TabIndex = 14;
@@ -135,12 +136,20 @@
             // 
             this.lblPreLoadText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblPreLoadText.Location = new System.Drawing.Point(24, 136);
+            this.lblPreLoadText.Location = new System.Drawing.Point(24, 171);
             this.lblPreLoadText.Name = "lblPreLoadText";
-            this.lblPreLoadText.Size = new System.Drawing.Size(195, 114);
+            this.lblPreLoadText.Size = new System.Drawing.Size(195, 79);
             this.lblPreLoadText.Text = "Turning this ON will upload pictures instantly to the service without a message. " +
                 "A URL to the picture is placed in the message field.";
             this.lblPreLoadText.Visible = false;
+            // 
+            // cbDisablePreview
+            // 
+            this.cbDisablePreview.Location = new System.Drawing.Point(4, 114);
+            this.cbDisablePreview.Name = "cbDisablePreview";
+            this.cbDisablePreview.Size = new System.Drawing.Size(215, 20);
+            this.cbDisablePreview.TabIndex = 16;
+            this.cbDisablePreview.Text = "Disable all previewing";
             // 
             // MediaService
             // 
@@ -148,6 +157,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.cbDisablePreview);
             this.Controls.Add(this.lblPreLoadText);
             this.Controls.Add(this.pnlCapabilites);
             this.Controls.Add(this.cbPreUpload);
@@ -173,5 +183,6 @@
         private System.Windows.Forms.CheckBox chkMessage;
         private System.Windows.Forms.Label lblMediaLabel;
         private System.Windows.Forms.Label lblPreLoadText;
+        private System.Windows.Forms.CheckBox cbDisablePreview;
     }
 }

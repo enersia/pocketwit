@@ -202,6 +202,7 @@ public static class ClientSettings
         }
     }
     public static string SelectedMediaService { get; set; }
+    public static bool DisableAllPreview { get; set; }
     public static string PreviousMediaService { get; set; }
     public static bool SendMessageToMediaService { get; set; }
     public static Queue<string> SearchItems { get; set; }
@@ -316,6 +317,14 @@ public static class ClientSettings
                 SelectedMediaService = "TwitPic"; 
             }
 
+            if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["DisableAllPreview"]))
+            {
+                DisableAllPreview = bool.Parse(ConfigurationSettings.AppSettings["DisableAllPreview"]);
+            }
+            else
+            {
+                DisableAllPreview = false;
+            }
 
             if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["SendMessageToMediaService"]))
             {
@@ -541,6 +550,7 @@ public static class ClientSettings
         ConfigurationSettings.AppSettings["CacheDir"] = CacheDir;
         ConfigurationSettings.AppSettings["SelectedMediaService"] = SelectedMediaService;
         ConfigurationSettings.AppSettings["SendMessageToMediaService"] = SendMessageToMediaService.ToString();
+        ConfigurationSettings.AppSettings["DisableAllPreview"] = DisableAllPreview.ToString();
         ConfigurationSettings.AppSettings["FontSize"] = FontSize.ToString();
         ConfigurationSettings.AppSettings["SearchItems"] = string.Join("|", SearchItems.ToArray());
         ConfigurationSettings.AppSettings["AutoTranslate"] = AutoTranslate.ToString();

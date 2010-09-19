@@ -1886,9 +1886,10 @@ namespace PockeTwit
 
         void statusList_WordClicked(string TextClicked)
         {
-            if (TextClicked.StartsWith("http"))
+            if (TextClicked.StartsWith("http",StringComparison.CurrentCultureIgnoreCase))
             {
-                if (PockeTwit.MediaServices.PictureServiceFactory.Instance.FetchServiceAvailable(TextClicked))
+                if (PockeTwit.MediaServices.PictureServiceFactory.Instance.FetchServiceAvailable(TextClicked)
+                    && !ClientSettings.DisableAllPreview)
                 {
                     Cursor.Current = Cursors.WaitCursor;
                     PockeTwit.MediaServices.IPictureService p = PockeTwit.MediaServices.PictureServiceFactory.Instance.LocateFetchService(TextClicked);
