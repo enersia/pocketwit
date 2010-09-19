@@ -18,7 +18,9 @@ namespace PockeTwit
        
         [MTAThread]
         static void Main(string[] Args)
-        {            
+        {
+            // suppress ObjectDisposedExceptions unless it's a devbuild
+            IgnoreDisposed = !UpgradeChecker.devBuild;
             bool bBackGround = false;
             if (Args.Length > 0)
             {

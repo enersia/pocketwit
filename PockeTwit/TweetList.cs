@@ -1976,8 +1976,13 @@ namespace PockeTwit
             if (CurrentlySelectedAccount.UserName == ShowUserID)
             {
                 List<status> tempList = new List<status>();
-                tempList.AddRange(Manager.GetUserTimeLine(Conn, ShowUserID));
-                tempList.AddRange(Manager.GetRetweetedByMe(Conn, ShowUserID));
+                status[] UserTimeLine = Manager.GetUserTimeLine(Conn, ShowUserID);
+                status[] UserRetweeted = Manager.GetRetweetedByMe(Conn, ShowUserID);
+                // It's not a problem if there's an error
+                if(UserTimeLine != null)
+                    tempList.AddRange(UserTimeLine);
+                if(UserRetweeted != null)
+                    tempList.AddRange(UserRetweeted);
                 tempList.Sort();
                 if (tempList.Count > 20)
                 {
@@ -2072,7 +2077,10 @@ namespace PockeTwit
                 this.statList.Visible = false;
                 IsLoaded = false;
                 SavedSearchTimeLine SavedSearch;
-                f.Owner = this;
+                // setting this is the right thing to do, but kills the 
+                // combobox - the drop-down list gets hidden behind the form
+                // WEIRD.
+                //f.Owner = this;
                 if (f.ShowDialog() == DialogResult.Cancel)
                 {
                     IsLoaded = true;
