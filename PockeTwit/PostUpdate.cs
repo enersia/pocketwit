@@ -173,8 +173,14 @@ namespace PockeTwit
 
         void userListControl1_ItemChosen(string itemText)
         {
-            txtStatusUpdate.Text = txtStatusUpdate.Text + itemText;
-            txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
+            //txtStatusUpdate.Text = txtStatusUpdate.Text + itemText;
+            //txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
+            int startPos = txtStatusUpdate.SelectionStart;
+            txtStatusUpdate.Text =
+                txtStatusUpdate.Text.Substring(0, startPos)
+                + itemText
+                + txtStatusUpdate.Text.Substring(startPos);
+            txtStatusUpdate.SelectionStart = startPos + itemText.Length;
             txtStatusUpdate.Focus();
         }
 

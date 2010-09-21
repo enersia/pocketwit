@@ -169,36 +169,33 @@ namespace PockeTwit
         }
         private void checkText(object sender, KeyPressEventArgs e)
         {
-            
-            if ((e.KeyChar >= 'a' && e.KeyChar <= 'z') || (e.KeyChar >= 'A' && e.KeyChar <= 'Z'))
+            if ((e.KeyChar >= 'a' && e.KeyChar <= 'z') || (e.KeyChar >= 'A' && e.KeyChar <= 'Z') || e.KeyChar == '_' || Char.IsDigit(e.KeyChar))
             {
                 int selectPos = _hookedBox.SelectionStart;
                 string xText = _hookedBox.Text;
                 if (selectPos >= 1)
                 {
-                    if (_hookedBox.Text.Substring(selectPos - 1, 1) == "@")
+                    if (xText[selectPos-1] == '@')
                     {
-                        if ((selectPos > 2 && xText.Substring(selectPos - 2, 1) == " ") | selectPos==1)
+                        //Don't if this isn't the first char OR if the char before is not a space
+                        if (selectPos == 1 || (selectPos > 1 && xText[selectPos - 2] == ' '))
                         {
-                            //Don't if this isn't the first char OR if the char before is not a space
                             this.inputText = e.KeyChar.ToString();
                             this.Visible = true;
                             e.Handled = true;
+                            return;
                         }
                     }
                 }
-                if (_hookedBox.SelectionStart >= 2)
+                // changed this so it only works for 'd '. Before it worked for '<anything> d '
+                // yes, it doesn't work with 'd     ', but it didn't work like that before
+                // either.
+                if (selectPos == 2 && xText[0] == 'd' && xText[1] == ' ')
                 {
-                    if (_hookedBox.Text.Substring(_hookedBox.SelectionStart - 2, 2) == "d ")
-                    {
-                        if (_hookedBox.Text.Length == 2 ||
-                            _hookedBox.Text.Substring(_hookedBox.SelectionStart - 3, 1) == " ")
-                        {
-                            this.inputText = e.KeyChar.ToString();
-                            this.Visible = true;
-                            e.Handled = true;
-                        }
-                    }
+                    this.inputText = e.KeyChar.ToString();
+                    this.Visible = true;
+                    e.Handled = true;
+                    return;
                 }
             }
         }
