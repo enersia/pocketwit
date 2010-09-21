@@ -31,13 +31,13 @@ namespace PockeTwit
 
         private void menuAccept_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(cmbMediaService.Items[cmbMediaService.SelectedIndex].ToString()))
+            if (string.IsNullOrEmpty(cmbMediaService.SelectedItem.ToString()))
             {
-                ClientSettings.SelectedMediaService = "TweetPhoto";
+                ClientSettings.SelectedMediaService = "Plixi/TweetPhoto";
             }
             else
             {
-                ClientSettings.SelectedMediaService = cmbMediaService.Items[cmbMediaService.SelectedIndex].ToString();
+                ClientSettings.SelectedMediaService = cmbMediaService.SelectedItem.ToString();
             }
             ClientSettings.SendMessageToMediaService = !cbPreUpload.Checked;
             ClientSettings.DisableAllPreview = cbDisablePreview.Checked;
@@ -67,6 +67,7 @@ namespace PockeTwit
                     return;
                 }
             }
+            cmbMediaService.SelectedItem = "Plixi/TweetPhoto";
         }
 
 

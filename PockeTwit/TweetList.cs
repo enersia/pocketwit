@@ -668,7 +668,7 @@ namespace PockeTwit
         }
         private void FollowUser()
         {
-            StatusItem selectedItem = (StatusItem)statList.SelectedItem;
+            StatusItem selectedItem = statList.SelectedItem as StatusItem;
             if (selectedItem == null) { return; }
             if (selectedItem.Tweet.user == null) { return; }
             Yedda.Twitter Conn = GetMatchingConnection(selectedItem.Tweet.Account);
@@ -676,7 +676,7 @@ namespace PockeTwit
         }
         private void FollowUser(Yedda.Twitter.Account account)
         {
-            StatusItem selectedItem = (StatusItem)statList.SelectedItem;
+            StatusItem selectedItem = statList.SelectedItem as StatusItem;
             if (selectedItem == null) { return; }
             if (selectedItem.Tweet.user == null) { return; }
             ChangeCursor(Cursors.WaitCursor);
@@ -688,8 +688,8 @@ namespace PockeTwit
         }
         private void StopFollowingUser()
         {
-            if (statList.SelectedItem == null) { return; }
-            StatusItem selectedItem = (StatusItem)statList.SelectedItem;
+            StatusItem selectedItem = statList.SelectedItem as StatusItem;
+            if (selectedItem == null) { return; }
             Yedda.Twitter Conn = GetMatchingConnection(selectedItem.Tweet.Account);
             if (PockeTwit.Localization.LocalizedMessageBox.Show("Are you sure you want to stop following {0}?", "Stop Following", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, selectedItem.Tweet.user.screen_name) == DialogResult.Yes)
             {
@@ -705,16 +705,17 @@ namespace PockeTwit
 
         private void SendDirectMessage()
         {
-            if (statList.SelectedItem == null) { return; }
-            StatusItem selectedItem = (StatusItem)statList.SelectedItem;
+            StatusItem selectedItem = statList.SelectedItem as StatusItem;
+            if (selectedItem == null) { return; }
+            
             string User = selectedItem.Tweet.user.screen_name;
             SetStatus("d " + User, selectedItem.Tweet.id);
         }
 
         private void SendReplyAll()
         {
-            if (statList.SelectedItem == null) { return; }
-            StatusItem selectedItem = (StatusItem)statList.SelectedItem;
+            StatusItem selectedItem = statList.SelectedItem as StatusItem;
+            if (selectedItem == null) { return; }
             string User = selectedItem.Tweet.user.screen_name;
             string currentUser = "@" + selectedItem.Tweet.Account.UserName;
             if (selectedItem.Tweet.isDirect)
@@ -768,8 +769,8 @@ namespace PockeTwit
 
         private void SendReply()
         {
-            if (statList.SelectedItem == null) { return; }
-            StatusItem selectedItem = (StatusItem)statList.SelectedItem;
+            StatusItem selectedItem = statList.SelectedItem as StatusItem;
+            if (selectedItem == null) { return; }
             string User = selectedItem.Tweet.user.screen_name;
             if (selectedItem.Tweet.isDirect)
             {
@@ -1441,9 +1442,10 @@ namespace PockeTwit
         }
         private void ShowProfile()
         {
+            StatusItem selectedItem = statList.SelectedItem as StatusItem;
+            if (selectedItem == null) { return; }
+
             ChangeCursor(Cursors.WaitCursor);
-            if (statList.SelectedItem == null) { return; }
-            StatusItem selectedItem = (StatusItem)statList.SelectedItem;
             IProfileViewer view;
             if (DetectDevice.DeviceType == DeviceType.Professional)
             {
@@ -1668,7 +1670,7 @@ namespace PockeTwit
             currentSpecialTimeLine = null;
             UpdateHistoryPosition();
             ChangeCursor(Cursors.WaitCursor);
-            StatusItem statItem = (StatusItem)statList.SelectedItem;
+            StatusItem statItem = statList.SelectedItem as StatusItem;
             if (statItem == null) { return; }
             ShowUserID = statItem.Tweet.user.screen_name;
             CurrentlySelectedAccount = statItem.Tweet.Account;
@@ -1703,15 +1705,18 @@ namespace PockeTwit
 
         private void DeleteStatus()
         {
-            StatusItem s = (StatusItem)statList.SelectedItem;
-            if (s.Tweet.Delete())
+            StatusItem s = statList.SelectedItem as StatusItem;
+            if (s != null)
             {
-                // refresh
-                AddStatusesToList(Manager.GetFriendsImmediately());
-            }
-            else
-            {
-                GlobalEventHandler.CallShowErrorMessage("Could not delete.");
+                if (s.Tweet.Delete())
+                {
+                    // refresh
+                    AddStatusesToList(Manager.GetFriendsImmediately());
+                }
+                else
+                {
+                    GlobalEventHandler.CallShowErrorMessage("Could not delete.");
+                }
             }
         }
 
@@ -1730,8 +1735,8 @@ namespace PockeTwit
 
             if (history == null)
             {
-                if (statList.SelectedItem == null) { return; }
-                StatusItem selectedItem = (StatusItem)statList.SelectedItem;
+                StatusItem selectedItem = statList.SelectedItem as StatusItem;
+                if (selectedItem == null) { return; }
                 if (string.IsNullOrEmpty(selectedItem.Tweet.in_reply_to_status_id)) { return; }
                 Conn = GetMatchingConnection(selectedItem.Tweet.Account);
                 lastStatus = selectedItem.Tweet;
@@ -1806,8 +1811,8 @@ namespace PockeTwit
 
         private void Quote()
         {
-            if (statList.SelectedItem == null) { return; }
-            StatusItem selectedItem = (StatusItem)statList.SelectedItem;
+            StatusItem selectedItem = statList.SelectedItem as StatusItem;
+            if (selectedItem == null) { return; }
             
             string quote = "RT @" + selectedItem.Tweet.user.screen_name + ": " + selectedItem.Tweet.text;
             SetStatus(quote, "");
@@ -1815,8 +1820,8 @@ namespace PockeTwit
 
         private void Retweet()
         {
-            if (statList.SelectedItem == null) { return; }
-            StatusItem selectedItem = (StatusItem)statList.SelectedItem;
+            StatusItem selectedItem = statList.SelectedItem as StatusItem;
+            if (selectedItem == null) { return; }
 
             if (selectedItem.Tweet.Account.UserName == selectedItem.Tweet.user.screen_name)
             {
@@ -1962,7 +1967,7 @@ namespace PockeTwit
         {
             UpdateHistoryPosition();
             ShowUserID = TextClicked.Replace("@", "");
-            StatusItem statItem = (StatusItem)statList.SelectedItem;
+            StatusItem statItem = statList.SelectedItem as StatusItem;
             if (statItem == null) { return; }
             ChangeCursor(Cursors.WaitCursor);
             HistoryItem i = new HistoryItem();

@@ -106,7 +106,7 @@ namespace FingerUI
                 Cursor.Current = Cursors.WaitCursor;
 
                 PockeTwit.Library.status stat = Status;
-
+                
                 //if (Status.retweeted_status != null)
                 //{
                 //    //why won't this work? does retweeted_status need to 
