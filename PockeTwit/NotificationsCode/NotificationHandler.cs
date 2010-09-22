@@ -97,7 +97,7 @@ namespace PockeTwit.NotificationsCode
             var ret = new List<NotificationInfoClass>();
             foreach (var notification in _notifications.Values)
             {
-                ret.Add(notification);
+                    ret.Add(notification);
             }
             return ret.ToArray();
         }
@@ -264,16 +264,24 @@ namespace PockeTwit.NotificationsCode
                         if ((infoClass.Options & Options.Vibrate) == Options.Vibrate && SoundProfileCheck.VibrateOn())
                         {
                             VibrateStart();
-                            if ((infoClass.Options & Options.Sound) == Options.Sound)
+                            try
                             {
-                                var s = new Sound(infoClass.Sound);
-                                s.Play();
+                                if ((infoClass.Options & Options.Sound) == Options.Sound)
+                                {
+                                    var s = new Sound(infoClass.Sound);
+                                    s.Play();
+                                }
+                                else
+                                {
+                                    System.Threading.Thread.Sleep(1000);
+                                }
                             }
-                            else
+                            finally
                             {
-                                System.Threading.Thread.Sleep(1000);
+                                // always turn it off
+                                // I've woken up to find the blasted phone buzzing
+                                VibrateStop();
                             }
-                            VibrateStop();
                         }
                         else if ((infoClass.Options & Options.Sound) == Options.Sound && SoundProfileCheck.VolumeOn())
                         {

@@ -68,6 +68,17 @@ namespace PockeTwit
                 PockeTwit.Localization.LocalizedMessageBox.Show("You do not currently have enough graphics memory to run PockeTwit.  Please close some applications or soft-reset and try again.", "Low Memory", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
                 return;
             }
+            // There's a special place in hell for this, but
+            // the exception can't be trapped and it doesn't do any harm
+            // No point crashing because of it
+            // This is caused by the LargeIntervalTimer in OpenNetCF.
+            // We can't change the code ourselves. Best thing in the long run
+            // would be to implement the functionality ourselves.
+            // only suppress in release builds though
+            if (!UpgradeChecker.devBuild && ex.Message.Equals("Cannot Cancel Notification Handler"))
+            {
+                return;
+            }
             System.Text.StringBuilder b = new System.Text.StringBuilder();
             b.Append("From v" + UpgradeChecker.currentVersion.ToString());
             if(UpgradeChecker.devBuild)

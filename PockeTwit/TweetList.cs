@@ -2311,7 +2311,8 @@ namespace PockeTwit
         public void ProcessArgs(string[] args)
         {
             BringToFront();
-            if (args.Length > 0)
+            // don't try and do anything if we have no accounts, or if the args are blank
+            if (ClientSettings.AccountsList.Count > 0 && args.Length > 0)
             {
                 // QuickPost called
                 string Arg = args[0];
