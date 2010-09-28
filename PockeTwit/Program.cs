@@ -116,6 +116,8 @@ namespace PockeTwit
                 b.Append("Exception loading device information.");
             }
             b.Append("\r\n");
+            b.Append(ClientSettings.AppPath);
+            b.Append("\r\n");
             b.Append("_________________");
 
             using (System.IO.StreamWriter w = new System.IO.StreamWriter(ErrorPath + "\\crash.txt"))
