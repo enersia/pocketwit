@@ -46,25 +46,17 @@ namespace PockeTwit
         
         public  void NextMessage()
         {
-            _Position++;
-            if( _Position>= _Messages.Count)
-            {
-                _Position = 0;
-            }
+            _Position = (_Position + 1) % _Messages.Count;
         }
         public void PrevMessage()
         {
-            _Position--;
-            if(_Position<0)
-            {
-                _Position = _Messages.Count-1;
-            }
+            _Position = (_Position - 1) % _Messages.Count;
         }
         public string GetMessage()
         {
             lock (_Messages)
             {
-                if (_Messages.Count > 0 && _Position <= _Messages.Count)
+                if (_Messages.Count > 0 && _Position < _Messages.Count)
                 {
                     return _Messages[_Position];
                 }
