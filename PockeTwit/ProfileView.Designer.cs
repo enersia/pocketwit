@@ -109,28 +109,28 @@
             this.lblText1.Location = new System.Drawing.Point(0, 99);
             this.lblText1.Name = "lblText1";
             this.lblText1.Size = new System.Drawing.Size(64, 20);
-            this.lblText1.Text = "Followers: ";
+            this.lblText1.Text = "Followers:";
             // 
             // lblText2
             // 
             this.lblText2.Location = new System.Drawing.Point(122, 99);
             this.lblText2.Name = "lblText2";
             this.lblText2.Size = new System.Drawing.Size(64, 20);
-            this.lblText2.Text = "Following: ";
+            this.lblText2.Text = "Following:";
             // 
             // lblText3
             // 
             this.lblText3.Location = new System.Drawing.Point(0, 121);
             this.lblText3.Name = "lblText3";
             this.lblText3.Size = new System.Drawing.Size(64, 20);
-            this.lblText3.Text = "Tweets: ";
+            this.lblText3.Text = "Tweets:";
             // 
             // lblText4
             // 
             this.lblText4.Location = new System.Drawing.Point(122, 121);
             this.lblText4.Name = "lblText4";
             this.lblText4.Size = new System.Drawing.Size(64, 20);
-            this.lblText4.Text = "Favorites: ";
+            this.lblText4.Text = "Favorites:";
             // 
             // llblFollowers
             // 
@@ -171,14 +171,14 @@
             this.lblText5.Location = new System.Drawing.Point(0, 77);
             this.lblText5.Name = "lblText5";
             this.lblText5.Size = new System.Drawing.Size(64, 20);
-            this.lblText5.Text = "Location: ";
+            this.lblText5.Text = "Location:";
             // 
             // lblText6
             // 
             this.lblText6.Location = new System.Drawing.Point(0, 141);
             this.lblText6.Name = "lblText6";
             this.lblText6.Size = new System.Drawing.Size(64, 20);
-            this.lblText6.Text = "Joined on: ";
+            this.lblText6.Text = "Joined on:";
             // 
             // lblJoinedOn
             // 

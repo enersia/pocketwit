@@ -1,0 +1,394 @@
+<root>
+−
+<!--
+ Localization file for PockeTwit. If you want to localize the UI to your own language 
+-->
+−
+<!--
+ make sure to replace all "localized" attributes with a translation. Try to stick to  
+-->
+−
+<!--
+ the original length as close as possible to avoid clipping and keep in mind that some
+-->
+−
+<!--
+ displays are smaller than others. Copy the translated file to the "Localization" dir 
+-->
+−
+<!--
+ and name it pocketwit_*.xml where * is the name of the culture to use (ex. "de" for  
+-->
+−
+<!--
+ the neutral German culture or "de-DE" for German German.                             
+-->
+−
+<!--
+ An overview of culture names can be found at                                         
+-->
+−
+<!--
+ http://msdn.microsoft.com/en-gb/library/system.globalization.cultureinfo.aspx        
+-->
+−
+<!--
+ Make sure to contribute your localization for others to use!                         
+-->
+<!-- Notifications and main menu texts -->
+<item name="OK" localized="OK"/>
+<item name="Cancel" localized="Отмена"/>
+<item name="Close" localized="Закрыть"/>
+<item name="Updating..." localized="Обновление..."/>
+<item name="Communications Error" localized="Ошибка подключения"/>
+<item name="more" localized="больше..."/>
+<!-- Notifications -->
+<item name="PockeTwit: Friends Update" localized="Новое сообщение на ленте"/>
+<item name="PockeTwit: Messages" localized="Новое личное сообщение"/>
+<!-- Time spans -->
+<item name="days" localized="дни"/>
+<item name="day" localized="день"/>
+<item name="hours" localized="часов"/>
+<item name="hour" localized="часа"/>
+<item name="min" localized="мин."/>
+<item name="about {0} {1} ago." localized="ок. {0} {1} назад."/>
+<!-- Startup -->
+<item name="Launching PockeTwit" localized="PockeTwit запускается..."/>
+<item name="Launching PockeTwit Dev" localized="Запуск..."/>
+<item name="Initializing" localized="Инициализация..."/>
+<!-- Main form -->
+<item name="Specific" localized="Спецификации"/>
+<item name="Global" localized="Общее"/>
+<item name="Let me catch up..." localized="Сообщения подгружаются..."/>
+<!-- Left menu -->
+<item name="Back" localized="Назад"/>
+<item name="Friends Timeline" localized="Лента друзей"/>
+<item name="Refresh Friends" localized="Обновить"/>
+<item name="Messages" localized="Сообщения"/>
+<item name="Refresh Messages" localized="Обновить сообщения"/>
+<item name="Groups ..." localized="Группы..."/>
+<item name="Other ..." localized="Другое..."/>
+<item name="Search/Local" localized="Поиск пользователей вокруге"/>
+<item name="Public Timeline" localized="Общая лента"/>
+<item name="View Favorites" localized="Избранное"/>
+<item name="About/Feedback" localized="Отзывы/О программе"/>
+<item name="Post Update" localized="Отправить сообщение"/>
+<item name="Settings..." localized="Настройки..."/>
+<item name="Advanced" localized="Продвинутое"/>
+<item name="Accounts" localized="Учётные записи"/>
+<item name="Avatar" localized="Аватарка/Юзерпик"/>
+<item name="Manage Groups" localized="Управление группами"/>
+<item name="Media Service" localized="Сервисы"/>
+<item name="Notifications" localized="Уведомления"/>
+<item name="UI" localized="Пользовательский интерфейс"/>
+<item name="Other" localized="Другое"/>
+<item name="Window ..." localized="Окно..."/>
+<item name="Toggle FullScreen" localized="На полный экран"/>
+<item name="Minimize" localized="Минимизировать"/>
+<item name="Exit" localized="Выход"/>
+<!-- Right menu -->
+<item name="Respond to @User..." localized="Ответить @User"/>
+<item name="Quote" localized="Цитировать @User"/>
+<item name="Retweet" localized="Копировать себе"/>
+<item name="Email Status" localized="Отправить статус"/>
+<item name="Make Favorite" localized="Сделать избранным"/>
+<item name="Remove Favorite" localized="Удалить из избранных"/>
+<item name="@User Timeline" localized="Лента @User"/>
+<item name="@User Profile" localized="Информация о @User"/>
+<item name="Stop Following" localized="Отписаться"/>
+<item name="Send to Group..." localized="Отправить в группу..."/>
+<item name="Move to Group..." localized="Переместить в группу..."/>
+<item name="Copy to Group..." localized="Скопировать в группу..."/>
+<item name="Delete Tweet" localized="Удалить запись"/>
+<item name="Show Conversation" localized="Показать беседу"/>
+<item name="Reply @User" localized="Ответить @User"/>
+<item name="Direct @User" localized="Сообщение @User"/>
+<item name="New Group" localized="Новая группа"/>
+<item name="Follow..." localized="Подписаться..."/>
+<item name="Follow" localized="Подписаться"/>
+<!-- Clickables menu -->
+<item name="Detailed View" localized="Подробнее..."/>
+<item name="Close Menu" localized="Закрыть меню"/>
+<!-- AboutForm -->
+<item name="Check Upgrades" localized="Проверить обновления"/>
+<item name="Upgrade" localized="Обновить"/>
+<item name="Let me know what you think." localized="Оставить мнение о продукте."/>
+<item name="Please wait..." localized="Пожалуйста подождите..."/>
+<item name="Contributors: (How can you help?)" localized="Как я могу помочь проекту?"/>
+<item name="Your name can be here!" localized="Ваше имя может быть здесь!"/>
+<!-- AboutUser -->
+<item name="Location:" localized="Адрес:"/>
+<item name="Followers:" localized="Подписчиков:"/>
+<item name="Tweets:" localized="Сообщений:"/>
+<item name="Joined on:" localized="С нами с:"/>
+<item name="Following:" localized="Подписан:"/>
+<item name="Favorites:" localized="Избранных:"/>
+<!-- AdvancedSearchForm -->
+<item name="Words" localized="Слова"/>
+<item name="Hash:" localized="Метки:"/>
+<item name="Phrase:" localized="Фраза:"/>
+<item name="None:" localized="Ничего:"/>
+<item name="Any:" localized="Что-то:"/>
+<item name="All:" localized="Всё:"/>
+<item name="People" localized="Человек"/>
+<item name="Ref:" localized="От:"/>
+<item name="To:" localized="Кому:"/>
+<item name="From:" localized="От:"/>
+<item name="Dates" localized="Даты"/>
+<item name="Until:" localized="До:"/>
+<item name="Since:" localized="С:"/>
+<item name="Advanced Search" localized="Продвинутый поиск"/>
+<item name="Search" localized="Поиск"/>
+<item name="More" localized="Больше"/>
+<!-- AccountInfoForm-->
+<item name="Invalid credentials or network unavailable." localized="Неверные данные или сеть недоступна."/>
+<item name="User" localized="Пользователь"/>
+<item name="Accept" localized="Применить"/>
+<item name="Server:" localized="Сервер:"/>
+<item name="Password:" localized="Пароль:"/>
+<item name="User:" localized="Пользователь:"/>
+<item name="Unable to verify username and password" localized="Не удаётся проверить имя пользователя или пароль."/>
+<item name="Default" localized="По-умолчанию"/>
+<item name="Get my ping key" localized="Получить ключ"/>
+<item name="Account Info" localized="Информация об учётной записи"/>
+<!-- AccountsForm -->
+<item name="Accounts:" localized="Учётные записи:"/>
+<item name="Add New" localized="Добавить новую"/>
+<item name="Edit Selected" localized="Редактировать"/>
+<item name="Remove Selected" localized="Удалить"/>
+<!-- AdvancedForm -->
+<item name="Done" localized="Готово"/>
+<item name="Clear Cached statuses" localized="Очистить кэш сообщений"/>
+<item name="Clear Application Settings" localized="Настройки по-умолчанию"/>
+<item name="Alternate rendering" localized="Альтернативная передача"/>
+<item name="Compact Database" localized="Сжать базу данных"/>
+<item name="AdvancedForm" localized="Продвинутое"/>
+<item name="Using DIB" localized="Использовать DIB"/>
+<item name="Using DDB" localized="Использовать DDB"/>
+<!-- AvatarSettings-->
+<item name="Clear Avatar Cache" localized="Очистить кэш аватарок/юзерпиков"/>
+<item name="Show Avatars" localized="Показать аватарки/юзерпики"/>
+<item name="High-Quality Avatars" localized="Использовать аватарки/юзерпики повышенного качества"/>
+<item name="Avatar Settings" localized="Настройки аватарок/юзерпиков"/>
+<!-- ColorPick -->
+<item name="Edit Colors" localized="Сменить тему"/>
+<!-- CrashReport -->
+<item name="Send" localized="Отправить..."/>
+<item name="Account:" localized="Учётная запись:"/>
+<item name="An unexpected error has occured.  May I send a crash report to the developer? If so, please choose the account to send from below.
+" localized="Была обнаружена ошибка. Могу ли я отправить данные разработчику? Если да, то укажите учётную запись, чтобы отправить отчёт."/>
+<item name="PockeTwit Error" localized="Ошибка PockeTwit"/>
+<!-- DefineGroup -->
+<item name="Save" localized="Сохранить"/>
+<item name="Name" localized="Имя"/>
+<item name="Define Group" localized="Определить группы"/>
+<!-- EmailStatusForm -->
+<item name="Please choose which email account you wish to send this status from." localized="Пожалуйста, укажите адрес электронной почты, на который вы хотите отправить статус."/>
+<!-- Errors -->
+<item name="Errors:" localized="Ошибки:"/>
+<item name="Errors" localized="Ошибка"/>
+<item name="Communication Errors:
+" localized="Ошибка соединения:
+"/>
+<!-- FollowUserForm -->
+<item name="Follow from this account:" localized="Подписаться с этой учётной записи:"/>
+<item name="Name:" localized="Имя:"/>
+<item name="Follow User" localized="Подписаться"/>
+<!-- GroupManagement -->
+<item name="Backup" localized="Резервная копия"/>
+<item name="Export..." localized="Экспортировать..."/>
+<item name="Import..." localized="Импортировать..."/>
+<item name="Delete" localized="Удалить"/>
+<item name="There are no groups defined" localized="Группы ещё не созданы"/>
+<item name="Group Management" localized="Управление группами"/>
+<item name="Exclusive" localized="Эксклюзив"/>
+<!-- ImagePreview -->
+<item name="Dismiss" localized="Закрыть"/>
+<item name="View" localized="Просмотр"/>
+<item name="Image Viewer" localized="Просмотреть через программу"/>
+<item name="Launch URL" localized="Отправить ссылку"/>
+<item name="Zoom To Fit" localized="Вписать в экран"/>
+<!-- MediaService -->
+<item name="Pre-Upload pictures" localized="Предзагрузка картинок"/>
+<item name="This Media service can:" localized="Этот сервис может:"/>
+<item name="include GPS" localized="Активировать GPS"/>
+<item name="include message" localized="Вставить сообщение"/>
+<item name="Turning this ON will upload pictures instantly to the service without a message. A URL to the picture is placed in the message field." localized="Включение позволит загружать картинки напрямую. Ссылка на картинку будет отдельным сообщением."/>
+<item name="{0} can: " localized="{0} может:"/>
+<!-- NotificationSettings -->
+<item name="Notification Type:" localized="Вид оповещения:"/>
+<item name="Play Sound" localized="Звуки"/>
+<item name="Sound" localized="Укажите звук:"/>
+<item name="Vibrate" localized="Вибрация"/>
+<item name="Show Notification" localized="Показывать уведомление"/>
+<item name="Play" localized="Тест"/>
+<item name="Notification Settings" localized="Настройки оповещений"/>
+<!-- OtherSettings -->
+<item name="Use GPS" localized="Использовать GPS"/>
+<item name="Automatically check for new version" localized="Автомат. проверять обновления"/>
+<item name="Automatic Update (Minutes)" localized="Автообновление ленты (мин.)"/>
+<item name="0 to disable" localized="0 для запрета автоматического обновления ленты"/>
+<item name="Auto-translate to {0}" localized="Переводить на {0} язык"/>
+<item name="Load URLs in Skweezer" localized="Укорачивать ссылки"/>
+<item name="Cache Directory:" localized="Временная папка:"/>
+<item name="Autocomplete addressbook" localized="Дополнять адресную книжку"/>
+<item name="Use proxy" localized="Использовать proxy"/>
+<item name="Other Settings" localized="Другие настройки"/>
+<!-- Post Update -->
+<item name="Submit" localized="Отправить"/>
+<item name="From Account:" localized="С учётной записи:"/>
+<item name="Seeking GPS" localized="Поиск GPS-координат"/>
+<item name="Copy" localized="Копировать"/>
+<item name="Paste" localized="Вставить"/>
+<item name="Location Found" localized="Координаты найдены"/>
+<item name="Ins. GPS Link" localized="Вставить GPS-метку"/>
+<item name="Existing Picture" localized="Внешняя картинка"/>
+<item name="Take Picture" localized="Сфотографировать"/>
+<item name="URL..." localized="Ссылка..."/>
+<item name="Update Location" localized="Обновить координату"/>
+<item name="Insert GPS Location" localized="Вставить координаты"/>
+<item name="Address Book" localized="Адресная книга"/>
+<item name="Action" localized="Действие"/>
+<item name="No location set" localized="Нет координат"/>
+<!-- ProfileMap -->
+<item name="Close Map" localized="Закрыть карту"/>
+<item name="Actions" localized="Действия"/>
+<item name="Zoom Out" localized="Увеличить"/>
+<item name="Zoom In" localized="Уменьшить"/>
+<item name="Jump To..." localized="Перейти к..."/>
+<item name="Search Here" localized="Искать здесь"/>
+<item name="Jump To:" localized="Перейти к:"/>
+<item name="ProfileMap" localized="Карты учётной записи"/>
+<!-- ProfileView -->
+<item name="ProfileView" localized="Просмотр учётной записи"/>
+<item name="No description available." localized="Нет доступных значений."/>
+<!-- SearchForm -->
+<item name="Save as Group" localized="Сохр. в группу"/>
+<item name="AutoUpdate" localized="Авт. обновление"/>
+<item name="Search Twitter:" localized="Искать:"/>
+<item name="within:" localized="в:"/>
+<item name="Miles" localized="Мили"/>
+<item name="Kilometers" localized="Километры"/>
+<item name="for:" localized="условия:"/>
+<item name="of:" localized="из:"/>
+<item name="Twitter Search" localized="Поиск"/>
+<item name="Anywhere" localized="Везде"/>
+<item name="Current GPS Position" localized="Обновить GPS-координаты"/>
+<item name="Seeking GPS...Please Wait" localized="Определение координат... Пожалуйста, подождите..."/>
+<!-- UISettings -->
+<item name="Max Length:" localized="Макс. длина:"/>
+<item name="Show times" localized="Показывать время"/>
+<item name="Clickable Links" localized="Интерактивные ссылки"/>
+<item name="Include screenname" localized="Вставлять имя"/>
+<item name="Theme:" localized="Тема:"/>
+<item name="Edit" localized="Ред."/>
+<item name="Font Size:" localized="Шрифт:"/>
+<item name="Auto-Scroll To Top" localized="Автоматическая перемотка вверх"/>
+<item name="UI Settings" localized="Настройка пользовательского интерфейса"/>
+<item name="Language:" localized="Язык:"/>
+<item name="Auto-Popup keyboard" localized="Всплывающая клавиатура"/>
+<!-- URLForm -->
+<item name="Enter the URL:" localized="Вставить ссылку:"/>
+<item name="Enter a URL" localized="Вставить ссылку"/>
+<!-- MessageBoxes -->
+<item name="{0} is the latest version." localized="Версия {0} является последней."/>
+<item name="No upgrades found." localized="Обновления не найдены."/>
+<item name="There is no default web browser defined for the OS." localized="Отсутствует браузер по-умолчанию."/>
+<item name="There was an error downloading the upgrade.  Would you like to try again?" localized="Ошибка загрузки обновления. Попробовать ещё раз?"/>
+<item name="You can download the upgrade manually from http://code.google.com/p/pocketwit/" localized="Здесь вы можете скачать обновления вручную: http://code.google.com/p/pocketwit/"/>
+<item name="A communication error occured shortening the URL. Please try again later." localized="Ошибка соединения с сервисом укорачивания ссылок. Попробовать ещё раз?"/>
+<item name="The camera is not available." localized="Камера недоступна."/>
+<item name="Unable to upload picture." localized="Не удаётся загрузить изображение."/>
+<item name="Uploading picture..." localized="Загрузка изображения..."/>
+<item name="Unable to select picture." localized="Невозможно выбрать изображение."/>
+<item name="The text is too long.  Would you like to use abbreviations to shorten it?" localized="Текст слишком большой. Использовать специальный сервис, чтобы укоотить его?"/>
+<item name="Long Text" localized="Большой текст"/>
+<item name="The text is too long.  Would you like to add a link to a site with the full text?" localized="Текст слишком большой. Укоротить и добавить ссылку на полную версию сообщения?"/>
+<item name="The text is still too long.  If you post it twitter will cut off the end.  Post anyway?" localized="Текст слишком большой. Продолжить (это действиеукоротит текст до 140 символов)?"/>
+<item name="Error posting status -- empty response.  You may want to try again later." localized="Вы ничего не ввели. Попробуйте ввести текст и повторить."/>
+<item name="Error posting status -- bad response.  You may want to try again later." localized="Ошибка отправки. Попробуйте повторить позже."/>
+<item name="Are you sure you want to cancel the update?" localized="Вы действительно хотите отменить обновление?"/>
+<item name="Paste URL in message?" localized="Вставить ссылку в сообщение?"/>
+<item name="Load a new picture?" localized="Загрузить новое изображение?"/>
+<item name="Take a new picture?" localized="Сделать фотографию и загрузить?"/>
+<item name="Uploaded picture not used, are you sure?" localized="Продолжить?"/>
+<item name="You must configure PockeTwit before using QuickPost." localized="Вы должны настроить программу перед использованием возможности QuickPost."/>
+<item name="You do not currently have enough graphics memory to run PockeTwit.  Please close some applications or soft-reset and try again." localized="Недостаточно памяти для работы программы. Перезагрузите устройство и попробуйте вновь."/>
+<item name="Low Memory" localized="Мало памяти"/>
+<item name="An unexpected error has occured and PockeTwit must shut down.
+
+You will have an opportunity to submit a crash report to the developer on the next run." localized="Произошла непредвиденная ошибка и PockeTwit аварийно завершил работу.
+
+Отправьте отчёт об ошибке разработчикам при следующем запуске."/>
+<item name="Saved searches can affect battery life. Are you sure you want to add this?" localized="Сохранение запросов может повысить загруженность устройства. Продолжть?"/>
+<item name="Saved Search" localized="Сохранение запросов"/>
+<item name="You must enter at least one account or cancel." localized="Вы должны ввести хотя бы одну учётную запись или отказаться."/>
+<item name="Are you sure you want to delete all cached statuses?" localized="Вы действительно хотите удалить кэш статусов?"/>
+<item name="Are you sure you want to delete your settings?" localized="Вы действительно хотите вернуть настройки по-умолчанию?"/>
+<item name="Compacting the database may take a few minutes.
+
+Proceed?" localized="Сжатие базы данных займёт некоторое время.
+
+Продолжить?"/>
+<item name="You should clear the cache when switching avatars.  Would you like to do that now?" localized="Вам следует очистить временные файлы. Сделать это сейчас?"/>
+<item name="This may take several minutes. Proceed?" localized="Это займёт несколько минут. Продолжить?"/>
+<item name="The avatar cache was cleared." localized="Кэш аватарок/юзерпиков был очищен."/>
+<item name="There was an error when clearing the cache. You may want to try again." localized="Ошибка очистки кэша. Вы можете вновь повторить попытку."/>
+<item name="Clear Cache" localized="Очистить кэш"/>
+<item name="Are you sure you want to remove {0} from this group?" localized="Вы действительно хотите удалить {0} из данной группы?"/>
+<item name="Remove" localized="Удалить"/>
+<item name="This will delete the {0} group.
+
+Proceed?" localized="Будет удалена группа {0}.
+
+Продолжить?"/>
+<item name="This will move all users from the {0} group and delete the group.  The users will all appear in your friends timeline.
+
+Proceed?" localized="Это удалит действие удалит группу {0} и всех пользователей из неё.
+
+Продолжить?"/>
+<item name="You will need to restart PockeTwit for the update interval to change." localized="Вам необходимо перезапустить программу для применения изменений."/>
+<item name="Unable to use that folder as a cache directory." localized="Невозможно использовать эту папку, как временную."/>
+<item name="The proxy setting is invalid. No proxy will be set." localized="Настройки proxy неверны. Выбран режим, не использующий proxy."/>
+<item name="That theme already exists, would you like to create a new one?" localized="Тема с таким названием уже существует. Выы хотите создать новую?"/>
+<item name="New Theme?" localized="Новая тема?"/>
+<item name="Battery low - disabling auto-updates.
+{0}" localized="Заряд батареи подходит к концу - отключение автообновления ленты.
+{0}"/>
+<item name="Battery charged - re-enabling auto-updates.
+{0}" localized="Батарея заряжена - возобновление автообновления ленты.
+{0}"/>
+<item name="Your settings changes require that you restart the application." localized="Необходим перезапуск программы."/>
+<item name="This will move {0} out of the Friends timeline and into the {1} group.
+
+Are you sure you want to proceed?" localized="Это действие переместит {0} пользователей в {1} группу.
+
+Вы действительно хотите продолжить?"/>
+<item name="This will copy {0} into the {1} group and still show them in the Friends timeline.
+
+Are you sure you want to proceed?" localized="Это действие скопирует {0} зпользователей в {1} группу.
+
+Вы действительно хотите продолжить?"/>
+<item name="Group User" localized="Группа"/>
+<item name="Are you sure you want to stop following {0}?" localized="Отменить подписку {0}?"/>
+<item name="Are you sure you want to reply to a Direct Message?" localized="Ответить личным сообщением?"/>
+<item name="Reply?" localized="Ответить?"/>
+<item name="There's not enough memory to run PockeTwit. You may want to close some applications and try again." localized="Мало памяти. Завершите несколько программ и попробуйте снова."/>
+<item name="Corrupt settings - {0}
+Please reconfigure." localized="Неверные настройки - {0}
+Пожалуйста, измените настройки."/>
+<item name="You don't have any email accounts set up on this phone." localized="У вас нет учётных записей электронной почты на этом устройстве."/>
+<item name="Unable to fetch picture. You may want to try again." localized="Невозможно прикрепить изображение. Вы можете повторить попытку позже."/>
+</root>
+
+<!--
+ Автор перевода: Евгений Малинин. Все замечания и предложения можете отправлять на:
+ Twitter: malinin1991
+ e-mail: malininevegniy@gmail.com
+-->
+
+<!--
+ Translator: Evgeny Malinin. All comments and suggestions send to:
+ Twitter: malinin1991
+ e-mail: malininevgeniy@gmail.com
+-->
