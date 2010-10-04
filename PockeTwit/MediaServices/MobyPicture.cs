@@ -79,6 +79,7 @@ namespace PockeTwit.MediaServices
             API_FILETYPES.Add(new MediaType("ra", "", MediaTypeGroup.AUDIO));
             API_FILETYPES.Add(new MediaType("wav", "", MediaTypeGroup.AUDIO));
             API_FILETYPES.Add(new MediaType("ogg", "", MediaTypeGroup.AUDIO));
+            API_FILETYPES.Add(new MediaType("amr", "", MediaTypeGroup.AUDIO));
         }
 
         /// <summary>
@@ -360,7 +361,7 @@ namespace PockeTwit.MediaServices
                     contents.Add("latlong", string.Format("{0},{1}", ppo.Lat, ppo.Lon));
                 }
 
-                contents.Add("media", ppo.PictureStream, Path.GetFileName(ppo.Filename));
+                contents.Add("media", ppo.PictureStream, Path.GetFileName(ppo.Filename), ppo.ContentType);
 
                 OAuthAuthorizer.AuthorizeEcho(request, _account.OAuth_token, _account.OAuth_token_secret);
 
