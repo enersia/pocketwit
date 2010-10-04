@@ -27,14 +27,17 @@ namespace PockeTwit
         private delegate void delUpdateText(string text);
 
         private IPictureService pictureService;
-        private string uploadedPictureOrigin = string.Empty;
-        private string uploadedPictureURL = string.Empty;
-        private bool uploadingPicture = false;
-        private bool pictureUsed = true;
+        //private string uploadedPictureOrigin = string.Empty;
+        //private string uploadedPictureURL = string.Empty;
+        //private bool uploadingPicture = false;
+        //private bool pictureUsed = true;
         private bool localPictureEventsSet = false;
-        private string picturePath = string.Empty;
+        //private string picturePath = string.Empty;
         private List<Place> places = null;
         private bool oldInputPanelState = false;
+
+        // this will have more features as time goes on
+        private AttachmentUploadManager UploadManager;
 
         public delegate void delAddPicture(string ImageFile, PictureBox BoxToUpdate);
         public delegate void delUpdatePictureData(string pictureUrl, bool uploadingPicture);
@@ -60,6 +63,7 @@ namespace PockeTwit
                 }
                 Yedda.Twitter t = Servers.CreateConnection(_AccountToSet);
                 AllowTwitPic = t.AllowTwitPic;
+                UploadManager.Account = _AccountToSet;
             }
         }
 
@@ -69,8 +73,10 @@ namespace PockeTwit
         {
             set
             {
-                pictureFromCamers.Visible = value;
-                pictureFromStorage.Visible = value;
+                pictureFromCamers.Visible = UploadManager.CanUpload(MediaTypeGroup.PICTURE); 
+                pictureFromStorage.Visible = UploadManager.CanUpload(MediaTypeGroup.PICTURE); 
+                picInsertVideo.Visible = value && UploadManager.CanUpload(MediaTypeGroup.VIDEO);
+                picAttachments.Visible = value && (UploadManager.CanUpload(MediaTypeGroup.DOCUMENT) || UploadManager.CanUpload(MediaTypeGroup.VIDEO) || UploadManager.CanUpload(MediaTypeGroup.AUDIO));
             }
         }
 
@@ -98,6 +104,9 @@ namespace PockeTwit
             
             InitializeComponent();
             SetImages();
+
+            pictureService = GetMediaService();
+            UploadManager = new AttachmentUploadManager(pictureService);
             
             if (ClientSettings.AutoCompleteAddressBook)
             {
@@ -135,6 +144,8 @@ namespace PockeTwit
             mainMenu1.MenuItems.Add(menuSubmit);
             pictureFromCamers.Click += new EventHandler(pictureFromCamers_Click);
             pictureFromStorage.Click += new EventHandler(pictureFromStorage_Click);
+            picInsertVideo.Click += new EventHandler(picInsertVideo_Click);
+            picAttachments.Click += new EventHandler(picAttachments_Click);
             pictureURL.Click += new EventHandler(pictureURL_Click);
             pictureLocation.Click += new EventHandler(pictureLocation_Click);
             picInsertGPSLink.Click += new EventHandler(llGPS_Click);
@@ -175,13 +186,7 @@ namespace PockeTwit
         {
             //txtStatusUpdate.Text = txtStatusUpdate.Text + itemText;
             //txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
-            int startPos = txtStatusUpdate.SelectionStart;
-            txtStatusUpdate.Text =
-                txtStatusUpdate.Text.Substring(0, startPos)
-                + itemText
-                + txtStatusUpdate.Text.Substring(startPos);
-            txtStatusUpdate.SelectionStart = startPos + itemText.Length;
-            txtStatusUpdate.Focus();
+            InsertTextAtCursor(itemText);
         }
 
         void PasteItem_Click(object sender, EventArgs e)
@@ -321,6 +326,7 @@ namespace PockeTwit
 
             pictureFromCamers.Visible = false;
             pictureFromStorage.Visible = false;
+            picAttachments.Visible = false;
             //pictureLocation.Visible = false;
             pictureURL.Visible = false;
             picAddressBook.Visible = false;
@@ -421,6 +427,8 @@ namespace PockeTwit
         {
             pictureFromCamers.Image = PockeTwit.Themes.FormColors.GetThemeIcon("takepicture", pictureFromCamers.Height);
             pictureFromStorage.Image = PockeTwit.Themes.FormColors.GetThemeIcon("existingimage", pictureFromStorage.Height);
+            picInsertVideo.Image = PockeTwit.Themes.FormColors.GetThemeIcon("video", pictureFromStorage.Height);
+            picAttachments.Image = PockeTwit.Themes.FormColors.GetThemeIcon("attachment", picAttachments.Height);
             pictureURL.Image = PockeTwit.Themes.FormColors.GetThemeIcon("url", pictureURL.Height);
             pictureLocation.Image = PockeTwit.Themes.FormColors.GetThemeIcon("map", pictureLocation.Height);
             picAddressBook.Image = PockeTwit.Themes.FormColors.GetThemeIcon("address", picAddressBook.Height);
@@ -454,120 +462,138 @@ namespace PockeTwit
 
         private void InsertPictureFromCamera()
         {
-            if (!uploadingPicture)
+            InsertPictureFromCamera(false);
+        }
+
+        private void InsertPictureFromCamera(bool video)
+        {
+            String pictureUrl = string.Empty;
+            String filename = string.Empty;
+            try
             {
-                String pictureUrl = string.Empty;
-                String filename = string.Empty;
-                try
+                using (Microsoft.WindowsMobile.Forms.CameraCaptureDialog c = new Microsoft.WindowsMobile.Forms.CameraCaptureDialog())
                 {
-                    using (Microsoft.WindowsMobile.Forms.CameraCaptureDialog c = new Microsoft.WindowsMobile.Forms.CameraCaptureDialog())
+                    c.Owner = this;
+                    if (video)
                     {
-                        c.Owner = this;
-                        this.WindowState = FormWindowState.Normal;
-                        if (c.ShowDialog() == DialogResult.OK)
-                        {
-                            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PostUpdate));
-                            pictureFromStorage.Image = PockeTwit.Themes.FormColors.GetThemeIcon("existingimage", pictureFromStorage.Height);
-                            if (DetectDevice.DeviceType == DeviceType.Standard)
-                            {
-                                pictureFromStorage.Visible = false;
-                            }
-                            uploadedPictureOrigin = "camera";
-                            filename = c.FileName;                            
-                        }
-                        else //cancelled
-                        {
-                            pictureUsed = true;
-                        }
-                        if(ClientSettings.IsMaximized)
-                            this.WindowState = FormWindowState.Maximized;
-                        c.Dispose();
+                        c.Mode = Microsoft.WindowsMobile.Forms.CameraCaptureMode.VideoWithAudio;
+                        c.VideoTypes = Microsoft.WindowsMobile.Forms.CameraCaptureVideoTypes.Standard;
                     }
-                }
-                catch
-                {
-                    PockeTwit.Localization.LocalizedMessageBox.Show("The camera is not available.", "PockeTwit");
-                    return;
-                }
-                if (string.IsNullOrEmpty(filename))
-                {
-                    return; //no file selected, so don't upload
-                }
-                try
-                {
-                    pictureService = GetMediaService();
-                    
-                    StartUpload(pictureService, filename, _AccountToSet);
-                }
-                catch
-                {
-                    PockeTwit.Localization.LocalizedMessageBox.Show("Unable to upload picture.", "PockeTwit");
+                    else
+                        c.Mode = Microsoft.WindowsMobile.Forms.CameraCaptureMode.Still;
+                    this.WindowState = FormWindowState.Normal;
+                    if (c.ShowDialog() == DialogResult.OK)
+                    {
+                        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PostUpdate));
+                        pictureFromStorage.Image = PockeTwit.Themes.FormColors.GetThemeIcon("existingimage", pictureFromStorage.Height);
+                        if (DetectDevice.DeviceType == DeviceType.Standard)
+                        {
+                            pictureFromStorage.Visible = false;
+                        }
+                        filename = c.FileName;
+                    }
+                    else
+                        return;
+                    if(ClientSettings.IsMaximized)
+                        this.WindowState = FormWindowState.Maximized;
+                    c.Dispose();
                 }
             }
-            else
+            catch
             {
-                PockeTwit.Localization.LocalizedMessageBox.Show("Uploading picture...");
+                PockeTwit.Localization.LocalizedMessageBox.Show("The camera is not available.", "PockeTwit");
+                return;
+            }
+            if (string.IsNullOrEmpty(filename))
+            {
+                return; //no file selected, so don't upload
+            }
+            try
+            {
+                pictureService = GetMediaService();
+                
+                StartUpload(pictureService, filename, _AccountToSet);
+            }
+            catch
+            {
+                PockeTwit.Localization.LocalizedMessageBox.Show("Unable to upload picture.", "PockeTwit");
             }
         }
 
+        private void InsertFile()
+        {
+            String filename = string.Empty;
+            pictureService = GetMediaService();
+
+            try
+            {
+                filename = SelectFileNormal(UploadManager.GetFileFilter(MediaTypeGroup.ALL));
+            }
+            catch
+            {
+                PockeTwit.Localization.LocalizedMessageBox.Show("Unable to select picture.", "PockeTwit");
+            }
+            if (string.IsNullOrEmpty(filename))
+                return;
+
+            try
+            {
+                StartUpload(pictureService, filename, _AccountToSet);
+            }
+            catch
+            {
+                PockeTwit.Localization.LocalizedMessageBox.Show("Unable to upload picture.", "PockeTwit");
+            }
+        }
+
+
         private void InsertPictureFromFile()
         {
-            if (!uploadingPicture)
+            String pictureUrl = string.Empty;
+            String filename = string.Empty;
+            //using (Microsoft.WindowsMobile.Forms.SelectPictureDialog s = new Microsoft.WindowsMobile.Forms.SelectPictureDialog())
+            try
             {
-                String pictureUrl = string.Empty;
-                String filename = string.Empty;
-                //using (Microsoft.WindowsMobile.Forms.SelectPictureDialog s = new Microsoft.WindowsMobile.Forms.SelectPictureDialog())
-                try
-                {
-                    pictureService = GetMediaService();
-                    filename = SelectFileVisual(pictureService.FileFilter(MediaTypeGroup.ALL));
+                pictureService = GetMediaService();
+                filename = SelectFileVisual(pictureService.FileFilter(MediaTypeGroup.PICTURE));
 
-                    //if (pictureService.CanUploadOtherMedia)
-                    //{
-                    //    if (MessageBox.Show("Upload a picture (yes) or a file (no)?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
-                    //    {
-                    //        filename = SelectFileVisual(pictureService.FileFilter(MediaTypeGroup.PICTURE));
-                    //    }
-                    //    else
-                    //    {
-                    //        filename = SelectFileNormal(pictureService.FileFilter(MediaTypeGroup.ALL));
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    filename = SelectFileVisual(pictureService.FileFilter(MediaTypeGroup.PICTURE));
-                    //}
+                //if (pictureService.CanUploadOtherMedia)
+                //{
+                //    if (MessageBox.Show("Upload a picture (yes) or a file (no)?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                //    {
+                //        filename = SelectFileVisual(pictureService.FileFilter(MediaTypeGroup.PICTURE));
+                //    }
+                //    else
+                //    {
+                //        filename = SelectFileNormal(pictureService.FileFilter(MediaTypeGroup.ALL));
+                //    }
+                //}
+                //else
+                //{
+                //    filename = SelectFileVisual(pictureService.FileFilter(MediaTypeGroup.PICTURE));
+                //}
 
-                    ComponentResourceManager resources = new ComponentResourceManager(typeof(PostUpdate));
-                    pictureFromCamers.Image = FormColors.GetThemeIcon("takepicture", pictureFromCamers.Height);
-                    if (DetectDevice.DeviceType == DeviceType.Standard)
-                    {
-                        pictureFromCamers.Visible = false;
-                    }
-                }
-                catch
+                pictureFromCamers.Image = FormColors.GetThemeIcon("takepicture", pictureFromCamers.Height);
+                if (DetectDevice.DeviceType == DeviceType.Standard)
                 {
-                    PockeTwit.Localization.LocalizedMessageBox.Show("Unable to select picture.", "PockeTwit");
+                    pictureFromCamers.Visible = false;
                 }
-                if  (string.IsNullOrEmpty(filename))
-                {
-                    pictureUsed = true;
-                    return;
-                }
-                try
-                {
-                    uploadedPictureOrigin = "file";
-                    StartUpload(pictureService, filename, _AccountToSet);
-                }
-                catch
-                {
-                    PockeTwit.Localization.LocalizedMessageBox.Show("Unable to upload picture.", "PockeTwit");
-                } 
             }
-            else
+            catch
             {
-                PockeTwit.Localization.LocalizedMessageBox.Show("Uploading picture...");
+                PockeTwit.Localization.LocalizedMessageBox.Show("Unable to select picture.", "PockeTwit");
             }
+            if  (string.IsNullOrEmpty(filename))
+                return;
+
+            try
+            {
+                StartUpload(pictureService, filename, _AccountToSet);
+            }
+            catch
+            {
+                PockeTwit.Localization.LocalizedMessageBox.Show("Unable to upload picture.", "PockeTwit");
+            } 
         }
 
         private string SelectFileVisual(String fileFilter)
@@ -609,40 +635,14 @@ namespace PockeTwit
 
         private void StartUpload(IPictureService mediaService, String fileName, Twitter.Account account)
         {
-            // disabled temporarily
-            if (false /*mediaService.CanUploadMessage && ClientSettings.SendMessageToMediaService*/)
-            {
-                AddPictureToForm(fileName, pictureFromStorage);
-                picturePath = fileName;
-                //Reduce length of message 140-pictureService.UrlLength
-                pictureUsed = true;
-            }
-            else
-            {
-                uploadingPicture = true;
-//                AddPictureToForm(FormColors.GetThemeIconPath("wait.png"), pictureFromStorage);
-                using (PicturePostObject ppo = new PicturePostObject())
-                {
-                    ppo.Filename = fileName;
-                    ppo.UseAsync = false;
+            UploadAttachment Attachment = new UploadAttachment(fileName, txtStatusUpdate.Text, GPSLocation);
+            UploadManager.AddAttachment(Attachment);
 
-                    if (pictureService.CanUploadGPS && GPSLocation != null)
-                    {
-                        try
-                        {
-                            ppo.Lat = GPSLocation.Lat.ToString(CultureInfo.InvariantCulture);
-                            ppo.Lon = GPSLocation.Lon.ToString(CultureInfo.InvariantCulture);
-                        }
-                        catch { }
-                        // temporarily include the message typed so far
-                        if(!string.IsNullOrEmpty(txtStatusUpdate.Text))
-                            ppo.Message = txtStatusUpdate.Text;
-                    }
+            Cursor.Current = Cursors.WaitCursor;
+            UploadManager.Upload(Attachment);
 
-                    Cursor.Current = Cursors.WaitCursor;
-                    mediaService.PostPicture(ppo, account);
-                }
-            }
+            if(Attachment.UploadedUri != null)
+                Themes.FormColors.GetThemeIcon("insertlink", pictureFromStorage.Height);
         }
 
         /// <summary>
@@ -681,14 +681,9 @@ namespace PockeTwit
             //Show the error message
             UpdatePictureData(string.Empty, false);
             
-            if (uploadedPictureOrigin == "file")
-            {
-                AddPictureToForm(FormColors.GetThemeIconPath("existingimage", pictureFromStorage.Height), pictureFromStorage);
-            }
-            else //camera
-            {
-                AddPictureToForm(FormColors.GetThemeIconPath("takepicture", pictureFromCamers.Height), pictureFromCamers);
-            }
+            AddPictureToForm(FormColors.GetThemeIconPath("existingimage", pictureFromStorage.Height), pictureFromStorage);
+            AddPictureToForm(FormColors.GetThemeIconPath("takepicture", pictureFromCamers.Height), pictureFromCamers);
+            picAttachments.Image = Themes.FormColors.GetThemeIcon("insertlink", picAttachments.Height);
             MessageBox.Show(eventArgs.ErrorMessage);
         }
 
@@ -697,14 +692,9 @@ namespace PockeTwit
             //Show the message
             MessageBox.Show(eventArgs.ReturnMessage);
 
-            if (uploadedPictureOrigin == "file")
-            {
-                AddPictureToForm(FormColors.GetThemeIconPath("existingimage", pictureFromStorage.Height), pictureFromStorage);
-            }
-            else //camera
-            {
-                AddPictureToForm(FormColors.GetThemeIconPath("takepicture", pictureFromCamers.Height), pictureFromCamers);
-            }
+            AddPictureToForm(FormColors.GetThemeIconPath("existingimage", pictureFromStorage.Height), pictureFromStorage);
+            AddPictureToForm(FormColors.GetThemeIconPath("takepicture", pictureFromCamers.Height), pictureFromCamers);
+            picAttachments.Image = Themes.FormColors.GetThemeIcon("insertlink", picAttachments.Height);
             UpdatePictureData(string.Empty, false);
 
         }
@@ -716,14 +706,8 @@ namespace PockeTwit
         /// <param name="eventArgs"></param>
         private void pictureService_UploadFinish(object sender, PictureServiceEventArgs eventArgs)
         {
-            if (uploadedPictureOrigin == "file")
-            {
-                AddPictureToForm(eventArgs.PictureFileName, pictureFromStorage);
-            }
-            else //camera
-            {
-                AddPictureToForm(eventArgs.PictureFileName, pictureFromCamers);
-            }
+            //AddPictureToForm(eventArgs.PictureFileName, picAttachments);
+            picAttachments.Image = Themes.FormColors.GetThemeIcon("insertlink", picAttachments.Height);
             UpdatePictureData(eventArgs.ReturnMessage, false);
         }
 
@@ -766,6 +750,9 @@ namespace PockeTwit
                 {
                     BoxToUpdate.Image = PockeTwit.Themes.FormColors.GetThemeIcon("insertlink", BoxToUpdate.Height);
                 }
+                catch (Exception) // if it wasn't an image
+                {
+                }
             }
         }
 
@@ -781,23 +768,15 @@ namespace PockeTwit
                 try
                 {
                     Cursor.Current = Cursors.Default;
-                    pictureUsed = uploadingPicture;
-                    //if (DetectDevice.DeviceType == DeviceType.Standard && !string.IsNullOrEmpty(pictureURL))
-                    //{
+                    if (!string.IsNullOrEmpty(pictureURL))
+                    {
+                        if (UploadManager.Count > 0) // it should be, otherwise something is up
+                            UploadManager[0].UploadedUri = new Uri(pictureURL);
                         if (txtStatusUpdate.Text.Length > 0)
-                        {
-                            txtStatusUpdate.Text = txtStatusUpdate.Text + ' ' + pictureURL;
-                        }
+                            InsertTextAtCursor(' ' + pictureURL);
                         else
-                        {
-                            txtStatusUpdate.Text = txtStatusUpdate.Text + pictureURL;
-                        }
-                        txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
-                        pictureUsed = true;
-                    //}
-
-                    uploadedPictureURL = pictureURL;
-                    this.uploadingPicture = uploadingPicture;
+                            InsertTextAtCursor(pictureURL);
+                    }
                 }
                 catch (OutOfMemoryException)
                 {
@@ -853,7 +832,17 @@ namespace PockeTwit
         private bool PostTheUpdate()
         {
             LocationFinder.StopGPS();
-            if (!string.IsNullOrEmpty(StatusText))
+            string Message = StatusText;
+
+            if (UploadManager.GetUriSpaceRequired(Message) > 0) // need to append links
+            {
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Uploaded file not used, add automatically?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
+                {
+                    StatusText = UploadManager.AppendLinks(Message);
+                    //return false;
+                }
+            }
+            if (!string.IsNullOrEmpty(Message))
             {
                 Cursor.Current = Cursors.WaitCursor;
                 var updateText = TrimTo140(StatusText, 140);
@@ -866,47 +855,10 @@ namespace PockeTwit
                     }
                 }
                 
-                if (!string.IsNullOrEmpty(picturePath) && pictureService.CanUploadMessage && ClientSettings.SendMessageToMediaService )
-                {
-                    PicturePostObject ppo = new PicturePostObject();
-                    ppo.Filename = picturePath;
-                    ppo.Username = AccountToSet.UserName;
-                    ppo.Password = AccountToSet.Password;
-                    ppo.Message = StatusText;
-
-                    if (pictureService.CanUploadGPS && GPSLocation != null)
-                    {
-                        try
-                        {
-                            ppo.Lat = GPSLocation.Lat.ToString(CultureInfo.InvariantCulture);
-                            ppo.Lon = GPSLocation.Lon.ToString(CultureInfo.InvariantCulture);
-                        }
-                        catch { }
-                    }
-                    // Upload the picture
-                    if(pictureService.PostPictureMessage(ppo, _AccountToSet))
-                    {
-                        UpdatePictureData(string.Empty, false); // we've done it!
-                        // upload successful
-                        updateText += ' ' + ppo.URL;
-
-                    }
-                    else
-                        return false;
-                }
                 {
 
 
                     Yedda.Twitter TwitterConn = Yedda.Servers.CreateConnection(AccountToSet) ;
-                    try
-                    {
-                        if (GPSLocation != null)
-                        {
-                            // don't do this now, we can use the GeoTagging API instead
-                            //TwitterConn.SetLocation(GPSLocation);
-                        }
-                    }
-                    catch { }
 
                     Place p = null;
                     object o = cmbPlaces.SelectedItem;
@@ -920,9 +872,6 @@ namespace PockeTwit
                             new PockeTwit.Position.UserLocation {
                                 Position = GPSLocation, Location = p },
                              Yedda.Twitter.OutputFormatType.XML);
-
-                    uploadedPictureURL = string.Empty;
-                    uploadingPicture = false;
 
                     if (string.IsNullOrEmpty(retValue))
                     {
@@ -953,8 +902,9 @@ namespace PockeTwit
         {
             int charsAvail = 140;
             int lengthLeft = charsAvail - txtStatusUpdate.Text.Length;
-            /*if (pictureUsed && pictureService != null)
-                lengthLeft -= pictureService.UrlLength;*/
+            
+            // Get the upload manager to check length left
+            lengthLeft -= UploadManager.GetUriSpaceRequired(txtStatusUpdate.Text);
             lblCharsLeft.Text = lengthLeft.ToString();
             if (lengthLeft < 0)
                 lblCharsLeft.ForeColor = ClientSettings.ErrorColor;
@@ -992,29 +942,36 @@ namespace PockeTwit
             InsertURL();
         }
 
+        void InsertTextAtCursor(string Text)
+        {
+            int startPos = txtStatusUpdate.SelectionStart;
+            txtStatusUpdate.Text =
+                txtStatusUpdate.Text.Substring(0, startPos)
+                + Text
+                + txtStatusUpdate.Text.Substring(startPos);
+            txtStatusUpdate.SelectionStart = startPos + Text.Length;
+            txtStatusUpdate.Focus();
+        }
+
         void pictureFromStorage_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(uploadedPictureURL) || ClientSettings.SendMessageToMediaService)
+            if (UploadManager.Count == 0 || UploadManager[0].UploadedUri == null /*|| ClientSettings.SendMessageToMediaService*/)
             {
-                pictureUsed = false;
+                UploadManager.Clear();
                 InsertPictureFromFile();
             }
             else
             {
-                //Pre loading logic
+                
                 if (PockeTwit.Localization.LocalizedMessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                 {
-                    txtStatusUpdate.Text += uploadedPictureURL;
-                    txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
-                    pictureUsed = true;
+                    InsertTextAtCursor(UploadManager[0].UploadedUri.OriginalString);
                 }
                 else
                 {
                     if (PockeTwit.Localization.LocalizedMessageBox.Show("Load a new picture?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                     {
-                        uploadedPictureURL = string.Empty;
-                        pictureUsed = false;
-                        uploadingPicture = false;
+                        UploadManager.Clear(); 
                         InsertPictureFromFile();
                     }
                 }
@@ -1022,28 +979,23 @@ namespace PockeTwit
         }
         void pictureFromCamers_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(uploadedPictureURL) || ClientSettings.SendMessageToMediaService)
+            if (UploadManager.Count == 0 || UploadManager[0].UploadedUri == null /*|| ClientSettings.SendMessageToMediaService*/)
             {
-                //When not pre loading just select another picture.
-                pictureUsed = false;
+                UploadManager.Clear();
                 InsertPictureFromCamera();
             }
             else
             {
-                //Pre loading picture logic.
+
                 if (PockeTwit.Localization.LocalizedMessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                 {
-                    txtStatusUpdate.Text += uploadedPictureURL;
-                    txtStatusUpdate.SelectionStart = txtStatusUpdate.Text.Length;
-                    pictureUsed = true;
+                    InsertTextAtCursor(UploadManager[0].UploadedUri.OriginalString);
                 }
                 else
                 {
                     if (PockeTwit.Localization.LocalizedMessageBox.Show("Take a new picture?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
                     {
-                        uploadedPictureURL = string.Empty;
-                        pictureUsed = false;
-                        uploadingPicture = false;
+                        UploadManager.Clear();
                         InsertPictureFromCamera();
                     }
                 }
@@ -1052,14 +1004,6 @@ namespace PockeTwit
         
         private void menuSubmit_Click(object sender, EventArgs e)
         {
-            if (!pictureUsed && !ClientSettings.SendMessageToMediaService)
-            {
-                //Only show message when pre-loading pictures is enabled.
-                if (PockeTwit.Localization.LocalizedMessageBox.Show("Uploaded picture not used, are you sure?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.No)
-                {
-                    return;
-                }
-            }
             ContinuePost();
         }
 
@@ -1161,6 +1105,57 @@ namespace PockeTwit
             else
                 this.WindowState = FormWindowState.Normal;*/
 //            this.BringToFront();
+
+        }
+
+        private void picAttachments_Click(object sender, EventArgs e)
+        {
+            if (UploadManager.Count == 0 || UploadManager[0].UploadedUri == null /*|| ClientSettings.SendMessageToMediaService*/)
+            {
+                UploadManager.Clear();
+                InsertFile();
+            }
+            else
+            {
+
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                {
+                    InsertTextAtCursor(UploadManager[0].UploadedUri.OriginalString);
+                }
+                else
+                {
+                    if (PockeTwit.Localization.LocalizedMessageBox.Show("Select a new file?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    {
+                        UploadManager.Clear();
+                        InsertFile();
+                    }
+                }
+            }
+       }
+
+        private void picInsertVideo_Click(object sender, EventArgs e)
+        {
+            if (UploadManager.Count == 0 || UploadManager[0].UploadedUri == null /*|| ClientSettings.SendMessageToMediaService*/)
+            {
+                UploadManager.Clear();
+                InsertPictureFromCamera(true);
+            }
+            else
+            {
+
+                if (PockeTwit.Localization.LocalizedMessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                {
+                    InsertTextAtCursor(UploadManager[0].UploadedUri.OriginalString);
+                }
+                else
+                {
+                    if (PockeTwit.Localization.LocalizedMessageBox.Show("Take a new video?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                    {
+                        UploadManager.Clear();
+                        InsertPictureFromCamera(true);
+                    }
+                }
+            }
 
         }
     }

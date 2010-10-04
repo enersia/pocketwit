@@ -43,6 +43,9 @@ namespace PockeTwit
             this.lblCharsLeft = new System.Windows.Forms.Label();
             this.pictureLocation = new System.Windows.Forms.PictureBox();
             this.pnlToolbar = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.picInsertVideo = new System.Windows.Forms.PictureBox();
+            this.picAttachments = new System.Windows.Forms.PictureBox();
             this.picInsertGPSLink = new System.Windows.Forms.PictureBox();
             this.picAddressBook = new System.Windows.Forms.PictureBox();
             this.pictureFromCamers = new System.Windows.Forms.PictureBox();
@@ -162,6 +165,9 @@ namespace PockeTwit
             // 
             // pnlToolbar
             // 
+            this.pnlToolbar.Controls.Add(this.label1);
+            this.pnlToolbar.Controls.Add(this.picInsertVideo);
+            this.pnlToolbar.Controls.Add(this.picAttachments);
             this.pnlToolbar.Controls.Add(this.picInsertGPSLink);
             this.pnlToolbar.Controls.Add(this.picAddressBook);
             this.pnlToolbar.Controls.Add(this.pictureFromCamers);
@@ -173,9 +179,36 @@ namespace PockeTwit
             this.pnlToolbar.Size = new System.Drawing.Size(240, 36);
             this.pnlToolbar.Visible = false;
             // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("Tahoma", 8F, System.Drawing.FontStyle.Regular);
+            this.label1.Location = new System.Drawing.Point(181, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(11, 11);
+            this.label1.Text = "8";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.label1.Visible = false;
+            // 
+            // picInsertVideo
+            // 
+            this.picInsertVideo.Location = new System.Drawing.Point(132, 2);
+            this.picInsertVideo.Name = "picInsertVideo";
+            this.picInsertVideo.Size = new System.Drawing.Size(32, 32);
+            this.picInsertVideo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picInsertVideo.Visible = false;
+            // 
+            // picAttachments
+            // 
+            this.picAttachments.Location = new System.Drawing.Point(164, 2);
+            this.picAttachments.Name = "picAttachments";
+            this.picAttachments.Size = new System.Drawing.Size(32, 32);
+            this.picAttachments.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picAttachments.Visible = false;
+            // 
             // picInsertGPSLink
             // 
-            this.picInsertGPSLink.Location = new System.Drawing.Point(132, 2);
+            this.picInsertGPSLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.picInsertGPSLink.Location = new System.Drawing.Point(204, 2);
             this.picInsertGPSLink.Name = "picInsertGPSLink";
             this.picInsertGPSLink.Size = new System.Drawing.Size(32, 32);
             this.picInsertGPSLink.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -183,21 +216,21 @@ namespace PockeTwit
             // 
             // picAddressBook
             // 
-            this.picAddressBook.Location = new System.Drawing.Point(100, 2);
+            this.picAddressBook.Location = new System.Drawing.Point(36, 2);
             this.picAddressBook.Name = "picAddressBook";
             this.picAddressBook.Size = new System.Drawing.Size(32, 32);
             this.picAddressBook.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             // 
             // pictureFromCamers
             // 
-            this.pictureFromCamers.Location = new System.Drawing.Point(68, 2);
+            this.pictureFromCamers.Location = new System.Drawing.Point(100, 2);
             this.pictureFromCamers.Name = "pictureFromCamers";
             this.pictureFromCamers.Size = new System.Drawing.Size(32, 32);
             this.pictureFromCamers.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             // 
             // pictureFromStorage
             // 
-            this.pictureFromStorage.Location = new System.Drawing.Point(36, 2);
+            this.pictureFromStorage.Location = new System.Drawing.Point(68, 2);
             this.pictureFromStorage.Name = "pictureFromStorage";
             this.pictureFromStorage.Size = new System.Drawing.Size(32, 32);
             this.pictureFromStorage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -279,5 +312,8 @@ namespace PockeTwit
         private userListControl userListControl1;
         private TextBox txtStatusUpdate;
         private PictureBox picInsertGPSLink;
+        private PictureBox picAttachments;
+        private PictureBox picInsertVideo;
+        private Label label1;
     }
 }

@@ -59,15 +59,13 @@ namespace PockeTwit.MediaServices
                         XmlDocument responseXML = new XmlDocument();
                         string resp = reader.ReadToEnd();
                         reader.Close();
-                        response.Close();
                         responseXML.LoadXml(resp);
                         return responseXML;
                     }                        
                 }
-                catch (Exception e)
+                finally
                 {
                     response.Close();
-                    throw e; // re-throw it
                 }
 
             }
@@ -153,7 +151,7 @@ namespace PockeTwit.MediaServices
 
             contents.Append(header);
             contents.Append("\r\n");
-            contents.Append(String.Format("Content-Disposition: form-data;name=\"{0}\"\r\n", dispositionName));
+            contents.Append(String.Format("Content-Disposition: form-data; name=\"{0}\"\r\n", dispositionName));
             contents.Append("\r\n");
             contents.Append(valueToSend);
             contents.Append("\r\n");
@@ -172,7 +170,7 @@ namespace PockeTwit.MediaServices
 
             contents.Append(header);
             contents.Append("\r\n");
-            contents.Append(string.Format("Content-Disposition:form-data; name=\"{0}\";filename=\"{1}\"\r\n", name, filename));
+            contents.Append(string.Format("Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\n", name, filename));
             if(!String.IsNullOrEmpty(contentType))            
                 contents.Append(String.Format("Content-Type: {0}\r\n", contentType));
             contents.Append("\r\n");

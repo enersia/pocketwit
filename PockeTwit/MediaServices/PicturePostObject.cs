@@ -16,6 +16,7 @@ namespace PockeTwit.MediaServices
         private string _lat = string.Empty;
         private string _lon = string.Empty;
         private string _url = string.Empty;
+        private string _contentType = string.Empty;
         private byte[] _pictureData = null;
         private System.IO.Stream _pictureStream = null;
         private bool _useAsync = true;
@@ -234,6 +235,18 @@ namespace PockeTwit.MediaServices
             set
             {
                 _url = value;
+            }
+        }
+
+        public string ContentType
+        {
+            get
+            {
+                return _contentType;
+            }
+            set
+            {
+                _contentType = value;
             }
         }
 

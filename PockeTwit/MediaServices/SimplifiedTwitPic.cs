@@ -10,8 +10,24 @@ using Yedda;
 
 namespace PockeTwit.MediaServices
 {
-    public class SimplifiedTwitPic : PictureServiceBase
+    public class SimplifiedTwitPic : PictureServiceBase/*, IUploadService*/
     {
+/*        #region IUploadService
+        public virtual UploadCapabilities Capabilities { get { return UploadCapabilities.Position; } }
+        public virtual int UriLength { get { return this.UrlLength; } }
+        public virtual void UploadAttachment(UploadAttachment Attachment)
+        {
+            return; 
+        }
+
+        public event AttachmentEventHandler UploadFinish;
+        public event AttachmentEventHandler ErrorOccured;
+        public event AttachmentEventHandler UploadPart;
+
+        #endregion*/
+
+
+
         #region private properties
         private static string TwitPicKey = "5b976ad6e50575acef064fe98ae67bcc";
 
@@ -173,9 +189,10 @@ namespace PockeTwit.MediaServices
 
                     if (uploadResult == null) // occurs in the event of an error
                         return false;
+                    string URL = uploadResult.SelectSingleNode("//url").InnerText;
+                    postData.URL = URL;
                     if(successEvent)
                     {
-                        string URL = uploadResult.SelectSingleNode("//url").InnerText;
                         OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, URL, string.Empty, postData.Filename));
                     }
                 }
@@ -312,7 +329,7 @@ namespace PockeTwit.MediaServices
                 else
                     contents.Add("message", "");
 
-                contents.Add("media", ppo.PictureStream, Path.GetFileName(ppo.Filename));
+                contents.Add("media", ppo.PictureStream, Path.GetFileName(ppo.Filename), ppo.ContentType);
 
                 OAuthAuthorizer.AuthorizeEcho(request, account.OAuth_token, account.OAuth_token_secret);
 
