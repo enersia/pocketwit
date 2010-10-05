@@ -1719,13 +1719,20 @@ namespace PockeTwit.FingerUI
                 {
                     m_velocity.Y--;
                 }
-                if (m_velocity.Y == 0 && m_velocity.X == 0)
+                /*if (m_velocity.Y == 0 && m_velocity.X == 0)
                 {
                     m_timer.Enabled = false;
                     HasMoved = false;
-                }
+                }*/
 
                 Invalidate();
+            }
+            // I've moved this here, in some circumstances it seems NOT to stop the timer
+            // seems to behave OK so far.
+            if (m_velocity.Y == 0 && m_velocity.X == 0)
+            {
+                m_timer.Enabled = false;
+                HasMoved = false;
             }
         }
 
@@ -1936,6 +1943,18 @@ namespace PockeTwit.FingerUI
         {
         }
         #endregion Nested Classes 
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // KListControl
+            // 
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.Name = "KListControl";
+            this.ResumeLayout(false);
+
+        }
         
     }
 }

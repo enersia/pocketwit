@@ -51,6 +51,9 @@ public static class ClientSettings
     public static Font SmallFont;
     public static Font TextFont;
     public static int SmallArtSize = 65;
+    public static float DpiX = 96;
+    public static float DpiY = 96;
+    public static bool HiDpi = false;
     private static int _ItemHeight = -1;
     public static int ItemHeight
     {
@@ -601,6 +604,10 @@ public static class ClientSettings
         {
             using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(b))
             {
+                DpiX = g.DpiX;
+                DpiY = g.DpiY;
+                HiDpi = DpiX > 128.0 || DpiY > 128.0;
+
                 TextSize = (int)(g.MeasureString("H", TextFont).Height - 1);
                 SmallTextSize = (int)(g.MeasureString("H", SmallFont).Height - 1);
             }

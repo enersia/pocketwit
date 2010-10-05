@@ -49,8 +49,8 @@ namespace PockeTwit
             this.globalMenu = new System.Windows.Forms.MenuItem();
             this.specificMenu = new System.Windows.Forms.MenuItem();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.statList = new PockeTwit.FingerUI.KListControl();
             this.lblProgress = new System.Windows.Forms.Label();
+            this.statList = new PockeTwit.FingerUI.KListControl();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -62,7 +62,7 @@ namespace PockeTwit
             this.lblTitle.Location = new System.Drawing.Point(0, 0);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(240, 31);
-            this.lblTitle.Text = PockeTwit.Localization.XmlBasedResourceManager.GetString("Launching PockeTwit", "Launching PockeTwit");
+            this.lblTitle.Text = "Launching PockeTwit";
             this.lblTitle.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // mainMenu1
@@ -88,6 +88,15 @@ namespace PockeTwit
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(193, 15);
             // 
+            // lblProgress
+            // 
+            this.lblProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblProgress.Location = new System.Drawing.Point(4, 35);
+            this.lblProgress.Name = "lblProgress";
+            this.lblProgress.Size = new System.Drawing.Size(233, 20);
+            this.lblProgress.Visible = false;
+            // 
             // statList
             // 
             this.statList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
@@ -98,15 +107,6 @@ namespace PockeTwit
             this.statList.Size = new System.Drawing.Size(240, 268);
             this.statList.TabIndex = 0;
             this.statList.Visible = false;
-            // 
-            // lblProgress
-            // 
-            this.lblProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblProgress.Location = new System.Drawing.Point(4, 35);
-            this.lblProgress.Name = "lblProgress";
-            this.lblProgress.Size = new System.Drawing.Size(233, 20);
-            this.lblProgress.Visible = false;
             // 
             // TweetList
             // 
