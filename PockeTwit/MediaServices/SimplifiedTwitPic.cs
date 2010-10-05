@@ -143,19 +143,9 @@ namespace PockeTwit.MediaServices
         /// Post a picture
         /// </summary>
         /// <param name="postData"></param>
-        public override void PostPicture(PicturePostObject postData, Twitter.Account account)
+        public override bool PostPicture(PicturePostObject postData, Twitter.Account account)
         {
-            DoPost(postData, account, true);
-        }
-
-        /// <summary>
-        /// Post a picture including a message to the media service.
-        /// </summary>
-        /// <param name="postData"></param>
-        /// <returns></returns>
-        public override bool PostPictureMessage(PicturePostObject postData, Twitter.Account account)
-        {
-            return DoPost(postData, account, false);
+            return DoPost(postData, account, true);
         }
 
         private bool DoPost(PicturePostObject postData, Twitter.Account account, bool successEvent)
@@ -322,6 +312,7 @@ namespace PockeTwit.MediaServices
                 request.AllowAutoRedirect = false;
 
                 Multipart contents = new Multipart();
+                contents.UploadPart += new Multipart.UploadPartEvent(contents_UploadPart);
                 contents.Add("key", TwitPicKey);
 
                 if (!string.IsNullOrEmpty(ppo.Message))
@@ -345,19 +336,11 @@ namespace PockeTwit.MediaServices
             }
         }
 
-
-
-        /// <summary>
-        /// Upload the picture
-        /// </summary>
-        /// <param name="url">URL to upload picture to</param>
-        /// <param name="ppo">Postdata</param>
-        /// <returns></returns>
-        private XmlDocument UploadPictureMessage(string url, PicturePostObject ppo, Twitter.Account account)
+        private void contents_UploadPart(object sender, long bytesSent, long bytesTotal)
         {
-            // they both did the same thing
-            return UploadPicture(url, ppo, account);
+            OnUploadPart(new PictureServiceEventArgs((int)bytesSent, (int)bytesSent, (int)bytesTotal));
         }
+
         #endregion
     }
 }

@@ -84,7 +84,7 @@ namespace PockeTwit.MediaServices
         /// Post a picture.
         /// </summary>
         /// <param name="postData"></param>
-        public override void PostPicture(PicturePostObject postData, Twitter.Account account)
+        public override bool PostPicture(PicturePostObject postData, Twitter.Account account)
         {
             #region Argument check
 
@@ -92,6 +92,7 @@ namespace PockeTwit.MediaServices
             if (string.IsNullOrEmpty(postData.Filename))
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, "",API_ERROR_UPLOAD));
+                return false;
             }
 
             //Check for empty credentials
@@ -99,7 +100,7 @@ namespace PockeTwit.MediaServices
                 string.IsNullOrEmpty(account.OAuth_token))
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, "", API_ERROR_UPLOAD));
-                return;
+                return false;
             }
 
             #endregion
@@ -108,52 +109,31 @@ namespace PockeTwit.MediaServices
             {
                 try
                 {
-                    //Load the picture data
-                    byte[] incoming = new byte[file.Length];
-                    file.Read(incoming, 0, incoming.Length);
+                    postData.PictureStream = file;
+                    XmlDocument uploadResult = UploadPicture(API_UPLOAD, postData, account);
 
-                    /*if (postData.UseAsync)
+                    if (uploadResult == null)
                     {
-                        workerPPO = (PicturePostObject) postData.Clone();
-                        workerPPO.PictureData = incoming;
-
-                        if (workerThread == null)
-                        {
-                            workerThread = new System.Threading.Thread(new System.Threading.ThreadStart(ProcessUpload));
-                            workerThread.Name = "PictureUpload";
-                            workerThread.Start();
-                        }
-                        else
-                        {
-                            OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.NotReady, "", API_ERROR_NOTREADY));
-                        }
+                        return false;
                     }
-                    else*/ // not supported
+
+                    if (uploadResult.SelectSingleNode("rsp").Attributes["status"].Value == "fail")
                     {
-                        //use sync.
-                        postData.PictureData = incoming;
-                        XmlDocument uploadResult = UploadPicture(API_UPLOAD, postData, account);
-
-                        if (uploadResult == null)
-                        {
-                            return;
-                        }
-
-                        if (uploadResult.SelectSingleNode("rsp").Attributes["status"].Value == "fail")
-                        {
-                            string ErrorText = uploadResult.SelectSingleNode("//err").Attributes["msg"].Value;
-                            OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, ErrorText));
-                        }
-                        else
-                        {
-                            string URL = uploadResult.SelectSingleNode("//mediaurl").InnerText;
-                            OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, URL, string.Empty, postData.Filename));
-                        }
+                        string ErrorText = uploadResult.SelectSingleNode("//err").Attributes["msg"].Value;
+                        OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, ErrorText));
+                        return false;
+                    }
+                    else
+                    {
+                        string URL = uploadResult.SelectSingleNode("//mediaurl").InnerText;
+                        OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, URL, string.Empty, postData.Filename));
+                        return true;
                     }
                 }
                 catch (Exception)
                 {
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
+                    return false;
                 }
             }
         }
@@ -194,61 +174,6 @@ namespace PockeTwit.MediaServices
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_DOWNLOAD));
             } 
-        }
-
-        public override bool PostPictureMessage(PicturePostObject postData, Twitter.Account account)
-        {
-            #region Argument check
-
-            //Check for empty path
-            if (string.IsNullOrEmpty(postData.Filename))
-            {
-                OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
-                return false;
-            }
-
-            //Check for empty credentials
-            if (string.IsNullOrEmpty(account.OAuth_token_secret) ||
-                string.IsNullOrEmpty(account.OAuth_token))
-            {
-                OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
-                return false;
-            }
-
-            #endregion
-
-            using (System.IO.FileStream file = new FileStream(postData.Filename, FileMode.Open, FileAccess.Read))
-            {
-                try
-                {
-                    //Load the picture data
-                    byte[] incoming = new byte[file.Length];
-                    file.Read(incoming, 0, incoming.Length);
-
-                    postData.PictureData = incoming;
-                    XmlDocument uploadResult = UploadPictureMessage(API_UPLOAD_POST, postData, account);
-
-                    if (uploadResult == null)
-                    {
-                        //event allready thrown in upload
-                        return false;
-                    }
-
-                    if (uploadResult.SelectSingleNode("rsp").Attributes["status"].Value == "fail")
-                    {
-                        string ErrorText = uploadResult.SelectSingleNode("//err").Attributes["msg"].Value;
-                        OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, ErrorText));
-                        return false;
-                    }
-
-                }
-                catch (Exception)
-                {
-                    OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
-                    return false;
-                }
-            }
-            return true;
         }
 
         /// <summary>
@@ -396,53 +321,17 @@ namespace PockeTwit.MediaServices
             {
                 HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
 
-                string boundary = System.Guid.NewGuid().ToString();
-                request.Credentials = new NetworkCredential(ppo.Username, ppo.Password);
-                request.Headers.Add("Accept-Language", "cs,en-us;q=0.7,en;q=0.3");
                 request.PreAuthenticate = true;
-                request.ContentType = string.Format("multipart/form-data;boundary={0}", boundary);
+                request.AllowWriteStreamBuffering = false;
+                request.Timeout = 60000;
 
-                //request.ContentType = "application/x-www-form-urlencoded";
-                request.Method = "POST";
-                request.Timeout = 20000;
-                string header = string.Format("--{0}", boundary);
-                string ender = "\r\n" + header + "\r\n";
+                Multipart contents = new Multipart();
+                contents.UploadPart += new Multipart.UploadPartEvent(contents_UploadPart);
 
-                StringBuilder contents = new StringBuilder();
-
-                contents.Append(CreateContentPartString(header, "username", ppo.Username));
-                contents.Append(CreateContentPartString(header, "password", ppo.Password));
-
-                //image
-                int imageIdStartIndex = ppo.Filename.LastIndexOf('\\') + 1;
-                string filename = ppo.Filename.Substring(imageIdStartIndex, ppo.Filename.Length - imageIdStartIndex);
-                contents.Append(CreateContentPartPicture(header, filename));
-
-                //Create the form message to send in bytes
-                byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
-                byte[] footer = Encoding.UTF8.GetBytes(ender);
-                request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
+                contents.Add("media", ppo.PictureStream, Path.GetFileName(ppo.Filename));
 
                 OAuth.OAuthAuthorizer.AuthorizeEcho(request, account.OAuth_token, account.OAuth_token_secret);
-                using (Stream requestStream = request.GetRequestStream())
-                {
-                    requestStream.Write(message, 0, message.Length);
-                    requestStream.Write(ppo.PictureData, 0, ppo.PictureData.Length);
-                    requestStream.Write(footer, 0, footer.Length);
-                    requestStream.Flush();
-                    requestStream.Close();
-
-                    using (WebResponse response = request.GetResponse())
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            XmlDocument responseXML = new XmlDocument();
-                            string resp = reader.ReadToEnd();
-                            responseXML.LoadXml(resp);
-                            return responseXML;
-                        }
-                    }
-                }
+                return contents.UploadXML(request);
             }
             catch (Exception)
             {
@@ -452,71 +341,9 @@ namespace PockeTwit.MediaServices
 
         }
 
-
-        /// <summary>
-        /// Upload a picture
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="ppo"></param>
-        /// <returns></returns>
-        private XmlDocument UploadPictureMessage(string url, PicturePostObject ppo, Twitter.Account account)
+        private void contents_UploadPart(object sender, long bytesSent, long bytesTotal)
         {
-            try
-            {
-                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(url);
-
-                string boundary = System.Guid.NewGuid().ToString();
-                request.PreAuthenticate = true;
-                request.ContentType = string.Format("multipart/form-data;boundary={0}", boundary);
-
-                //request.ContentType = "application/x-www-form-urlencoded";
-                request.Method = "POST";
-                request.Timeout = 20000;
-                string header = string.Format("--{0}", boundary);
-                string ender = "\r\n" + header + "\r\n";
-
-                StringBuilder contents = new StringBuilder();
-
-                contents.Append(CreateContentPartString(header, "username", ppo.Username));
-                contents.Append(CreateContentPartString(header, "password", ppo.Password));
-                contents.Append(CreateContentPartString(header, "message", ppo.Message));
-
-                int imageIdStartIndex = ppo.Filename.LastIndexOf('\\') + 1;
-                string filename = ppo.Filename.Substring(imageIdStartIndex, ppo.Filename.Length - imageIdStartIndex);
-                contents.Append(CreateContentPartPicture(header, filename));
-
-                //Create the form message to send in bytes
-                byte[] message = Encoding.UTF8.GetBytes(contents.ToString());
-                byte[] footer = Encoding.UTF8.GetBytes(ender);
-                request.ContentLength = message.Length + ppo.PictureData.Length + footer.Length;
-
-                OAuth.OAuthAuthorizer.AuthorizeEcho(request, account.OAuth_token, account.OAuth_token_secret );
-                using (Stream requestStream = request.GetRequestStream())
-                {
-                    requestStream.Write(message, 0, message.Length);
-                    requestStream.Write(ppo.PictureData, 0, ppo.PictureData.Length);
-                    requestStream.Write(footer, 0, footer.Length);
-                    requestStream.Flush();
-                    requestStream.Close();
-
-                    using (WebResponse response = request.GetResponse())
-                    {
-                        using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        {
-                            XmlDocument responseXML = new XmlDocument();
-                            string resp = reader.ReadToEnd();
-                            responseXML.LoadXml(resp);
-                            return responseXML;
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, "", API_ERROR_UPLOAD));
-                return null;
-            }
-
+            OnUploadPart(new PictureServiceEventArgs((int)bytesSent, (int)bytesSent, (int)bytesTotal));
         }
 
         #endregion

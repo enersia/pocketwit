@@ -90,9 +90,9 @@ namespace PockeTwit
                     {
                         XMLResponse = reader.ReadToEnd();
                         reader.Close();
-                        httpResponse.Close();
                     }
                 }
+                httpResponse.Close();
             }
             catch{}
             XmlDocument UpgradeInfoDoc = new XmlDocument();

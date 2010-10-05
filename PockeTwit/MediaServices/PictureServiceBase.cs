@@ -28,7 +28,6 @@ namespace PockeTwit.MediaServices
         protected bool API_CAN_UPLOAD = true;
         protected bool API_CAN_UPLOAD_MESSAGE = false;
         protected bool API_CAN_UPLOAD_GPS = false;
-        protected bool API_CAN_UPLOAD_MOREMEDIA = false;
         protected int API_URLLENGTH = 0;
 
         protected List<MediaType> API_FILETYPES = new List<MediaType>();
@@ -41,20 +40,13 @@ namespace PockeTwit.MediaServices
         /// PostPicture method that must be overridden.
         /// </summary>
         /// <param name="postData">Data to post</param>
-        public abstract void PostPicture(PicturePostObject postData, Twitter.Account account);
+        public abstract bool PostPicture(PicturePostObject postData, Twitter.Account account);
 
         /// <summary>
         /// FetchPicture method that must be overridden.
         /// </summary>
         /// <param name="pictureURL">URL to fetch</param>
         public abstract void FetchPicture(string pictureURL, Twitter.Account account);
-
-        /// <summary>
-        /// Send a picture to a twitter picture framework without the use of the finish event
-        /// </summary>
-        /// <param name="postData">Postdata</param>
-        /// <returns>Returned URL from server</returns>
-        public abstract bool PostPictureMessage(PicturePostObject postData, Twitter.Account account);
 
 
         #region getters and setters
@@ -175,14 +167,6 @@ namespace PockeTwit.MediaServices
             get
             {
                 return API_CAN_UPLOAD_GPS;
-            }
-        }
-
-        public bool CanUploadOtherMedia
-        {
-            get
-            {
-                return API_CAN_UPLOAD_MOREMEDIA;
             }
         }
 
@@ -355,7 +339,7 @@ namespace PockeTwit.MediaServices
         public event ErrorOccuredEventHandler ErrorOccured;
         public event MessageReadyEventHandler MessageReady;
         public event DownloadPartEventHandler DownloadPart;
-        public event DownloadPartEventHandler UploadPart;
+        public event UploadPartEventHandler UploadPart;
 
         protected virtual void OnDownloadFinish(PictureServiceEventArgs e)
         {

@@ -11,6 +11,7 @@ namespace PockeTwit.MediaServices
 {
     public class Multipart
     {
+        public delegate void UploadPartEvent(object sender, long bytesSent, long bytesTotal);
         protected class MultipartFile
         {
             public Stream DataStream;
@@ -26,6 +27,21 @@ namespace PockeTwit.MediaServices
         }
         List<KeyValuePair<string, string>> Fields = new List<KeyValuePair<string, string>>();
         List<KeyValuePair<string, MultipartFile>> Files = new List<KeyValuePair<string, MultipartFile>>();
+
+        public event UploadPartEvent UploadPart;
+
+        private void OnUploadPart(long bytesSent, long bytesTotal)
+        {
+            if (UploadPart != null)
+            {
+                try
+                {
+                    UploadPart(this, bytesSent, bytesTotal);
+                }
+                catch
+                {}
+            }
+        }
 
         public void Add(string key, string value)
         {
@@ -117,26 +133,37 @@ namespace PockeTwit.MediaServices
             using (Stream requestStream = request.GetRequestStream())
             {
                 // send normal form data
-                requestStream.Write(message, 0, message.Length);
+                int read;
+                long total = 0;
+                OnUploadPart(total, ContentLength);// started
+                if (message.Length != 0)
+                {
+                    requestStream.Write(message, 0, message.Length);
+                    total += message.Length;
+                    OnUploadPart(total, ContentLength);
+                }
                 
                 // now send each file
-                byte[] buffer = new byte[2048];
-                int read;
+                byte[] buffer = new byte[8192];
                 List<string>.Enumerator fchEnum = FileContentHeaders.GetEnumerator();
                 foreach(KeyValuePair<string, MultipartFile> kvp in Files)
                 {
                     fchEnum.MoveNext();
                     byte[] cHeader = Encoding.UTF8.GetBytes(fchEnum.Current);
                     requestStream.Write(cHeader, 0, cHeader.Length);
+                    total += cHeader.Length;
                     while ((read = kvp.Value.DataStream.Read(buffer, 0, buffer.Length)) > 0)
                     {
                         requestStream.Write(buffer, 0, read);
-                        //total += read;
+                        total += read;
+                        OnUploadPart(total, ContentLength);
                     }
                 }
                 requestStream.Write(footer, 0, footer.Length);
+                total += footer.Length;
                 requestStream.Flush();
                 requestStream.Close();
+                OnUploadPart(total, ContentLength); // and finished
 
                 buffer = null; // free the buffer
             }

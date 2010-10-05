@@ -88,21 +88,11 @@ namespace PockeTwit.MediaServices
         /// Post a picture
         /// </summary>
         /// <param name="postData"></param>
-        public override void PostPicture(PicturePostObject postData, Twitter.Account account)
+        public override bool PostPicture(PicturePostObject postData, Twitter.Account account)
         {
-            DoPost(postData, account, true);
+            return DoPost(postData, account, true);
         }
 
-
-        /// <summary>
-        /// Post a picture including a message to the media service.
-        /// </summary>
-        /// <param name="postData"></param>
-        /// <returns></returns>
-        public override bool PostPictureMessage(PicturePostObject postData, Twitter.Account account)
-        {
-            return DoPost(postData, account, false);
-        }
 
         public bool DoPost(PicturePostObject postData, Twitter.Account account, bool successEvent)
         {
@@ -129,47 +119,28 @@ namespace PockeTwit.MediaServices
             {
                 try
                 {
-                    if (postData.UseAsync)
-                    {
-                        _workerPpo = (PicturePostObject)postData.Clone();
-                        //_workerPpo.PictureData = incoming;
-                        _workerPpo.PictureStream = file;
+                    //use sync.
+                    postData.PictureStream = file;
+                    XmlDocument uploadResult = UploadPictureMessage(API_UPLOAD, postData, account);
 
-                        if (_workerThread == null)
-                        {
-                            _workerThread = new System.Threading.Thread(ProcessUpload) { Name = "PictureUpload" };
-                            _workerThread.Start();
-                        }
-                        else
-                        {
-                            OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.NotReady, string.Empty, "A request is already running."));
-                        }
+                    if (uploadResult == null)
+                    {
+                        return false;
                     }
-                    else
+                    var nm = new XmlNamespaceManager(uploadResult.NameTable);
+                    nm.AddNamespace("tweetPhoto", "http://tweetphotoapi.com");
+                    if (uploadResult.SelectSingleNode("//tweetPhoto:Status", nm).InnerText != "OK")
                     {
-                        //use sync.
-                        postData.PictureStream = file;
-                        XmlDocument uploadResult = UploadPictureMessage(API_UPLOAD, postData, account);
-
-                        if (uploadResult == null)
-                        {
-                            return false;
-                        }
-                        var nm = new XmlNamespaceManager(uploadResult.NameTable);
-                        nm.AddNamespace("tweetPhoto", "http://tweetphotoapi.com");
-                        if (uploadResult.SelectSingleNode("//tweetPhoto:Status", nm).InnerText != "OK")
-                        {
-                            string errorText = uploadResult.SelectSingleNode("//tweetPhoto:err", nm).Attributes["msg"].Value;
-                            OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, errorText));
-                        }
-                        else 
-                        {
-                            postData.URL = uploadResult.SelectSingleNode("//tweetPhoto:MediaUrl", nm).InnerText;
-                            if (successEvent)
-                                OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, postData.URL, string.Empty,
-                                                                       postData.Filename));
-                            return true;
-                        }
+                        string errorText = uploadResult.SelectSingleNode("//tweetPhoto:err", nm).Attributes["msg"].Value;
+                        OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, errorText));
+                    }
+                    else 
+                    {
+                        postData.URL = uploadResult.SelectSingleNode("//tweetPhoto:MediaUrl", nm).InnerText;
+                        if (successEvent)
+                            OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, postData.URL, string.Empty,
+                                                                   postData.Filename));
+                        return true;
                     }
                 }
                 catch (Exception e)
@@ -266,32 +237,6 @@ namespace PockeTwit.MediaServices
             catch
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_DOWNLOAD));
-            }
-            _workerThread = null;
-        }
-
-        private void ProcessUpload()
-        {
-            try
-            {
-                XmlDocument uploadResult = UploadPictureMessage(API_UPLOAD, _workerPpo, _account);
-
-                var nm = new XmlNamespaceManager(uploadResult.NameTable);
-                nm.AddNamespace("tweetPhoto", "http://tweetphotoapi.com");
-                if (uploadResult.SelectSingleNode("//tweetPhoto:Status", nm).InnerText != "OK")
-                {
-                    string errorText = uploadResult.SelectSingleNode("//err").Attributes["msg"].Value;
-                    OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, errorText));
-                }
-                else
-                {
-                    string url = uploadResult.SelectSingleNode("//MediaURL").InnerText;
-                    OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, url, string.Empty, _workerPpo.Filename));
-                }
-            }
-            catch(Exception ex)
-            {
-                OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, ex.Message, API_ERROR_UPLOAD));
             }
             _workerThread = null;
         }
@@ -425,11 +370,15 @@ namespace PockeTwit.MediaServices
 
                 using (Stream requestStream = request.GetRequestStream())
                 {
+                    long total = 0;
+                    OnUploadPart(new PictureServiceEventArgs((int)total, (int)total, (int)request.ContentLength));
                     byte[] buffer = new byte[1024 * 64];
                     int read = 0;
                     while ((read = ppo.PictureStream.Read(buffer, 0, buffer.Length)) > 0)
                     {
                         requestStream.Write(buffer, 0, read);
+                        total += read;
+                        OnUploadPart(new PictureServiceEventArgs((int)total, (int)total, (int)request.ContentLength));
                     }
                     requestStream.Flush();
                     requestStream.Close();

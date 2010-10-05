@@ -46,7 +46,6 @@ namespace PockeTwit.MediaServices
             API_SERVICE_NAME = "yFrog";
             API_CAN_UPLOAD_GPS = true;
             API_CAN_UPLOAD_MESSAGE = false;
-            API_CAN_UPLOAD_MOREMEDIA = true;
             API_URLLENGTH = 29;
 
             API_FILETYPES.Add(new MediaType("jpg", "image/jpeg", MediaTypeGroup.PICTURE));
@@ -101,9 +100,9 @@ namespace PockeTwit.MediaServices
         /// Post a picture.
         /// </summary>
         /// <param name="postData"></param>
-        public override void PostPicture(PicturePostObject postData, Twitter.Account account)
+        public override bool PostPicture(PicturePostObject postData, Twitter.Account account)
         {
-            DoPost(postData, account, true);
+            return DoPost(postData, account, true);
         }
 
         /// <summary>
@@ -198,16 +197,6 @@ namespace PockeTwit.MediaServices
             {
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, "", "Failed to download picture from yFrog."));
             } 
-        }
-
-        /// <summary>
-        /// post a picture with a message
-        /// </summary>
-        /// <param name="postData">the complete post data object</param>
-        /// <returns>succes boolean</returns>
-        public override bool PostPictureMessage(PicturePostObject postData, Twitter.Account account)
-        {
-            return DoPost(postData, account, false);
         }
 
         /// <summary>
@@ -357,6 +346,7 @@ namespace PockeTwit.MediaServices
                 request.PreAuthenticate = true;
 
                 Multipart content = new Multipart();
+                content.UploadPart += new Multipart.UploadPartEvent(contents_UploadPart);
 
                 content.Add("source", "pocketwit");
 
@@ -383,6 +373,11 @@ namespace PockeTwit.MediaServices
                 return null;
             }
 
+        }
+
+        private void contents_UploadPart(object sender, long bytesSent, long bytesTotal)
+        {
+            OnUploadPart(new PictureServiceEventArgs((int)bytesSent, (int)bytesSent, (int)bytesTotal));
         }
 
         #endregion    

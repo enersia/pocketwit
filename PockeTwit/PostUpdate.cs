@@ -27,12 +27,7 @@ namespace PockeTwit
         private delegate void delUpdateText(string text);
 
         private IPictureService pictureService;
-        //private string uploadedPictureOrigin = string.Empty;
-        //private string uploadedPictureURL = string.Empty;
-        //private bool uploadingPicture = false;
-        //private bool pictureUsed = true;
         private bool localPictureEventsSet = false;
-        //private string picturePath = string.Empty;
         private List<Place> places = null;
         private bool oldInputPanelState = false;
 
@@ -555,7 +550,7 @@ namespace PockeTwit
             try
             {
                 pictureService = GetMediaService();
-                filename = SelectFileVisual(pictureService.FileFilter(MediaTypeGroup.PICTURE));
+                filename = SelectFileVisual(UploadManager.GetFileFilter(MediaTypeGroup.PICTURE));
 
                 //if (pictureService.CanUploadOtherMedia)
                 //{
@@ -661,6 +656,7 @@ namespace PockeTwit
                 }
                 pictureService.MessageReady += new MessageReadyEventHandler(pictureService_MessageReady);
                 pictureService.ErrorOccured += new ErrorOccuredEventHandler(pictureService_ErrorOccured);
+                pictureService.UploadPart += new UploadPartEventHandler(pictureService_UploadPart);
                 localPictureEventsSet = true;
             }
             else if (localPictureEventsSet && !addEvents)
@@ -672,6 +668,7 @@ namespace PockeTwit
                 }   
                 pictureService.MessageReady -= new MessageReadyEventHandler(pictureService_MessageReady);
                 pictureService.ErrorOccured -= new ErrorOccuredEventHandler(pictureService_ErrorOccured);
+                pictureService.UploadPart -= new UploadPartEventHandler(pictureService_UploadPart);
                 localPictureEventsSet = false;
             }
         }
@@ -711,6 +708,16 @@ namespace PockeTwit
             UpdatePictureData(eventArgs.ReturnMessage, false);
         }
 
+        /// <summary>
+        /// Event handling for when an upload is in progress
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="eventArgs"></param>
+        private void pictureService_UploadPart(object sender, PictureServiceEventArgs eventArgs)
+        {
+            System.Diagnostics.Debug.WriteLine(string.Format("Sent: {0} / {1} bytes", eventArgs.BytesDownloaded, eventArgs.TotalBytesToDownload));
+        }
+        
         private IPictureService GetMediaService()
         {
             IPictureService service;

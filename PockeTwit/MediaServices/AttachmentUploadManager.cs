@@ -33,9 +33,15 @@ namespace PockeTwit.MediaServices
     [Flags]
     public enum UploadCapabilities
     {
-        Messages = 0x01,
+        Message = 0x01,
         Position = 0x02
+    }
 
+    public class AttachmentUploadException : InvalidOperationException
+    {
+        public AttachmentUploadException(string message, Exception innerException)
+            : base(message, innerException)
+        { }
     }
 
     public interface IUploadService
@@ -60,16 +66,8 @@ namespace PockeTwit.MediaServices
         {
             Pending = 0,    // waiting for upload to start
             Uploading = 10,
-            Uploaded = 20,
-            Error = 50, // generic error. Please don't use it
-            TransportError = 100, // generic transport error
-            Timeout = 101,
-            ConnectionDropped = 102,
-            ProtocolError = 200, // generic protocol error
-            Unauthorized = 201,
-            Unavailable = 202,
-            ServerError = 203
-        
+            Complete = 20,
+            Error = 30       
         }
         public UploadAttachment(string FileName)
             : this(FileName, null, null)
@@ -168,7 +166,7 @@ namespace PockeTwit.MediaServices
                         Stat = UploadStatus.InProgress;
                         break;
                     }
-                    else if (a.Status == UploadAttachment.AttachmentStatus.Uploaded)
+                    else if (a.Status == UploadAttachment.AttachmentStatus.Complete)
                     {
                         None = false;
                     }
@@ -327,7 +325,7 @@ namespace PockeTwit.MediaServices
             if (!string.IsNullOrEmpty(ppo.URL))
             {
                 a.UploadedUri = new Uri(ppo.URL);
-                a.Status = UploadAttachment.AttachmentStatus.Uploaded;
+                a.Status = UploadAttachment.AttachmentStatus.Complete;
             }
             else
             {

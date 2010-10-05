@@ -72,7 +72,6 @@ namespace PockeTwit.MediaServices
             if (UpgradeChecker.devBuild)
             {
                 serviceList.Add(ImgLy.Instance); // returning a 500 error response
-                serviceList.Add(PixIm.Instance); // <==== seems to be dead?
             }
 
             //setup every service the same way

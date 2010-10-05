@@ -138,41 +138,21 @@ namespace PockeTwit.MediaServices
     /// </summary>
     public interface IPictureService
     {
-        event UploadFinishEventHandler UploadFinish;
-        event DownloadFinishEventHandler DownloadFinish;
         event ErrorOccuredEventHandler ErrorOccured;
         event MessageReadyEventHandler MessageReady;
+        event UploadPartEventHandler UploadPart;
+        event UploadFinishEventHandler UploadFinish;
+
         event DownloadPartEventHandler DownloadPart;
-        event DownloadPartEventHandler UploadPart;
+        event DownloadFinishEventHandler DownloadFinish;
 
         /// <summary>
         /// Send a picture to a twitter picture framework
         /// </summary>
         /// <param name="postData">Postdata</param>
         /// <returns>Returned URL from server</returns>
-        //void PostPicture(PicturePostObject postData);
+        bool PostPicture(PicturePostObject postData, Twitter.Account account);
 
-        /// <summary>
-        /// Send a picture to a twitter picture framework
-        /// </summary>
-        /// <param name="postData">Postdata</param>
-        /// <returns>Returned URL from server</returns>
-        void PostPicture(PicturePostObject postData, Twitter.Account account);
-
-        
-        /// <summary>
-        /// Send a picture to a twitter picture framework without the use of the finish event
-        /// </summary>
-        /// <param name="postData">Postdata</param>
-        /// <returns>Returned URL from server</returns>
-        bool PostPictureMessage(PicturePostObject postData, Twitter.Account account);
-
-        /// <summary>
-        /// Retrieve a picture from a picture service. 
-        /// </summary>
-        /// <param name="pictureURL">pictureURL</param>
-        /// <returns>Local path for downloaded picture.</returns>
-        //void FetchPicture(string pictureURL);
 
         /// <summary>
         /// Retrieve a picture from a picture service. 
@@ -188,8 +168,6 @@ namespace PockeTwit.MediaServices
         /// <returns></returns>
         bool CanFetchUrl(string URL);
 
-
-
         /// <summary>
         /// Methods for getting and setting properties
         /// </summary>
@@ -200,14 +178,13 @@ namespace PockeTwit.MediaServices
         string DefaultFilePath { set; get; }
         string RootPath {  set; get; }
         int ReadBufferSize { set; get; }
+        
         string ServiceName { get; }
+
         bool CanUpload { get; }
         bool CanUploadMessage { get; }
         bool CanUploadGPS { get; }
-        bool CanUploadOtherMedia { get; } 
         int UrlLength { get;  }
-
-        string FileFilter(MediaTypeGroup mediaGroup);
         List<MediaType> FileTypes { get; }
     }
 

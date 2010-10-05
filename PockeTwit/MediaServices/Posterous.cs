@@ -45,7 +45,6 @@ namespace PockeTwit.MediaServices
             API_CAN_UPLOAD_GPS = false;
             API_CAN_UPLOAD_MESSAGE = false;
             API_CAN_UPLOAD = true;
-            API_CAN_UPLOAD_MOREMEDIA = true;
             API_URLLENGTH = 28;
 
             API_FILETYPES.Add(new MediaType("jpg", "image/jpeg", MediaTypeGroup.PICTURE));
@@ -110,16 +109,7 @@ namespace PockeTwit.MediaServices
         /// Post a picture
         /// </summary>
         /// <param name="postData"></param>
-        public override void PostPicture(PicturePostObject postData, Twitter.Account account)
-        {
-            DoPost(postData, account, true);
-        }
-
-        /// <summary>
-        /// Post a picture
-        /// </summary>
-        /// <param name="postData"></param>
-        public bool DoPost(PicturePostObject postData, Twitter.Account account, bool successEvent)
+        public override bool PostPicture(PicturePostObject postData, Twitter.Account account)
         {
             #region Argument check
 
@@ -151,11 +141,8 @@ namespace PockeTwit.MediaServices
                         return false;
                     }
 
-                    if (successEvent)
-                    {
-                        string URL = uploadResult.SelectSingleNode("//url").InnerText;
-                        OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, URL, string.Empty, postData.Filename));
-                    }
+                    string URL = uploadResult.SelectSingleNode("//url").InnerText;
+                    OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, URL, string.Empty, postData.Filename));
                     return true;
                 }
                 catch
@@ -204,16 +191,7 @@ namespace PockeTwit.MediaServices
             }
         }
 
-        /// <summary>
-        /// Post a picture including a message to the media service.
-        /// </summary>
-        /// <param name="postData"></param>
-        /// <returns></returns>
-        public override bool PostPictureMessage(PicturePostObject postData, Twitter.Account account)
-        {
-            return DoPost(postData, account, false);
 
-        }
 
         /// <summary>
         /// Test whether this service can fetch a picture.
@@ -328,7 +306,7 @@ namespace PockeTwit.MediaServices
                 request.AllowAutoRedirect = false;
 
                 Multipart contents = new Multipart();
-
+                contents.UploadPart += new Multipart.UploadPartEvent(contents_UploadPart);
                 contents.Add("source", "PockeTwit");
                 contents.Add("sourceLink", "http://code.google.com/p/pocketwit/");
                 if (!string.IsNullOrEmpty(ppo.Message))
@@ -337,7 +315,6 @@ namespace PockeTwit.MediaServices
                 }
 
                 contents.Add("media", ppo.PictureStream, Path.GetFileName(ppo.Filename), ppo.ContentType);
-
 
                 OAuthAuthorizer.AuthorizeEcho(request, account.OAuth_token, account.OAuth_token_secret);
                 return contents.UploadXML(request);
@@ -366,6 +343,12 @@ namespace PockeTwit.MediaServices
                 return null;
             }
         }
+
+        private void contents_UploadPart(object sender, long bytesSent, long bytesTotal)
+        {
+            OnUploadPart(new PictureServiceEventArgs((int)bytesSent, (int)bytesSent, (int)bytesTotal));
+        }
+
 
         #endregion
     }
