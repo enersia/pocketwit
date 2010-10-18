@@ -183,7 +183,7 @@ namespace PockeTwit
                             this.inputText = e.KeyChar.ToString();
                             this.Visible = true;
                             e.Handled = true;
-                            return;
+                            //return;
                         }
                     }
                 }
@@ -195,7 +195,7 @@ namespace PockeTwit
                     this.inputText = e.KeyChar.ToString();
                     this.Visible = true;
                     e.Handled = true;
-                    return;
+                    //return;
                 }
             }
         }

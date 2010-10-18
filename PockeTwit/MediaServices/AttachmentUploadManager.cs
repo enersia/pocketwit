@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
+using System.Net;
 using System.IO;
 
 namespace PockeTwit.MediaServices
@@ -9,23 +10,24 @@ namespace PockeTwit.MediaServices
     public class AttachmentServiceEventArgs : EventArgs
     {
         private UploadAttachment _attachment;
-        uint _bytesTotal;
-        uint _bytesProgress;
+        private long _bytesTotal;
+        private long _bytesProgress;
 
         public AttachmentServiceEventArgs(UploadAttachment attachment): this(attachment, 0, 0)
         {
             
         }
 
-        public AttachmentServiceEventArgs(UploadAttachment attachment, uint bytesTotal, uint bytesProgress)
+        public AttachmentServiceEventArgs(UploadAttachment attachment, long bytesTotal, long bytesProgress)
         {
             _attachment = attachment;
             _bytesTotal = bytesTotal;
             _bytesProgress = bytesProgress;
         }
 
-        public uint BytesTotal { get { return _bytesTotal; } }
-        public uint BytesProgress { get { return _bytesProgress; } }
+        public long BytesTotal { get { return _bytesTotal; } }
+        public long BytesProgress { get { return _bytesProgress; } }
+        public UploadAttachment Attachment { get { return _attachment; } }
     }
 
     public delegate void AttachmentEventHandler(object sender, AttachmentServiceEventArgs eventArgs);
@@ -39,24 +41,54 @@ namespace PockeTwit.MediaServices
 
     public class AttachmentUploadException : InvalidOperationException
     {
-        public AttachmentUploadException(string message, Exception innerException)
+        /*        public enum UploadErrorClass
+                {
+                    ClientError, // an HTTP 4xx error (don't try again without changes)
+                    ServerError, // an HTTP 5xx error (try again later)
+                    ConnectionError, // bad DNS, no route to host etc (try again later)
+                    TransportError // bad network conditions, e.g. connection dropped (try again immediately)
+            
+                    // Note that a timeout is one of connection or transport error, depending when it occurs
+                }
+                public enum UploadErrorDetail
+                {
+                    // Expected HTTP Errors
+                    // 4xx
+                    BadRequest   = HttpStatusCode.BadRequest, // 400
+                    Unauthorized = HttpStatusCode.Unauthorized,  // 401
+                    Forbidden = HttpStatusCode.Forbidden,  // 403
+                    NotFound = HttpStatusCode.NotFound,  // 404
+                    MethodNotAllowed = HttpStatusCode.MethodNotAllowed,  // 405
+                    UnsupportedMediaType = HttpStatusCode.UnsupportedMediaType,  // 415
+
+                    // 5xx
+                    InternalServerError = HttpStatusCode.InternalServerError, // 500
+                    NotImplemented = HttpStatusCode.NotImplemented, // 501
+                    BadGateway = HttpStatusCode.NotImplemented, // 501
+
+                }
+                public UploadErrorClass ErrorClass { get; set; }
+                public UploadErrorClass ErrorDetail { get; set; }*/
+        public AttachmentUploadException(/*UploadErrorClass ErrorClass,*/ string message, Exception innerException)
             : base(message, innerException)
-        { }
+        {
+            //this.ErrorClass = ErrorClass;
+        }
     }
 
     public interface IUploadService
     {
         string ServiceName { get; }
-        UploadCapabilities Capabilities { get; }
-        int UriLength { get; }
-        List<MediaType> FileTypes { get; }
+        /*        UploadCapabilities Capabilities { get; }
+                int UriLength { get; }
+                List<MediaType> FileTypes { get; }*/
         
         // Uploads the attachment. Must set the Uri on success
-        void UploadAttachment(UploadAttachment Attachment);
+        Uri UploadAttachment(UploadAttachment Attachment, Yedda.Twitter.Account account);
 
-        event AttachmentEventHandler UploadFinish;
+/*        event AttachmentEventHandler UploadFinish;
         event AttachmentEventHandler ErrorOccured;
-        event AttachmentEventHandler UploadPart;
+        event AttachmentEventHandler UploadPart;*/
     }
 
     // as opposed to a DownloadAttachment
@@ -101,6 +133,7 @@ namespace PockeTwit.MediaServices
         public Uri UploadedUri { get; set; } // where to find it, or empty if not uploaded
         public AttachmentStatus Status { get; set; }
         public string Caption { get; set; }
+        public MediaType MediaType { get; set; }
         public PockeTwit.Position.GeoCoord Position { get; set; }
         // Temporary, until replaced by MediaService
 
@@ -136,7 +169,7 @@ namespace PockeTwit.MediaServices
                         this.DocumentService = PictureService;
                 }
             }
-/*            IPictureService Posterous = PictureServiceFactory.Instance.GetServiceByName("Posterous");
+            IPictureService Posterous = PictureServiceFactory.Instance.GetServiceByName("Posterous");
             if (this.PictureService == null)
                 this.PictureService = Posterous;
             if (this.VideoService == null)
@@ -144,7 +177,7 @@ namespace PockeTwit.MediaServices
             if (this.AudioService == null)
                 this.AudioService = Posterous;
             if (this.DocumentService == null)
-                this.DocumentService = Posterous;*/
+                this.DocumentService = Posterous;
         }
         // TO BE DEPRECATED!
         private IPictureService PictureService;
@@ -182,8 +215,12 @@ namespace PockeTwit.MediaServices
         private List<UploadAttachment> Attachments = new List<UploadAttachment>();
         public void AddAttachment(UploadAttachment Attachment)
         {
-            if(Attachments.IndexOf(Attachment) < 0)
+            if (Attachments.IndexOf(Attachment) < 0)
+            {
+
+                Attachment.MediaType = GetMatchingType(Attachment);
                 Attachments.Add(Attachment);
+            }
         }
 
         public void DeleteAttachment(UploadAttachment Attachment)
@@ -286,7 +323,6 @@ namespace PockeTwit.MediaServices
         public UploadAttachment this[int i]
         {
             get { return Attachments[i]; }
-            set { Attachments[i] = value; }
         }
 
         // Solely designed to convert from AttachmentUploadManager to
@@ -294,7 +330,6 @@ namespace PockeTwit.MediaServices
         // Let's do it one step at a time!
         private bool DoUpload(UploadAttachment a)
         {
-            PicturePostObject ppo = new PicturePostObject();
             MediaType type = GetMatchingType(a);
             if (type == null)
             {
@@ -308,8 +343,19 @@ namespace PockeTwit.MediaServices
                 return false;
             }
 
-            ppo.ContentType = type.ContentType;
-            if(a.Position != null)
+            IUploadService UService = Service as IUploadService;
+            if (UService != null)
+                return DoUpload(UService, a);
+            else
+                return DoUpload(Service, a);
+        }
+
+        private bool DoUpload(IPictureService Service, UploadAttachment a)
+        {
+            PicturePostObject ppo = new PicturePostObject();
+            if(a.MediaType != null)
+                ppo.ContentType = a.MediaType.ContentType;
+            if (a.Position != null)
             {
                 ppo.Lat = a.Position.Lat.ToString(System.Globalization.CultureInfo.InvariantCulture);
                 ppo.Lon = a.Position.Lat.ToString(System.Globalization.CultureInfo.InvariantCulture);
@@ -332,6 +378,81 @@ namespace PockeTwit.MediaServices
                 a.Status = UploadAttachment.AttachmentStatus.Error;
             }
             return true;
+        }
+
+        private bool DoUpload(IUploadService Service, UploadAttachment a)
+        {
+            try
+            {
+                a.Status = UploadAttachment.AttachmentStatus.Uploading;
+                a.UploadedUri = Service.UploadAttachment(a, Account);
+                a.Status = UploadAttachment.AttachmentStatus.Complete;
+                return true;
+            }
+            catch (WebException we)
+            {
+                if (we.Response is HttpWebResponse)
+                {
+                    using (HttpWebResponse response = we.Response as HttpWebResponse)
+                    {
+                        Localization.LocalizedMessageBox.Show(
+                                string.Format(Localization.XmlBasedResourceManager.GetString("The media service encountered an error: {0} {1}"), response.StatusCode, response.StatusDescription)
+                            );
+                    }
+                }
+                else
+                    Localization.LocalizedMessageBox.Show("An unknown error occurred while uploading.");
+            }
+            catch (System.Net.Sockets.SocketException se)
+            {
+                string LocalizedString = null;
+                switch (se.NativeErrorCode)
+                {
+                    // Can't contact server
+                    case 10050: // Netdown
+                    case 10051: // Unreachable
+                    case 10061: // Refused
+                    case 10062: // Cannot translate name
+                    case 10064: // Host down
+                    case 10065: // No route to host
+                    case 11001: // Hostname not found
+                    case 11002: // Host temporarily not found
+                    case 11003: // Non-recoverable host lookup error
+                    case 11004: // No data record for name - IP address lookup failure
+                        LocalizedString = string.Format(Localization.XmlBasedResourceManager.GetString("The media service can not be reached (Error {0})."), se.NativeErrorCode);
+                        break;
+
+                    // Interrupted connection
+                    case 10004: // Airplane mode
+                    case 10052: // Network Reset
+                    case 10053: // Connection Aborted
+                    case 10054: // Connection Reset
+                        LocalizedString = Localization.XmlBasedResourceManager.GetString("Connection to service lost.");
+                        break;
+
+                    // Timeout
+                    case 10060: // Timeout
+                        LocalizedString = Localization.XmlBasedResourceManager.GetString("Connection timed out.");
+                        break;
+
+                    default:
+                        LocalizedString = string.Format(Localization.XmlBasedResourceManager.GetString("The media service encountered an error: {0} {1}"), se.NativeErrorCode, se.Message);
+                        break;
+                }
+                Localization.LocalizedMessageBox.Show(
+                        LocalizedString
+                    );
+            }
+            catch (InvalidOperationException ioe)
+            {
+                Localization.LocalizedMessageBox.Show("An internal error occurred while uploading.");
+            }
+            catch (Exception e)
+            {
+                Localization.LocalizedMessageBox.Show("An unknown error occurred while uploading.");
+            }
+            a.Status = UploadAttachment.AttachmentStatus.Error;
+            return false;
         }
 
         public bool CanUpload(MediaTypeGroup mediaGroup)
@@ -390,7 +511,6 @@ namespace PockeTwit.MediaServices
                 default:
                     return null; 
             }
-            return null;
         }
 
 

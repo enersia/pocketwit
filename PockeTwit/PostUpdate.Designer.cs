@@ -35,7 +35,6 @@ namespace PockeTwit
             this.menuSubmit = new System.Windows.Forms.MenuItem();
             this.pnlSipSize = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.userListControl1 = new PockeTwit.userListControl();
             this.txtStatusUpdate = new System.Windows.Forms.TextBox();
             this.pnlStatus = new System.Windows.Forms.Panel();
             this.cmbPlaces = new System.Windows.Forms.ComboBox();
@@ -54,6 +53,7 @@ namespace PockeTwit
             this.pnlAccounts = new System.Windows.Forms.Panel();
             this.lblFromAccount = new System.Windows.Forms.Label();
             this.cmbAccount = new System.Windows.Forms.ComboBox();
+            this.userListControl1 = new PockeTwit.userListControl();
             this.pnlSipSize.SuspendLayout();
             this.panel1.SuspendLayout();
             this.pnlStatus.SuspendLayout();
@@ -92,18 +92,6 @@ namespace PockeTwit
             this.panel1.Location = new System.Drawing.Point(0, 66);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(240, 166);
-            // 
-            // userListControl1
-            // 
-            this.userListControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.userListControl1.Location = new System.Drawing.Point(33, 6);
-            this.userListControl1.Name = "userListControl1";
-            this.userListControl1.Size = new System.Drawing.Size(175, 154);
-            this.userListControl1.TabIndex = 32;
-            this.userListControl1.Visible = false;
-            this.userListControl1.GotFocus += new System.EventHandler(this.txtStatusUpdate_GotFocus);
             // 
             // txtStatusUpdate
             // 
@@ -269,6 +257,18 @@ namespace PockeTwit
             this.cmbAccount.TabIndex = 3;
             this.cmbAccount.SelectedIndexChanged += new System.EventHandler(this.cmbAccount_SelectedIndexChanged);
             // 
+            // userListControl1
+            // 
+            this.userListControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.userListControl1.Location = new System.Drawing.Point(33, 6);
+            this.userListControl1.Name = "userListControl1";
+            this.userListControl1.Size = new System.Drawing.Size(175, 154);
+            this.userListControl1.TabIndex = 32;
+            this.userListControl1.Visible = false;
+            this.userListControl1.GotFocus += new System.EventHandler(this.txtStatusUpdate_GotFocus);
+            // 
             // PostUpdate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -279,7 +279,9 @@ namespace PockeTwit
             this.Menu = this.mainMenu1;
             this.Name = "PostUpdate";
             this.Text = "Post Update";
+            this.Deactivate += new System.EventHandler(this.inputPanel_EnabledChanged);
             this.Closed += new System.EventHandler(this.PostUpdate_Closed);
+            this.Activated += new System.EventHandler(this.inputPanel_EnabledChanged);
             this.Resize += new System.EventHandler(this.PostUpdate_Resize);
             this.pnlSipSize.ResumeLayout(false);
             this.panel1.ResumeLayout(false);

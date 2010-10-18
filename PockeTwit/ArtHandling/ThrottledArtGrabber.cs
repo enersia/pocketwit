@@ -268,11 +268,11 @@ namespace PockeTwit
                 ArtWriter.Seek(0, SeekOrigin.Begin);
                 using (var original = new Bitmap(ArtWriter))
                 {
-                    using (var resized = new Bitmap(ClientSettings.SmallArtSize, ClientSettings.SmallArtSize))
+                    using (var resized = new Bitmap(Math.Min(ClientSettings.SmallArtSize, original.Width), Math.Min(ClientSettings.SmallArtSize, original.Height)))
                     {
                         Graphics g = Graphics.FromImage(resized);
                         g.DrawImage(original,
-                                    new Rectangle(0, 0, ClientSettings.SmallArtSize, ClientSettings.SmallArtSize),
+                                    new Rectangle(0, 0, Math.Min(ClientSettings.SmallArtSize, original.Width), Math.Min(ClientSettings.SmallArtSize, original.Height)),
                                     new Rectangle(0, 0, original.Width, original.Height), GraphicsUnit.Pixel);
                         g.Dispose();
 

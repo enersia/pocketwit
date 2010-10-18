@@ -10,7 +10,7 @@ using OAuth;
 
 namespace PockeTwit.MediaServices
 {
-    public class Posterous   : PictureServiceBase
+    public class Posterous   : PictureServiceBase, IUploadService
     {
         #region private properties
 
@@ -104,6 +104,49 @@ namespace PockeTwit.MediaServices
         #endregion
 
         #region IPictureService Members
+
+        /// <summary>
+        /// Post a picture
+        /// </summary>
+        /// <param name="postData"></param>
+        public virtual Uri UploadAttachment(UploadAttachment Attachment, Twitter.Account account)
+        {
+            if(string.IsNullOrEmpty(account.OAuth_token) || string.IsNullOrEmpty(account.OAuth_token_secret))
+                throw new InvalidOperationException(Localization.XmlBasedResourceManager.GetString("No credentials supplied"));
+            using (Stream contentStream = Attachment.GetStream())
+            {
+                if (contentStream == null)
+                    throw new InvalidOperationException(Localization.XmlBasedResourceManager.GetString("Unable to open file"));
+
+                HttpWebRequest request = WebRequestFactory.CreateHttpRequest(API_UPLOAD);
+                request.Timeout = 60000;
+                request.AllowWriteStreamBuffering = false; // don't want to buffer 3MB files, thanks
+                request.AllowAutoRedirect = false;
+
+                Multipart contents = new Multipart();
+                contents.UploadPart += new Multipart.UploadPartEvent(contents_UploadPart);
+                contents.Add("source", "PockeTwit");
+                contents.Add("sourceLink", "http://code.google.com/p/pocketwit/");
+                if (!string.IsNullOrEmpty(Attachment.Caption))
+                    contents.Add("message", Attachment.Caption);
+
+                contents.Add("media", 
+                    contentStream, 
+                    Path.GetFileName(Attachment.Name), 
+                    (Attachment.MediaType != null) ?
+                        Attachment.MediaType.ContentType
+                        : string.Empty
+                );
+
+                OAuthAuthorizer.AuthorizeEcho(request, account.OAuth_token, account.OAuth_token_secret);
+
+                XmlDocument uploadResult = contents.UploadXML(request);
+                if (uploadResult == null)
+                    throw new InvalidOperationException("Error parsing result");
+                return new Uri(uploadResult.SelectSingleNode("//url").InnerText);
+            }
+        }
+
 
         /// <summary>
         /// Post a picture

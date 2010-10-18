@@ -636,8 +636,12 @@ namespace PockeTwit
             Cursor.Current = Cursors.WaitCursor;
             UploadManager.Upload(Attachment);
 
-            if(Attachment.UploadedUri != null)
-                Themes.FormColors.GetThemeIcon("insertlink", pictureFromStorage.Height);
+            if (Attachment.UploadedUri != null)
+            {
+                picAttachments.Image = Themes.FormColors.GetThemeIcon("insertlink", picAttachments.Height);
+                UpdatePictureData(Attachment.UploadedUri.OriginalString, false);
+            }
+            Cursor.Current = Cursors.Default;
         }
 
         /// <summary>
@@ -704,8 +708,8 @@ namespace PockeTwit
         private void pictureService_UploadFinish(object sender, PictureServiceEventArgs eventArgs)
         {
             //AddPictureToForm(eventArgs.PictureFileName, picAttachments);
-            picAttachments.Image = Themes.FormColors.GetThemeIcon("insertlink", picAttachments.Height);
-            UpdatePictureData(eventArgs.ReturnMessage, false);
+//            picAttachments.Image = Themes.FormColors.GetThemeIcon("insertlink", picAttachments.Height);
+//            UpdatePictureData(eventArgs.ReturnMessage, false);
         }
 
         /// <summary>
