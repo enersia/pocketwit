@@ -172,7 +172,8 @@ namespace PockeTwit
 
         void picAddressBook_Click(object sender, EventArgs e)
         {
-            txtStatusUpdate.Text = txtStatusUpdate.Text + "@";
+            //txtStatusUpdate.Text = txtStatusUpdate.Text + "@";
+            InsertTextAtCursor("@");
             userListControl1.Visible = true;
             userListControl1.Focus();
         }
