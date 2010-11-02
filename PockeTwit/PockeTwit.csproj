@@ -332,6 +332,7 @@
     <Content Include="default_profile_bigger.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Localization\pocketwit_es-AR.xml" />
     <Content Include="Localization\pocketwit_nl.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -352,7 +353,7 @@
     </Content>
     <None Include="TestCode\Desert.jpg" />
     <Content Include="SQLite.Interop.066.DLL">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Themes\DeepPurple\DeepPurple.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

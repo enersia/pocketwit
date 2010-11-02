@@ -37,6 +37,8 @@ namespace LocalStorage
 
         private const string SQLFetchSearches = "(statuses.statustypes & 8)";
 
+        private const string SQLFetchSendDMs = "(statuses.statustypes & 16)";
+
         private const string SQLGetLastStatusID =
             @"SELECT    statuses.id
                           FROM statuses 
@@ -331,6 +333,8 @@ namespace LocalStorage
                     return SQLFetchRepliesAndMessages;
                 case TimelineManagement.TimeLineType.Searches:
                     return SQLFetchSearches;
+                case TimelineManagement.TimeLineType.Send_Direct_Messages:
+                    return SQLFetchSendDMs;
             }
             return null;
         }

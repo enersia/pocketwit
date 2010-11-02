@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Xml;
+using System.Linq;
 using System.Xml.Serialization;
 using PockeTwit.FingerUI;
 using Yedda;
@@ -20,7 +21,8 @@ namespace PockeTwit.Library
         Reply = 0x2,
         Direct = 0x4,
         SearchResult = 0x8,
-        Retweet = 0x10
+        Retweet = 0x10,
+        SendDM = 0x16,
     }
 
    
@@ -263,10 +265,16 @@ namespace PockeTwit.Library
                         using (var r = new StringReader(response))
                         {
                             XmlReader xmlr = XmlReader.Create(r);
+
                             if (!statusSerializer.CanDeserialize(xmlr))
+                            {
                                 statuses = new status[0];
+                            }
                             else
+                            {
                                 statuses = (status[])statusSerializer.Deserialize(xmlr);
+                            }
+                            
                         }
                     }
                     else if (Account.ServerURL.ServerType == Twitter.TwitterServer.brightkite)
@@ -319,6 +327,7 @@ namespace PockeTwit.Library
             return ret.ToArray();
             
         }
+
         private static status DeserializeSingleJSONStatus(System.Collections.Hashtable jsonTable, StatusTypes TypeOfMessage)
         {
             
@@ -397,7 +406,7 @@ namespace PockeTwit.Library
             return resultList.ToArray();
         }
 
-        public static status[] FromDirectReplies(string response, Twitter.Account Account)
+        public static status[] FromDirectReplies(string response, Twitter.Account Account, StatusTypes TypeOfMessage)
         {
             var resultList = new List<status>();
 
@@ -412,12 +421,25 @@ namespace PockeTwit.Library
                 newStat.id = entry.SelectSingleNode("id").InnerText;
                 newStat.created_at = entry.SelectSingleNode("created_at").InnerText;
                 newStat.user = new User();
-                newStat.user.screen_name = entry.SelectSingleNode("sender/screen_name").InnerText;
-                newStat.user.id = entry.SelectSingleNode("sender/id").InnerText;
-                newStat.user.profile_image_url = entry.SelectSingleNode("sender/profile_image_url").InnerText;
-                newStat.user.location = entry.SelectSingleNode("sender/location").InnerText;
-                newStat.user.name = entry.SelectSingleNode("sender/name").InnerText;
-                newStat.user.description = entry.SelectSingleNode("sender/description").InnerText;
+                if (TypeOfMessage == StatusTypes.SendDM)
+                {
+                    newStat.user.screen_name = entry.SelectSingleNode("recipient/screen_name").InnerText;
+                    newStat.user.id = entry.SelectSingleNode("recipient/id").InnerText;
+                    newStat.user.profile_image_url = entry.SelectSingleNode("recipient/profile_image_url").InnerText;
+                    newStat.user.location = entry.SelectSingleNode("recipient/location").InnerText;
+                    newStat.user.name = entry.SelectSingleNode("recipient/name").InnerText;
+                    newStat.user.description = entry.SelectSingleNode("recipient/description").InnerText;
+                }
+                else
+                {
+                    newStat.user.screen_name = entry.SelectSingleNode("sender/screen_name").InnerText;
+                    newStat.user.id = entry.SelectSingleNode("sender/id").InnerText;
+                    newStat.user.profile_image_url = entry.SelectSingleNode("sender/profile_image_url").InnerText;
+                    newStat.user.location = entry.SelectSingleNode("sender/location").InnerText;
+                    newStat.user.name = entry.SelectSingleNode("sender/name").InnerText;
+                    newStat.user.description = entry.SelectSingleNode("sender/description").InnerText;
+                }
+               
                 newStat.favorited = "false";
                 newStat.source = "";
                 newStat.in_reply_to_status_id = "";
@@ -425,10 +447,15 @@ namespace PockeTwit.Library
             }
             foreach (status stat in resultList)
             {
-                stat.TypeofMessage = StatusTypes.Direct;
+                stat.TypeofMessage = TypeOfMessage;
                 stat.Account = Account;
             }
             return resultList.ToArray();
+        }
+
+        public static status[] FromDirectReplies(string response, Twitter.Account Account)
+        {
+            return FromDirectReplies(response, Account, StatusTypes.Direct);
         }
 
         public static status[] FromBrightKite(string response)
@@ -587,6 +614,7 @@ namespace PockeTwit.Library
 
         #endregion
     }
+
 
     [Serializable]
     [XmlRoot("user")]

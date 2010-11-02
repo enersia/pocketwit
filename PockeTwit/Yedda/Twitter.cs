@@ -324,6 +324,7 @@ namespace Yedda
         public enum ActionType
         {
             Direct_Messages,
+            Send_Direct_Messages,
             Search,
             Public_Timeline,
             User_Timeline,
@@ -451,7 +452,8 @@ namespace Yedda
 
         protected const string TwitterBaseUrlFormat = "{3}{0}/{1}.{2}";
         protected const string TwitterSimpleURLFormat = "{1}/{0}.xml";
-        protected const string TwitterFavoritesUrlFormat = "{3}/{0}/{1}/{2}.xml";
+        protected const string TwitterFavoritesUrlFormat = "{2}/{0}/{1}.xml";
+        protected const string TwitterSendDirectMessagesUrlFormat = "{3}{0}/{1}/{2}.xml";
         protected const string TwitterSearchUrlFormat = "http://search.twitter.com/search.json?{0}";
         protected const string TwitterConversationUrlFormat = "http://search.twitter.com/search/thread/{0}";
 
@@ -912,6 +914,21 @@ namespace Yedda
             string url = string.Format(TwitterSimpleURLFormat, GetActionTypeString(ActionType.Direct_Messages), AccountInfo.ServerURL.URL) + "?since_id=" + SinceID;
             return ExecuteGetCommand(url);
         }
+        #endregion
+
+        #region Send_Direct_Messages
+        public virtual string GetDirectSendTimeLineSince(string SinceID)
+        {
+            string url = string.Format(TwitterSendDirectMessagesUrlFormat,"1", "direct_messages","sent", AccountInfo.ServerURL.URL) + "?since_id=" + SinceID;
+            return ExecutePostCommand(url, null);
+        }
+
+        public virtual string GetDirectSendTimeLine()
+        {
+            string url = string.Format(TwitterSendDirectMessagesUrlFormat, "1", "direct_messages", "sent", AccountInfo.ServerURL.URL);
+            return ExecutePostCommand(url, null);
+        }
+
         #endregion
 
         #region Friends_Timeline
@@ -1619,6 +1636,7 @@ namespace Yedda
         protected const string TwitterNewBaseUrlFormat = "https://api.twitter.com/1/{0}/{1}.{2}";
         protected const string TwitterNewSimpleUrlFormat = "https://api.twitter.com/1/{0}.{1}";
         protected const string TwitterNewFavoritesUrlFormat = "https://api.twitter.com/1/{0}/{1}/{2}.xml";
+        protected const string TwitterNewDirectMessagesUrlFormat = "https://api.twitter.com/1/{0}/{1}.xml";
 
         #region Update
         public override string Update(string status, string in_reply_to_status_id, UserLocation location, OutputFormatType format)
@@ -1680,6 +1698,19 @@ namespace Yedda
             string url = string.Format(TwitterNewSimpleUrlFormat, GetActionTypeString(ActionType.Direct_Messages), GetFormatTypeString(OutputFormatType.XML)) + "?since_id=" + SinceID;
             return ExecuteGetCommand(url);
         }
+
+        public override string GetDirectSendTimeLineSince(string SinceID)
+        {
+            string url = string.Format(TwitterNewDirectMessagesUrlFormat, "direct_messages", "sent") + "?since_id=" + SinceID;
+            return ExecuteGetCommand(url);
+        }
+
+        public override string GetDirectSendTimeLine()
+        {
+            string url = string.Format(TwitterNewDirectMessagesUrlFormat, "direct_messages", "sent");
+            return ExecuteGetCommand(url);
+        }
+
         #endregion
 
         #region Execute

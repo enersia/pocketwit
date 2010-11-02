@@ -7,6 +7,7 @@ using OpenNETCF.WindowsCE;
 using PockeTwit.Library;
 using PockeTwit.SpecialTimelines;
 using Yedda;
+using System.IO;
 
 namespace PockeTwit
 {
@@ -36,7 +37,8 @@ namespace PockeTwit
             Replies=1,
             Direct=2,
             Messages=3,
-            Searches=4
+            Searches=4,
+            Send_Direct_Messages=5
         }
         private LargeIntervalTimer updateTimer = new LargeIntervalTimer();
         private List<Yedda.Twitter> TwitterConnections;
@@ -337,6 +339,41 @@ namespace PockeTwit
                     if (t.AccountInfo.Server == Yedda.Twitter.TwitterServer.twitter)
                     {
                         twitterDone = true;
+                    }
+                }
+            }
+            TempLine.Sort();
+            return TempLine.ToArray();
+        }
+
+        public PockeTwit.Library.status[] GetSendDirectMessagesTimeLine()
+        {
+            bool twitterDone = false;
+            List<Library.status> TempLine = new List<PockeTwit.Library.status>();
+            foreach (Yedda.Twitter t in TwitterConnections)
+            {
+                if (t.AccountInfo.Server == Yedda.Twitter.TwitterServer.twitter)
+                {
+                    if (t.AccountInfo.Enabled)
+                    {
+                        try
+                        {
+                            string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Send_Direct_Messages, null);
+                            if (!string.IsNullOrEmpty(response))
+                            {
+                                //string filePath = "file.txt";
+                                //using (StreamWriter fileWriter = File.CreateText(filePath))
+                                //{
+                                //    fileWriter.Write(response);
+                                //}
+
+                                Library.status[] NewStats = Library.status.FromDirectReplies(response, t.AccountInfo, PockeTwit.Library.StatusTypes.SendDM);
+                                TempLine.AddRange(NewStats);
+                            }
+                        }
+                        catch
+                        {
+                        }
                     }
                 }
             }
@@ -712,6 +749,9 @@ namespace PockeTwit
                         {
                             response = t.GetDirectTimeLineSince(LastDirectID);
                         }
+                        break;
+                    case Yedda.Twitter.ActionType.Send_Direct_Messages:
+                        response = t.GetDirectSendTimeLine();
                         break;
                     case Yedda.Twitter.ActionType.Friends_Timeline:
                         if (!t.BigTimeLines)

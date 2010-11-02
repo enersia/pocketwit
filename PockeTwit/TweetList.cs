@@ -59,6 +59,7 @@ namespace PockeTwit
         
         FingerUI.Menu.SideMenuItem PublicMenuItem;
         FingerUI.Menu.SideMenuItem SearchMenuItem;
+        FingerUI.Menu.SideMenuItem SendDirectMessagesMenuItem;
         FingerUI.Menu.SideMenuItem ViewFavoritesMenuItem;
         FingerUI.Menu.SideMenuItem GroupsMenuItem;
         
@@ -786,38 +787,38 @@ namespace PockeTwit
 
         private void CreateLeftMenu()
         {
+            //BACK
             BackMenuItem = new FingerUI.Menu.SideMenuItem(this.GoBackInHistory, "Back", statList.LeftMenu);
             BackMenuItem.CanHide = true;
 
-            AboutMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowAbout, "About/Feedback", statList.LeftMenu);
-
+            //Friends
             FriendsTimeLineMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFriendsTimeLine, "Friends Timeline", statList.LeftMenu, "Friends_TimeLine");
             RefreshFriendsTimeLineMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshFriendsTimeLine, "Refresh Friends", statList.LeftMenu, "Friends_TimeLine");
+            //Messages
             MessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowMessagesTimeLine, "Messages", statList.LeftMenu, "Messages_TimeLine");
             RefreshMessagesMenuItem = new FingerUI.Menu.SideMenuItem(this.RefreshMessagesTimeLine, "Refresh Messages", statList.LeftMenu, "Messages_TimeLine");
-            PublicMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowPublicTimeLine, "Public Timeline", statList.LeftMenu);
+            //Groups
+            GroupsMenuItem = new FingerUI.Menu.SideMenuItem(null, "Groups ...", statList.LeftMenu);
+            GroupsMenuItem.Visible = false;
+
+            //More
             SearchMenuItem = new FingerUI.Menu.SideMenuItem(this.TwitterSearch, "Search/Local", statList.LeftMenu);
+            PublicMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowPublicTimeLine, "Public Timeline", statList.LeftMenu);
+            SendDirectMessagesMenuItem = new SideMenuItem(this.ShowSendDirectMessagesTimeLine, "Send Direct Messages", statList.LeftMenu);
             ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "View Favorites", statList.LeftMenu);
-            //ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowTrends, "View Trends", statList.LeftMenu);
             FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "Follow User", statList.LeftMenu);
+            AboutMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowAbout, "About/Feedback", statList.LeftMenu);
 
             OtherGlobalMenuItem = new FingerUI.Menu.SideMenuItem(null, "Other ...", statList.LeftMenu);
             OtherGlobalMenuItem.SubMenuItems.Add(SearchMenuItem);
             OtherGlobalMenuItem.SubMenuItems.Add(PublicMenuItem);
+            OtherGlobalMenuItem.SubMenuItems.Add(SendDirectMessagesMenuItem);
             OtherGlobalMenuItem.SubMenuItems.Add(ViewFavoritesMenuItem);
             OtherGlobalMenuItem.SubMenuItems.Add(FollowUserMenuItem);
             OtherGlobalMenuItem.SubMenuItems.Add(AboutMenuItem);
-
-            
-
-            GroupsMenuItem = new FingerUI.Menu.SideMenuItem(null, "Groups ...", statList.LeftMenu);
-            GroupsMenuItem.Visible = false;
-            //TimeLinesMenuItem.SubMenuItems.Add(GroupsMenuItem);
-            
+    
             PostUpdateMenuItem = new FingerUI.Menu.SideMenuItem(this.SetStatus, "Post Update", statList.LeftMenu);
             
-            //MapMenuItem = new FingerUI.Menu.SideMenuItem(this.MapList, "Map These", statList.LeftMenu);
-
             delMenuClicked showAccounts = () => this.ChangeSettings(new AccountsForm());
             delMenuClicked showAdvanced = () => this.ChangeSettings(new SettingsHandler.AdvancedForm());
             delMenuClicked showAvatar = () => this.ChangeSettings(new AvatarSettings());
@@ -966,11 +967,13 @@ namespace PockeTwit
         private void SetLeftMenu()
         {
             BackMenuItem.Visible = History.Count > 1;
+            
             FriendsTimeLineMenuItem.Visible = statList.CurrentList() != "Friends_TimeLine";
             RefreshFriendsTimeLineMenuItem.Visible = statList.CurrentList() == "Friends_TimeLine";
 
             MessagesMenuItem.Visible = statList.CurrentList() != "Messages_TimeLine";
             RefreshMessagesMenuItem.Visible = statList.CurrentList() == "Messages_TimeLine";
+
         }
         private void UpdateRightMenu()
         {
@@ -1610,6 +1613,7 @@ namespace PockeTwit
             AddStatusesToList(Manager.GetFavorites());       
             ChangeCursor(Cursors.Default);
         }
+
         private void ShowPublicTimeLine()
         {
             currentSpecialTimeLine = null;
@@ -1621,6 +1625,20 @@ namespace PockeTwit
             History.Push(i);
             statList.SetSelectedMenu(PublicMenuItem);
             AddStatusesToList(Manager.GetPublicTimeLine());
+            ChangeCursor(Cursors.Default);
+        }
+
+        private void ShowSendDirectMessagesTimeLine()
+        {
+            currentSpecialTimeLine = null;
+            ChangeCursor(Cursors.WaitCursor);
+
+            SwitchToList("SendDirectMessages_TimeLine");
+            HistoryItem i = new HistoryItem();
+            i.Action = Yedda.Twitter.ActionType.Send_Direct_Messages;
+            History.Push(i);
+            statList.SetSelectedMenu(SendDirectMessagesMenuItem);
+            AddStatusesToList(Manager.GetSendDirectMessagesTimeLine());
             ChangeCursor(Cursors.Default);
         }
 
