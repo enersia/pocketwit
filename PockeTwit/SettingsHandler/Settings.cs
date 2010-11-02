@@ -547,7 +547,7 @@ public static class ClientSettings
     public static void SaveSettings()
     {
         ConfigurationSettings.AppSettings.Clear();
-        ConfigurationSettings.AppSettings["AutoCompleteAddressBook"] = AutoCompleteAddressBook.ToString();
+        ConfigurationSettings.AppSettings["PopUpKeyboard"] = PopUpKeyboard.ToString();
         ConfigurationSettings.AppSettings["UseDIB"] = UseDIB.ToString();
         ConfigurationSettings.AppSettings["ZoomPreview"] = ZoomPreview.ToString();
         ConfigurationSettings.AppSettings["CacheDir"] = CacheDir;
