@@ -125,6 +125,12 @@ namespace PockeTwit
                     lblError.Visible = true;
                     return;
                 }
+                if (string.IsNullOrEmpty(txtPassword.Text))
+                {
+                    lblError.Text = "Please enter a username for this account.";
+                    lblError.Visible = true;
+                    return;
+                }
 
                 //access
                 authorizer.AuthorizationToken = RequestToken;
@@ -133,7 +139,7 @@ namespace PockeTwit
 
                 _AccountInfo.OAuth_token = authorizer.AccessToken;
                 _AccountInfo.OAuth_token_secret = authorizer.AccessTokenSecret;
-                _AccountInfo.UserName = authorizer.AccessScreenname;
+                //_AccountInfo.UserName = authorizer.AccessScreenname;
 
                 if (string.IsNullOrEmpty(_AccountInfo.OAuth_token))
                 {
@@ -197,8 +203,8 @@ namespace PockeTwit
                 txtPassword.Visible = false;
                 lblPassword.Visible = false;
 
-                txtUserName.Visible = false;
-                lblUser.Visible = false;
+                txtUserName.Visible = true;
+                lblUser.Visible = true;
                  
                 linkLabel1.Visible = false;
                 lblUser.Text = "User";
@@ -235,7 +241,7 @@ namespace PockeTwit
             IDataObject iData = Clipboard.GetDataObject();
             if (iData.GetDataPresent(DataFormats.Text))
             {
-                txtUserName.Text = (string)iData.GetData(DataFormats.Text);
+                TbPin.Text = (string)iData.GetData(DataFormats.Text);
             }
         }
 

@@ -166,6 +166,14 @@ namespace PockeTwit.MediaServices
 
                     postData.PictureStream = file;
                     XmlDocument uploadResult = UploadPicture(API_UPLOAD_V2, postData);
+                    //if (File.Exists("mobyresult.txt"))
+                    //{
+                    //    File.Delete("mobyresult.txt");
+                    //}
+                    //XmlTextWriter xm = new XmlTextWriter("mobyresult.txt", Encoding.UTF8);
+                    //uploadResult.Save(xm);
+                    //XmlDocument uploadResult = new XmlDocument();                    
+                    //uploadResult.Load("mobyresult.txt"); 
 
                     if (uploadResult == null) // occurs in the event of an error
                     {
@@ -174,6 +182,7 @@ namespace PockeTwit.MediaServices
                     if (successEvent)
                     {
                         string URL = uploadResult.SelectSingleNode("//mediaurl").InnerText;
+                        postData.URL = URL;
                         OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, URL, string.Empty, postData.Filename));
                     }
                 }

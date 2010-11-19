@@ -185,6 +185,7 @@ namespace PockeTwit.MediaServices
                     }
 
                     string URL = uploadResult.SelectSingleNode("//url").InnerText;
+                    postData.URL = URL;
                     OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, URL, string.Empty, postData.Filename));
                     return true;
                 }

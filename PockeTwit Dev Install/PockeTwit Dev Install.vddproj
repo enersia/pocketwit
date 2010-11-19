@@ -51,7 +51,7 @@
         "Entry"
         {
         "MsmKey" = "8:_02DA0C6FB14D3F636A9EE654B84EFB65"
-        "OwnerKey" = "8:_EBCBD7A4C0CEF9B34D8E4854449C24BA"
+        "OwnerKey" = "8:_91530C48F94AF26303D6B3CD7B8B2D92"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -404,6 +404,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_91530C48F94AF26303D6B3CD7B8B2D92"
+        "OwnerKey" = "8:_CCAD80857091443DBD4217B0BFDADB7C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_91530C48F94AF26303D6B3CD7B8B2D92"
+        "OwnerKey" = "8:_2BC0B7C54F99DD37861472919959B9F9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_A5BEC62F022195F9327047851A24F816"
         "OwnerKey" = "8:_6A774A77F9F30763AF4283887B2187EB"
         "MsmSig" = "8:_UNDEFINED"
@@ -638,12 +650,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_EBCBD7A4C0CEF9B34D8E4854449C24BA"
-        "OwnerKey" = "8:_CCAD80857091443DBD4217B0BFDADB7C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_F33266433E5ED4453C305B6E0055CC26"
         "OwnerKey" = "8:_FAAA9328619C7D674E15995AB12803B0"
         "MsmSig" = "8:_UNDEFINED"
@@ -704,7 +710,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\PockeTwit Install.cab"
+        "OutputFilename" = "8:Release\\PockeTwit Dev Install.cab"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
         "SignOutput" = "11:FALSE"
@@ -961,7 +967,7 @@
             "{E4F2F62A-3940-4BF5-A031-F7FA98CAAFFA}:_23D63962730A464CF7977ADA6167C61B"
             {
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=1fdb50b1b62b4c84"
+            "AssemblyAsmDisplayName" = "8:System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=1fdb50b1b62b4c84"
                 "ScatterAssemblies"
                 {
                     "_23D63962730A464CF7977ADA6167C61B"
@@ -1378,6 +1384,34 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{E4F2F62A-3940-4BF5-A031-F7FA98CAAFFA}:_91530C48F94AF26303D6B3CD7B8B2D92"
+            {
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:DataContract, Version=1.0.3911.33191, Culture=neutral, PublicKeyToken=346a4ff7224986ad"
+                "ScatterAssemblies"
+                {
+                    "_91530C48F94AF26303D6B3CD7B8B2D92"
+                    {
+                    "Name" = "8:DataContract.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:DataContract.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"
+            "Condition" = "8:"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "Register" = "3:0"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{E4F2F62A-3940-4BF5-A031-F7FA98CAAFFA}:_A5BEC62F022195F9327047851A24F816"
             {
             "AssemblyIsInGAC" = "11:FALSE"
@@ -1692,29 +1726,6 @@
             "SharedLegacy" = "11:FALSE"
             "Register" = "3:0"
             "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{E4F2F62A-3940-4BF5-A031-F7FA98CAAFFA}:_EBCBD7A4C0CEF9B34D8E4854449C24BA"
-            {
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:DataContract, Version=1.0.3910.40913, Culture=neutral, PublicKeyToken=346a4ff7224986ad"
-                "ScatterAssemblies"
-                {
-                }
-            "SourcePath" = "8:DataContract.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"
-            "Condition" = "8:"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "Register" = "3:0"
-            "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }

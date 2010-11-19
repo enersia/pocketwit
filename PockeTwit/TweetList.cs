@@ -14,6 +14,7 @@ using PockeTwit.TimeLines;
 using Yedda;
 using System.Collections;
 using System.Threading;
+using System.Text.RegularExpressions;
 
 
 namespace PockeTwit
@@ -1907,9 +1908,21 @@ namespace PockeTwit
         }
 
 
+        private bool TextIsUrl(string text)
+        {
+            String testString = string.Empty;
+            if (!text.StartsWith("http", StringComparison.CurrentCultureIgnoreCase))
+            {
+                testString = "http://" + text;
+            }
+            Regex RgxUrl = new Regex("(([a-zA-Z][0-9a-zA-Z+\\-\\.]*:)?/{0,2}[0-9a-zA-Z;/?:@&=+$\\.\\-_!~*'()%]+)?(#[0-9a-zA-Z;/?:@&=+$\\.\\-_!~*'()%]+)?");
+            return RgxUrl.IsMatch(testString);
+        }
+
         void statusList_WordClicked(string TextClicked)
         {
-            if (TextClicked.StartsWith("http",StringComparison.CurrentCultureIgnoreCase))
+            //Todo: Popup with options to open or do nothing.
+            if (TextIsUrl(TextClicked))
             {
                 if (PockeTwit.MediaServices.PictureServiceFactory.Instance.FetchServiceAvailable(TextClicked)
                     && !ClientSettings.DisableAllPreview)

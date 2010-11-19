@@ -92,7 +92,7 @@
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
-        "Compression" = "3:2"
+        "Compression" = "3:3"
         "SignOutput" = "11:FALSE"
         "CertificateFile" = "8:"
         "PrivateKeyFile" = "8:"
@@ -259,7 +259,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PockeTwit"
         "ProductCode" = "8:{CB01B50D-0CA1-4412-9718-E7DBCF625E17}"
-        "PackageCode" = "8:{79B5374C-AD8E-48C1-B563-102F4C79233D}"
+        "PackageCode" = "8:{B46F1184-9182-4A71-B325-06E7E1A74033}"
         "UpgradeCode" = "8:{3ECA32B1-C3B5-4D2B-B6E1-2742BA007F6B}"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
@@ -779,7 +779,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_CE91971B00A546DAA0DAD94EA7B2B1F9"
             {
-            "SourcePath" = "8:..\\PockeTwit Install\\Debug\\PockeTwit Install.cab"
+            "SourcePath" = "8:..\\PockeTwit Install\\Release\\PockeTwit Install.cab"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D85934DE10EA41E281B915F7BA34629B"
@@ -807,7 +807,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_FA521CAD14044DC789DD224A43BA3C09"
             {
-            "SourcePath" = "8:..\\CustomInstallLib\\obj\\Debug\\CustomInstallLib.dll"
+            "SourcePath" = "8:..\\CustomInstallLib\\obj\\Release\\CustomInstallLib.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D85934DE10EA41E281B915F7BA34629B"

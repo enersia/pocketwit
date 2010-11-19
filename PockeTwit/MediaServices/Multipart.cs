@@ -76,6 +76,7 @@ namespace PockeTwit.MediaServices
                         string resp = reader.ReadToEnd();
                         reader.Close();
                         responseXML.LoadXml(resp);
+                        //MessageBox.Show(resp);
                         return responseXML;
                     }                        
                 }

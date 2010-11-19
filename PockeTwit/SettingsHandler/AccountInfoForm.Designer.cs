@@ -159,7 +159,7 @@
             // 
             // TbPin
             // 
-            this.TbPin.Location = new System.Drawing.Point(43, 100);
+            this.TbPin.Location = new System.Drawing.Point(43, 143);
             this.TbPin.Name = "TbPin";
             this.TbPin.Size = new System.Drawing.Size(66, 21);
             this.TbPin.TabIndex = 41;
@@ -169,7 +169,7 @@
             // lPin
             // 
             this.lPin.ForeColor = System.Drawing.Color.LightGray;
-            this.lPin.Location = new System.Drawing.Point(9, 100);
+            this.lPin.Location = new System.Drawing.Point(9, 143);
             this.lPin.Name = "lPin";
             this.lPin.Size = new System.Drawing.Size(28, 20);
             this.lPin.Text = "Pin:";
@@ -179,7 +179,7 @@
             // 
             this.ImTwitter.BackColor = System.Drawing.Color.Transparent;
             this.ImTwitter.Image = ((System.Drawing.Image)(resources.GetObject("ImTwitter.Image")));
-            this.ImTwitter.Location = new System.Drawing.Point(6, 63);
+            this.ImTwitter.Location = new System.Drawing.Point(6, 106);
             this.ImTwitter.Name = "ImTwitter";
             this.ImTwitter.Size = new System.Drawing.Size(24, 24);
             this.ImTwitter.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -187,7 +187,7 @@
             // 
             // Ll_Twitter
             // 
-            this.Ll_Twitter.Location = new System.Drawing.Point(36, 69);
+            this.Ll_Twitter.Location = new System.Drawing.Point(36, 112);
             this.Ll_Twitter.Name = "Ll_Twitter";
             this.Ll_Twitter.Size = new System.Drawing.Size(120, 18);
             this.Ll_Twitter.TabIndex = 40;
