@@ -1911,12 +1911,15 @@ namespace PockeTwit
         private bool TextIsUrl(string text)
         {
             String testString = string.Empty;
-            if (!text.StartsWith("http", StringComparison.CurrentCultureIgnoreCase))
+            if (text.StartsWith("http", StringComparison.CurrentCultureIgnoreCase))
             {
-                testString = "http://" + text;
+                return true;
+                //testString = "http://" + text;
             }
-            Regex RgxUrl = new Regex("(([a-zA-Z][0-9a-zA-Z+\\-\\.]*:)?/{0,2}[0-9a-zA-Z;/?:@&=+$\\.\\-_!~*'()%]+)?(#[0-9a-zA-Z;/?:@&=+$\\.\\-_!~*'()%]+)?");
-            return RgxUrl.IsMatch(testString);
+            //Regex RgxUrl = new Regex("(([a-zA-Z][0-9a-zA-Z+\\-\\.]*:)?/{0,2}[0-9a-zA-Z;/?:@&=+$\\.\\-_!~*'()%]+)?(#[0-9a-zA-Z;/?:@&=+$\\.\\-_!~*'()%]+)?");
+            //return RgxUrl.IsMatch(testString);
+
+            return false;
         }
 
         void statusList_WordClicked(string TextClicked)
