@@ -805,7 +805,7 @@ namespace PockeTwit
             //More
             SearchMenuItem = new FingerUI.Menu.SideMenuItem(this.TwitterSearch, "Search/Local", statList.LeftMenu);
             PublicMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowPublicTimeLine, "Public Timeline", statList.LeftMenu);
-            SendDirectMessagesMenuItem = new SideMenuItem(this.ShowSendDirectMessagesTimeLine, "Send Direct Messages", statList.LeftMenu);
+            SendDirectMessagesMenuItem = new SideMenuItem(this.ShowSendDirectMessagesTimeLine, "Sent Direct Messages", statList.LeftMenu);
             ViewFavoritesMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowFavorites, "View Favorites", statList.LeftMenu);
             FollowUserMenuItem = new SideMenuItem(this.FollowUserClicked, "Follow User", statList.LeftMenu);
             AboutMenuItem = new FingerUI.Menu.SideMenuItem(this.ShowAbout, "About/Feedback", statList.LeftMenu);
