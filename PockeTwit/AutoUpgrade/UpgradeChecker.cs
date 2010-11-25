@@ -14,7 +14,7 @@ namespace PockeTwit
 
 		#region Fields (4) 
 
-        public static double currentVersion = .84;
+        public static double currentVersion = .83;
         public static bool devBuild = true;
         public static bool isBeta = false;
 
@@ -68,10 +68,7 @@ namespace PockeTwit
 
         public void CheckForUpgrade()
         {
-            if (!devBuild)
-            {
-                System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(GetWebResponse));
-            }
+            System.Threading.ThreadPool.QueueUserWorkItem(new System.Threading.WaitCallback(GetWebResponse));
         }
 
 
@@ -105,19 +102,27 @@ namespace PockeTwit
                     WebVersion.webVersion = double.Parse(UpgradeInfoDoc.SelectSingleNode("//version").InnerText,System.Globalization.CultureInfo.InvariantCulture.NumberFormat);
                     WebVersion.DownloadURL = UpgradeInfoDoc.SelectSingleNode("//url").InnerText;
                     WebVersion.UpgradeNotes = UpgradeInfoDoc.SelectSingleNode("//notes").InnerText;
-
-                    if (WebVersion.webVersion > currentVersion)
+                    WebVersion.OverrideDevBuild = false;
+                    if(UpgradeInfoDoc.SelectSingleNode("//overridedev") != null)
                     {
-                        if (UpgradeFound != null)
-                        {
-                            UpgradeFound(WebVersion);
-                        }
+                        WebVersion.OverrideDevBuild = Boolean.Parse(UpgradeInfoDoc.SelectSingleNode("//overridedev").InnerText);
                     }
-                    else
+                    
+                    if (!devBuild || WebVersion.OverrideDevBuild)
                     {
-                        if (CurrentVersion != null)
+                        if (WebVersion.webVersion > currentVersion)
                         {
-                            CurrentVersion(WebVersion);
+                            if (UpgradeFound != null)
+                            {
+                                UpgradeFound(WebVersion);
+                            }
+                        }
+                        else
+                        {
+                            if (CurrentVersion != null)
+                            {
+                                CurrentVersion(WebVersion);
+                            }
                         }
                     }
                 }
@@ -134,6 +139,7 @@ namespace PockeTwit
             public double webVersion;
             public string DownloadURL;
             public string UpgradeNotes;
+            public bool OverrideDevBuild;
         }
 
     }
