@@ -125,7 +125,7 @@ namespace PockeTwit
                     lblError.Visible = true;
                     return;
                 }
-                if (string.IsNullOrEmpty(txtPassword.Text))
+                if (string.IsNullOrEmpty(txtUserName.Text))
                 {
                     lblError.Text = "Please enter a username for this account.";
                     lblError.Visible = true;
