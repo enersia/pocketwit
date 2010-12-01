@@ -14,7 +14,7 @@ namespace PockeTwit
 
 		#region Fields (4) 
 
-        public static double currentVersion = .83;
+        public static double currentVersion = .85;
         public static bool devBuild = true;
         public static bool isBeta = false;
 

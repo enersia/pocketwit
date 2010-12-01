@@ -42,6 +42,7 @@ using System.Security.Cryptography;
 using OpenNETCF.Security.Cryptography;
 using System.IO;
 using ICSettings;
+using System.Windows.Forms;
 
 namespace OAuth
 {
@@ -165,6 +166,24 @@ namespace OAuth
             return "OAuth realm=\"http://api.twitter.com/\", " + String.Join(",", lijst.ToArray());
         }
 
+        protected string HeadersToQueryString(Dictionary<string, string> headers, string signature)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (string key in headers.Keys)
+            {
+                string value;
+                if (headers.TryGetValue(key, out value))
+
+                sb.AppendFormat("{0}={1}", key, value);  
+                sb.Append("&");
+            }
+            sb.Append("oauth_signature=");
+            sb.Append(signature);
+
+            return sb.ToString();
+        }
+
+
         public bool AcquireRequestToken()
         {
             var headers = new Dictionary<string, string>() {
@@ -199,7 +218,7 @@ namespace OAuth
             //    // fallthrough for errors
             //}
 
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(_config.RequestTokenUrl);
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(_config.AccessTokenUrl);
             headers.Add("oauth_signature", OAuth.PercentEncode(oauth_signature));
             request.Method = "GET";
             request.Headers.Add(HttpRequestHeader.Authorization.ToString(), HeadersToOAuth(headers));
@@ -293,6 +312,88 @@ namespace OAuth
             return false;
         }
 
+
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public bool AcquireXAuth(string username, string password)
+        {
+            var headers = new Dictionary<string, string>() {
+				{ "oauth_consumer_key", _config.ConsumerKey },
+				{ "oauth_nonce", MakeNonce () },
+				{ "oauth_signature_method", "HMAC-SHA1" },
+				{ "oauth_timestamp", MakeTimestamp () },
+				{ "oauth_version", "1.0" }};
+
+            headers.Add("x_auth_mode", "client_auth");
+            headers.Add("x_auth_password", OAuth.PercentEncode(password));
+            headers.Add("x_auth_username", OAuth.PercentEncode(username));
+
+            string signature = MakeSignature("GET", _config.XAuthUrl, headers);
+            string compositeSigningKey = MakeSigningKey(_config.ConsumerSecret, null);
+            string oauth_signature = MakeOAuthSignature(compositeSigningKey, signature);
+            string querystring = HeadersToQueryString(headers, OAuth.PercentEncode(oauth_signature));
+
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(_config.XAuthUrl + "?" + querystring);
+            //headers.Add("oauth_signature", OAuth.PercentEncode(oauth_signature));
+
+            request.UserAgent = "PockeTwit";
+            request.Method = "GET";
+            //request.Headers.Add(HttpRequestHeader.Authorization.ToString(), HeadersToOAuth(headers));
+            //string body = "x_auth_username={0}&x_auth_password={1}&x_auth_mode=client_auth";
+            //byte[] message = Encoding.UTF8.GetBytes(OAuth.PercentEncode(string.Format(body,username,password)));
+            //request.ContentLength = message.Length; 
+
+            request.Timeout = 30000;
+            //HttpWebResponse response = null;
+            try
+            {
+               //using (Stream requestStream = request.GetRequestStream())
+               //{
+               //      requestStream.Write(message, 0, message.Length);
+               //     requestStream.Flush();
+               //     requestStream.Close();
+
+                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                    {
+                        Stream resp = response.GetResponseStream();
+
+                        StreamReader oReader = new StreamReader(resp, Encoding.ASCII);
+
+                        string r = oReader.ReadToEnd();
+                        MessageBox.Show(r);
+
+                        oReader.Close();
+                        response.Close();
+                        var result = HttpUtility.ParseQueryString(r);
+
+                        if (result["oauth_token"] != null)
+                        {
+                            AccessToken = result["oauth_token"];
+                            AccessTokenSecret = result["oauth_token_secret"];
+                            return true;
+                        }
+                    }
+                //}
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                PockeTwit.GlobalEventHandler.LogCommError(e);
+                //MessageBox.Show(e.StackTrace);
+                // fallthrough for errors
+                throw e;
+            }
+
+            return false;
+        }
+
         // 
         // Assign the result to the Authorization header, like this:
         // request.Headers [HttpRequestHeader.Authorization] = AuthorizeRequest (...)
@@ -333,7 +434,6 @@ namespace OAuth
 
             return HeadersToOAuth(headers);
         }
-
 
         //
         // Used to authorize an HTTP request going to TwitPic
@@ -391,6 +491,8 @@ namespace OAuth
             }
             return sb.ToString();
         }
+
+       
     }
 }
 

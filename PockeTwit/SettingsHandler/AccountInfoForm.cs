@@ -44,7 +44,6 @@ namespace PockeTwit
         {
             Microsoft.WindowsCE.Forms.InputModeEditor.SetInputMode(txtUserName, Microsoft.WindowsCE.Forms.InputMode.AlphaCurrent);
             Microsoft.WindowsCE.Forms.InputModeEditor.SetInputMode(txtPassword, Microsoft.WindowsCE.Forms.InputMode.AlphaCurrent);
-            Microsoft.WindowsCE.Forms.InputModeEditor.SetInputMode(TbPin, Microsoft.WindowsCE.Forms.InputMode.Numeric);
         }
 
         public AccountInfoForm()
@@ -108,9 +107,7 @@ namespace PockeTwit
             Application.DoEvents();
             lblError.Visible = false;
             _AccountInfo.UserName = txtUserName.Text;
-            _AccountInfo.Password = txtPassword.Text;
             _AccountInfo.ServerURL = Yedda.Servers.ServerList[(string)cmbServers.SelectedItem];
-            //_AccountInfo.Enabled = (_AccountInfo.ServerURL.ServerType != Yedda.Twitter.TwitterServer.pingfm && _AccountInfo.ServerURL.ServerType != Yedda.Twitter.TwitterServer.brightkite);
             _AccountInfo.Enabled = true;
             _AccountInfo.IsDefault = chkDefault.Checked;
             Yedda.Twitter T = Yedda.Servers.CreateConnection(_AccountInfo);
@@ -119,23 +116,19 @@ namespace PockeTwit
             {
                 OAuthAuthorizer authorizer = new OAuthAuthorizer();
 
-                if (string.IsNullOrEmpty(TbPin.Text))
-                {
-                    lblError.Text = "Please enter pin provided by twitter.";
-                    lblError.Visible = true;
-                    return;
-                }
                 if (string.IsNullOrEmpty(txtUserName.Text))
                 {
                     lblError.Text = "Please enter a username for this account.";
                     lblError.Visible = true;
                     return;
                 }
-
-                //access
-                authorizer.AuthorizationToken = RequestToken;
-                authorizer.AuthorizationVerifier = TbPin.Text;
-                authorizer.AcquireAccessToken();
+                if (string.IsNullOrEmpty(txtPassword.Text))
+                {
+                    lblError.Text = "Please enter a password for authorizing.";
+                    lblError.Visible = true;
+                    return;
+                }
+                authorizer.AcquireXAuth(txtUserName.Text, txtPassword.Text);
 
                 _AccountInfo.OAuth_token = authorizer.AccessToken;
                 _AccountInfo.OAuth_token_secret = authorizer.AccessTokenSecret;
@@ -145,7 +138,9 @@ namespace PockeTwit
                 {
                     //I know, not very nice, but it reduces errors a bit.
                     Thread.Sleep(1000);
-                    authorizer.AcquireAccessToken();
+                    authorizer.AcquireXAuth(txtUserName.Text, txtPassword.Text);
+                    _AccountInfo.OAuth_token = authorizer.AccessToken;
+                    _AccountInfo.OAuth_token_secret = authorizer.AccessTokenSecret;
 
                     if (string.IsNullOrEmpty(_AccountInfo.OAuth_token))
                     {
@@ -187,21 +182,12 @@ namespace PockeTwit
                 {
                     txtUserName.ContextMenu = copyPasteMenu;
                 }
-                Ll_Twitter.Visible = false;
-                lPin.Visible = false;
-                TbPin.Visible = false;
-                ImTwitter.Visible = false;
             }
-            else if (server == "twitter")
+            else //if (server == "twitter")
             {
-                ImTwitter.Visible = true;
-                lPin.Visible = true;
-                TbPin.Visible = true;
-                Ll_Twitter.Visible = true;
-                 
                 txtPassword.Text = "";
-                txtPassword.Visible = false;
-                lblPassword.Visible = false;
+                txtPassword.Visible = true;
+                lblPassword.Visible = true;
 
                 txtUserName.Visible = true;
                 lblUser.Visible = true;
@@ -213,27 +199,6 @@ namespace PockeTwit
                      txtUserName.ContextMenu = null;
                 }
             }
-            else
-            {
-
-                txtPassword.Text = "";
-                txtPassword.Visible = true;
-                lblPassword.Visible = true;
-
-                txtUserName.Visible = true;
-                lblUser.Visible = true;
-
-                linkLabel1.Visible = false;
-                Ll_Twitter.Visible = false;
-                lblUser.Text = "User";
-                if (DetectDevice.DeviceType == DeviceType.Professional)
-                {
-                    txtUserName.ContextMenu = null;
-                }
-                ImTwitter.Visible = false;
-                lPin.Visible = false;
-                TbPin.Visible = false;
-            }
         }
 
         void PasteItem_Click(object sender, System.EventArgs e)
@@ -241,7 +206,7 @@ namespace PockeTwit
             IDataObject iData = Clipboard.GetDataObject();
             if (iData.GetDataPresent(DataFormats.Text))
             {
-                TbPin.Text = (string)iData.GetData(DataFormats.Text);
+                txtUserName.Text = (string)iData.GetData(DataFormats.Text);
             }
         }
 

@@ -29,7 +29,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AccountInfoForm));
             this.mainMenu1 = new System.Windows.Forms.MainMenu();
             this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.menuItem1 = new System.Windows.Forms.MenuItem();
@@ -42,10 +41,6 @@
             this.lblError = new System.Windows.Forms.Label();
             this.chkDefault = new System.Windows.Forms.CheckBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-            this.TbPin = new System.Windows.Forms.TextBox();
-            this.lPin = new System.Windows.Forms.Label();
-            this.ImTwitter = new System.Windows.Forms.PictureBox();
-            this.Ll_Twitter = new System.Windows.Forms.LinkLabel();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -90,7 +85,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPassword.BackColor = System.Drawing.Color.White;
             this.txtPassword.ForeColor = System.Drawing.Color.Black;
-            this.txtPassword.Location = new System.Drawing.Point(5, 122);
+            this.txtPassword.Location = new System.Drawing.Point(5, 123);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
             this.txtPassword.Size = new System.Drawing.Size(232, 21);
@@ -132,7 +127,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lblError.BackColor = System.Drawing.Color.Black;
             this.lblError.ForeColor = System.Drawing.Color.Red;
-            this.lblError.Location = new System.Drawing.Point(5, 193);
+            this.lblError.Location = new System.Drawing.Point(5, 180);
             this.lblError.Name = "lblError";
             this.lblError.Size = new System.Drawing.Size(232, 39);
             this.lblError.Text = "Unable to verify username and password";
@@ -141,7 +136,7 @@
             // chkDefault
             // 
             this.chkDefault.ForeColor = System.Drawing.Color.White;
-            this.chkDefault.Location = new System.Drawing.Point(3, 167);
+            this.chkDefault.Location = new System.Drawing.Point(3, 154);
             this.chkDefault.Name = "chkDefault";
             this.chkDefault.Size = new System.Drawing.Size(100, 20);
             this.chkDefault.TabIndex = 99;
@@ -149,51 +144,13 @@
             // 
             // linkLabel1
             // 
-            this.linkLabel1.Location = new System.Drawing.Point(5, 102);
+            this.linkLabel1.Location = new System.Drawing.Point(5, 103);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(100, 20);
             this.linkLabel1.TabIndex = 2;
             this.linkLabel1.Text = "Get my ping key";
             this.linkLabel1.Visible = false;
             this.linkLabel1.Click += new System.EventHandler(this.linkLabel1_Click);
-            // 
-            // TbPin
-            // 
-            this.TbPin.Location = new System.Drawing.Point(43, 143);
-            this.TbPin.Name = "TbPin";
-            this.TbPin.Size = new System.Drawing.Size(66, 21);
-            this.TbPin.TabIndex = 41;
-            this.TbPin.Visible = false;
-            this.TbPin.GotFocus += new System.EventHandler(this.TbPin_GotFocus);
-            // 
-            // lPin
-            // 
-            this.lPin.ForeColor = System.Drawing.Color.LightGray;
-            this.lPin.Location = new System.Drawing.Point(9, 143);
-            this.lPin.Name = "lPin";
-            this.lPin.Size = new System.Drawing.Size(28, 20);
-            this.lPin.Text = "Pin:";
-            this.lPin.Visible = false;
-            // 
-            // ImTwitter
-            // 
-            this.ImTwitter.BackColor = System.Drawing.Color.Transparent;
-            this.ImTwitter.Image = ((System.Drawing.Image)(resources.GetObject("ImTwitter.Image")));
-            this.ImTwitter.Location = new System.Drawing.Point(6, 106);
-            this.ImTwitter.Name = "ImTwitter";
-            this.ImTwitter.Size = new System.Drawing.Size(24, 24);
-            this.ImTwitter.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.ImTwitter.Visible = false;
-            // 
-            // Ll_Twitter
-            // 
-            this.Ll_Twitter.Location = new System.Drawing.Point(36, 112);
-            this.Ll_Twitter.Name = "Ll_Twitter";
-            this.Ll_Twitter.Size = new System.Drawing.Size(120, 18);
-            this.Ll_Twitter.TabIndex = 40;
-            this.Ll_Twitter.Text = "Verify with Twitter";
-            this.Ll_Twitter.Visible = false;
-            this.Ll_Twitter.Click += new System.EventHandler(this.Ll_Twitter_Click);
             // 
             // AccountInfoForm
             // 
@@ -202,10 +159,6 @@
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(240, 268);
-            this.Controls.Add(this.Ll_Twitter);
-            this.Controls.Add(this.ImTwitter);
-            this.Controls.Add(this.lPin);
-            this.Controls.Add(this.TbPin);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.chkDefault);
@@ -237,10 +190,6 @@
         private System.Windows.Forms.MenuItem PasteItem;
         private System.Windows.Forms.CheckBox chkDefault;
         private System.Windows.Forms.LinkLabel linkLabel1;
-        private System.Windows.Forms.TextBox TbPin;
-        private System.Windows.Forms.Label lPin;
-        private System.Windows.Forms.PictureBox ImTwitter;
-        private System.Windows.Forms.LinkLabel Ll_Twitter;
         
 
         

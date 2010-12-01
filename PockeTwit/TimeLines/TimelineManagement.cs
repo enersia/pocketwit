@@ -361,12 +361,6 @@ namespace PockeTwit
                             string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Send_Direct_Messages, null);
                             if (!string.IsNullOrEmpty(response))
                             {
-                                //string filePath = "file.txt";
-                                //using (StreamWriter fileWriter = File.CreateText(filePath))
-                                //{
-                                //    fileWriter.Write(response);
-                                //}
-
                                 Library.status[] NewStats = Library.status.FromDirectReplies(response, t.AccountInfo, PockeTwit.Library.StatusTypes.SendDM);
                                 TempLine.AddRange(NewStats);
                             }

@@ -120,22 +120,6 @@
   <metadata name="mainMenu1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="ImTwitter.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABkAAAAYCAYAAAAPtVbGAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAlwSFlzAAALCwAA
-        CwsBbQSEtwAAAcRJREFUSEu9llsrRFEUx/kqHnwAcss1l1wefAG+AI+KvHjhjRRJKZFSopGIxjVGJvfI
-        NIzkktHkFsalQZ36s85pLxxr42U79WvPTGv9f62990wTH/f+JNS3gFZjDwnKlkLGsAf4N0mpLwhT8CQl
-        8wGYgiXFs9uQqFoJIfIUg2VZNsMnF2Kdrp8+Z0nR1CYkIo8xBO8tVIUstIcdUXPgWKzVZbCk0LsGCQol
-        QeKyw/Ktha2rO9Ss7jEVC9tir8pjScH4CiRIUhH8KlFbp9bo8ysa1vfFfspkSf6oHxJuiZpIrclrFqav
-        LUSfX8R+ymRJ3sgiJH6TkIwmpTpdBktyPfOQ+ItEXQhdBktyBucg4Zb0RpzDV4RjzhQ9gUOxnzJZkj0w
-        DQm3hPbfffC+03OxV+WxJKvfCwkKrDv4uF3lO85Bf56GagZ3j8R+ymRJZt8EJPavb+1A9636/L7pyJlO
-        l8GSjN4xSFR7/XYAHa5ORF9WqtFlsCS9ewQ6Gn0bdghNRFtHV1ZBAvrZOYs+aPtZktblwU/UTvoRurz5
-        dugkP7t7QKVnRtvPktTOIZiCJSkdAzAFS5Lb+mEKliS19sEU/E+IXpjkDcjEMi3oE7PzAAAAAElFTkSu
-        QmCC
-</value>
-  </data>
   <metadata name="$this.FormFactorShadowProperty" xml:space="preserve">
     <value>Pocket_PC</value>
   </metadata>

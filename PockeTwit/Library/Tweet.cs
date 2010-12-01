@@ -447,7 +447,14 @@ namespace PockeTwit.Library
             }
             foreach (status stat in resultList)
             {
-                stat.TypeofMessage = TypeOfMessage;
+                if (TypeOfMessage == StatusTypes.SendDM)
+                {
+                    stat.TypeofMessage = StatusTypes.SendDM;
+                }
+                else
+                {
+                    stat.TypeofMessage = StatusTypes.Direct;
+                }
                 stat.Account = Account;
             }
             return resultList.ToArray();
