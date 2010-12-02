@@ -18,9 +18,9 @@ namespace PockeTwit.TimeLines
 
         public static event delUnreadCountChanged UnreadCountChanged = delegate { };
 
-        private const string LastSavedStoragePath = @"\Software\Apps\JustForFun PockeTwit\LastSaved\";
-        private const string NewestSavedStoragePath = @"\Software\Apps\JustForFun PockeTwit\NewestSaved\";
-        private const string UnreadCountRegistryPath = @"\Software\Apps\JustForFun PockeTwit\UnreadCount\";
+        private const string LastSavedStoragePath = @"\Software\Apps\PockeTwit\LastSaved\";
+        private const string NewestSavedStoragePath = @"\Software\Apps\PockeTwit\NewestSaved\";
+        private const string UnreadCountRegistryPath = @"\Software\Apps\PockeTwit\UnreadCount\";
 
         private static readonly Dictionary<string, string> LastSelectedItemsDictionary =
             new Dictionary<string, string>();
@@ -51,7 +51,7 @@ namespace PockeTwit.TimeLines
 
         public static void SetLastSelected(string ListName, status selectedStatus, ISpecialTimeLine specialTime)
         {
-            if (ListName == "Conversation" || ListName == "Search_TimeLine" || ListName == "@User_TimeLine" || ListName == "Favorites_TimeLine" || ListName == "SendDirectMessages_TimeLine") { return; }
+            if (ListName == "Conversation" || ListName == "Search_TimeLine" || ListName == "@User_TimeLine" || ListName == "Favorites_TimeLine" ) { return; }
             if (!LastSelectedItemsDictionary.ContainsKey(ListName))
             {
                 LastSelectedItemsDictionary.Add(ListName, "");
@@ -107,6 +107,10 @@ namespace PockeTwit.TimeLines
                 if (NewestSelectedItemsDictionary.ContainsKey("Messages_TimeLine"))
                 {
                     SetUnreadCount("Messages_TimeLine", NewestSelectedItemsDictionary["Messages_TimeLine"].id, null);
+                }
+                if (NewestSelectedItemsDictionary.ContainsKey("SendDirectMessages_TimeLine"))
+                {
+                    SetUnreadCount("SendDirectMessages_TimeLine", NewestSelectedItemsDictionary["SendDirectMessages_TimeLine"].id, null);
                 }
 
                 foreach (ISpecialTimeLine t in SpecialTimeLinesRepository.GetList())
@@ -190,13 +194,13 @@ namespace PockeTwit.TimeLines
             if (UnreadCountRoot == null)
             {
                 RegistryKey ParentKey = Registry.LocalMachine.OpenSubKey(@"\Software\Apps\", true);
-                if (ParentKey != null) UnreadCountRoot = ParentKey.CreateSubKey("JustForFun PockeTwit\\UnreadCount");
+                if (ParentKey != null) UnreadCountRoot = ParentKey.CreateSubKey("PockeTwit\\UnreadCount");
             }
 
             if (LastSavedItemsRoot == null)
             {
                 RegistryKey ParentKey = Registry.LocalMachine.OpenSubKey(@"\Software\Apps\", true);
-                if (ParentKey != null) LastSavedItemsRoot = ParentKey.CreateSubKey("JustForFun PockeTwit\\LastSaved");
+                if (ParentKey != null) LastSavedItemsRoot = ParentKey.CreateSubKey("PockeTwit\\LastSaved");
             }
             if (LastSavedItemsRoot != null)
             {
@@ -210,7 +214,7 @@ namespace PockeTwit.TimeLines
             if (NewestSavedItemsRoot == null)
             {
                 RegistryKey ParentKey = Registry.LocalMachine.OpenSubKey(@"\Software\Apps\", true);
-                if (ParentKey != null) NewestSavedItemsRoot = ParentKey.CreateSubKey("JustForFun PockeTwit\\NewestSaved");
+                if (ParentKey != null) NewestSavedItemsRoot = ParentKey.CreateSubKey("PockeTwit\\NewestSaved");
             }
             if (NewestSavedItemsRoot != null)
             {

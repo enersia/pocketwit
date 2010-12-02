@@ -1023,7 +1023,7 @@
             "{E4F2F62A-3940-4BF5-A031-F7FA98CAAFFA}:_2BC0B7C54F99DD37861472919959B9F9"
             {
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:ICSettings, Version=1.0.3911.33209, Culture=neutral, PublicKeyToken=346a4ff7224986ad"
+            "AssemblyAsmDisplayName" = "8:ICSettings, Version=1.1.0.0, Culture=neutral, PublicKeyToken=346a4ff7224986ad"
                 "ScatterAssemblies"
                 {
                     "_2BC0B7C54F99DD37861472919959B9F9"
@@ -1387,7 +1387,7 @@
             "{E4F2F62A-3940-4BF5-A031-F7FA98CAAFFA}:_91530C48F94AF26303D6B3CD7B8B2D92"
             {
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:DataContract, Version=1.0.3911.33191, Culture=neutral, PublicKeyToken=346a4ff7224986ad"
+            "AssemblyAsmDisplayName" = "8:DataContract, Version=1.1.0.0, Culture=neutral, PublicKeyToken=346a4ff7224986ad"
                 "ScatterAssemblies"
                 {
                     "_91530C48F94AF26303D6B3CD7B8B2D92"
