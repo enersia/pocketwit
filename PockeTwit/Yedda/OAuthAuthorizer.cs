@@ -341,54 +341,44 @@ namespace OAuth
             string querystring = HeadersToQueryString(headers, OAuth.PercentEncode(oauth_signature));
 
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(_config.XAuthUrl + "?" + querystring);
-            //headers.Add("oauth_signature", OAuth.PercentEncode(oauth_signature));
 
             request.UserAgent = "PockeTwit";
             request.Method = "GET";
-            //request.Headers.Add(HttpRequestHeader.Authorization.ToString(), HeadersToOAuth(headers));
-            //string body = "x_auth_username={0}&x_auth_password={1}&x_auth_mode=client_auth";
-            //byte[] message = Encoding.UTF8.GetBytes(OAuth.PercentEncode(string.Format(body,username,password)));
-            //request.ContentLength = message.Length; 
-
-            request.Timeout = 30000;
-            //HttpWebResponse response = null;
+            request.Timeout = 45000;
             try
             {
-               //using (Stream requestStream = request.GetRequestStream())
-               //{
-               //      requestStream.Write(message, 0, message.Length);
-               //     requestStream.Flush();
-               //     requestStream.Close();
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    Stream resp = response.GetResponseStream();
 
-                    using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                    StreamReader oReader = new StreamReader(resp, Encoding.ASCII);
+                    string r = oReader.ReadToEnd();
+
+                    oReader.Close();
+                    response.Close();
+                    var result = HttpUtility.ParseQueryString(r);
+
+                    if (result["oauth_token"] != null)
                     {
-                        Stream resp = response.GetResponseStream();
-
-                        StreamReader oReader = new StreamReader(resp, Encoding.ASCII);
-
-                        string r = oReader.ReadToEnd();
-                        MessageBox.Show(r);
-
-                        oReader.Close();
-                        response.Close();
-                        var result = HttpUtility.ParseQueryString(r);
-
-                        if (result["oauth_token"] != null)
-                        {
-                            AccessToken = result["oauth_token"];
-                            AccessTokenSecret = result["oauth_token_secret"];
-                            return true;
-                        }
+                        AccessToken = result["oauth_token"];
+                        AccessTokenSecret = result["oauth_token_secret"];
+                        return true;
                     }
-                //}
+                }
+            }
+            catch (WebException wex)
+            {
+                PockeTwit.GlobalEventHandler.LogCommError(wex);
+                if (wex.Status == WebExceptionStatus.ProtocolError
+                    && ((HttpWebResponse)wex.Response).StatusCode == HttpStatusCode.Unauthorized)
+                {
+                    return false;
+                }
+                PockeTwit.GlobalEventHandler.LogCommError(wex);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
                 PockeTwit.GlobalEventHandler.LogCommError(e);
-                //MessageBox.Show(e.StackTrace);
-                // fallthrough for errors
-                throw e;
             }
 
             return false;

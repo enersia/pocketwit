@@ -103,15 +103,16 @@ namespace PockeTwit
             {
                 return;
             }
-            Cursor.Current = Cursors.WaitCursor; //doesn't appear to be shown.
             Application.DoEvents();
+            Cursor.Current = Cursors.WaitCursor; //doesn't appear to be shown.
+
             lblError.Visible = false;
             _AccountInfo.UserName = txtUserName.Text;
             _AccountInfo.ServerURL = Yedda.Servers.ServerList[(string)cmbServers.SelectedItem];
             _AccountInfo.Enabled = true;
             _AccountInfo.IsDefault = chkDefault.Checked;
             Yedda.Twitter T = Yedda.Servers.CreateConnection(_AccountInfo);
-            Cursor.Current = Cursors.Default;
+            
             if ((string)cmbServers.SelectedItem == "twitter")
             {
                 OAuthAuthorizer authorizer = new OAuthAuthorizer();
@@ -120,15 +121,23 @@ namespace PockeTwit
                 {
                     lblError.Text = "Please enter a username for this account.";
                     lblError.Visible = true;
+                    Cursor.Current = Cursors.Default;
                     return;
                 }
                 if (string.IsNullOrEmpty(txtPassword.Text))
                 {
                     lblError.Text = "Please enter a password for authorizing.";
                     lblError.Visible = true;
+                    Cursor.Current = Cursors.Default;
                     return;
                 }
-                authorizer.AcquireXAuth(txtUserName.Text, txtPassword.Text);
+                if (!authorizer.AcquireXAuth(txtUserName.Text, txtPassword.Text))
+                {
+                    lblError.Text = "Unable to authorize. Wrong credentials?";
+                    lblError.Visible = true;
+                    Cursor.Current = Cursors.Default;
+                    return;
+                }
 
                 _AccountInfo.OAuth_token = authorizer.AccessToken;
                 _AccountInfo.OAuth_token_secret = authorizer.AccessTokenSecret;
@@ -146,6 +155,7 @@ namespace PockeTwit
                     {
                         lblError.Text = "Unable to get access token from Twitter.";
                         lblError.Visible = true;
+                        Cursor.Current = Cursors.Default;
                         return;
                     }
                 }
@@ -157,10 +167,12 @@ namespace PockeTwit
                 {
                     lblError.Text = "Invalid credentials or network unavailable.";
                     lblError.Visible = true;
+                    Cursor.Current = Cursors.Default;
                     return;
                 }
             }
 
+            Cursor.Current = Cursors.Default;
             this.DialogResult = DialogResult.OK;
         }
 

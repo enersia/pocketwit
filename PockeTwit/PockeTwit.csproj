@@ -82,14 +82,6 @@
     <Reference Include="Microsoft.WindowsMobile.PocketOutlook, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="Microsoft.WindowsMobile.Status, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <Reference Include="mscorlib" />
-    <Reference Include="nunit.core, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libraries\nunit.core.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.4.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libraries\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="OpenNETCF, Version=2.3.0.39, Culture=neutral, PublicKeyToken=e60dbea84bb431b7, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libraries\OpenNETCF.dll</HintPath>
@@ -351,7 +343,6 @@
     <Content Include="Localization\pocketwit_pt.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="TestCode\Desert.jpg" />
     <Content Include="SQLite.Interop.066.DLL">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -691,8 +682,6 @@
       <DependentUpon>NotificationSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="SpecialTimelines\UserGroupTimeLine.cs" />
-    <Compile Include="TestCode\TestMediaServiceFixture.cs" />
-    <Compile Include="TestCode\TestStatusMaker.cs" />
     <Compile Include="TiledMaps\CompositeTiledMapSession.cs" />
     <Compile Include="TiledMaps\Directions.cs" />
     <Compile Include="TiledMaps\Geocode.cs" />
