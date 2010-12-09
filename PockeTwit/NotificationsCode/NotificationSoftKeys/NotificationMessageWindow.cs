@@ -7,6 +7,7 @@ namespace christec.windowsce.forms
   //exclude from documentation
 #if !NDOC && !DESIGN
   using Microsoft.WindowsCE.Forms;
+    using PockeTwit;
 
   /// <summary>
   /// Handles messages received from the Notification system and throws events in the parent NotificationEngine object
@@ -29,24 +30,40 @@ namespace christec.windowsce.forms
           NMSHN nm = (NMSHN)Marshal.PtrToStructure(m.LParam, typeof(NMSHN));
           NotificationWithSoftKeys n = (NotificationWithSoftKeys)m_notifications[nm.idFrom];
 
-          switch (nm.code)
+          if (DetectDevice.DeviceType == DeviceType.Professional)
           {
-            case SHNN.DISMISS:
-              n.OnBalloonChanged(new BalloonChangedEventArgs(false));
-              break;
-            case SHNN.SHOW:
-              n.OnBalloonChanged(new BalloonChangedEventArgs(true));
-              break;
-            case SHNN.LINKSEL:
-              string link = Marshal.PtrToStringUni((IntPtr)nm.union1);
-              n.OnResponseSubmitted(new ResponseSubmittedEventArgs(link));
-              break;
-            case SHNN.NAVNEXT:
-              n.OnSpinnerClick(new SpinnerClickEventArgs(true));
-              break;
-            case SHNN.NAVPREV:
-              n.OnSpinnerClick(new SpinnerClickEventArgs(false));
-              break;
+
+              switch (nm.code)
+              {
+                  case SHNN.DISMISS:
+                      n.OnBalloonChanged(new BalloonChangedEventArgs(false));
+                      break;
+                  case SHNN.SHOW:
+                      n.OnBalloonChanged(new BalloonChangedEventArgs(true));
+                      break;
+                  case SHNN.LINKSEL:
+                      string link = Marshal.PtrToStringUni((IntPtr)nm.union1);
+                      n.OnResponseSubmitted(new ResponseSubmittedEventArgs(link));
+                      break;
+                  case SHNN.NAVNEXT:
+                      n.OnSpinnerClick(new SpinnerClickEventArgs(true));
+                      break;
+                  case SHNN.NAVPREV:
+                      n.OnSpinnerClick(new SpinnerClickEventArgs(false));
+                      break;
+              }
+          }
+          else
+          {
+              switch (nm.code)
+              {
+                  case SHNN.NAVNEXT:
+                      n.OnSpinnerClick(new SpinnerClickEventArgs(true));
+                      break;
+                  case SHNN.NAVPREV:
+                      n.OnSpinnerClick(new SpinnerClickEventArgs(false));
+                      break;
+              }
           }
           break;
 

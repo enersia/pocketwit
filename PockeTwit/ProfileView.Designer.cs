@@ -66,7 +66,10 @@
             this.avatarBox.Location = new System.Drawing.Point(3, 3);
             this.avatarBox.Name = "avatarBox";
             this.avatarBox.Size = new System.Drawing.Size(83, 71);
-            this.avatarBox.Click += new System.EventHandler(this.avatarBox_Click);
+            if (DetectDevice.DeviceType == DeviceType.Professional)
+            {
+                this.avatarBox.Click += new System.EventHandler(this.avatarBox_Click);
+            }
             // 
             // lblFullName
             // 
@@ -210,9 +213,12 @@
             this.pContent.Location = new System.Drawing.Point(0, 0);
             this.pContent.Name = "pContent";
             this.pContent.Size = new System.Drawing.Size(300, 500);
-            this.pContent.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pContent_MouseMove);
-            this.pContent.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pContent_MouseDown);
-            this.pContent.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pContent_MouseUp);
+            if (DetectDevice.DeviceType == DeviceType.Professional)
+            {
+                this.pContent.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pContent_MouseMove);
+                this.pContent.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pContent_MouseDown);
+                this.pContent.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pContent_MouseUp);
+            }
             // 
             // pViewer
             // 

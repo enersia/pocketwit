@@ -322,10 +322,10 @@ namespace PockeTwit.MediaServices
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));                
                 return null;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //Socket exception 10054 could occur when sending large files.
-                // Should be more specific
+                //Should be more specific
 
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                 return null;

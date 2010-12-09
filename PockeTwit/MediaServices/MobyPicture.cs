@@ -186,7 +186,7 @@ namespace PockeTwit.MediaServices
                         OnUploadFinish(new PictureServiceEventArgs(PictureServiceErrorLevel.OK, URL, string.Empty, postData.Filename));
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                     return false;
@@ -371,7 +371,7 @@ namespace PockeTwit.MediaServices
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, API_ERROR_UPLOAD, String.Format("Received response {0} from server ({1})", ex.Status, ex.Message)));
                 return null;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //Socket exception 10054 could occur when sending large files.
 

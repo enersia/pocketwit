@@ -352,7 +352,7 @@ namespace PockeTwit.MediaServices
 
                 return contents.UploadXML(request);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 //Socket exception 10054 could occur when sending large files.
                 // Should be more specific

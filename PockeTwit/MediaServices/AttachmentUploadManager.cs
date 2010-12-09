@@ -443,11 +443,11 @@ namespace PockeTwit.MediaServices
                         LocalizedString
                     );
             }
-            catch (InvalidOperationException ioe)
+            catch (InvalidOperationException)
             {
                 Localization.LocalizedMessageBox.Show("An internal error occurred while uploading.");
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Localization.LocalizedMessageBox.Show("An unknown error occurred while uploading.");
             }

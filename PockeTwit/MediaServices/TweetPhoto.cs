@@ -143,7 +143,7 @@ namespace PockeTwit.MediaServices
                         return true;
                     }
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                 }

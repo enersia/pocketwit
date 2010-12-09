@@ -748,7 +748,7 @@ namespace PockeTwit.Library
                     return result;
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 var toReturn = new User {screen_name = "PockeTwitUnknownUser"};
                 return toReturn;

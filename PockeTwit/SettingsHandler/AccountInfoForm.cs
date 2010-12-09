@@ -33,11 +33,11 @@ namespace PockeTwit
 
         private void SetupProfessional()
         {
-            this.copyPasteMenu = new System.Windows.Forms.ContextMenu();
-            this.PasteItem = new System.Windows.Forms.MenuItem();
-            PasteItem.Text = "Paste";
-            copyPasteMenu.MenuItems.Add(PasteItem);
-            PasteItem.Click += new System.EventHandler(PasteItem_Click);
+            //this.copyPasteMenu = new System.Windows.Forms.ContextMenu();
+            //this.PasteItem = new System.Windows.Forms.MenuItem();
+            //PasteItem.Text = "Paste";
+            //copyPasteMenu.MenuItems.Add(PasteItem);
+            //PasteItem.Click += new System.EventHandler(PasteItem_Click);
 
         }
         private void SetupStandard()
@@ -133,7 +133,7 @@ namespace PockeTwit
                 }
                 if (!authorizer.AcquireXAuth(txtUserName.Text, txtPassword.Text))
                 {
-                    lblError.Text = "Unable to authorize. Wrong credentials?";
+                    lblError.Text = "Unable to authorize. Wrong credentials or no connection?";
                     lblError.Visible = true;
                     Cursor.Current = Cursors.Default;
                     return;

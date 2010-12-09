@@ -380,9 +380,8 @@ namespace PockeTwit.MediaServices
                     OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD, ppo.Filename));
                 return null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
                 OnErrorOccured(new PictureServiceEventArgs(PictureServiceErrorLevel.Failed, string.Empty, API_ERROR_UPLOAD));
                 return null;
             }

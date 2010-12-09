@@ -1717,7 +1717,7 @@ namespace Yedda
         protected override string ExecuteGetCommand(string url)
         {
             HttpWebRequest client = WebRequestFactory.CreateHttpRequest(url);
-            client.Timeout = 20000;
+            client.Timeout = 30000;
             client.PreAuthenticate = true;
             client.Headers.Add(HttpRequestHeader.Authorization.ToString(),
                 OAuthAuthorizer.AuthorizeRequest(AccountInfo.OAuth_token,

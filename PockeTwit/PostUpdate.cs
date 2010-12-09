@@ -137,6 +137,7 @@ namespace PockeTwit
         private void SetupTouchScreen()
         {
             mainMenu1.MenuItems.Add(menuSubmit);
+            
             pictureFromCamers.Click += new EventHandler(pictureFromCamers_Click);
             pictureFromStorage.Click += new EventHandler(pictureFromStorage_Click);
             picInsertVideo.Click += new EventHandler(picInsertVideo_Click);
@@ -1051,29 +1052,32 @@ namespace PockeTwit
                                         DetectDevice.DeviceType == DeviceType.Professional
                 }; 
             // on touchscreen phones, the panel has been shown/hidden
-            if (inputPanel.Enabled)
+            if (DetectDevice.DeviceType == DeviceType.Professional)
             {
-                int availHeight = inputPanel.VisibleDesktop.Height + inputPanel.VisibleDesktop.Y - this.Top;
-                int safeHeight = (pnlStatus.Height * 3) / 2; // recommended height of text box
-
-                for(int i =  0; i < panels.Length; i++)
+                if (inputPanel != null && inputPanel.Enabled)
                 {
-                    if (conditions[0])
-                    {
-                        if (safeHeight + panels[i].Height > availHeight)
-                            panels[i].Visible = false;
-                        else
-                            safeHeight += panels[i].Height;
-                    }
-                }
+                    int availHeight = inputPanel.VisibleDesktop.Height + inputPanel.VisibleDesktop.Y - this.Top;
+                    int safeHeight = (pnlStatus.Height * 3) / 2; // recommended height of text box
 
-                pnlSipSize.Height = availHeight;
-            }
-            else
-            {
-                pnlSipSize.Height = this.Height;
-                for (int i = 0; i < panels.Length; i++)
-                    panels[i].Visible = conditions[i];
+                    for (int i = 0; i < panels.Length; i++)
+                    {
+                        if (conditions[0])
+                        {
+                            if (safeHeight + panels[i].Height > availHeight)
+                                panels[i].Visible = false;
+                            else
+                                safeHeight += panels[i].Height;
+                        }
+                    }
+
+                    pnlSipSize.Height = availHeight;
+                }
+                else
+                {
+                    pnlSipSize.Height = this.Height;
+                    for (int i = 0; i < panels.Length; i++)
+                        panels[i].Visible = conditions[i];
+                }
             }
         }
 

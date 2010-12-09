@@ -30,8 +30,8 @@
         private void InitializeComponent()
         {
             this.mainMenu1 = new System.Windows.Forms.MainMenu();
-            this.menuCancel = new System.Windows.Forms.MenuItem();
             this.menuAccept = new System.Windows.Forms.MenuItem();
+            this.menuCancel = new System.Windows.Forms.MenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.lnkAdd = new System.Windows.Forms.LinkLabel();
             this.lnkEdit = new System.Windows.Forms.LinkLabel();
@@ -44,15 +44,15 @@
             this.mainMenu1.MenuItems.Add(this.menuAccept);
             this.mainMenu1.MenuItems.Add(this.menuCancel);
             // 
-            // menuCancel
-            // 
-            this.menuCancel.Text = "Cancel";
-            this.menuCancel.Click += new System.EventHandler(this.menuCancel_Click);
-            // 
             // menuAccept
             // 
             this.menuAccept.Text = "Accept";
             this.menuAccept.Click += new System.EventHandler(this.menuAccept_Click);
+            // 
+            // menuCancel
+            // 
+            this.menuCancel.Text = "Cancel";
+            this.menuCancel.Click += new System.EventHandler(this.menuCancel_Click);
             // 
             // label1
             // 
@@ -70,7 +70,7 @@
             this.lnkAdd.ForeColor = System.Drawing.Color.LightBlue;
             this.lnkAdd.Location = new System.Drawing.Point(3, 53);
             this.lnkAdd.Name = "lnkAdd";
-            this.lnkAdd.Size = new System.Drawing.Size(234, 20);
+            this.lnkAdd.Size = new System.Drawing.Size(170, 20);
             this.lnkAdd.TabIndex = 1;
             this.lnkAdd.Text = "Add New";
             this.lnkAdd.Click += new System.EventHandler(this.lnkAdd_Click);
@@ -82,7 +82,7 @@
             this.lnkEdit.ForeColor = System.Drawing.Color.LightBlue;
             this.lnkEdit.Location = new System.Drawing.Point(3, 73);
             this.lnkEdit.Name = "lnkEdit";
-            this.lnkEdit.Size = new System.Drawing.Size(234, 20);
+            this.lnkEdit.Size = new System.Drawing.Size(170, 20);
             this.lnkEdit.TabIndex = 2;
             this.lnkEdit.Text = "Edit Selected";
             this.lnkEdit.Click += new System.EventHandler(this.lnkEdit_Click);
@@ -94,7 +94,7 @@
             this.lnkRemove.ForeColor = System.Drawing.Color.LightBlue;
             this.lnkRemove.Location = new System.Drawing.Point(3, 93);
             this.lnkRemove.Name = "lnkRemove";
-            this.lnkRemove.Size = new System.Drawing.Size(234, 20);
+            this.lnkRemove.Size = new System.Drawing.Size(170, 20);
             this.lnkRemove.TabIndex = 3;
             this.lnkRemove.Text = "Remove Selected";
             this.lnkRemove.Click += new System.EventHandler(this.lnkRemove_Click);
@@ -105,7 +105,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbAccounts.Location = new System.Drawing.Point(4, 28);
             this.cmbAccounts.Name = "cmbAccounts";
-            this.cmbAccounts.Size = new System.Drawing.Size(233, 22);
+            this.cmbAccounts.Size = new System.Drawing.Size(169, 22);
             this.cmbAccounts.TabIndex = 11;
             // 
             // AccountsForm
@@ -114,7 +114,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(240, 268);
+            this.ClientSize = new System.Drawing.Size(176, 180);
             this.Controls.Add(this.cmbAccounts);
             this.Controls.Add(this.lnkRemove);
             this.Controls.Add(this.lnkEdit);

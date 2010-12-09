@@ -85,7 +85,7 @@ namespace PockeTwit
             this.lblVersion.ForeColor = System.Drawing.Color.LightGray;
             this.lblVersion.Location = new System.Drawing.Point(7, 5);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(162, 20);
+            this.lblVersion.Size = new System.Drawing.Size(125, 20);
             this.lblVersion.Text = "v0.0";
             // 
             // linkLabel1
@@ -119,7 +119,7 @@ namespace PockeTwit
             this.panel1.Controls.Add(this.lblWait);
             this.panel1.Location = new System.Drawing.Point(4, 93);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(232, 172);
+            this.panel1.Size = new System.Drawing.Size(195, 77);
             this.panel1.GotFocus += new System.EventHandler(this.panel1_GotFocus);
             // 
             // txtSys
@@ -129,7 +129,7 @@ namespace PockeTwit
             this.txtSys.Multiline = true;
             this.txtSys.Name = "txtSys";
             this.txtSys.ReadOnly = true;
-            this.txtSys.Size = new System.Drawing.Size(232, 172);
+            this.txtSys.Size = new System.Drawing.Size(195, 77);
             this.txtSys.TabIndex = 5;
             this.txtSys.Visible = false;
             // 
@@ -146,7 +146,7 @@ namespace PockeTwit
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.lnkContributors.Location = new System.Drawing.Point(5, 70);
             this.lnkContributors.Name = "lnkContributors";
-            this.lnkContributors.Size = new System.Drawing.Size(232, 20);
+            this.lnkContributors.Size = new System.Drawing.Size(195, 20);
             this.lnkContributors.TabIndex = 2;
             this.lnkContributors.Text = "Contributors: (How can you help?)";
             this.lnkContributors.Click += new System.EventHandler(this.lnkContributors_Click);
@@ -167,7 +167,7 @@ namespace PockeTwit
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(240, 268);
+            this.ClientSize = new System.Drawing.Size(176, 173);
             this.Controls.Add(this.lnkSystem);
             this.Controls.Add(this.lnkContributors);
             this.Controls.Add(this.panel1);

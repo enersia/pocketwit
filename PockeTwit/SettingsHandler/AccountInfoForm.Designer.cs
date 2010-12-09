@@ -66,7 +66,7 @@
             this.cmbServers.ForeColor = System.Drawing.Color.Black;
             this.cmbServers.Location = new System.Drawing.Point(5, 24);
             this.cmbServers.Name = "cmbServers";
-            this.cmbServers.Size = new System.Drawing.Size(232, 22);
+            this.cmbServers.Size = new System.Drawing.Size(161, 22);
             this.cmbServers.TabIndex = 0;
             this.cmbServers.SelectedIndexChanged += new System.EventHandler(this.cmbServers_SelectedIndexChanged);
             // 
@@ -88,7 +88,7 @@
             this.txtPassword.Location = new System.Drawing.Point(5, 123);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(232, 21);
+            this.txtPassword.Size = new System.Drawing.Size(161, 22);
             this.txtPassword.TabIndex = 3;
             this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
             // 
@@ -109,7 +109,7 @@
             this.txtUserName.ForeColor = System.Drawing.Color.Black;
             this.txtUserName.Location = new System.Drawing.Point(5, 74);
             this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(232, 21);
+            this.txtUserName.Size = new System.Drawing.Size(161, 22);
             this.txtUserName.TabIndex = 1;
             // 
             // lblUser
@@ -129,7 +129,7 @@
             this.lblError.ForeColor = System.Drawing.Color.Red;
             this.lblError.Location = new System.Drawing.Point(5, 180);
             this.lblError.Name = "lblError";
-            this.lblError.Size = new System.Drawing.Size(232, 39);
+            this.lblError.Size = new System.Drawing.Size(161, 39);
             this.lblError.Text = "Unable to verify username and password";
             this.lblError.Visible = false;
             // 
@@ -158,7 +158,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(240, 268);
+            this.ClientSize = new System.Drawing.Size(169, 180);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.chkDefault);
