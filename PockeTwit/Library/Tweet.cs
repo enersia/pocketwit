@@ -178,6 +178,13 @@ namespace PockeTwit.Library
         }
 
         public Library.User user { get; set; }
+        public string user_id
+        {
+            get
+            {
+                return Account.ReturnUserID(user);
+            }
+        }
         public string AccountSummary
         {
             get

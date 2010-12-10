@@ -863,34 +863,71 @@ namespace PockeTwit
                     if(o is Place)
                         p = o as Place;
 
-                    string retValue = TwitterConn.Update(
-                            updateText, 
-                            in_reply_to_status_id, 
-                            new PockeTwit.Position.UserLocation {
-                                Position = GPSLocation, Location = p },
-                             Yedda.Twitter.OutputFormatType.XML);
+                    string retValue = string.Empty;
+                    string userID = IsDirectMessage(updateText);
+                    if (string.IsNullOrEmpty(userID))
+                    {
+                        retValue = TwitterConn.Update(
+                            updateText,
+                            in_reply_to_status_id,
+                            new PockeTwit.Position.UserLocation
+                            {
+                                Position = GPSLocation,
+                                Location = p
+                            },
+                            Yedda.Twitter.OutputFormatType.XML);
+                    }
+                    else
+                    {
+                        retValue = TwitterConn.SendDirectMessage(userID,
+                            updateText.Substring(updateText.IndexOf(userID) + userID.Length + 1),
+                            in_reply_to_status_id,
+                            new PockeTwit.Position.UserLocation
+                            {
+                                Position = GPSLocation,
+                                Location = p
+                            },
+                            Yedda.Twitter.OutputFormatType.XML);
+                    }
 
                     if (string.IsNullOrEmpty(retValue))
                     {
                         PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- empty response.  You may want to try again later.");
                         return false;
                     }
-                    try
+                    if (!(AccountToSet.ServerURL.ServerType == Twitter.TwitterServer.fanfou) && (string.IsNullOrEmpty(userID)))
                     {
-                        Library.status.DeserializeSingle(retValue, AccountToSet);
+                        try
+                        {
+                            Library.status.DeserializeSingle(retValue, AccountToSet);
+                        }
+                        catch
+                        {
+                            PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- bad response.  You may want to try again later.");
+                            return false;
+                        }
                     }
-                    catch
-                    {
-                        PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- bad response.  You may want to try again later.");
-                        return false;
-                    }
-
                     return true;
                 }
             }
             return true;
         }
 
+        private string IsDirectMessage(string updateText)
+        {
+            if (updateText.StartsWith("d ", StringComparison.OrdinalIgnoreCase))
+            {
+                int start = 2;
+                while (updateText[start] == ' ')
+                    ++start;
+                int end = updateText.IndexOf(' ', start);
+                if ((end != -1) && (end != updateText.Length))
+                {
+                    return updateText.Substring(start, end - start);
+                }
+            }
+            return null;
+        }
 
         #endregion
 

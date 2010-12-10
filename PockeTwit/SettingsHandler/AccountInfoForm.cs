@@ -162,7 +162,21 @@ namespace PockeTwit
             }
             else
             {
-                if (string.IsNullOrEmpty(txtUserName.Text)) { return; }
+                if (string.IsNullOrEmpty(txtUserName.Text))
+                {
+                    lblError.Text = "Please enter a username for this account.";
+                    lblError.Visible = true;
+                    Cursor.Current = Cursors.Default;
+                    return;
+                }
+                if (string.IsNullOrEmpty(txtPassword.Text))
+                {
+                    lblError.Text = "Please enter a password for authorizing.";
+                    lblError.Visible = true;
+                    Cursor.Current = Cursors.Default;
+                    return;
+                }
+                T.AccountInfo.Password = txtPassword.Text;
                 if (!T.Verify())
                 {
                     lblError.Text = "Invalid credentials or network unavailable.";

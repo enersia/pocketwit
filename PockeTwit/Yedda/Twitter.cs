@@ -27,6 +27,7 @@ using System.Globalization;
 using System;
 using OAuth;
 using PockeTwit.Position;
+using PockeTwit.Library;
 namespace Yedda
 {
    
@@ -35,11 +36,13 @@ namespace Yedda
         public static Twitter CreateConnection(Twitter.Account Account)
         {
             if (Account.Server == Twitter.TwitterServer.twitter)
-                return new TwitterOAuth { AccountInfo = Account};
+                return new TwitterOAuth { AccountInfo = Account };
             else if (Account.Server == Twitter.TwitterServer.pingfm)
                 return new PingFM { AccountInfo = Account };
             else if (Account.Server == Twitter.TwitterServer.brightkite)
                 return new BrightKite { AccountInfo = Account };
+            else if (Account.Server == Twitter.TwitterServer.fanfou)
+                return new Fanfou { AccountInfo = Account };
             else
                 return new Twitter { AccountInfo = Account };
         }
@@ -67,6 +70,11 @@ namespace Yedda
                 bServer.URL = "http://brightkite.com/";
                 ServerList.Add(bServer.Name, bServer);
                 */
+
+                Twitter.ServerURL fServer = new Twitter.ServerURL();
+                fServer.Name = "Fanfou";
+                fServer.URL = "http://api.fanfou.com/";
+                ServerList.Add(fServer.Name, fServer);
 
                 while (!r.EndOfStream)
                 {
@@ -154,6 +162,12 @@ namespace Yedda
                         _ServerURL.URL = "http://twitter.com/";
                         _ServerURL.Name = "twitter";
                     }
+                    else if (value == TwitterServer.fanfou)
+                    {
+                        _ServerURL = new ServerURL();
+                        _ServerURL.URL = "http://api.fanfou.com/";
+                        _ServerURL.Name = "fanfou";
+                    }
                     else
                     {
                         _ServerURL = new ServerURL();
@@ -178,6 +192,12 @@ namespace Yedda
                             _ServerURL = new ServerURL();
                             _ServerURL.URL = "http://twitter.com/";
                             _ServerURL.Name = "twitter";
+                        }
+                        else if (this.Server == TwitterServer.fanfou)
+                        {
+                            _ServerURL = new ServerURL();
+                            _ServerURL.URL = "http://api.fanfou.com/";
+                            _ServerURL.Name = "Fanfou";
                         }
                         else
                         {
@@ -234,7 +254,13 @@ namespace Yedda
                     return UserName + " (" + ServerURL.Name + ")";
                 }
             }
-
+            public string ReturnUserID(User u)
+            {
+                if (ServerURL.ServerType == TwitterServer.fanfou)
+                    return u.id;
+                else
+                    return u.screen_name;
+            }
             
         }
 
@@ -258,6 +284,10 @@ namespace Yedda
                     {
                         return TwitterServer.pingfm;
                     }
+                    else if (URL == "http://api.fanfou.com/")
+                    {
+                        return TwitterServer.fanfou;
+                    }
                     return TwitterServer.identica;
                 }
             }
@@ -278,7 +308,8 @@ namespace Yedda
             brightkite,
             pingfm,
             twitter,
-            identica
+            identica,
+            fanfou
         }
 
         public enum PagingMode
@@ -379,14 +410,16 @@ namespace Yedda
         {
             get
             {
-                return AccountInfo.ServerURL.ServerType == Yedda.Twitter.TwitterServer.twitter; 
+                return AccountInfo.ServerURL.ServerType == Yedda.Twitter.TwitterServer.twitter || AccountInfo.ServerURL.ServerType== TwitterServer.fanfou; 
             }
         }
         public bool DirectMessagesWork
         {
             get
             {
-                return AccountInfo.ServerURL.ServerType == Yedda.Twitter.TwitterServer.twitter || AccountInfo.ServerURL.ServerType == Yedda.Twitter.TwitterServer.identica;
+                return AccountInfo.ServerURL.ServerType == Yedda.Twitter.TwitterServer.twitter ||
+                    AccountInfo.ServerURL.ServerType == Yedda.Twitter.TwitterServer.identica ||
+                    AccountInfo.ServerURL.ServerType == Yedda.Twitter.TwitterServer.fanfou;
             }
 
         }
@@ -451,8 +484,8 @@ namespace Yedda
         }
 
         protected const string TwitterBaseUrlFormat = "{3}{0}/{1}.{2}";
-        protected const string TwitterSimpleURLFormat = "{1}/{0}.xml";
-        protected const string TwitterFavoritesUrlFormat = "{3}/{0}/{1}/{2}.xml";
+        protected const string TwitterSimpleURLFormat = "{1}{0}.xml";
+        protected const string TwitterFavoritesUrlFormat = "{3}{0}/{1}/{2}.xml";
         protected const string TwitterSendDirectMessagesUrlFormat = "{3}{0}/{1}/{2}.xml";
         protected const string TwitterSearchUrlFormat = "http://search.twitter.com/search.json?{0}";
         protected const string TwitterConversationUrlFormat = "http://search.twitter.com/search/thread/{0}";
@@ -1103,6 +1136,16 @@ namespace Yedda
         #endregion
 
         #region Update
+
+        public virtual string SendDirectMessage(string userID, string message, UserLocation location, OutputFormatType format)
+        {
+            return Update(message, location, format);
+        }
+
+        public virtual string SendDirectMessage(string userID, string message, string in_reply_to_status_id, UserLocation location, OutputFormatType format)
+        {
+            return Update(message, in_reply_to_status_id, location, format);
+        }
 
         public string Update(string status, UserLocation location,  OutputFormatType format)
         {
@@ -2051,5 +2094,49 @@ namespace Yedda
 
         #endregion
 
+    }
+
+    public class Fanfou : Twitter
+    {
+        public override bool Verify()
+        {
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Account), GetActionTypeString(ActionType.Verify_Credentials), GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
+            string Response = ExecuteGetCommand(url);
+            return (!string.IsNullOrEmpty(Response));
+        }
+
+        public override string GetFriendsIDs()
+        {
+            string url = string.Format(TwitterBaseUrlFormat, "friends", "ids", GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL); 
+            return ExecuteGetCommand(url);
+        }
+
+        public override string SendDirectMessage(string userID, string message, UserLocation location, OutputFormatType format)
+        {
+            return SendDirectMessage(userID, null, message, location, format);
+        }
+
+        public override string SendDirectMessage(string userID, string message, string in_reply_to_id, UserLocation location, OutputFormatType format)
+        {
+            string url = string.Format(TwitterBaseUrlFormat,
+                GetActionTypeString(ActionType.Direct_Messages), GetActionTypeString(ActionType.New),
+                GetFormatTypeString(format), AccountInfo.ServerURL.URL);
+            string data = string.Format("user={0}&text={1}",
+                HttpUtility.UrlEncode(userID), HttpUtility.UrlEncode(message));
+            if (!string.IsNullOrEmpty(in_reply_to_id))
+                data = data + "&in_reply_to_id=" + in_reply_to_id;
+            return ExecutePostCommand(url, data);
+        }
+        public override string GetDirectSendTimeLineSince(string SinceID)
+        {
+            string url = string.Format(TwitterBaseUrlFormat, GetActionTypeString(ActionType.Direct_Messages), "sent", GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL) + "?since_id=" + SinceID;
+            return ExecutePostCommand(url, null);
+        }
+
+        public override string GetDirectSendTimeLine()
+        {
+            string url = string.Format(TwitterBaseUrlFormat, GetActionTypeString(ActionType.Direct_Messages), "sent", GetFormatTypeString(OutputFormatType.XML), AccountInfo.ServerURL.URL);
+            return ExecutePostCommand(url, null);
+        }
     }
 }

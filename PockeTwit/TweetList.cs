@@ -683,7 +683,7 @@ namespace PockeTwit
             if (selectedItem.Tweet.user == null) { return; }
             ChangeCursor(Cursors.WaitCursor);
             Yedda.Twitter Conn = GetMatchingConnection(selectedItem.Tweet.Account);
-            Conn.FollowUser(selectedItem.Tweet.user.screen_name);
+            Conn.FollowUser(selectedItem.Tweet.user_id);
             FollowingDictionary[Conn].AddUser(selectedItem.Tweet.user);
             UpdateRightMenu();
             ChangeCursor(Cursors.Default);
@@ -696,7 +696,7 @@ namespace PockeTwit
             if (PockeTwit.Localization.LocalizedMessageBox.Show("Are you sure you want to stop following {0}?", "Stop Following", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2, selectedItem.Tweet.user.screen_name) == DialogResult.Yes)
             {
                 ChangeCursor(Cursors.WaitCursor);
-                Conn.StopFollowingUser(selectedItem.Tweet.user.screen_name);
+                Conn.StopFollowingUser(selectedItem.Tweet.user_id);
                 FollowingDictionary[Conn].StopFollowing(selectedItem.Tweet.user);
                 UpdateRightMenu();
                 ChangeCursor(Cursors.Default);
@@ -709,8 +709,8 @@ namespace PockeTwit
         {
             StatusItem selectedItem = statList.SelectedItem as StatusItem;
             if (selectedItem == null) { return; }
-            
-            string User = selectedItem.Tweet.user.screen_name;
+ 
+            string User = selectedItem.Tweet.user_id;
             SetStatus("d " + User, selectedItem.Tweet.id);
         }
 
@@ -995,7 +995,7 @@ namespace PockeTwit
                     ConversationMenuItem.Visible = true;
                 }
 
-                if (ClientSettings.GetAcountForUser(item.Tweet.user.screen_name) != null)
+                if (ClientSettings.GetAcountForUser(item.Tweet.user_id) != null)
                 {
                     DeleteStatusMenuItem.Visible = true;
                     ResponsesMenuItem.Visible = false;
@@ -1453,11 +1453,11 @@ namespace PockeTwit
             IProfileViewer view;
             if (DetectDevice.DeviceType == DeviceType.Professional)
             {
-                view = new ProfileView(selectedItem.Tweet.user);
+                view = new ProfileView(selectedItem.Tweet.user, selectedItem.Tweet.Account);
             }
             else
             {
-                view = new ProfileViewSmartPhone(selectedItem.Tweet.user);
+                view = new ProfileViewSmartPhone(selectedItem.Tweet.user, selectedItem.Tweet.Account);
             }
 
             ChangeCursor(Cursors.Default);
@@ -1691,8 +1691,8 @@ namespace PockeTwit
             ChangeCursor(Cursors.WaitCursor);
             StatusItem statItem = statList.SelectedItem as StatusItem;
             if (statItem == null) { return; }
-            ShowUserID = statItem.Tweet.user.screen_name;
             CurrentlySelectedAccount = statItem.Tweet.Account;
+            ShowUserID = statItem.Tweet.user_id;
             Yedda.Twitter Conn = GetMatchingConnection(CurrentlySelectedAccount);
             SwitchToList("@User_TimeLine");
             HistoryItem i = new HistoryItem();
@@ -1833,7 +1833,11 @@ namespace PockeTwit
             StatusItem selectedItem = statList.SelectedItem as StatusItem;
             if (selectedItem == null) { return; }
             
-            string quote = "RT @" + selectedItem.Tweet.user.screen_name + ": " + selectedItem.Tweet.text;
+            string quote;
+            if (selectedItem.Tweet.Account.ServerURL.ServerType == Twitter.TwitterServer.fanfou)
+                quote = PockeTwit.Localization.XmlBasedResourceManager.GetString("RT @") + selectedItem.Tweet.user.screen_name + " " + selectedItem.Tweet.text;
+            else
+                quote = "RT @" + selectedItem.Tweet.user.screen_name + ": " + selectedItem.Tweet.text;
             SetStatus(quote, "");
         }
 
@@ -1841,10 +1845,14 @@ namespace PockeTwit
         {
             StatusItem selectedItem = statList.SelectedItem as StatusItem;
             if (selectedItem == null) { return; }
-
-            if (selectedItem.Tweet.Account.UserName == selectedItem.Tweet.user.screen_name)
+            if (selectedItem.Tweet.Account.UserName == selectedItem.Tweet.user_id)
             {
                 PockeTwit.Localization.LocalizedMessageBox.Show("Sorry but you can't retweet your own tweets.");
+                return;
+            }
+            if (selectedItem.Tweet.Account.ServerURL.ServerType == Twitter.TwitterServer.fanfou)
+            {
+                Quote();
                 return;
             }
 

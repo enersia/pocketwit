@@ -19,6 +19,7 @@ namespace PockeTwit
     public partial class ProfileView : Form, IProfileViewer
     {
         private PockeTwit.Library.User _User;
+        private Yedda.Twitter.Account _Account;
 
         
         private PictureBox pb;
@@ -28,13 +29,14 @@ namespace PockeTwit
         public ProfileAction selectedAction { get; set; }
         public String selectedUser { get; set; }
 
-        public ProfileView(PockeTwit.Library.User User)
+        public ProfileView(PockeTwit.Library.User User, Yedda.Twitter.Account account)
         {
             
             if (User.needsFetching)
             {
-                User = FetchTheUser(User);
+                User = FetchTheUser(User, account);
             }
+            _Account = account;
             _User = User;
             InitializeComponent();
             PockeTwit.Themes.FormColors.SetColors(this);
@@ -135,9 +137,9 @@ namespace PockeTwit
             //TODO: landscape mode - close button position
         }
 
-        private Library.User FetchTheUser(PockeTwit.Library.User User)
+        private Library.User FetchTheUser(PockeTwit.Library.User User, Yedda.Twitter.Account account)
         {
-            return Library.User.FromId(User.screen_name, ClientSettings.AccountsList[0]);
+            return Library.User.FromId(account.ReturnUserID(User), account);
         }
 
         private delegate void delUpdateArt(string Argument);
@@ -197,7 +199,7 @@ namespace PockeTwit
         private void llblTweets_Click(object sender, EventArgs e)
         {
             selectedAction = ProfileAction.UserTimeline;
-            selectedUser = _User.screen_name;
+            selectedUser = _Account.ReturnUserID(_User);
 
             closeForm();
         }
@@ -287,7 +289,7 @@ namespace PockeTwit
         private void llblFavorites_Click(object sender, EventArgs e)
         {
             selectedAction = ProfileAction.Favorites;
-            selectedUser = _User.screen_name;
+            selectedUser = _Account.ReturnUserID(_User);
 
             closeForm();
         }
