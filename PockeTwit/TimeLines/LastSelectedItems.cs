@@ -227,7 +227,7 @@ namespace PockeTwit.TimeLines
                     {
                         var splitItem = serializedItem.Split('|');
                         newItem = new NewestSelectedInformation
-                                          {CreatedAtTicks = long.Parse(splitItem[1]), id = splitItem[1]};
+                                          {CreatedAtTicks = long.Parse(splitItem[0]), id = splitItem[1]};
                     }
                     catch
                     {
