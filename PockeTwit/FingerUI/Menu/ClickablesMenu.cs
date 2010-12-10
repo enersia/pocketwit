@@ -13,23 +13,23 @@ namespace FingerUI
     public class ClickablesMenu
     {
         
-        #region Fields (2)
+        #region Fields (2)
 
         private int _CurrentlyFocused = 0;
         private List<string> TextItems = new List<string>(new string[] { PockeTwit.Localization.XmlBasedResourceManager.GetString("Close Menu") });
 
-        #endregion Fields
+        #endregion Fields
 
-        #region Constructors (1)
+        #region Constructors (1)
 
         public ClickablesMenu()
         {
 
         }
 
-        #endregion Constructors
+        #endregion Constructors
 
-        #region Properties (7)
+        #region Properties (7)
 
         public int Height { get; set; }
 
@@ -59,18 +59,18 @@ namespace FingerUI
 
         public int Width { get; set; }
 
-        #endregion Properties
+        #endregion Properties
 
-        #region Delegates and Events
+        #region Delegates and Events
         public delegate void delNoArgs();
         public event delNoArgs NeedRedraw = delegate { };
         public event delNoArgs Dismissed = delegate { };
         public event StatusItem.ClickedWordDelegate WordClicked = delegate { };
         
 
-        #endregion Delegates and Events
+        #endregion Delegates and Events
 
-        #region Methods
+        #region Methods
 
         public void SelectAtPoint(Point p)
         {
@@ -210,7 +210,7 @@ namespace FingerUI
             g.Clip = originalClip;
         }
 
-        #endregion Methods
+        #endregion Methods
 
     }
 }

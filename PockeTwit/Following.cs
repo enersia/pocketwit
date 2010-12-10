@@ -13,14 +13,14 @@ namespace PockeTwit
         public Yedda.Twitter TwitterConnection { get; set; }
         public delegate void delFollowers(Yedda.Twitter ConnectionDone);
 
-		#region Fields (2) 
+		#region Fields (2) 
 
         private  List<string> FollowedUsers = new List<string>();
         private  bool OnceLoaded = false;
 
-		#endregion Fields 
+		#endregion Fields 
 
-		#region Constructors (1) 
+		#region Constructors (1) 
 
         public Following(Yedda.Twitter Connection )
         {
@@ -29,12 +29,12 @@ namespace PockeTwit
             //GetCachedFollowers();
         }
 
-		#endregion Constructors 
+		#endregion Constructors 
 
-		#region Methods (9) 
+		#region Methods (9) 
 
 
-		// Public Methods (5) 
+		// Public Methods (5) 
 
         public void AddUser(Library.User userToAdd)
         {
@@ -87,7 +87,7 @@ namespace PockeTwit
 
 
 
-		// Private Methods (4) 
+		// Private Methods (4) 
 
         private void GetCachedFollowers(object o)
         {
@@ -166,7 +166,7 @@ namespace PockeTwit
         }
 
 
-		#endregion Methods 
+		#endregion Methods 
 
     }
 }

@@ -36,7 +36,7 @@ public static class ClientSettings
     public static System.Drawing.Color PopUpTextColor = ForeColor;
     #endregion
 
-    #region Fields (13)
+    #region Fields (13)
 
     private static int _TextSize = 0;
     public static int AnimationInterval;
@@ -121,9 +121,9 @@ public static class ClientSettings
             return _LinesOfText;
         }
     }
-		#endregion Fields 
+		#endregion Fields 
 
-    #region Constructors (1) 
+    #region Constructors (1) 
 
     static ClientSettings()
     {
@@ -133,9 +133,9 @@ public static class ClientSettings
         LoadColors();
     }
 
-    #endregion Constructors 
+    #endregion Constructors 
 
-    #region Properties (7) 
+    #region Properties (7) 
     public static bool AutoScrollToTop { get; set; }
     public static bool RunOnStartUp
     {
@@ -254,9 +254,9 @@ public static class ClientSettings
     public static bool ZoomPreview { get; set; }
     public static bool AutoCompleteAddressBook { get; set; }
     public static List<Yedda.Twitter.Account> AccountsList { get; set; }
-	#endregion Properties 
+	#endregion Properties 
 
-    #region Methods (4) 
+    #region Methods (4) 
     public static void LoadSettings()
     {
         ConfigurationSettings.LoadConfig();
@@ -672,6 +672,6 @@ public static class ClientSettings
 
         }
     }
-	#endregion Methods 
+	#endregion Methods 
 
 }

@@ -12,7 +12,7 @@ namespace PockeTwit
         public static bool FriendsUpdating = false;
         public static bool MessagesUpdating = false;
         public static bool SearchesUpdating = false;
-        //Â DelegatesÂ (1)Â 
+        //Â DelegatesÂ (1)Â 
         public delegate void delNoData(Yedda.Twitter.Account t, Yedda.Twitter.ActionType Action);
         public delegate void delTimelineIsFetching(TimelineManagement.TimeLineType TType);
         public delegate void delTimelineIsDone(TimelineManagement.TimeLineType TType);
@@ -20,7 +20,7 @@ namespace PockeTwit
         public delegate void delEmpty();
 
 
-        //Â EventsÂ (1)Â 
+        //Â EventsÂ (1)Â 
 
         public static event delEmpty PauseConnections;
         public static event delEmpty ResumeConnections;

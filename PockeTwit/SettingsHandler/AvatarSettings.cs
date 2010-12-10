@@ -12,7 +12,7 @@ namespace PockeTwit
     public partial class AvatarSettings : BaseSettingsForm
     {
 
-        #region Constructors (1) 
+        #region Constructors (1) 
 
         public AvatarSettings()
         {
@@ -26,11 +26,11 @@ namespace PockeTwit
             PopulateForm();
         }
 
-		#endregion Constructors 
+		#endregion Constructors 
 
 		
-		#region Methods (4) 
-        // Private Methods (4) 
+		#region Methods (4) 
+        // Private Methods (4) 
         private void menuAccept_Click(object sender, EventArgs e)
         {
             if (chkHighQuality.Checked != ClientSettings.HighQualityAvatars)
@@ -63,7 +63,7 @@ namespace PockeTwit
         }
 
 
-		#endregion Methods 
+		#endregion Methods 
 
         
 

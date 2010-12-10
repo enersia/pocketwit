@@ -7,16 +7,16 @@ using System.Reflection;
 public class ConfigurationSettings
 {
 
-		#region Fields (1) 
+		#region Fields (1) 
 
     public static NameValueCollection AppSettings;
     public static System.Collections.Generic.List<Yedda.Twitter.Account> Accounts;
-		#endregion Fields 
+		#endregion Fields 
 
-		#region Methods (2) 
+		#region Methods (2) 
 
 
-		// Public Methods (2) 
+		// Public Methods (2) 
 
     public static void LoadConfig()
     {
@@ -165,6 +165,6 @@ public class ConfigurationSettings
     }
 
 
-		#endregion Methods 
+		#endregion Methods 
 
 }

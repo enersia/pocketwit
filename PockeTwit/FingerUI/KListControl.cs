@@ -63,7 +63,7 @@ namespace PockeTwit.FingerUI
 
         }
         
-        #region Fields (23) 
+        #region Fields (23) 
         private bool menuwasClicked = false;
         private Portal SlidingPortal = new Portal();
         private Popup NotificationArea = new Popup();
@@ -93,9 +93,9 @@ namespace PockeTwit.FingerUI
         
         public SideMenu LeftMenu = new SideMenu(SideShown.Left);
         public SideMenu RightMenu = new SideMenu(SideShown.Right);
-        #endregion Fields 
+        #endregion Fields 
 
-        #region Enums (2) 
+        #region Enums (2) 
 
         enum XDirection
         {
@@ -108,9 +108,9 @@ namespace PockeTwit.FingerUI
             Right
         }
 
-        #endregion Enums 
+        #endregion Enums 
 
-        #region Constructors (1) 
+        #region Constructors (1) 
 
         public KListControl()
         {
@@ -278,9 +278,9 @@ namespace PockeTwit.FingerUI
         }
 
 
-        #endregion Constructors 
+        #endregion Constructors 
 
-        #region Properties (19) 
+        #region Properties (19) 
         
         private Point OldSize;
         private bool _FirstView = true;
@@ -497,17 +497,17 @@ namespace PockeTwit.FingerUI
             }
         }
 
-        #endregion Properties 
+        #endregion Properties 
 
-        #region Delegates and Events (9) 
+        #region Delegates and Events (9) 
 
 
-        // Delegates (4) 
+        // Delegates (4) 
 
         public delegate void delAddItem(IDisplayItem item);
         public delegate void delClearMe();
         
-        // Events (5) 
+        // Events (5) 
 
         //public event delMenuItemSelected MenuItemSelected;
 
@@ -518,9 +518,9 @@ namespace PockeTwit.FingerUI
         public event StatusItem.ClickedWordDelegate WordClicked;
 
 
-        #endregion Delegates and Events 
+        #endregion Delegates and Events 
 
-        #region Methods (49) 
+        #region Methods (49) 
         
         void animationTimer_Tick(object o)
         {
@@ -551,7 +551,7 @@ namespace PockeTwit.FingerUI
             }
         }
          */
-        // Public Methods (16) 
+        // Public Methods (16) 
 
         private string _CurrentList = null;
         public string CurrentList()
@@ -824,7 +824,7 @@ namespace PockeTwit.FingerUI
             this.Parent.KeyPress -= new KeyPressEventHandler(OnKeyPress);
         }
 
-        // Protected Methods (11) 
+        // Protected Methods (11) 
 
         protected override void Dispose(bool disposing)
         {
@@ -1475,7 +1475,7 @@ namespace PockeTwit.FingerUI
 
 
 
-        // Private Methods (22) 
+        // Private Methods (22) 
         private void CheckForClicks(Point point)
         {
             if (m_items.Count == 0) { return; }
@@ -1936,13 +1936,13 @@ namespace PockeTwit.FingerUI
         }
 
 
-        #endregion Methods 
+        #endregion Methods 
 
-        #region Nested Classes (1) 
+        #region Nested Classes (1) 
         public class ItemList : Dictionary<int, IDisplayItem>
         {
         }
-        #endregion Nested Classes 
+        #endregion Nested Classes 
 
         private void InitializeComponent()
         {

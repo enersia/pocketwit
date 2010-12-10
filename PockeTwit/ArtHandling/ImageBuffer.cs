@@ -14,7 +14,7 @@ namespace PockeTwit
             public DateTime LastRequested;
             public String ID;
         }
-		#region Fields (3) 
+		#region Fields (3) 
 
         public static Bitmap FavoriteImage;
         private SafeDictionary<string, ImageInfo> ImageDictionary = new SafeDictionary<string, ImageInfo>();
@@ -22,9 +22,9 @@ namespace PockeTwit
         private AsyncArtGrabber Grabber = new AsyncArtGrabber();
         //private static System.Threading.Timer timerUpdate;
 
-		#endregion Fields 
+		#endregion Fields 
 
-		#region Constructors (1) 
+		#region Constructors (1) 
 
         public ImageBuffer()
         {
@@ -38,28 +38,28 @@ namespace PockeTwit
         }
 
 
-		#endregion Constructors 
+		#endregion Constructors 
 
-		#region Delegates and Events (2) 
+		#region Delegates and Events (2) 
 
 
-		// Delegates (1) 
+		// Delegates (1) 
 
         public delegate void ArtWasUpdated(string User);
 
         public delegate void delAvatarHasChanged(string User, string NewURL);
 
-		// Events (1) 
+		// Events (1) 
         
         public event ArtWasUpdated Updated;
         public event delAvatarHasChanged AvatarHasChanged;
 
-		#endregion Delegates and Events 
+		#endregion Delegates and Events 
 
-		#region Methods (6) 
+		#region Methods (6) 
 
 
-		// Public Methods (3) 
+		// Public Methods (3) 
 
         public void Clear()
         {
@@ -157,7 +157,7 @@ namespace PockeTwit
             }
         }
 
-		// Private Methods (3) 
+		// Private Methods (3) 
 
         private void AsyncArtGrabber_NewArtWasDownloaded(string User, string Filename)
         {
@@ -302,7 +302,7 @@ namespace PockeTwit
             }
         }
 
-		#endregion Methods 
+		#endregion Methods 
 
     }
 }

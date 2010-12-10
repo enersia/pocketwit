@@ -15,7 +15,7 @@ namespace PockeTwit
     {
         private string OriginalTheme = ClientSettings.ThemeName;
 
-        #region Constructors (1) 
+        #region Constructors (1) 
 
         public UISettings()
         {
@@ -31,13 +31,13 @@ namespace PockeTwit
             
         }
 
-		#endregion Constructors 
+		#endregion Constructors 
 
 
-		#region Methods (4) 
+		#region Methods (4) 
 
 
-		// Private Methods (4) 
+		// Private Methods (4) 
 
         
 
@@ -163,7 +163,7 @@ namespace PockeTwit
             cmbLanguage.SelectedItem = PockeTwit.Localization.XmlBasedResourceManager.CultureInfo;
         }
 
-		#endregion Methods 
+		#endregion Methods 
 
         private void cmbTheme_SelectedIndexChanged(object sender, EventArgs e)
         {

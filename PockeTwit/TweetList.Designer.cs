@@ -3,7 +3,7 @@ namespace PockeTwit
     partial class TweetList
     {
 
-		#region Fields (8) 
+		#region Fields (8) 
 
         /// <summary>
         /// Required designer variable.
@@ -12,12 +12,12 @@ namespace PockeTwit
         private System.Windows.Forms.Label lblTitle;
         private FingerUI.KListControl statList;
         
-		#endregion Fields 
+		#endregion Fields 
 
-		#region Methods (1) 
+		#region Methods (1) 
 
 
-		// Protected Methods (1) 
+		// Protected Methods (1) 
 
         /// <summary>
         /// Clean up any resources being used.
@@ -33,7 +33,7 @@ namespace PockeTwit
         }
 
 
-		#endregion Methods 
+		#endregion Methods 
 
 
         #region Windows Form Designer generated code

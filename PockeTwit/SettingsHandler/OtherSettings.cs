@@ -13,7 +13,7 @@ namespace PockeTwit
     public partial class OtherSettings : BaseSettingsForm
     {
 
-        #region Constructors (1) 
+        #region Constructors (1) 
 
         public OtherSettings()
         {
@@ -30,12 +30,12 @@ namespace PockeTwit
             PopulateForm();
         }
 
-		#endregion Constructors 
+		#endregion Constructors 
 
-		#region Methods (4) 
+		#region Methods (4) 
 
 
-		// Private Methods (4) 
+		// Private Methods (4) 
 
         
 
@@ -129,7 +129,7 @@ namespace PockeTwit
         }
 
 
-		#endregion Methods 
+		#endregion Methods 
 
        
         private void OtherSettings_Load(object sender, EventArgs e)

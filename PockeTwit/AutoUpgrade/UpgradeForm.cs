@@ -14,7 +14,7 @@ namespace PockeTwit
     public partial class UpgradeForm : Form
     {
 
-		#region Fields (1) 
+		#region Fields (1) 
 
         private UpgradeChecker.UpgradeInfo _NewVersion;
         private HttpWebRequest request;
@@ -26,9 +26,9 @@ namespace PockeTwit
         // Data buffer for stream operations
         private byte[] dataBuffer;
         private const int DataBlockSize = 65536;
-		#endregion Fields 
+		#endregion Fields 
 
-		#region Constructors (1) 
+		#region Constructors (1) 
 
         public UpgradeForm()
         {
@@ -46,9 +46,9 @@ namespace PockeTwit
             }
         }
 
-		#endregion Constructors 
+		#endregion Constructors 
 
-		#region Properties (1) 
+		#region Properties (1) 
 
         public UpgradeChecker.UpgradeInfo NewVersion 
         {
@@ -60,12 +60,12 @@ namespace PockeTwit
             }
         }
 
-		#endregion Properties 
+		#endregion Properties 
 
-		#region Methods (2) 
+		#region Methods (2) 
 
 
-		// Private Methods (2) 
+		// Private Methods (2) 
 
         private void menuIgnore_Click(object sender, EventArgs e)
         {
@@ -210,7 +210,7 @@ namespace PockeTwit
             Application.Exit();
         }
 
-		#endregion Methods 
+		#endregion Methods 
 
     }
 }

@@ -8,7 +8,7 @@ namespace PockeTwit
     class DetectDevice
     {
 
-		#region Fields (5) 
+		#region Fields (5) 
 
         const int _bufferSize = 32;
         private static DeviceType _DeviceType = DeviceType.Undefined;
@@ -18,9 +18,9 @@ namespace PockeTwit
         const uint SPI_GETOEMINFO= 258;
         
 
-		#endregion Fields 
+		#endregion Fields 
 
-		#region Properties (1) 
+		#region Properties (1) 
 
         public static DeviceType DeviceType
         {
@@ -44,9 +44,9 @@ namespace PockeTwit
             }
         }
 
-		#endregion Properties 
+		#endregion Properties 
 
-		#region Methods (2) 
+		#region Methods (2) 
 
         public static string GetOEMName()
         {
@@ -57,7 +57,7 @@ namespace PockeTwit
 
 
 
-		// Private Methods (2) 
+		// Private Methods (2) 
 
         private static string GetPlatformType()
         {
@@ -70,7 +70,7 @@ namespace PockeTwit
         static extern bool SystemParametersInfo(uint uiAction, uint uiParam, StringBuilder pvParam, uint unused);
 
 
-		#endregion Methods 
+		#endregion Methods 
 
     }
 
