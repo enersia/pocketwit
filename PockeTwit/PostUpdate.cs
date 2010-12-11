@@ -1053,7 +1053,7 @@ namespace PockeTwit
             else
             {
 
-                if (PockeTwit.Localization.LocalizedMessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                if ((AccountToSet.ServerURL.ServerType != Twitter.TwitterServer.fanfou) && (PockeTwit.Localization.LocalizedMessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes))
                 {
                     InsertTextAtCursor(UploadManager[0].UploadedUri.OriginalString);
                 }
