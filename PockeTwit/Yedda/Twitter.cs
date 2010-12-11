@@ -2113,7 +2113,7 @@ namespace Yedda
 
         public override string SendDirectMessage(string userID, string message, UserLocation location, OutputFormatType format)
         {
-            return SendDirectMessage(userID, null, message, location, format);
+            return SendDirectMessage(userID, message, null, location, format);
         }
 
         public override string SendDirectMessage(string userID, string message, string in_reply_to_id, UserLocation location, OutputFormatType format)
