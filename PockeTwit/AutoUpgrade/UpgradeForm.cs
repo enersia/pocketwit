@@ -41,7 +41,7 @@ namespace PockeTwit
             }
             if (UpgradeChecker.devBuild)
             {
-                _NewVersion.DownloadURL = @"http://pocketwit.googlecode.com/svn/trunk/PockeTwit%20Dev%20Install/DevBuild/PockeTwit%20Dev%20Install.CAB";
+                _NewVersion.DownloadURL = @"http://pocketwit.googlecode.com/svn/branches/FanfouSupport/PockeTwit%20Dev%20Install/DevBuild/PockeTwit%20Dev%20Install.CAB";
                 PerformUpdate();
             }
         }
