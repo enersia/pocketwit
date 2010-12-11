@@ -1027,6 +1027,7 @@ namespace PockeTwit
                 {
                     FollowMenuItem.Text = "Stop Following";
                     delMenuClicked followClicked = StopFollowingUser;
+                    FollowMenuItem.ClickedMethod = followClicked;
                     FollowMenuItem.SubMenuItems.Clear();
 
                     MoveToGroupMenuItem.Visible = true;
