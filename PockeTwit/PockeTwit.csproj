@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{293BAAE4-E497-44C9-8EAD-81DD4064C588}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -531,6 +531,9 @@
     <Compile Include="FingerUI\SpellingCorrections\SpellChecker.cs" />
     <Compile Include="IProfileViewer.cs" />
     <Compile Include="MediaServices\AttachmentUploadManager.cs" />
+    <Compile Include="MediaServices\FanfouPhoto.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MediaServices\SimplifiedPikChur.cs" />
     <Compile Include="MediaServices\TwitrPix.cs" />
     <Compile Include="MediaServices\Multipart.cs" />

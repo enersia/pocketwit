@@ -100,7 +100,7 @@ namespace PockeTwit
             InitializeComponent();
             SetImages();
 
-            pictureService = GetMediaService();
+            pictureService = GetMediaService(AccountToSet.ServerURL.ServerType);
             UploadManager = new AttachmentUploadManager(pictureService);
             
             if (ClientSettings.AutoCompleteAddressBook)
@@ -507,7 +507,7 @@ namespace PockeTwit
             }
             try
             {
-                pictureService = GetMediaService();
+                pictureService = GetMediaService(AccountToSet.ServerURL.ServerType);
                 
                 StartUpload(pictureService, filename, _AccountToSet);
             }
@@ -520,7 +520,7 @@ namespace PockeTwit
         private void InsertFile()
         {
             String filename = string.Empty;
-            pictureService = GetMediaService();
+            pictureService = GetMediaService(AccountToSet.ServerURL.ServerType);
 
             try
             {
@@ -551,7 +551,7 @@ namespace PockeTwit
             //using (Microsoft.WindowsMobile.Forms.SelectPictureDialog s = new Microsoft.WindowsMobile.Forms.SelectPictureDialog())
             try
             {
-                pictureService = GetMediaService();
+                pictureService = GetMediaService(AccountToSet.ServerURL.ServerType);
                 filename = SelectFileVisual(UploadManager.GetFileFilter(MediaTypeGroup.PICTURE));
 
                 pictureFromCamers.Image = FormColors.GetThemeIcon("takepicture", pictureFromCamers.Height);
@@ -708,11 +708,14 @@ namespace PockeTwit
             System.Diagnostics.Debug.WriteLine(string.Format("Sent: {0} / {1} bytes", eventArgs.BytesDownloaded, eventArgs.TotalBytesToDownload));
         }
         
-        private IPictureService GetMediaService()
+        private IPictureService GetMediaService(Yedda.Twitter.TwitterServer server)
         {
             IPictureService service;
-            
-            service = PictureServiceFactory.Instance.GetServiceByName(ClientSettings.SelectedMediaService);
+
+            if (server == Twitter.TwitterServer.fanfou)
+                service = PictureServiceFactory.Instance.GetServiceByName("Fanfou");
+            else
+                service = PictureServiceFactory.Instance.GetServiceByName(ClientSettings.SelectedMediaService);
 
             SetPictureEventHandlers(service, true);
 
@@ -769,10 +772,13 @@ namespace PockeTwit
                     {
                         if (UploadManager.Count > 0) // it should be, otherwise something is up
                             UploadManager[0].UploadedUri = new Uri(pictureURL);
-                        if (txtStatusUpdate.Text.Length > 0)
-                            InsertTextAtCursor(' ' + pictureURL);
-                        else
-                            InsertTextAtCursor(pictureURL);
+                        if (AccountToSet.ServerURL.ServerType != Twitter.TwitterServer.fanfou)
+                        {
+                            if (txtStatusUpdate.Text.Length > 0)
+                                InsertTextAtCursor(' ' + pictureURL);
+                            else
+                                InsertTextAtCursor(pictureURL);
+                        }
                     }
                 }
                 catch (OutOfMemoryException)
@@ -830,8 +836,9 @@ namespace PockeTwit
         {
             LocationFinder.StopGPS();
             string Message = StatusText;
+            bool fanfouPostPic = ((AccountToSet.ServerURL.ServerType == Twitter.TwitterServer.fanfou) && (UploadManager.Count > 0));
 
-            if (UploadManager.GetUriSpaceRequired(Message) > 0) // need to append links
+            if ((UploadManager.GetUriSpaceRequired(Message) > 0) && !fanfouPostPic) // need to append links
             {
                 if (PockeTwit.Localization.LocalizedMessageBox.Show("Uploaded file not used, add automatically?", "PockeTwit", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1) == DialogResult.Yes)
                 {
@@ -839,7 +846,7 @@ namespace PockeTwit
                     //return false;
                 }
             }
-            if (!string.IsNullOrEmpty(Message))
+            if (!string.IsNullOrEmpty(Message) || fanfouPostPic) 
             {
                 Cursor.Current = Cursors.WaitCursor;
                 var updateText = TrimTo140(StatusText, 140);
@@ -864,6 +871,33 @@ namespace PockeTwit
                         p = o as Place;
 
                     string retValue = string.Empty;
+
+                    if (fanfouPostPic)
+                    {
+                        PicturePostObject ppo = new PicturePostObject();
+                        ppo.Filename = UploadManager.GetAttachments()[0].Name;
+                        ppo.Username = AccountToSet.UserName;
+                        ppo.Password = AccountToSet.Password;
+                        ppo.Message = StatusText;
+
+                        if (pictureService.CanUploadGPS && GPSLocation != null)
+                        {
+                            try
+                            {
+                                ppo.Lat = GPSLocation.Lat.ToString();
+                                ppo.Lon = GPSLocation.Lon.ToString();
+                            }
+                            catch { }
+                        }
+
+                        if (!(GetMediaService(AccountToSet.Server) as FanfouPhoto).PostPictureMessage(ppo))
+                        {
+                            PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status with photo. You may want to try again later.");
+                            return false;
+                        }
+                        else
+                            return true;
+                    }
                     string userID = IsDirectMessage(updateText);
                     if (string.IsNullOrEmpty(userID))
                     {
@@ -889,7 +923,6 @@ namespace PockeTwit
                             },
                             Yedda.Twitter.OutputFormatType.XML);
                     }
-
                     if (string.IsNullOrEmpty(retValue))
                     {
                         PockeTwit.Localization.LocalizedMessageBox.Show("Error posting status -- empty response.  You may want to try again later.");
@@ -996,8 +1029,7 @@ namespace PockeTwit
             }
             else
             {
-                
-                if (PockeTwit.Localization.LocalizedMessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+                if ((AccountToSet.ServerURL.ServerType != Twitter.TwitterServer.fanfou) && (PockeTwit.Localization.LocalizedMessageBox.Show("Paste URL in message?", "", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) == DialogResult.Yes))
                 {
                     InsertTextAtCursor(UploadManager[0].UploadedUri.OriginalString);
                 }

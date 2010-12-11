@@ -69,6 +69,9 @@ namespace PockeTwit.MediaServices
             // new service which contacted us - need API key if we want to use it
             serviceList.Add(TwitrPix.Instance); /* Confirmed upload and download*/
             serviceList.Add(TweetPhoto.Instance); // was giving 500 error, now working again. No download yet
+
+            serviceList.Add(FanfouPhoto.Instance);
+
             if (UpgradeChecker.devBuild)
             {
                 serviceList.Add(ImgLy.Instance); // returning a 500 error response
