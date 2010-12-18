@@ -117,6 +117,14 @@ namespace PockeTwit
             {
                 OAuthAuthorizer authorizer = new OAuthAuthorizer();
 
+                if (!string.IsNullOrEmpty(_AccountInfo.OAuth_token_secret) || string.IsNullOrEmpty(txtPassword.Text))
+                {
+                    //No need to verify without when no password is passed and token is still set.
+                    Cursor.Current = Cursors.Default;
+                    this.DialogResult = DialogResult.OK;
+                    return;
+                }
+
                 if (string.IsNullOrEmpty(txtUserName.Text))
                 {
                     lblError.Text = "Please enter a username for this account.";
