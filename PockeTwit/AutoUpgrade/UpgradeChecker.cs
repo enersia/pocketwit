@@ -14,7 +14,7 @@ namespace PockeTwit
 
 		#region Fields (4) 
 
-        public static double currentVersion = .85;
+        public static double currentVersion = .86;
         public static bool devBuild = true;
         public static bool isBeta = false;
 
@@ -110,7 +110,7 @@ namespace PockeTwit
                     
                     if (!devBuild || WebVersion.OverrideDevBuild)
                     {
-                        if (WebVersion.webVersion > currentVersion)
+                        if ((WebVersion.webVersion > currentVersion) || WebVersion.OverrideDevBuild)
                         {
                             if (UpgradeFound != null)
                             {
