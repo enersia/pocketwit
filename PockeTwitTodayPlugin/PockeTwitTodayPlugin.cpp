@@ -736,7 +736,7 @@ HREGNOTIFY RegisterUnreadCountChangedCallback()
     nc.TargetValue.psz = _T("");
     
     RegistryNotifyCallback(HKEY_LOCAL_MACHINE,
-                                _T("Software\\Apps\\JustForFun PockeTwit\\UnreadCount"), 
+                                _T("Software\\Apps\\PockeTwit\\UnreadCount"), 
                                 _T("UnreadCountChanged"), 
                                 UnreadCountChangedCallback, 
                                 0, 
@@ -803,7 +803,7 @@ void GetDataFromRegistry()
     DWORD max_val_size;
 
 
-	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE,_T("Software\\Apps\\JustForFun PockeTwit\\UnreadCount"),0,0,&key) == ERROR_SUCCESS)
+	if (RegOpenKeyEx(HKEY_LOCAL_MACHINE,_T("Software\\Apps\\PockeTwit\\UnreadCount"),0,0,&key) == ERROR_SUCCESS)
 	{
 
 		if (RegQueryInfoKey(key, NULL, NULL, NULL, NULL, &max_sub_key_len, NULL, &totalGroupsCount, &max_val_name_len, &max_val_size, NULL, NULL )== ERROR_SUCCESS)
@@ -921,11 +921,11 @@ void StartPockeTwit()
 		LONG success = -1;
 		if (startDebugBuild == TRUE)
 		{
-			path = _T("Software\\Apps\\JustForFun PockeTwit Dev Build");
+			path = _T("Software\\Apps\\PockeTwit Dev Build");
 		}
 		else
 		{
-			path = _T("Software\\Apps\\JustForFun PockeTwit");
+			path = _T("Software\\Apps\\PockeTwit");
 		}
 		
 		// try "JustForFun"
@@ -1007,7 +1007,7 @@ void ToggleStartDebugBuild(BOOL enabled)
 	if (enabled == TRUE)
 	{
 		DWORD useDebug;
-		if (ERROR_SUCCESS == RegistryGetDWORD(HKEY_LOCAL_MACHINE, TEXT("Software\\Apps\\JustForFun PockeTwit Dev Build"), TEXT("Instl"), &useDebug))
+		if (ERROR_SUCCESS == RegistryGetDWORD(HKEY_LOCAL_MACHINE, TEXT("Software\\Apps\\PockeTwit Dev Build"), TEXT("Instl"), &useDebug))
 		{
 			startDebugBuild = TRUE;
 		}

@@ -9,7 +9,7 @@ namespace PockeTwit
 {
     class NotificationTexts
     {
-        private const string UnreadCountRegistryPath = @"\Software\Apps\JustForFun PockeTwit\UnreadCount\";
+        private const string UnreadCountRegistryPath = @"\Software\Apps\PockeTwit\UnreadCount\";
         private RegistryKey UnreadCountRoot;
         private List<string> _Messages = new List<string>();
         private int _Position = 0;
@@ -22,7 +22,7 @@ namespace PockeTwit
             if (UnreadCountRoot == null)
             {
                 RegistryKey ParentKey = Registry.LocalMachine.OpenSubKey(@"\Software\Apps\", true);
-                if (ParentKey != null) UnreadCountRoot = ParentKey.CreateSubKey("JustForFun PockeTwit\\UnreadCount");
+                if (ParentKey != null) UnreadCountRoot = ParentKey.CreateSubKey("PockeTwit\\UnreadCount");
             }
             TimeLines.LastSelectedItems.UnreadCountChanged += new PockeTwit.TimeLines.LastSelectedItems.delUnreadCountChanged(LastSelectedItems_UnreadCountChanged);
         }
