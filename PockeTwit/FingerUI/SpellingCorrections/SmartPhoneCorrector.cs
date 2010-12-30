@@ -116,10 +116,10 @@ namespace PockeTwit.FingerUI.SpellingCorrections
             this.panelSuggestions.Location = new System.Drawing.Point(0, 20);
             this.panelSuggestions.Name = "panelSuggestions";
             this.panelSuggestions.Size = new System.Drawing.Size(981, 814);
-            if (DetectDevice.DeviceType == DeviceType.Professional)
-            {
-                this.panelSuggestions.TabIndex = 1;
-            }
+            //if (DetectDevice.DeviceType == DeviceType.Professional)
+            //{
+            //    this.panelSuggestions.TabIndex = 1;
+            //}
             // 
             // linkChoose
             // 

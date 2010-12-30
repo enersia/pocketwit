@@ -921,11 +921,11 @@ void StartPockeTwit()
 		LONG success = -1;
 		if (startDebugBuild == TRUE)
 		{
-			path = _T("Software\\Apps\\PockeTwit Dev Build");
+			path = _T("Software\\Apps\\PockeTwit PockeTwit Dev Build");
 		}
 		else
 		{
-			path = _T("Software\\Apps\\PockeTwit");
+			path = _T("Software\\Apps\\PockeTwit PockeTwit");
 		}
 		
 		// try "JustForFun"
