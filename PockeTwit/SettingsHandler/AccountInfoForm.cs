@@ -108,6 +108,7 @@ namespace PockeTwit
 
             lblError.Visible = false;
             _AccountInfo.UserName = txtUserName.Text;
+            _AccountInfo.Password = txtPassword.Text;
             _AccountInfo.ServerURL = Yedda.Servers.ServerList[(string)cmbServers.SelectedItem];
             _AccountInfo.Enabled = true;
             _AccountInfo.IsDefault = chkDefault.Checked;
