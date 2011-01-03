@@ -51,7 +51,7 @@
 <item name="hours" localized="часов"/>
 <item name="hour" localized="часа"/>
 <item name="min" localized="мин."/>
-<item name="about {0} {1} ago." localized="ок. {0} {1} назад."/>
+<item name="{0} {1} ago." localized="{0} {1} назад."/>
 <!-- Startup -->
 <item name="Launching PockeTwit" localized="PockeTwit запускается..."/>
 <item name="Launching PockeTwit Dev" localized="Запуск..."/>

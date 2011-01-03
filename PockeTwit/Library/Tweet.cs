@@ -116,7 +116,8 @@ namespace PockeTwit.Library
                     Diff = Math.Round(Difference.TotalMinutes);
                     Span = PockeTwit.Localization.XmlBasedResourceManager.GetString("min");
                 }
-                return String.Format(PockeTwit.Localization.XmlBasedResourceManager.GetString("about {0} {1} ago."), Diff.ToString(), Span);
+                //return String.Format(PockeTwit.Localization.XmlBasedResourceManager.GetString("about {0} {1} ago."), Diff.ToString(), Span);
+                return String.Format(PockeTwit.Localization.XmlBasedResourceManager.GetString("{0} {1} ago."), Diff.ToString(), Span);
             }
         }
 

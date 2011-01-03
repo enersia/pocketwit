@@ -51,6 +51,7 @@ public static class ClientSettings
     public static Font SmallFont;
     public static Font TextFont;
     public static int SmallArtSize = 65;
+    public static int BigArtSize = 140;
     public static float DpiX = 96;
     public static float DpiY = 96;
     public static bool HiDpi = false;
@@ -247,7 +248,7 @@ public static class ClientSettings
         set
         {
             _TextSize = value;
-            SmallArtSize = _TextSize * 5;
+            SmallArtSize = _TextSize * 4; //smaller avater, used to be 5/
             _ItemHeight = -1;
         }
     }

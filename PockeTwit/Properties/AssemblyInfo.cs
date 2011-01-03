@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("PockeTwit")]
 [assembly: AssemblyProduct("PockeTwit")]
-[assembly: AssemblyCopyright("Copyright ©  2008-2010")]
+[assembly: AssemblyCopyright("Copyright ©  2008-2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
