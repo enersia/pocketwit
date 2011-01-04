@@ -338,6 +338,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_8E30E04CB62944F1B2167F2FE0CF7EBC"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_91530C48F94AF26303D6B3CD7B8B2D92"
         "OwnerKey" = "8:_CCAD80857091443DBD4217B0BFDADB7C"
         "MsmSig" = "8:_UNDEFINED"
@@ -1424,7 +1430,7 @@
             }
             "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_77A1BFE2950B4A29949F074710EA1F6C"
             {
-            "SourcePath" = "8:..\\QuickPost\\bin\\Release\\Release\\QuickPost.exe"
+            "SourcePath" = "8:..\\QuickPost\\Windows Mobile 6 Professional SDK (ARMV4I)\\Release\\QuickPost.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_46852C240825406AB2BCFC1C54C85714"
@@ -1443,6 +1449,32 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{BD1F2B9C-577C-4925-ABA6-3D0F438D0B4F}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{605BE39E-5046-48BD-AEC0-63C3A46626D5}:_8E30E04CB62944F1B2167F2FE0CF7EBC"
+            {
+            "SourcePath" = "8:..\\PockeTwitTodayPlugin\\Windows Mobile 6 Professional SDK (ARMV4I)\\Release\\PockeTwitTodayPlugin.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_4CE7D81B0D3442B4AA8BD43322A6E146"
+            "Condition" = "8:"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "Register" = "3:0"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:0"
+            "OutputConfiguration" = "8:Release|Windows Mobile 6 Professional SDK (ARMV4I)"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{A6E955EF-9445-4B1D-92C4-1BE485765798}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {
