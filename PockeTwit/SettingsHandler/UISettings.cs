@@ -71,12 +71,12 @@ namespace PockeTwit
                 ClientSettings.FontSize = newSize;
                 NeedsReset = true;
             }
-/*            int newSize = int.Parse(this.txtFontSize.Text);
-            if (ClientSettings.FontSize != newSize && newSize < 13 && newSize > 6)
+            int newAvasize = int.Parse(cmbAvatar.Text);
+            if (ClientSettings.AvatarMultiplier != newAvasize)
             {
-                ClientSettings.FontSize = int.Parse(txtFontSize.Text);
+                ClientSettings.AvatarMultiplier = newAvasize;
                 NeedsReset = true;
-            }*/
+            }
 
             ClientSettings.MaxTweets = MaxTweets;
             ClientSettings.UseClickables = chkClickables.Checked;
@@ -126,7 +126,8 @@ namespace PockeTwit
             chkAutoScroll.Checked = ClientSettings.AutoScrollToTop;
             //txtFontSize.Text = ClientSettings.FontSize.ToString();
             cmbFontSize.SelectedIndex = ClientSettings.FontSize - int.Parse(cmbFontSize.Items[0].ToString());
-            
+            cmbAvatar.SelectedIndex = ClientSettings.AvatarMultiplier - int.Parse(cmbAvatar.Items[0].ToString());
+
             ListThemes();
             ListLanguages();
             this.DialogResult = DialogResult.Cancel;

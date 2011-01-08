@@ -348,7 +348,7 @@ namespace PockeTwit
 
         public PockeTwit.Library.status[] GetSendDirectMessagesTimeLine()
         {
-            bool twitterDone = false;
+            //bool twitterDone = false;
             List<Library.status> TempLine = new List<PockeTwit.Library.status>();
             foreach (Yedda.Twitter t in TwitterConnections)
             {

@@ -248,11 +248,12 @@ public static class ClientSettings
         set
         {
             _TextSize = value;
-            SmallArtSize = _TextSize * 4; //smaller avater, used to be 5/
+            SmallArtSize =  _TextSize * AvatarMultiplier; //smaller avater, used to be 5/
             _ItemHeight = -1;
         }
     }
     public static bool ZoomPreview { get; set; }
+    public static int AvatarMultiplier { get; set; }
     public static bool AutoCompleteAddressBook { get; set; }
     public static List<Yedda.Twitter.Account> AccountsList { get; set; }
 	#endregion Properties 
@@ -266,6 +267,15 @@ public static class ClientSettings
         Yedda.Twitter.Account LegacySettingsAccount = new Yedda.Twitter.Account();
         try
         {
+            if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["AvatarMultiplier"]))
+            {
+                AvatarMultiplier = int.Parse(ConfigurationSettings.AppSettings["AvatarMultiplier"]);
+            }
+            else
+            {
+                AvatarMultiplier = 4;
+            }
+            
             if (!string.IsNullOrEmpty(ConfigurationSettings.AppSettings["AutoCompleteAddressBook"]))
             {
                 AutoCompleteAddressBook = Boolean.Parse(ConfigurationSettings.AppSettings["AutoCompleteAddressBook"]);
@@ -548,6 +558,7 @@ public static class ClientSettings
     public static void SaveSettings()
     {
         ConfigurationSettings.AppSettings.Clear();
+        ConfigurationSettings.AppSettings["AvatarMultiplier"] = AvatarMultiplier.ToString();
         ConfigurationSettings.AppSettings["PopUpKeyboard"] = PopUpKeyboard.ToString();
         ConfigurationSettings.AppSettings["UseDIB"] = UseDIB.ToString();
         ConfigurationSettings.AppSettings["ZoomPreview"] = ZoomPreview.ToString();
