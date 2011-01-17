@@ -8,7 +8,7 @@ namespace PockeTwit.TimeLines
 {
     internal struct NewestSelectedInformation
     {
-        public long CreatedAtTicks;
+        public Int64 CreatedAtTicks;
         public string id;
     }
 
@@ -60,7 +60,7 @@ namespace PockeTwit.TimeLines
 
             var newInfo = new NewestSelectedInformation
             {
-                CreatedAtTicks = selectedStatus.createdAt.Ticks,
+                CreatedAtTicks = (Int64) selectedStatus.createdAt.Ticks,
                 id = selectedStatus.id
             };
 
@@ -226,14 +226,13 @@ namespace PockeTwit.TimeLines
                     try
                     {
                         var splitItem = serializedItem.Split('|');
-                        newItem = new NewestSelectedInformation
-                                          {CreatedAtTicks = long.Parse(splitItem[1]), id = splitItem[1]};
+                        //newItem = new NewestSelectedInformation {CreatedAtTicks = long.Parse(splitItem[1]), id = splitItem[1]};
+                        newItem = new NewestSelectedInformation { CreatedAtTicks = Int64.Parse(splitItem[0]), id = Int64.Parse(splitItem[1]).ToString() };
                     }
                     catch
                     {
                         var deserializedStatus = status.DeserializeSingle(serializedItem, null);
-                        newItem = new NewestSelectedInformation
-                                      {CreatedAtTicks = deserializedStatus.createdAt.Ticks, id = deserializedStatus.id};
+                        newItem = new NewestSelectedInformation { CreatedAtTicks = (Int64)deserializedStatus.createdAt.Ticks, id = deserializedStatus.id };
                     }
                     NewestSelectedItemsDictionary.Add(storedItem, newItem);
                 }

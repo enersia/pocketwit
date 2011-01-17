@@ -6,6 +6,7 @@ using System.Globalization;
 
 namespace PockeTwit
 {
+    
     /// <summary>
     /// This class encodes and decodes JSON strings.
     /// Spec. details, see http://www.json.org/
@@ -232,7 +233,9 @@ namespace PockeTwit
                 case JSON.TOKEN_STRING:
                     return ParseString(json, ref index);
                 case JSON.TOKEN_NUMBER:
-                    return ParseNumber(json, ref index);
+                    {
+                        return ParseNumber(json, ref index);
+                    }
                 case JSON.TOKEN_CURLY_OPEN:
                     return ParseObject(json, ref index);
                 case JSON.TOKEN_SQUARED_OPEN:
@@ -357,7 +360,21 @@ namespace PockeTwit
             return s;
         }
 
-        protected double ParseNumber(char[] json, ref int index)
+        private bool TryParse(string s, out long result)
+        {
+            bool retVal = false;
+            try        
+            {            
+                result = Convert.ToInt64(s);            
+                retVal = true;        
+            }        
+            catch (FormatException) { result = 0; }        
+            catch (InvalidCastException) { result = 0; }
+
+            return retVal;
+        }
+
+        protected object ParseNumber(char[] json, ref int index)
         {
             EatWhitespace(json, ref index);
 
@@ -367,7 +384,15 @@ namespace PockeTwit
 
             Array.Copy(json, index, numberCharArray, 0, charLength);
             index = lastIndex + 1;
-            return Double.Parse(new string(numberCharArray), CultureInfo.InvariantCulture);
+            //return Double.Parse(new string(numberCharArray), CultureInfo.InvariantCulture);
+
+            string num = new string(numberCharArray);
+            long value;
+            if (TryParse(num, out value))
+            {
+                return value;
+            }
+            return Double.Parse(num, CultureInfo.InvariantCulture);
         }
 
         protected int GetLastIndexOfNumber(char[] json, int index)
