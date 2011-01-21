@@ -228,13 +228,15 @@ namespace PockeTwit.TimeLines
                         var splitItem = serializedItem.Split('|');
                         //newItem = new NewestSelectedInformation {CreatedAtTicks = long.Parse(splitItem[1]), id = splitItem[1]};
                         newItem = new NewestSelectedInformation { CreatedAtTicks = Int64.Parse(splitItem[0]), id = Int64.Parse(splitItem[1]).ToString() };
+                        NewestSelectedItemsDictionary.Add(storedItem, newItem);
                     }
                     catch
                     {
-                        var deserializedStatus = status.DeserializeSingle(serializedItem, null);
-                        newItem = new NewestSelectedInformation { CreatedAtTicks = (Int64)deserializedStatus.createdAt.Ticks, id = deserializedStatus.id };
+                        NewestSavedItemsRoot.DeleteValue(storedItem, false);
+                        //var deserializedStatus = status.DeserializeSingle(serializedItem, null);
+                        //newItem = new NewestSelectedInformation { CreatedAtTicks = (Int64)deserializedStatus.createdAt.Ticks, id = deserializedStatus.id };
                     }
-                    NewestSelectedItemsDictionary.Add(storedItem, newItem);
+                    
                 }
             }
             UpdateUnreadCounts();

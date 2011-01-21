@@ -55,7 +55,9 @@ namespace LocalStorage
 
         #endregion
 
-        private const string DBVersion = "0016";
+        //17. a change to make it possible to remove corrupt statusses
+
+        private const string DBVersion = "0017";
         private static string DBPath = ClientSettings.CacheDir + "\\LocalCache.db";
 
         public static void CheckDBSchema()
@@ -81,12 +83,53 @@ namespace LocalStorage
             catch (SQLiteException)
             {
             }
-            SpecialTimeLinesRepository.Load();
-            SpecialTimeLinesRepository.Export();
-            DeleteDB();
-            CreateDB();
-            SpecialTimeLinesRepository.Import();
-            SpecialTimeLinesRepository.Save();
+
+            CorrectDb();
+
+            // no need for this in update 17.
+            //SpecialTimeLinesRepository.Load();
+            //SpecialTimeLinesRepository.Export();
+            //DeleteDB();
+            //CreateDB();
+            //SpecialTimeLinesRepository.Import();
+            //SpecialTimeLinesRepository.Save();
+        }
+
+        private static void CorrectDb()
+        {
+            using (SQLiteConnection conn = GetConnection())
+            {
+                try
+                {
+                    conn.Open();
+                    using (var comm = new SQLiteCommand(conn))
+                    {
+
+                        try
+                        {
+                            //change for each new update.
+
+                            //delete search results.
+                            comm.CommandText = @"DELETE FROM statuses WHERE statustypes & 8";
+                            comm.ExecuteNonQuery();
+
+                            comm.CommandText = @"UPDATE DBProperties SET value = @value where name='dbversion'";
+                            comm.Parameters.Add(new SQLiteParameter("@value", DBVersion));
+                            comm.ExecuteNonQuery();
+
+                        }
+                        catch (SQLiteException)
+                        {
+
+                        }
+
+                    }
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
         }
 
         private static void DeleteDB()
@@ -442,7 +485,7 @@ namespace LocalStorage
             }
             catch{}
             //wait 2 seconds before trying one more time
-            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(1500);
             PersistToDB(TempLine);
         }
         private static void PersistToDB(List<status> TempLine)
