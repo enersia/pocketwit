@@ -507,7 +507,7 @@ namespace PockeTwit
                 {
                     if (t.AccountInfo.Enabled && t.AccountInfo.ServerURL.ServerType != Yedda.Twitter.TwitterServer.pingfm)
                     {
-                        string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Replies);
+                        string response = FetchSpecificFromTwitter(t, Yedda.Twitter.ActionType.Mentions);
                         if (!string.IsNullOrEmpty(response))
                         {
                             try
@@ -522,17 +522,17 @@ namespace PockeTwit
                                     }
                                 }
                                 //TempLine.AddRange(NewStats);
-                                ErrorCleared(t.AccountInfo, Yedda.Twitter.ActionType.Replies);
+                                ErrorCleared(t.AccountInfo, Yedda.Twitter.ActionType.Mentions);
                             }
                             catch
                             {
-                                NoData(t.AccountInfo, Yedda.Twitter.ActionType.Replies);
+                                NoData(t.AccountInfo, Yedda.Twitter.ActionType.Mentions);
                                 GlobalEventHandler.CallShowErrorMessage("Communications Error");
                             }
                         }
                         else
                         {
-                            NoData(t.AccountInfo, Yedda.Twitter.ActionType.Replies);
+                            NoData(t.AccountInfo, Yedda.Twitter.ActionType.Mentions);
                             GlobalEventHandler.CallShowErrorMessage("Communications Error");
                         }
                         ////I HATE DIRECT MESSAGES

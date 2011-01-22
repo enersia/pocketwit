@@ -1546,7 +1546,7 @@ namespace PockeTwit
                         ShowFriendsTimeLine();
                         statList.SetSelectedMenu(RefreshFriendsTimeLineMenuItem);
                         break;
-                    case Yedda.Twitter.ActionType.Replies:
+                    case Yedda.Twitter.ActionType.Mentions:
                         statList.SetSelectedMenu(RefreshMessagesMenuItem);
                         ShowMessagesTimeLine();
                         break;
@@ -1677,7 +1677,7 @@ namespace PockeTwit
             SwitchToList("Messages_TimeLine");
             History.Clear();
             HistoryItem i = new HistoryItem();
-            i.Action = Yedda.Twitter.ActionType.Replies;
+            i.Action = Yedda.Twitter.ActionType.Mentions;
             History.Push(i);
             statList.SetSelectedMenu(RefreshMessagesMenuItem);
             AddStatusesToList(Manager.GetMessagesImmediately());
