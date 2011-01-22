@@ -112,11 +112,11 @@ public static class ClientSettings
             {
                 if (ShowExtra)
                 {
-                    _LinesOfText = 6;
+                    _LinesOfText = (AvatarMultiplier + 1); //original 6;
                 }
                 else
                 {
-                    _LinesOfText = 5;
+                    _LinesOfText = (AvatarMultiplier);  //original 5;
                 }
             }
             return _LinesOfText;

@@ -331,6 +331,7 @@ namespace Yedda
             Friends_Timeline,
             Friends,
             Replies,
+            Mentions,
             Followers,
             Update,
             Account_Settings,
@@ -998,11 +999,28 @@ namespace Yedda
         }
         public string GetRepliesTimeLine(OutputFormatType format)
         {
-            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Replies), GetFormatTypeString(format), AccountInfo.ServerURL.URL);
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Replies), GetFormatTypeString(format), AccountInfo.ServerURL.URL) + "?count=" + MaxTweets;
             return ExecuteGetCommand(url);
         }
 
         #endregion
+
+        #region Mentions
+
+        public string GetMentionTimeLineSince(OutputFormatType format, string SinceID)
+        {
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Mentions), GetFormatTypeString(format), AccountInfo.ServerURL.URL) + "?since_id=" + SinceID;
+            return ExecuteGetCommand(url);
+        }
+        public string GetMentionTimeLine(OutputFormatType format)
+        {
+            string url = string.Format(TwitterBaseUrlFormat, GetObjectTypeString(ObjectType.Statuses), GetActionTypeString(ActionType.Mentions), GetFormatTypeString(format), AccountInfo.ServerURL.URL);
+            return ExecuteGetCommand(url);
+        }
+
+        #endregion
+
+
 
         #region Friends
 

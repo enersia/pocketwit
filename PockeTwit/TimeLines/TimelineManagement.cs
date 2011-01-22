@@ -732,7 +732,6 @@ namespace PockeTwit
             {
                 switch (TimelineType)
                 {
-                        
                     case Yedda.Twitter.ActionType.Direct_Messages:
                         string LastDirectID = LocalStorage.DataBaseUtility.GetLatestItem(t.AccountInfo, TimeLineType.Direct);
                         if (string.IsNullOrEmpty(LastDirectID))
@@ -783,6 +782,24 @@ namespace PockeTwit
                             else
                             {
                                 response = t.GetRepliesTimeLineSince(Yedda.Twitter.OutputFormatType.XML, LastReplyID);
+                            }
+                        }
+                        break;
+                    case Yedda.Twitter.ActionType.Mentions:
+                        if (!t.BigTimeLines)
+                        {
+                            response = t.GetMentionTimeLine(Yedda.Twitter.OutputFormatType.XML);
+                        }
+                        else
+                        {
+                            string LastReplyID = LocalStorage.DataBaseUtility.GetLatestItem(t.AccountInfo, TimeLineType.Replies);
+                            if (string.IsNullOrEmpty(LastReplyID))
+                            {
+                                response = t.GetMentionTimeLine(Yedda.Twitter.OutputFormatType.XML);
+                            }
+                            else
+                            {
+                                response = t.GetMentionTimeLineSince(Yedda.Twitter.OutputFormatType.XML, LastReplyID);
                             }
                         }
                         break;
