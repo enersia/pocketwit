@@ -283,7 +283,7 @@ namespace PockeTwit.MediaServices
             try
             {
                 //We use the "iphone" optimized images
-                HttpWebRequest myRequest = WebRequestFactory.CreateHttpRequest(API_SHOW_THUMB + imageId + ".th.jpg");
+                HttpWebRequest myRequest = WebRequestFactory.CreateHttpRequest(API_SHOW_THUMB + imageId + ":iphone");
                 myRequest.Method = "GET";
 
                 String pictureFileName = String.Empty;
