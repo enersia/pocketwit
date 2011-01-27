@@ -443,9 +443,7 @@ namespace LocalStorage
                         comm.Parameters.Clear();
 
                         comm.CommandText =
-                            @"DELETE FROM users WHERE id NOT IN (
-                                                SELECT DISTINCT userid FROM statuses
-                                                )";
+                            @"DELETE FROM users WHERE id NOT IN (SELECT DISTINCT userid FROM statuses) AND id NOT IN (SELECT userid FROM usersingroups)";
                         results = comm.ExecuteNonQuery();
                     }
                     t.Commit();
