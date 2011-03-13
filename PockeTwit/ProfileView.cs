@@ -28,9 +28,21 @@ namespace PockeTwit
         public ProfileAction selectedAction { get; set; }
         public String selectedUser { get; set; }
 
+        private int GetAvatarBoxSize(int start, int max, int step)
+        {
+            if ((start + step) < max)
+            {
+                return GetAvatarBoxSize(start + step, max, step);
+            }
+            else
+            {
+                return start;
+            }
+        }
+
         public ProfileView(PockeTwit.Library.User User)
         {
-            
+
             if (User.needsFetching)
             {
                 User = FetchTheUser(User);
@@ -46,10 +58,14 @@ namespace PockeTwit
             {
                 this.WindowState = FormWindowState.Maximized;
             }
-            avatarBox.Width = ClientSettings.SmallArtSize;
-            avatarBox.Height = ClientSettings.SmallArtSize;
 
-            avatarBox.Image = PockeTwit.ThrottledArtGrabber.GetArt(User.profile_image_url);
+            //default 73, size for biggest we can get from api.
+            //Use about 1/3 of the width of the screen.
+            avatarBox.Width = GetAvatarBoxSize(0, this.Width / 3, 73);
+            avatarBox.Height = avatarBox.Width;
+
+            string artUrl = User.profile_image_url.Replace("_normal.", "_bigger.");
+            avatarBox.Image = PockeTwit.ThrottledArtGrabber.GetArt(artUrl);
             
             lblUserName.Text = User.screen_name;
             
@@ -121,11 +137,11 @@ namespace PockeTwit
             b.Click += new EventHandler(btnClose_Click);
             if (!ClientSettings.IsMaximized)
             {
-                b.Location = new Point((Screen.PrimaryScreen.Bounds.Width / 2) - (b.Width / 2), Screen.PrimaryScreen.WorkingArea.Height - b.Height);
+                b.Location = new Point((Screen.PrimaryScreen.Bounds.Width / 2) - (b.Width / 2), Screen.PrimaryScreen.WorkingArea.Height - b.Height - 5);
             }
             else
             {
-                b.Location = new Point((Screen.PrimaryScreen.Bounds.Width / 2) - (b.Width / 2), Screen.PrimaryScreen.Bounds.Height - b.Height);
+                b.Location = new Point((Screen.PrimaryScreen.Bounds.Width / 2) - (b.Width / 2), Screen.PrimaryScreen.Bounds.Height - b.Height - 5);
             }
             this.Controls.Add(b);
             b.BringToFront();
@@ -204,63 +220,66 @@ namespace PockeTwit
 
         private void avatarBox_Click(object sender, EventArgs e)
         {
-            if (pb != null)
+            if (DetectDevice.DeviceType == DeviceType.Professional)
             {
-                this.WindowState = FormWindowState.Maximized;
-                p.Show();
-                pb.Show();
-            }
-            else
-            {
-                try
+                if (pb != null)
                 {
-                    Cursor.Current = Cursors.WaitCursor;
-                    p = new Panel();
-                    p.Location = new Point(0, 0);
-                    
-                    p.BackColor = Color.Black;
-                    
-
-                    pb = new PictureBox();
-                    string url = _User.profile_image_url.Replace("_normal", "");
-
-                    var request = WebRequestFactory.CreateHttpRequest(url);
-                    var httpResponse = (HttpWebResponse)request.GetResponse();
-                    Stream stream = httpResponse.GetResponseStream();
-
-                    Image i = new Bitmap(stream);
-                    pb.Image = i;
-                    pb.SizeMode = PictureBoxSizeMode.StretchImage;
-
                     this.WindowState = FormWindowState.Maximized;
-
-                    pb.Size = getImageSize(i.Size, Screen.PrimaryScreen.Bounds.Size);
-
-                    pb.Location = new Point((Screen.PrimaryScreen.Bounds.Width / 2) - (pb.Size.Width / 2), (Screen.PrimaryScreen.Bounds.Height / 2) - (pb.Size.Height / 2));
-                    
-                    pb.Click += new EventHandler(pb_Click);
-                    p.Click += new EventHandler(pb_Click);
-
-                    p.Size = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
-                    p.Visible = true;
-                    this.Controls.Add(p);
-                    p.BringToFront();
-
-                    this.Controls.Add(pb);
-                    
-                    pb.BringToFront();
-                    b.BringToFront();
-                    Cursor.Current = Cursors.Default;
+                    p.Show();
+                    pb.Show();
                 }
-                catch (Exception ex)
+                else
                 {
-                    System.Diagnostics.Debug.WriteLine(ex.Message);
-                    b.Hide();
-                    pb.Hide();
+                    try
+                    {
+                        Cursor.Current = Cursors.WaitCursor;
+                        p = new Panel();
+                        p.Location = new Point(0, 0);
+
+                        p.BackColor = Color.Black;
+
+
+                        pb = new PictureBox();
+                        string url = _User.profile_image_url.Replace("_normal", "");
+
+                        var request = WebRequestFactory.CreateHttpRequest(url);
+                        var httpResponse = (HttpWebResponse)request.GetResponse();
+                        Stream stream = httpResponse.GetResponseStream();
+
+                        Image i = new Bitmap(stream);
+                        pb.Image = i;
+                        pb.SizeMode = PictureBoxSizeMode.StretchImage;
+
+                        this.WindowState = FormWindowState.Maximized;
+
+                        pb.Size = getImageSize(i.Size, Screen.PrimaryScreen.Bounds.Size);
+
+                        pb.Location = new Point((Screen.PrimaryScreen.Bounds.Width / 2) - (pb.Size.Width / 2), (Screen.PrimaryScreen.Bounds.Height / 2) - (pb.Size.Height / 2));
+
+                        pb.Click += new EventHandler(pb_Click);
+                        p.Click += new EventHandler(pb_Click);
+
+                        p.Size = new Size(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
+                        p.Visible = true;
+                        this.Controls.Add(p);
+                        p.BringToFront();
+
+                        this.Controls.Add(pb);
+
+                        pb.BringToFront();
+                        b.BringToFront();
+                        Cursor.Current = Cursors.Default;
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
+                        b.Hide();
+                        pb.Hide();
+                    }
                 }
+
+                b.Location = new Point((Screen.PrimaryScreen.Bounds.Width / 2) - (b.Width / 2), Screen.PrimaryScreen.Bounds.Height - b.Height);
             }
-            
-            b.Location = new Point((Screen.PrimaryScreen.Bounds.Width / 2) - (b.Width / 2), Screen.PrimaryScreen.Bounds.Height - b.Height);
         }
 
         private void pb_Click(object sender, EventArgs e)
@@ -373,19 +392,28 @@ namespace PockeTwit
         
         private void pContent_MouseMove(object sender, MouseEventArgs e)
         {
-            int mouseMoved = e.Y - mouseDownOn;
-            pContent.Top = pContent.Top + mouseMoved;
+            if (DetectDevice.DeviceType == DeviceType.Professional)
+            {
+                int mouseMoved = e.Y - mouseDownOn;
+                pContent.Top = pContent.Top + mouseMoved;
+            }
         }
 
         private void pContent_MouseDown(object sender, MouseEventArgs e)
         {
-            mouseDownOn = e.Y;
+            if (DetectDevice.DeviceType == DeviceType.Professional)
+            {
+                mouseDownOn = e.Y;
+            }
         }
 
         private void pContent_MouseUp(object sender, MouseEventArgs e)
         {
-            mouseDownOn = 0;
-            timeranimate.Enabled = true;
+            if (DetectDevice.DeviceType == DeviceType.Professional)
+            {
+                mouseDownOn = 0;
+                timeranimate.Enabled = true;
+            }
         }
 
         private void timeranimate_Tick(object sender, EventArgs e)
