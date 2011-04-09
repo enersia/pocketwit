@@ -1007,7 +1007,7 @@ void ToggleStartDebugBuild(BOOL enabled)
 	if (enabled == TRUE)
 	{
 		DWORD useDebug;
-		if (ERROR_SUCCESS == RegistryGetDWORD(HKEY_LOCAL_MACHINE, TEXT("Software\\Apps\\PockeTwit Dev Build"), TEXT("Instl"), &useDebug))
+		if (ERROR_SUCCESS == RegistryGetDWORD(HKEY_LOCAL_MACHINE, TEXT("Software\\Apps\\PockeTwit PockeTwit Dev Build"), TEXT("Instl"), &useDebug))
 		{
 			startDebugBuild = TRUE;
 		}
