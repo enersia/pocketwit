@@ -34,8 +34,8 @@
             this.menuItem2 = new System.Windows.Forms.MenuItem();
             this.menuItem3 = new System.Windows.Forms.MenuItem();
             this.menuItem4 = new System.Windows.Forms.MenuItem();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.menuZoom = new System.Windows.Forms.MenuItem();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -66,6 +66,12 @@
             this.menuItem4.Text = "Launch URL";
             this.menuItem4.Click += new System.EventHandler(this.menuItem4_Click);
             // 
+            // menuZoom
+            // 
+            this.menuZoom.Checked = true;
+            this.menuZoom.Text = "Zoom To Fit";
+            this.menuZoom.Click += new System.EventHandler(this.menuZoom_Click);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Black;
@@ -74,12 +80,6 @@
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(240, 268);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
-            // 
-            // menuZoom
-            // 
-            this.menuZoom.Checked = true;
-            this.menuZoom.Text = "Zoom To Fit";
-            this.menuZoom.Click += new System.EventHandler(this.menuZoom_Click);
             // 
             // ImagePreview
             // 
