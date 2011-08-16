@@ -1825,6 +1825,14 @@ namespace Yedda
                                     PockeTwit.GlobalEventHandler.CallShowErrorMessage("Timeout until " + NewTime.ToString());
                                     throw new Exception("Timeout until " + NewTime.ToString());
                                 }
+                                else if (doc.SelectSingleNode("//error").Attributes.GetNamedItem("code", string.Empty).InnerText == "93")
+                                {
+                                    //DM error 93: This application is not allowed to access or delete your direct messages
+                                    //
+                                    //User needs to re-authenticate.
+                                    PockeTwit.GlobalEventHandler.CallShowErrorMessage("Permission error, please re-authenticate.");
+                                    throw new Exception("Permission error");
+                                }
                                 else
                                 {
                                     Exception TwitterError = new Exception(doc.SelectSingleNode("//error").InnerText);
