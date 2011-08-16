@@ -560,7 +560,35 @@ namespace Yedda
             return null;
         }
 
+        /// <summary>
+        /// Making an overload for this for a retry.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         protected virtual string ExecuteGetCommand(string url)
+        {
+            const int MAX_RETRIES = 2;
+            int retry = 0;
+            string result = string.Empty;
+
+            while (string.IsNullOrEmpty(result) && ++retry < MAX_RETRIES)
+            {
+                result = ExecuteGetCommand(url, retry);
+                if (!string.IsNullOrEmpty(result))
+                {
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Making an overload for this for a retry.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        protected virtual string ExecuteGetCommand(string url, int retryNo)
         {
             HttpWebRequest client = WebRequestFactory.CreateHttpRequest(url);
             client.Timeout = 20000;
@@ -588,7 +616,7 @@ namespace Yedda
             }
             catch (WebException ex)
             {
-                PockeTwit.GlobalEventHandler.LogCommError(ex);
+                PockeTwit.GlobalEventHandler.LogCommError(ex, url);
                 //
                 // Handle HTTP 404 errors gracefully and return a null string to indicate there is no content.
                 //
@@ -2021,7 +2049,10 @@ namespace Yedda
 
         public override string GetFriendsIDs()
         {
-            string url = "http://twitter.com/friends/ids.xml";
+            //string url = "http://twitter.com/friends/ids.xml";
+            //return ExecuteGetCommand(url);
+
+            string url = "https://api.twitter.com/1/friends/ids.xml";
             return ExecuteGetCommand(url);
         }
 

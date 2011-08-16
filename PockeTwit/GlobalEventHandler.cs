@@ -76,6 +76,24 @@ namespace PockeTwit
             catch { }
         }
 
+        public static void LogCommError(Exception ex, string url)
+        {
+            try
+            {
+                using (System.IO.StreamWriter w = new System.IO.StreamWriter(ClientSettings.AppPath + "\\commerrors.txt", true))
+                {
+                    w.WriteLine("____");
+                    w.WriteLine(String.Format("URL: {0}", url));
+                    w.WriteLine(DateTime.Now.ToString());
+                    w.WriteLine(ex.Message);
+                    w.WriteLine(ex.StackTrace);
+                }
+            }
+            //Toss it if we can't write to the log
+            catch { }
+        }
+
+
         public static void CallShowErrorMessage(string Message, Exception ex)
         {
             using (System.IO.StreamWriter w = new System.IO.StreamWriter(ClientSettings.AppPath + "\\commerrors.txt", true))

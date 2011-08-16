@@ -23,6 +23,7 @@
     <AssemblyOriginatorKeyFile>PockeTwitKey.snk</AssemblyOriginatorKeyFile>
     <StartupObject>
     </StartupObject>
+    <DeployDirPrefix>%25CSIDL_PROGRAM_FILES%25</DeployDirPrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -495,6 +496,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="PockeTwit.ico" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="PockeTwitKey.snk" />
     <None Include="TiledMaps\GoogleMaps\SampleDecodedSegments.xml" />
     <Content Include="unknownart-small.jpg">
