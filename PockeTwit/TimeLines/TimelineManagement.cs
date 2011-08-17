@@ -565,7 +565,7 @@ namespace PockeTwit
                             else
                             {
                                 NoData(t.AccountInfo, Yedda.Twitter.ActionType.Direct_Messages);
-                                GlobalEventHandler.CallShowErrorMessage("Communications Error");
+                                //GlobalEventHandler.CallShowErrorMessage("Communications Error");
                             }
                         }
                     }

@@ -73,6 +73,9 @@ namespace PockeTwit
 
             FillServerList();
             PopulateForm();
+
+            cbRevalidate.Visible = true;
+            cbRevalidate.Checked = false;
         }
 
         private void PopulateForm()
@@ -118,7 +121,8 @@ namespace PockeTwit
             {
                 OAuthAuthorizer authorizer = new OAuthAuthorizer();
 
-                if (!string.IsNullOrEmpty(_AccountInfo.OAuth_token_secret) || string.IsNullOrEmpty(txtPassword.Text))
+                if ((!string.IsNullOrEmpty(_AccountInfo.OAuth_token_secret) || string.IsNullOrEmpty(txtPassword.Text))
+                    && !cbRevalidate.Checked )
                 {
                     //No need to verify without when no password is passed and token is still set.
                     Cursor.Current = Cursors.Default;

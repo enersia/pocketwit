@@ -41,6 +41,7 @@
             this.lblError = new System.Windows.Forms.Label();
             this.chkDefault = new System.Windows.Forms.CheckBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.cbRevalidate = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // mainMenu1
@@ -66,7 +67,7 @@
             this.cmbServers.ForeColor = System.Drawing.Color.Black;
             this.cmbServers.Location = new System.Drawing.Point(5, 24);
             this.cmbServers.Name = "cmbServers";
-            this.cmbServers.Size = new System.Drawing.Size(161, 22);
+            this.cmbServers.Size = new System.Drawing.Size(232, 22);
             this.cmbServers.TabIndex = 0;
             this.cmbServers.SelectedIndexChanged += new System.EventHandler(this.cmbServers_SelectedIndexChanged);
             // 
@@ -88,7 +89,7 @@
             this.txtPassword.Location = new System.Drawing.Point(5, 123);
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
-            this.txtPassword.Size = new System.Drawing.Size(161, 22);
+            this.txtPassword.Size = new System.Drawing.Size(232, 21);
             this.txtPassword.TabIndex = 3;
             this.txtPassword.TextChanged += new System.EventHandler(this.txtPassword_TextChanged);
             // 
@@ -109,7 +110,7 @@
             this.txtUserName.ForeColor = System.Drawing.Color.Black;
             this.txtUserName.Location = new System.Drawing.Point(5, 74);
             this.txtUserName.Name = "txtUserName";
-            this.txtUserName.Size = new System.Drawing.Size(161, 22);
+            this.txtUserName.Size = new System.Drawing.Size(232, 21);
             this.txtUserName.TabIndex = 1;
             // 
             // lblUser
@@ -129,7 +130,7 @@
             this.lblError.ForeColor = System.Drawing.Color.Red;
             this.lblError.Location = new System.Drawing.Point(5, 180);
             this.lblError.Name = "lblError";
-            this.lblError.Size = new System.Drawing.Size(161, 39);
+            this.lblError.Size = new System.Drawing.Size(232, 39);
             this.lblError.Text = "Unable to verify username and password";
             this.lblError.Visible = false;
             // 
@@ -152,13 +153,25 @@
             this.linkLabel1.Visible = false;
             this.linkLabel1.Click += new System.EventHandler(this.linkLabel1_Click);
             // 
+            // cbRevalidate
+            // 
+            this.cbRevalidate.ThreeState = true;
+            this.cbRevalidate.ForeColor = System.Drawing.Color.White;
+            this.cbRevalidate.Location = new System.Drawing.Point(137, 154);
+            this.cbRevalidate.Name = "cbRevalidate";
+            this.cbRevalidate.Size = new System.Drawing.Size(100, 20);
+            this.cbRevalidate.TabIndex = 103;
+            this.cbRevalidate.Text = "Revalidate";
+            this.cbRevalidate.Visible = false;
+            // 
             // AccountInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.Black;
-            this.ClientSize = new System.Drawing.Size(169, 180);
+            this.ClientSize = new System.Drawing.Size(240, 268);
+            this.Controls.Add(this.cbRevalidate);
             this.Controls.Add(this.lblError);
             this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.chkDefault);
@@ -190,6 +203,7 @@
         private System.Windows.Forms.MenuItem PasteItem;
         private System.Windows.Forms.CheckBox chkDefault;
         private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.CheckBox cbRevalidate;
         
 
         
